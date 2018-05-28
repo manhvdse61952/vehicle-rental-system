@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="40dp"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/txt1"
+                android:layout_width="wrap_content"
+                android:textColor="#000"
+                android:textSize="26dp"
+                android:layout_centerHorizontal="true"
+                android:layout_height="wrap_content"
+                android:text="Tổng chi phí" />
+
+
+            <LinearLayout
+                android:id="@+id/lnl1"
+                android:layout_marginTop="40dp"
+                android:layout_below="@+id/txt1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:textColor="#000"
+                    android:textSize="18sp"
+                    android:text="Tiền thuê cơ bản"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:textColor="#000"
+                    android:text="400.000"
+                    android:textSize="18sp"
+                    android:gravity="end"
+                    android:textStyle="bold"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/lnl2"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/lnl1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:textColor="#000"
+                    android:textSize="18sp"
+                    android:text="Tiền phạt ngoài giờ"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:textColor="#000"
+                    android:text="100.000"
+                    android:textSize="18sp"
+                    android:gravity="end"
+                    android:textStyle="bold"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/lnl3"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/lnl2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:textColor="#000"
+                    android:textSize="18sp"
+                    android:text="Phụ phí thu thêm"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:textColor="#000"
+                    android:text="0"
+                    android:textSize="18sp"
+                    android:gravity="end"
+                    android:textStyle="bold"
+                    />
+            </LinearLayout>
+
+
+            <com.google.android.flexbox.FlexboxLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:id="@+id/flb1"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                app:justifyContent="space_around">
+
+                <Button
+                    android:id="@+id/btnAccept"
+                    android:layout_width="wrap_content"
+                    app:layout_flexBasisPercent="@fraction/signup_img"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/cbxSignup"
+                    android:text="chấp nhận"
+                    android:layout_marginTop="10dp"
+                    android:paddingTop="15dp"
+                    android:paddingBottom="15dp"
+                    android:background="#0097A7"
+                    android:textColor="#fff"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    />
+            </com.google.android.flexbox.FlexboxLayout>
+
+            <LinearLayout
+                android:id="@+id/lnl4"
+                android:layout_marginTop="10dp"
+                android:layout_above="@+id/flb1"
+                android:layout_width="match_parent"
+                android:layout_marginBottom="20dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:textColor="#000"
+                    android:textSize="24sp"
+                    android:text="Tổng cộng"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:textColor="#FF0000"
+                    android:text="500.000"
+                    android:textSize="24sp"
+                    android:gravity="end"
+                    android:textStyle="bold"
+                    />
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+
+</LinearLayout>

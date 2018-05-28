@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true">
+
+            <TextView
+                android:id="@+id/txtYouAre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="Bạn là"
+                android:textColor="#000"
+                android:textSize="30sp"/>
+
+            <com.google.android.flexbox.FlexboxLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/signup_ico"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_below="@+id/txtYouAre"
+                app:alignItems="center"
+                app:flexWrap="wrap"
+                android:layout_marginTop="20dp"
+                app:justifyContent="space_around">
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/customer_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_flexBasisPercent="@fraction/signup_img"
+                    app:srcCompat="@drawable/img_customer"/>
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/owner_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_flexBasisPercent="@fraction/signup_img"
+                    app:srcCompat="@drawable/img_owner"/>
+
+
+            </com.google.android.flexbox.FlexboxLayout>
+
+            <com.google.android.flexbox.FlexboxLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/signup_detail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/signup_ico"
+                app:alignItems="center"
+                app:flexWrap="wrap"
+                app:justifyContent="space_around">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Người thuê xe"
+                    android:textAlignment="center"
+                    android:layout_marginTop="5dp"
+                    app:layout_flexBasisPercent="@fraction/signup_img"
+                    android:textColor="#000"
+                    android:textSize="20sp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:text="Chủ xe"
+                    android:layout_marginTop="5dp"
+                    app:layout_flexBasisPercent="@fraction/signup_img"
+                    android:textColor="#000"
+                    android:textSize="20sp"/>
+            </com.google.android.flexbox.FlexboxLayout>
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+</LinearLayout>

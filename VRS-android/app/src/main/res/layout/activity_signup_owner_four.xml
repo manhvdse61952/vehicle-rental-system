@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusableInTouchMode="true">
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_margin="20dp"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_height="200dp">
+
+            <TextView
+                android:id="@+id/txt1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#000"
+                android:textSize="18sp"
+                android:text="Thêm ghi chú về xe (có thể bỏ trống)" />
+
+            <EditText
+                android:id="@+id/edtSignupVehicleDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txt1"
+                android:layout_marginTop="10dp"
+                android:ems="10"
+                android:inputType="textMultiLine" />
+
+            <com.google.android.flexbox.FlexboxLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginTop="15dp"
+                app:alignItems="center"
+                app:flexWrap="wrap"
+                app:justifyContent="space_around">
+
+                <Button
+                    android:id="@+id/btnNext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#0097A7"
+                    android:textColor="#fff"
+                    app:layout_flexBasisPercent="@fraction/signup_img"
+                    android:layout_below="@+id/cbxSignupOwner3"
+                    android:text="tiếp tục" />
+
+            </com.google.android.flexbox.FlexboxLayout>
+        </RelativeLayout>
+
+    </RelativeLayout>
+</LinearLayout>

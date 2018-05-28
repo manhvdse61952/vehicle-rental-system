@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.manhvdse61952.vrc_test_1">
+    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".layout.login.LoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".layout.signup.SignupUserInfoActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".layout.signup.SignupAccountActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".layout.signup.SignupRoleActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".layout.signup.SignupPolicyActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".layout.signup.SignupOwnerOne" android:screenOrientation="portrait"></activity>
+        <activity android:name=".layout.signup.SignupOwnerTwo" android:screenOrientation="portrait"></activity>
+        <activity android:name=".layout.signup.SignupOwnerThree" android:screenOrientation="portrait"></activity>
+        <activity android:name=".layout.signup.SignupOwnerFour" android:screenOrientation="portrait"></activity>
+        <activity android:name=".layout.main.MainActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".layout.main.MainListSearch" android:screenOrientation="portrait"></activity>
+        <activity android:name=".layout.main.MainItem" android:screenOrientation="portrait"></activity>
+        <activity android:name=".layout.order.MainOrderOne" android:screenOrientation="portrait"></activity>
+        <activity android:name=".layout.order.MainOrderTwo" android:screenOrientation="portrait"></activity>
+        <activity android:name=".layout.order.MainOrderThree" android:screenOrientation="portrait"></activity>
+        <activity android:name=".layout.order.MainOrderFour" android:screenOrientation="portrait"></activity>
+    </application>
+
+</manifest>

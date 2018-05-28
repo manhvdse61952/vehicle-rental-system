@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+        <ScrollView
+            android:layout_margin="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.9">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                
+                <LinearLayout
+                    android:id="@+id/lnl1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="150dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="0.4"
+                        android:src="@drawable/xe_oto"/>
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="0.6"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/txtItemName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Toyota Fortuner 2018 màu xám bạc"
+                            android:textColor="#000"
+                            android:textStyle="bold"
+                            android:textSize="20sp"/>
+                        <TextView
+                            android:layout_marginTop="5dp"
+                            android:id="@+id/txtItemPrice"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Giá thuê: 300.000 vnd / giờ"
+                            android:layout_below="@+id/txtItemName"
+                            android:textColor="#000"
+                            android:textSize="18sp"/>
+
+                        <TextView
+                            android:layout_marginTop="5dp"
+                            android:id="@+id/txtItemDeposit"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Giá cọc: 20.000.000 vnd"
+                            android:layout_below="@+id/txtItemPrice"
+                            android:textColor="#000"
+                            android:textSize="18sp"/>
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/vpg"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp">
+
+                </android.support.v4.view.ViewPager>
+
+
+                <TextView
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Số chỗ ngồi: 4"
+                    android:textColor="#000"
+                    android:textSize="18sp"/>
+
+                <TextView
+                    android:layout_marginTop="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Năm sản xuất: 2018"
+                    android:textColor="#000"
+                    android:textSize="18sp"/>
+
+                <TextView
+                    android:layout_marginTop="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Loại xe: ô tô cá nhân"
+                    android:textColor="#000"
+                    android:textSize="18sp"/>
+
+                <TextView
+                    android:layout_marginTop="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Loại động cơ: ABC"
+                    android:textColor="#000"
+                    android:textSize="18sp"/>
+
+                <TextView
+                    android:layout_marginTop="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Loại truyền tải: XYZ"
+                    android:textColor="#000"
+                    android:textSize="18sp"/>
+
+                <TextView
+                    android:layout_marginTop="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Giấy tờ kèm theo:"
+                    android:textColor="#000"
+                    android:textSize="18sp"/>
+
+                <CheckBox
+                    android:layout_marginTop="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/cbx1"
+                    android:text="Chứng minh nhân dân"/>
+
+                <CheckBox
+                    android:layout_marginTop="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/cbx2"
+                    android:text="Giấy đăng kiểm xe"/>
+
+                <CheckBox
+                    android:layout_marginTop="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/cbx3"
+                    android:text="Bằng lái xe"/>
+
+                <TextView
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:textColor="#000"
+                    android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged"/>
+
+                <ListView
+                    android:layout_marginTop="10dp"
+                    android:id="@+id/lvFeedback"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                </ListView>
+            </LinearLayout>
+        </ScrollView>
+
+        <Button
+            android:id="@+id/btnOrderRent"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"
+            android:text="thuê xe"
+            android:textColor="#fff"
+            android:background="#0097A7"
+            android:textSize="20sp"/>
+    </LinearLayout>
+</LinearLayout>

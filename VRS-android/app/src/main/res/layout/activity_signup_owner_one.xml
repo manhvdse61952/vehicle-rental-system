@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/txtOwner1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#000"
+                android:textSize="20sp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="20dp"
+                android:text="Loại xe bạn đang sở hữu" />
+
+            <com.google.android.flexbox.FlexboxLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtOwner1"
+                app:alignItems="center"
+                app:flexWrap="wrap"
+                app:justifyContent="space_around">
+
+                <Button
+                    android:id="@+id/btnSignupOwner1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_flexBasisPercent="@fraction/signup_owner_vehicle_type"
+                    android:text="Xe máy"
+                    android:background="#0097A7"
+                    android:textColor="#fff"/>
+                <Button
+                    android:id="@+id/btnSignupOwner2"
+                    android:layout_below="@+id/btnSignupOwner1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="#0097A7"
+                    android:textColor="#fff"
+                    app:layout_flexBasisPercent="@fraction/signup_owner_vehicle_type"
+                    android:text="Xe ô tô cá nhân (4-7 chỗ)" />
+                <Button
+                    android:id="@+id/btnSignupOwner3"
+                    android:layout_below="@+id/btnSignupOwner2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="#0097A7"
+                    android:textColor="#fff"
+                    app:layout_flexBasisPercent="@fraction/signup_owner_vehicle_type"
+                    android:text="Xe ô tô du lịch (trên 7 chỗ)" />
+
+
+            </com.google.android.flexbox.FlexboxLayout>
+
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+</LinearLayout>

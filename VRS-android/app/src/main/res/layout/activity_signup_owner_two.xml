@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusableInTouchMode="true">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/edtSignupVehicleFrameNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:inputType="textPersonName"
+                        android:hint="Nhập số khung xe" />
+
+                    <EditText
+                        android:id="@+id/edtSignupVehicleName"
+                        android:layout_below="@+id/edtSignupVehicleFrameNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:inputType="textPersonName"
+                        android:hint="Nhập tên xe" />
+
+                    <com.google.android.flexbox.FlexboxLayout
+                        xmlns:android="http://schemas.android.com/apk/res/android"
+                        xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/flbOwnerTwo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_below="@+id/edtSignupVehicleName"
+                        app:alignItems="center"
+                        app:flexWrap="wrap"
+                        app:justifyContent="space_around">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Loại động cơ"
+                            app:layout_flexBasisPercent="@fraction/signup_img"
+                            android:textColor="#000"
+                            android:textSize="18sp"/>
+
+                        <Spinner
+                            android:id="@+id/spnLoaiDongCo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawSelectorOnTop="true"
+                            android:entries="@array/spinnerItems2"
+                            app:layout_flexBasisPercent="@fraction/signup_img"/>
+
+                        <TextView
+                            android:layout_marginTop="10dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Loại truyền tải"
+                            app:layout_flexBasisPercent="@fraction/signup_img"
+                            android:textColor="#000"
+                            android:textSize="18sp"/>
+
+                        <Spinner
+                            android:layout_marginTop="10dp"
+                            android:id="@+id/spnLoaiTruyenTai"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:entries="@array/spinnerItems2"
+                            android:drawSelectorOnTop="true"
+                            app:layout_flexBasisPercent="@fraction/signup_img"/>
+
+                        <TextView
+                            android:layout_marginTop="10dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Số chỗ ngồi"
+                            app:layout_flexBasisPercent="@fraction/signup_img"
+                            android:textColor="#000"
+                            android:textSize="18sp"/>
+
+                        <Spinner
+                            android:layout_marginTop="10dp"
+                            android:id="@+id/spnSoChoNgoi"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawSelectorOnTop="true"
+                            android:entries="@array/spinnerItems2"
+                            app:layout_flexBasisPercent="@fraction/signup_img"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Năm sản xuất"
+                            android:layout_marginTop="20dp"
+                            android:textColor="#000"
+                            app:layout_flexBasisPercent="@fraction/signup_img"
+                            android:textSize="18sp"/>
+
+                        <EditText
+                            android:id="@+id/edtSignupVehicleYear"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:layout_marginTop="20dp"
+                            android:inputType="number"
+                            app:layout_flexBasisPercent="@fraction/signup_img"
+                            android:hint="Nhập năm" />
+                    </com.google.android.flexbox.FlexboxLayout>
+
+                    <TextView
+                        android:id="@+id/txtno1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Giá thuê 1 tiếng"
+                        android:layout_below="@+id/flbOwnerTwo"
+                        android:layout_marginTop="10dp"
+                        android:textColor="#000"
+                        android:textSize="18sp"/>
+
+                    <TextView
+                        android:id="@+id/txtno2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Giá gợi ý: 100.000 đ"
+                        android:layout_alignBaseline="@+id/txtno1"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginTop="10dp"
+                        android:textColor="#D50000"
+                        android:textStyle="italic"
+                        android:textSize="16sp"/>
+
+                    <EditText
+                        android:id="@+id/edtSignupVehiclePrice"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:inputType="number"
+                        android:layout_below="@+id/txtno2"
+                        android:hint="Nhập giá tiền" />
+
+                    <TextView
+                        android:id="@+id/txtno3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tiền khách thuê cần đặt cọc"
+                        android:layout_marginTop="10dp"
+                        android:textColor="#000"
+                        android:layout_below="@+id/edtSignupVehiclePrice"
+                        android:textSize="18sp"/>
+
+                    <EditText
+                        android:id="@+id/edtSignupVehicleDeposit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:inputType="number"
+                        android:layout_below="@+id/txtno3"
+                        android:hint="Nhập giá tiền" />
+
+                    <TextView
+                        android:id="@+id/txtno4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Giấy tờ"
+                        android:layout_marginTop="10dp"
+                        android:textColor="#000"
+                        android:layout_below="@+id/edtSignupVehicleDeposit"
+                        android:textSize="18sp"/>
+
+                    <CheckBox
+                        android:id="@+id/cbxSignupOwner1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/txtno4"
+                        android:text="Chứng minh nhân dân"
+                        android:layout_marginTop="5dp"
+                        android:textSize="16sp"/>
+
+                    <CheckBox
+                        android:id="@+id/cbxSignupOwner2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/cbxSignupOwner1"
+                        android:text="Giấy đăng kiểm xe"
+                        android:textSize="16sp"/>
+
+                    <CheckBox
+                        android:id="@+id/cbxSignupOwner3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/cbxSignupOwner2"
+                        android:text="Bằng lái xe"
+                        android:textSize="16sp"/>
+
+
+
+                    <com.google.android.flexbox.FlexboxLayout
+                        xmlns:android="http://schemas.android.com/apk/res/android"
+                        xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/signup_detail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/cbxSignupOwner3"
+                        android:layout_marginTop="10dp"
+                        app:alignItems="center"
+                        app:flexWrap="wrap"
+                        app:justifyContent="space_around">
+
+                        <Button
+                            android:id="@+id/btnNext"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="#0097A7"
+                            android:textColor="#fff"
+                            app:layout_flexBasisPercent="@fraction/signup_img"
+                            android:layout_below="@+id/cbxSignupOwner3"
+                            android:text="tiếp tục" />
+
+                    </com.google.android.flexbox.FlexboxLayout>
+                </RelativeLayout>
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+
+
+
+</LinearLayout>

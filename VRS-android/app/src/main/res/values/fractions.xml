@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="signup_icon" type="fraction">30%</item>
+    <item name="signup_btn" type="fraction">40%</item>
+    <item name="signup_img" type="fraction">50%</item>
+    <item name="signup_owner_vehicle_type" type="fraction">60%</item>
+    <item name="signup_owner_vehicle_image" type="fraction">45%</item>
+    <item name="main_search_edt" type="fraction">70%</item>
+    <item name="main_search_icon" type="fraction">12%</item>
+</resources>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/itemFeedback">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_weight="0.2"
+            android:layout_height="70dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/img_customer"/>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight="0.8"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp">
+            <TextView
+                android:id="@+id/txtFeedbackName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLength="40"
+                android:textColor="#000"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:text="Nguyễn Văn A"/>
+            <TextView
+                android:layout_below="@+id/txtFeedbackName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#000"
+                android:textSize="16sp"
+                android:text="Xe chạy êm, còn mới, sử dụng rất phù hợp với tôi, chủ xe nhiệt tình thân thiện"/>
+        </RelativeLayout>
+    </LinearLayout>
+</LinearLayout>

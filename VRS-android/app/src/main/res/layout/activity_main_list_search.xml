@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusableInTouchMode="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_margin="10dp">
+        <com.google.android.flexbox.FlexboxLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/flb1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:alignItems="center"
+            app:flexWrap="wrap"
+            app:justifyContent="space_around">
+
+            <EditText
+                android:id="@+id/edtSearch"
+                android:layout_width="wrap_content"
+                app:layout_flexBasisPercent="@fraction/main_search_edt"
+                android:layout_height="wrap_content"
+                android:hint="Nhập tên xe hoặc chủ xe"/>
+
+
+            <ImageView
+                android:id="@+id/imgSearchPage1"
+                android:layout_width="wrap_content"
+                app:layout_flexBasisPercent="@fraction/main_search_icon"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_search"
+                />
+            <ImageView
+                android:id="@+id/imgSearchPage2"
+                android:layout_width="wrap_content"
+                app:layout_flexBasisPercent="@fraction/main_search_icon"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_search_plus"
+                />
+        </com.google.android.flexbox.FlexboxLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Danh sách tìm kiếm"
+            android:textColor="#000"
+            android:textSize="24sp"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center"
+            android:layout_centerHorizontal="true"/>
+        <ListView
+            android:id="@+id/lvSearch"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp">
+
+        </ListView>
+    </LinearLayout>
+
+</LinearLayout>
