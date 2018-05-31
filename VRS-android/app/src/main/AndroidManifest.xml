@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.manhvdse61952.vrc_test_1">
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <uses-permission android:name="android.permission.CAMERA"></uses-permission>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -17,6 +19,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".layout.signup.SignupUserInfoActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".layout.signup.SignupUserInfoCameraActivity" android:screenOrientation="portrait"></activity>
         <activity android:name=".layout.signup.SignupAccountActivity" android:screenOrientation="portrait"></activity>
         <activity android:name=".layout.signup.SignupRoleActivity" android:screenOrientation="portrait"></activity>
         <activity android:name=".layout.signup.SignupPolicyActivity" android:screenOrientation="portrait"></activity>
@@ -31,6 +34,8 @@
         <activity android:name=".layout.order.MainOrderTwo" android:screenOrientation="portrait"></activity>
         <activity android:name=".layout.order.MainOrderThree" android:screenOrientation="portrait"></activity>
         <activity android:name=".layout.order.MainOrderFour" android:screenOrientation="portrait"></activity>
+
+        <meta-data android:name="com.google.android.gms.vision.DEPENDENCIES" android:value="ocr"/>
     </application>
 
 </manifest>

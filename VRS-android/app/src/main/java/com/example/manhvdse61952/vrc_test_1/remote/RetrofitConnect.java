@@ -10,7 +10,7 @@ public class RetrofitConnect {
     public static Retrofit getClient(){
         if (retrofit == null){
             retrofit = new Retrofit.Builder()
-                    .baseUrl("http://echo.getpostman.com")
+                    .baseUrl("http://192.168.150.53:8080/")
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }

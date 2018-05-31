@@ -17,7 +17,9 @@
 
 
                 <RelativeLayout
+                    android:id="@+id/sliderLayout"
                     android:layout_width="200dp"
+                    android:visibility="invisible"
                     android:layout_height="match_parent"
                     android:background="#ccc"
                     >
@@ -29,7 +31,7 @@
                         android:background="@drawable/shadow"
                         android:gravity="center"
                         android:textSize="16sp"
-                        android:padding="10dp"
+                        android:padding="20dp"
                         android:text="Quản lý tài khoản"
                         android:textColor="#ffffff" />
 
@@ -94,18 +96,25 @@
                     android:layout_marginLeft="5dp"
                     android:background="#ccc"
                     >
+
                     <TextView
                         android:id="@+id/txtWelcome"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/shadow"
                         android:gravity="center"
-                        android:padding="10dp"
+                        android:padding="20dp"
                         android:textSize="16sp"
                         android:text="Xin chào ..."
                         android:textStyle="bold"
                         android:textColor="#ffffff" />
-
+                    <ImageView
+                        android:id="@+id/btnMore"
+                        android:layout_width="60dp"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="10dp"
+                        android:src="@drawable/ic_bars"
+                        android:tint="#fff"/>
                     <ImageView
                         android:layout_below="@id/txtWelcome"
                         android:id="@+id/imgMaps"
