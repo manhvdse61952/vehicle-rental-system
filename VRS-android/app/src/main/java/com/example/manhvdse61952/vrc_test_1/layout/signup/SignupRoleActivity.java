@@ -14,6 +14,7 @@ import com.example.manhvdse61952.vrc_test_1.layout.login.LoginActivity;
 import com.example.manhvdse61952.vrc_test_1.layout.main.MainActivity;
 import com.example.manhvdse61952.vrc_test_1.model.AccountObj;
 import com.example.manhvdse61952.vrc_test_1.model.SignupObj;
+import com.example.manhvdse61952.vrc_test_1.remote.ImmutableValue;
 import com.example.manhvdse61952.vrc_test_1.remote.RetrofitConnect;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -27,8 +28,8 @@ import retrofit2.Retrofit;
 
 public class SignupRoleActivity extends AppCompatActivity {
 
-    private String MESSAGE_CODE_PREVIOUS = "SignupInfoToSignupRole";
-    private String MESSAGE_CODE_NEXT = "SignupRoleToSignupPolicy";
+    //private String MESSAGE_CODE_PREVIOUS = "SignupInfoToSignupRole";
+    //private String MESSAGE_CODE_NEXT = "SignupRoleToSignupPolicy";
     String receiveValue = "";
     SignupObj signupObj = new SignupObj();
     ImageView imgCustomer, imgOwner;
@@ -43,7 +44,7 @@ public class SignupRoleActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 Intent receiveIt = getIntent();
-                receiveValue = receiveIt.getStringExtra(MESSAGE_CODE_PREVIOUS);
+                receiveValue = receiveIt.getStringExtra(ImmutableValue.MESSAGE_CODE);
                 ObjectMapper objectMapper = new ObjectMapper();
 
                 try {
@@ -51,7 +52,7 @@ public class SignupRoleActivity extends AppCompatActivity {
                     signupObj.setRolename("ROLE_USER");
 
                     Intent it = new Intent(SignupRoleActivity.this, SignupPolicyActivity.class);
-                    it.putExtra(MESSAGE_CODE_NEXT, objectMapper.writeValueAsString(signupObj));
+                    it.putExtra(ImmutableValue.MESSAGE_CODE, objectMapper.writeValueAsString(signupObj));
                     startActivity(it);
 
                 } catch (IOException e) {

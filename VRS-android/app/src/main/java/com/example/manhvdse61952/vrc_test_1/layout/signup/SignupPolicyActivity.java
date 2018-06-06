@@ -12,6 +12,7 @@ import com.example.manhvdse61952.vrc_test_1.R;
 import com.example.manhvdse61952.vrc_test_1.interfaceAPI.SignupITF;
 import com.example.manhvdse61952.vrc_test_1.layout.main.MainActivity;
 import com.example.manhvdse61952.vrc_test_1.model.SignupObj;
+import com.example.manhvdse61952.vrc_test_1.remote.ImmutableValue;
 import com.example.manhvdse61952.vrc_test_1.remote.RetrofitConnect;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -25,7 +26,7 @@ import retrofit2.Retrofit;
 
 public class SignupPolicyActivity extends AppCompatActivity {
 
-    private String MESSAGE_CODE = "SignupRoleToSignupPolicy";
+    //private String MESSAGE_CODE = "SignupRoleToSignupPolicy";
     private String receiveValue = "";
     SignupObj signupObj = new SignupObj();
     Button btnAccept;
@@ -39,7 +40,7 @@ public class SignupPolicyActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent receiveIt = getIntent();
-                receiveValue = receiveIt.getStringExtra(MESSAGE_CODE);
+                receiveValue = receiveIt.getStringExtra(ImmutableValue.MESSAGE_CODE);
                 ObjectMapper objectMapper = new ObjectMapper();
 
                 try {
