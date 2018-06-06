@@ -13,6 +13,6 @@ import retrofit2.http.Path;
 
 public interface CheckDuplicatedUsername {
     @Headers({"Accept: application/json"})
-    @GET("/api/auth/checkUserNameExist/{userName}")
+    @GET("api/auth/checkUserNameExist/{userName}")
     Call<Boolean> checkDuplicated(@Path("userName") String username);
 }

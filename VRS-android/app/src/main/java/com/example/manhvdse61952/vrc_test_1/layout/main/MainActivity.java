@@ -15,10 +15,10 @@ import android.widget.TextView;
 
 import com.example.manhvdse61952.vrc_test_1.layout.login.LoginActivity;
 import com.example.manhvdse61952.vrc_test_1.R;
+import com.example.manhvdse61952.vrc_test_1.remote.ImmutableValue;
 
 public class MainActivity extends AppCompatActivity implements SlidingPaneLayout.PanelSlideListener, SlidingPaneLayout.OnTouchListener{
 
-    public final static String MESSAGE_KEY = "loginActivity.to.mainActivity";
     RelativeLayout ib_more_info;
     ImageView btnMore;
     TextView txtWelcome;
@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements SlidingPaneLayout
         //Login api - get username
         txtWelcome = (TextView)findViewById(R.id.txtWelcome);
         Intent receiveIt = getIntent();
-        username = receiveIt.getStringExtra(MESSAGE_KEY);
+        username = receiveIt.getStringExtra(ImmutableValue.MESSAGE_CODE);
         txtWelcome.setText("Xin chào " + username);
 
     }
