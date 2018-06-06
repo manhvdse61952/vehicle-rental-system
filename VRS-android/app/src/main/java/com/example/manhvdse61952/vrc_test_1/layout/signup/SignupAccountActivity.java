@@ -51,57 +51,57 @@ public class SignupAccountActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //Use for test
-                Intent it = new Intent(SignupAccountActivity.this, SignupUserInfoActivity.class);
-                ObjectMapper objectMapper = new ObjectMapper();
-                SignupObj signupObj = new SignupObj(username, password, email);
-                try {
-                    String json = objectMapper.writeValueAsString(signupObj);
-                    it.putExtra(ImmutableValue.MESSAGE_CODE, json);
-                    startActivity(it);
-                } catch (JsonProcessingException e) {
-                    e.printStackTrace();
-                }
+//                Intent it = new Intent(SignupAccountActivity.this, SignupUserInfoActivity.class);
+//                ObjectMapper objectMapper = new ObjectMapper();
+//                SignupObj signupObj = new SignupObj(username, password, email);
+//                try {
+//                    String json = objectMapper.writeValueAsString(signupObj);
+//                    it.putExtra(ImmutableValue.MESSAGE_CODE, json);
+//                    startActivity(it);
+//                } catch (JsonProcessingException e) {
+//                    e.printStackTrace();
+//                }
                 //////////////////////////////////////////////////
 
-//                username = edtSignupUsername.getText().toString();
-//                password = edtSignupPassword.getText().toString();
-//                email = edtSignupEmail.getText().toString();
-//                if (username.length() == 0){
-//                    edtSignupUsername.setError("username is required!");
-//                }
-//                else if (password.length() == 0){
-//                    edtSignupPassword.setError("password is required!");
-//                } else if (email.length() == 0){
-//                    edtSignupEmail.setError("email is required!");
-//                } else {
-//                    Retrofit test = RetrofitConnect.getClient();
-//                    final CheckDuplicatedUsername testAPI = test.create(CheckDuplicatedUsername.class);
-//                    Call<Boolean> responseBodyCall = testAPI.checkDuplicated(username);
-//                    responseBodyCall.enqueue(new Callback<Boolean>() {
-//                        @Override
-//                        public void onResponse(Call<Boolean> call, Response<Boolean> response) {
-//                            if (response.body().toString().equals("true")) {
-//                                Toast.makeText(SignupAccountActivity.this, "Tài khoản đã tồn tại", Toast.LENGTH_SHORT).show();
-//                            } else {
-//                                Intent it = new Intent(SignupAccountActivity.this, SignupUserInfoActivity.class);
-//                                ObjectMapper objectMapper = new ObjectMapper();
-//                                SignupObj signupObj = new SignupObj(username, password, email);
-//                                try {
-//                                    String json = objectMapper.writeValueAsString(signupObj);
-//                                    it.putExtra(ImmutableValue.MESSAGE_CODE, json);
-//                                    startActivity(it);
-//                                } catch (JsonProcessingException e) {
-//                                    e.printStackTrace();
-//                                }
-//                            }
-//                        }
-//
-//                        @Override
-//                        public void onFailure(Call<Boolean> call, Throwable t) {
-//                            Toast.makeText(SignupAccountActivity.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
-//                        }
-//                    });
-//                }
+                username = edtSignupUsername.getText().toString();
+                password = edtSignupPassword.getText().toString();
+                email = edtSignupEmail.getText().toString();
+                if (username.length() == 0){
+                    edtSignupUsername.setError("username is required!");
+                }
+                else if (password.length() == 0){
+                    edtSignupPassword.setError("password is required!");
+                } else if (email.length() == 0){
+                    edtSignupEmail.setError("email is required!");
+                } else {
+                    Retrofit test = RetrofitConnect.getClient();
+                    final CheckDuplicatedUsername testAPI = test.create(CheckDuplicatedUsername.class);
+                    Call<Boolean> responseBodyCall = testAPI.checkDuplicated(username);
+                    responseBodyCall.enqueue(new Callback<Boolean>() {
+                        @Override
+                        public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                            if (response.body().toString().equals("true")) {
+                                Toast.makeText(SignupAccountActivity.this, "Tài khoản đã tồn tại", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Intent it = new Intent(SignupAccountActivity.this, SignupUserInfoActivity.class);
+                                ObjectMapper objectMapper = new ObjectMapper();
+                                SignupObj signupObj = new SignupObj(username, password, email);
+                                try {
+                                    String json = objectMapper.writeValueAsString(signupObj);
+                                    it.putExtra(ImmutableValue.MESSAGE_CODE, json);
+                                    startActivity(it);
+                                } catch (JsonProcessingException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Boolean> call, Throwable t) {
+                            Toast.makeText(SignupAccountActivity.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
 
 
             }

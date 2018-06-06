@@ -40,6 +40,8 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import id.zelory.compressor.Compressor;
+
 public class SignupUserInfoActivity extends AppCompatActivity {
 
     TextView txtTestCMND;
@@ -264,18 +266,15 @@ public class SignupUserInfoActivity extends AppCompatActivity {
                     if (imgFile.exists()) {
                         imgSignupCMND.setImageURI(Uri.fromFile(imgFile));
                     }
+                    try {
+                        File compressFile = new Compressor(this).setMaxWidth(1024).setQuality(75).compressToFile(imgFile);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
 
                     //Read text from image
                     Bitmap bitmap = BitmapFactory.decodeFile(pictureFilePath);
-
-//                    Uri imageUri = data.getData();
-//                    Bitmap bitmap = null;
-//                    try {
-//                        bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
-
                     TextRecognizer textRecognizer = new TextRecognizer.Builder(getApplicationContext()).build();
                         if (!textRecognizer.isOperational()) {
                             Toast.makeText(SignupUserInfoActivity.this, "Waiting ...", Toast.LENGTH_SHORT).show();
