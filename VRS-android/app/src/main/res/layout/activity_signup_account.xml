@@ -53,6 +53,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginTop="5dp"
+            android:text="example1"
             android:hint="Ít nhất 6 kí tự" />
 
         <TextView
@@ -75,6 +76,7 @@
             android:layout_marginRight="10dp"
             android:layout_marginTop="5dp"
             android:layout_below="@+id/txtSignupPassword"
+            android:text="123456789"
             android:hint="Ít nhất 6 kí tự" />
 
         <TextView
@@ -97,6 +99,7 @@
             android:layout_marginRight="10dp"
             android:layout_marginTop="5dp"
             android:layout_below="@+id/txtSignupEmail"
+            android:text="example1"
             android:hint="ví dụ: user@gmail.com" />
 
         <com.google.android.flexbox.FlexboxLayout
