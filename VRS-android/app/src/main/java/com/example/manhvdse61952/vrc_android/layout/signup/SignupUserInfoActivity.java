@@ -32,12 +32,16 @@ import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.text.TextBlock;
 import com.google.android.gms.vision.text.TextRecognizer;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import id.zelory.compressor.Compressor;
 
 public class SignupUserInfoActivity extends AppCompatActivity {
 
@@ -46,7 +50,6 @@ public class SignupUserInfoActivity extends AppCompatActivity {
     ImageView imgPictureCMND, imgSignupCMND, imgSelectPictureCMND;
     String receiveValue = "";
     Signup signup = new Signup();
-
     EditText edtSignupName, edtSignupPhone, edtSignupCNMD, edtSignupPaypal;
     Spinner spnAddress;
     String name = "", phone = "", cmnd = "", paypal = "", address = "";
@@ -60,6 +63,7 @@ public class SignupUserInfoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup_userinfo);
 
+        //get value from SignupAccount activity (username, password, email)
         Intent receiveIt = getIntent();
         receiveValue = receiveIt.getStringExtra(ImmutableValue.MESSAGE_CODE);
         ObjectMapper objectMapper = new ObjectMapper();
@@ -70,6 +74,7 @@ public class SignupUserInfoActivity extends AppCompatActivity {
         }
 
 
+        //Declare id
         btnBack = (Button) findViewById(R.id.btnSignupAccountBack);
         btnNext = (Button) findViewById(R.id.btnSignupAccountNext);
         imgPictureCMND = (ImageView) findViewById(R.id.imgPictureCMND);
@@ -79,24 +84,27 @@ public class SignupUserInfoActivity extends AppCompatActivity {
         txtTestCMND = (TextView) findViewById(R.id.txtTest);
 
 
+        //button Next
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                galleryAddPic();
+                //galleryAddPic();
 
+                //Declare id
                 edtSignupName = (EditText) findViewById(R.id.edtSignupName);
                 edtSignupPhone = (EditText) findViewById(R.id.edtSignupPhone);
                 edtSignupPaypal = (EditText) findViewById(R.id.edtSignupPaypal);
                 spnAddress = (Spinner) findViewById(R.id.spnAddress);
 
+                //Get value from edittex
                 name = edtSignupName.getText().toString();
                 phone = edtSignupPhone.getText().toString();
                 cmnd = edtSignupCNMD.getText().toString();
                 paypal = edtSignupPaypal.getText().toString();
                 address = spnAddress.getSelectedItem().toString();
 
+                //add value to json object to pass it from SignupUserInfo activity to SignupRole activity
                 ObjectMapper objectMapper = new ObjectMapper();
-
                 try {
                     Intent it = new Intent(SignupUserInfoActivity.this, SignupRoleActivity.class);
                     signup.setName(name);
@@ -116,63 +124,14 @@ public class SignupUserInfoActivity extends AppCompatActivity {
             }
         });
 
+        //button Back
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent it2 = new Intent(SignupUserInfoActivity.this, SignupAccountActivity.class);
-//                startActivity(it2);
-                Bitmap thumbnail = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.text);
-                imgSignupCMND.setImageBitmap(thumbnail);
-                BitmapFactory.Options options = new BitmapFactory.Options();
-                options.inJustDecodeBounds = true;
-                BitmapFactory.decodeResource(getResources(), R.drawable.text, options);
-                int imageHeight = options.outHeight;
-                int imageWidth = options.outWidth;
-                if (imageHeight > imageWidth) {
-                    imgSignupCMND.setRotation(-90);
-                }
-
-
-                TextRecognizer textRecognizer = new TextRecognizer.Builder(getApplicationContext()).build();
-                if (!textRecognizer.isOperational()) {
-                    Toast.makeText(SignupUserInfoActivity.this, "Waiting ...", Toast.LENGTH_SHORT).show();
-                } else {
-                    Frame frame = new Frame.Builder().setBitmap(thumbnail).build();
-                    SparseArray<TextBlock> items = textRecognizer.detect(frame);
-                    if (items.size() != 0) {
-                        StringBuilder sb = new StringBuilder();
-                        for (int i = 0; i < items.size(); i++) {
-                            TextBlock item = items.valueAt(i);
-                            sb.append(item.getValue());
-                            sb.append("\n");
-                        }
-
-                        if (sb.toString() != null) {
-                            Toast.makeText(SignupUserInfoActivity.this, sb.toString(), Toast.LENGTH_SHORT).show();
-                            txtTestCMND.setText(sb.toString());
-                        }
-
-                    }
-
-                }
+                Intent it2 = new Intent(SignupUserInfoActivity.this, SignupAccountActivity.class);
+                startActivity(it2);
             }
         });
-
-        ///////////////// Only use for test with class SignupUserInfoCameraActivity
-//        imgPictureCMND.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.CAMERA)
-//                        != PackageManager.PERMISSION_GRANTED){
-//                    requestPermissions(new String[]{Manifest.permission.CAMERA}, 101);
-//                } else{
-//                    Intent it = new Intent(SignupUserInfoActivity.this, SignupUserInfoCameraActivity.class);
-//                    startActivity(it);
-//                    finish();
-//                }
-//            }
-//        });
-        //////////////////////////////////////////////////////////////////////////////
 
 
         //Button take picture
@@ -180,19 +139,12 @@ public class SignupUserInfoActivity extends AppCompatActivity {
             //Use for android version 7 > with permission granted
             @Override
             public void onClick(View view) {
-//                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.CAMERA)
-//                        != PackageManager.PERMISSION_GRANTED) {
-//                    requestPermissions(new String[]{Manifest.permission.CAMERA}, ImmutableValue.CAMERA_REQUEST_CODE);
-//                } else {
-//                    Intent it = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//                    startActivityForResult(it, 0);
-//                }
-
-
+                //check camera permission (yes/no) -> Use for android 7 or higher
                 if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.CAMERA)
                         != PackageManager.PERMISSION_GRANTED) {
                     requestPermissions(new String[]{Manifest.permission.CAMERA}, ImmutableValue.CAMERA_REQUEST_CODE);
                 } else {
+                    //Open take picture intent
                     Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     if (cameraIntent.resolveActivity(getPackageManager()) != null) {
                         File pictureFile = null;
@@ -222,9 +174,8 @@ public class SignupUserInfoActivity extends AppCompatActivity {
 
     }
 
-    //Get image file name
+    //Get image file name -> use for button take picture
     private File getPictureFile() {
-
         try {
             String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
             String pictureFile = "IMG_" + timeStamp;
@@ -254,81 +205,79 @@ public class SignupUserInfoActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case ImmutableValue.CAMERA_SELECT_IMAGE_CODE:
+                //Select image from gallery
                 if (resultCode == RESULT_OK) {
                     Uri selectedImage = data.getData();
                     try {
-                        InputStream inputStream = getContentResolver().openInputStream(data.getData());
-                    } catch (FileNotFoundException e) {
-                        Toast.makeText(this, "CANNOT FIND FIlE", Toast.LENGTH_SHORT).show();
+
+                        //Create new file
+                        File f = new File(getApplicationContext().getCacheDir(), "example_image");
+                        f.createNewFile();
+
+                        //Convert bitmap to file
+                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
+                        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+                        byte[] bitmapData = bos.toByteArray();
+
+
+                        //write byte to file
+                        FileOutputStream fos = new FileOutputStream(f);
+                        fos.write(bitmapData);
+                        fos.flush();
+                        fos.close();
+
+                        //test
+                        imgSignupCMND.setImageURI(Uri.fromFile(f));
+                        File compressor = new Compressor(this).setQuality(75).compressToFile(f);
+                        pictureFilePath = compressor.getAbsolutePath();
+
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-                    imgSignupCMND.setImageURI(selectedImage);
                 }
                 break;
+
             case ImmutableValue.CAMERA_OPEN_CODE:
+                //Select image from camera
                 if (resultCode == RESULT_OK) {
                     File imgFile = new File(pictureFilePath);
                     if (imgFile.exists()) {
                         imgSignupCMND.setImageURI(Uri.fromFile(imgFile));
-                    }
-
-                    //Read text from image
-                    Bitmap bitmap = BitmapFactory.decodeFile(pictureFilePath);
-
-//                    Uri imageUri = data.getData();
-//                    Bitmap bitmap = null;
-//                    try {
-//                        bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
-
-                    TextRecognizer textRecognizer = new TextRecognizer.Builder(getApplicationContext()).build();
-                    if (!textRecognizer.isOperational()) {
-                        Toast.makeText(SignupUserInfoActivity.this, "Waiting ...", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Frame frame = new Frame.Builder().setBitmap(bitmap).build();
-                        SparseArray<TextBlock> items = textRecognizer.detect(frame);
-                        if (items.size() != 0) {
-                            StringBuilder sb = new StringBuilder();
-                            for (int i = 0; i < items.size(); i++) {
-                                TextBlock item = items.valueAt(i);
-                                sb.append(item.getValue());
-                                sb.append("\n");
-                            }
-
-                            if (sb.toString() != null) {
-                                Toast.makeText(SignupUserInfoActivity.this, sb.toString(), Toast.LENGTH_SHORT).show();
-                                txtTestCMND.setText(sb.toString());
-                            }
-
+                        File compressor = null;
+                        try {
+                            compressor = new Compressor(this).setQuality(75).compressToFile(imgFile);
+                            pictureFilePath = compressor.getAbsolutePath();
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
 
                     }
 
-
-//                    if (data != null && data.getExtras() != null) {
-//                        Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
-//                        imgSignupCMND.setImageBitmap(thumbnail);
-//                        TextRecognizer textRecognizer = new TextRecognizer.Builder(getApplicationContext()).build();
-//                        if (!textRecognizer.isOperational()) {
-//                            Toast.makeText(this, "Waiting ...", Toast.LENGTH_SHORT).show();
-//                        } else {
-//                            Frame frame = new Frame.Builder().setBitmap(thumbnail).build();
-//                            SparseArray<TextBlock> items = textRecognizer.detect(frame);
-//                            if (items.size() != 0) {
-//                                StringBuilder sb = new StringBuilder();
-//                                for (int i = 0; i < items.size(); i++) {
-//                                    TextBlock item = items.valueAt(i);
-//                                    sb.append(item.getValue());
-//                                    sb.append("\n");
-//                                }
-//                                if (sb != null) {
-//                                    txtTestCMND.setText(sb.toString());
-//                                }
+                    //Read text from image
+//                    Bitmap bitmap = BitmapFactory.decodeFile(pictureFilePath);
+//                    TextRecognizer textRecognizer = new TextRecognizer.Builder(getApplicationContext()).build();
+//                    if (!textRecognizer.isOperational()) {
+//                        Toast.makeText(SignupUserInfoActivity.this, "Waiting ...", Toast.LENGTH_SHORT).show();
+//                    } else {
+//                        Frame frame = new Frame.Builder().setBitmap(bitmap).build();
+//                        SparseArray<TextBlock> items = textRecognizer.detect(frame);
+//                        if (items.size() != 0) {
+//                            StringBuilder sb = new StringBuilder();
+//                            for (int i = 0; i < items.size(); i++) {
+//                                TextBlock item = items.valueAt(i);
+//                                sb.append(item.getValue());
+//                                sb.append("\n");
+//                            }
 //
+//                            if (sb.toString() != null) {
+//                                Toast.makeText(SignupUserInfoActivity.this, sb.toString(), Toast.LENGTH_SHORT).show();
+//                                txtTestCMND.setText(sb.toString());
 //                            }
 //
 //                        }
+//
 //                    }
                 }
         }
@@ -338,7 +287,6 @@ public class SignupUserInfoActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-//        super.onBackPressed();
         Intent it = new Intent(SignupUserInfoActivity.this, SignupAccountActivity.class);
         startActivity(it);
     }

@@ -14,6 +14,7 @@ import com.example.manhvdse61952.vrc_android.api.AccountAPI;
 import com.example.manhvdse61952.vrc_android.layout.main.MainActivity;
 import com.example.manhvdse61952.vrc_android.model.Signup;
 import com.example.manhvdse61952.vrc_android.remote.ImmutableValue;
+import com.example.manhvdse61952.vrc_android.remote.RetrofitCallAPI;
 import com.example.manhvdse61952.vrc_android.remote.RetrofitConnect;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -31,7 +32,6 @@ import retrofit2.Retrofit;
 
 public class SignupPolicyActivity extends AppCompatActivity {
 
-    //private String MESSAGE_CODE = "SignupRoleToSignupPolicy";
     private String receiveValue = "";
     String imagePath = "";
     Signup signup = new Signup();
@@ -45,37 +45,39 @@ public class SignupPolicyActivity extends AppCompatActivity {
         btnAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //get value from SignupRole activity
                 Intent receiveIt = getIntent();
                 receiveValue = receiveIt.getStringExtra(ImmutableValue.MESSAGE_CODE);
                 imagePath = receiveIt.getStringExtra("PICTURE_FILE_PATH");
-
                 ObjectMapper objectMapper = new ObjectMapper();
-
                 try {
                     signup = objectMapper.readValue(receiveValue, Signup.class);
+                    RetrofitCallAPI rfCall = new RetrofitCallAPI();
+                    rfCall.SignupAccount(imagePath, receiveValue, SignupPolicyActivity.this);
 
-                    Retrofit retrofit = RetrofitConnect.getClient();
-                    final AccountAPI accountAPI = retrofit.create(AccountAPI.class);
-                    String IMG_JPEG = "image/jpeg";
-                    File imageFile = new File(imagePath);
-                    RequestBody fileBody = RequestBody.create(okhttp3.MediaType.parse(IMG_JPEG), imageFile);
-                    RequestBody data = RequestBody.create(MediaType.parse("text/plain"), receiveValue);
-                    MultipartBody.Part body = MultipartBody.Part.createFormData("file", imageFile.getName(), fileBody);
-                    Call<ResponseBody> responseBodyCall = accountAPI.signup(data,body);
-                    responseBodyCall.enqueue(new Callback<ResponseBody>() {
-                        @Override
-                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                            Log.e("RESPONSE SIGNUP", response.message().toString());
-                            Toast.makeText(SignupPolicyActivity.this, response.message(), Toast.LENGTH_SHORT).show();
-                            Intent it = new Intent(SignupPolicyActivity.this, MainActivity.class);
-                            startActivity(it);
-                        }
 
-                        @Override
-                        public void onFailure(Call<ResponseBody> call, Throwable t) {
-                            Toast.makeText(SignupPolicyActivity.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+//                    Retrofit retrofit = RetrofitConnect.getClient();
+//                    final AccountAPI accountAPI = retrofit.create(AccountAPI.class);
+//                    String IMG_JPEG = "image/jpeg";
+//                    File imageFile = new File(imagePath);
+//                    RequestBody fileBody = RequestBody.create(okhttp3.MediaType.parse(IMG_JPEG), imageFile);
+//                    RequestBody data = RequestBody.create(MediaType.parse("text/plain"), receiveValue);
+//                    MultipartBody.Part body = MultipartBody.Part.createFormData("file", imageFile.getName(), fileBody);
+//                    Call<ResponseBody> responseBodyCall = accountAPI.signup(data,body);
+//                    responseBodyCall.enqueue(new Callback<ResponseBody>() {
+//                        @Override
+//                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+//                            Log.e("RESPONSE SIGNUP", response.message().toString());
+//                            Toast.makeText(SignupPolicyActivity.this, response.message(), Toast.LENGTH_SHORT).show();
+//                            Intent it = new Intent(SignupPolicyActivity.this, MainActivity.class);
+//                            startActivity(it);
+//                        }
+//
+//                        @Override
+//                        public void onFailure(Call<ResponseBody> call, Throwable t) {
+//                            Toast.makeText(SignupPolicyActivity.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
+//                        }
+//                    });
 
                 } catch (IOException e) {
                     e.printStackTrace();

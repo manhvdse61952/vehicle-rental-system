@@ -16,8 +16,6 @@ import java.io.IOException;
 
 public class SignupRoleActivity extends AppCompatActivity {
 
-    //private String MESSAGE_CODE_PREVIOUS = "SignupInfoToSignupRole";
-    //private String MESSAGE_CODE_NEXT = "SignupRoleToSignupPolicy";
     String receiveValue = "", imagePath = "";
     Signup signup = new Signup();
     ImageView imgCustomer, imgOwner;
@@ -32,6 +30,7 @@ public class SignupRoleActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                //get value from SignupUserInfo activity
                 Intent receiveIt = getIntent();
                 receiveValue = receiveIt.getStringExtra(ImmutableValue.MESSAGE_CODE);
                 imagePath = receiveIt.getStringExtra("PICTURE_FILE_PATH");
@@ -41,6 +40,7 @@ public class SignupRoleActivity extends AppCompatActivity {
                     signup = objectMapper.readValue(receiveValue, Signup.class);
                     signup.setRolename("ROLE_USER");
 
+                    //add value to json object to pass it from SignupRole activity to SignupPolicy activity
                     Intent it = new Intent(SignupRoleActivity.this, SignupPolicyActivity.class);
                     it.putExtra(ImmutableValue.MESSAGE_CODE, objectMapper.writeValueAsString(signup));
                     it.putExtra("PICTURE_FILE_PATH", imagePath);

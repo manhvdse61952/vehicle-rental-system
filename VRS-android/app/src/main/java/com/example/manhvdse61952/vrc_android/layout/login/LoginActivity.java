@@ -15,6 +15,7 @@ import com.example.manhvdse61952.vrc_android.layout.main.MainActivity;
 import com.example.manhvdse61952.vrc_android.layout.signup.SignupAccountActivity;
 import com.example.manhvdse61952.vrc_android.model.Account;
 import com.example.manhvdse61952.vrc_android.remote.ImmutableValue;
+import com.example.manhvdse61952.vrc_android.remote.RetrofitCallAPI;
 import com.example.manhvdse61952.vrc_android.remote.RetrofitConnect;
 
 import okhttp3.ResponseBody;
@@ -49,28 +50,8 @@ public class LoginActivity extends AppCompatActivity {
                 if (username.equals("") || password.equals("")) {
                     Toast.makeText(LoginActivity.this, "Vui lòng nhập tài khoản hoặc mật khẩu", Toast.LENGTH_SHORT).show();
                 } else {
-                    Retrofit test = RetrofitConnect.getClient();
-                    final AccountAPI testAPI = test.create(AccountAPI.class);
-                    Call<ResponseBody> responseBodyCall = testAPI.login(new Account(username, password));
-                    responseBodyCall.enqueue(new Callback<ResponseBody>() {
-                        @Override
-                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                            if (response.body() == null){
-                                Toast.makeText(LoginActivity.this, "Sai tài khoản hoặc mật khẩu", Toast.LENGTH_SHORT).show();
-                            }
-                            else{
-                                Intent it = new Intent(LoginActivity.this, MainActivity.class);
-                                it.putExtra(ImmutableValue.MESSAGE_CODE, username);
-                                startActivity(it);
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<ResponseBody> call, Throwable t) {
-                            Toast.makeText(LoginActivity.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-
+                    RetrofitCallAPI rfCall = new RetrofitCallAPI();
+                    rfCall.checkLogin(username, password, LoginActivity.this);
                 }
             }
         });

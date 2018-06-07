@@ -230,6 +230,7 @@
             android:layout_weight="6.5"
             android:hint="Chỉ được điền chữ"
             android:inputType="text"
+            android:text="example user 1"
             android:textSize="14sp" />
     </LinearLayout>
 
@@ -257,6 +258,7 @@
             android:layout_weight="6.5"
             android:hint="Chỉ được điền số"
             android:inputType="number"
+            android:text="123456789"
             android:textSize="14sp" />
     </LinearLayout>
 
@@ -307,6 +309,7 @@
         android:hint="Số CMND"
         android:inputType="number"
         android:textColor="#000"
+        android:text="2725398123"
         android:textSize="14sp" />
 
     <ImageView
@@ -370,6 +373,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="6"
             android:hint="Không được bỏ trống"
+            android:text="example_paypal_1"
             android:textSize="14sp" />
     </LinearLayout>
 
