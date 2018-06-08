@@ -2,7 +2,6 @@ package com.example.manhvdse61952.vrc_android.layout.login;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -12,19 +11,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.manhvdse61952.vrc_android.R;
-import com.example.manhvdse61952.vrc_android.api.AccountAPI;
-import com.example.manhvdse61952.vrc_android.layout.main.MainActivity;
-import com.example.manhvdse61952.vrc_android.layout.signup.SignupAccountActivity;
-import com.example.manhvdse61952.vrc_android.model.Account;
-import com.example.manhvdse61952.vrc_android.remote.ImmutableValue;
+import com.example.manhvdse61952.vrc_android.layout.signup.customer.SignupAccountActivity;
 import com.example.manhvdse61952.vrc_android.remote.RetrofitCallAPI;
-import com.example.manhvdse61952.vrc_android.remote.RetrofitConnect;
-
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
 
 public class LoginActivity extends AppCompatActivity {
 

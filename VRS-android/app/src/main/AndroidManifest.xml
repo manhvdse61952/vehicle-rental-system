@@ -21,13 +21,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".layout.signup.SignupUserInfoActivity" android:screenOrientation="portrait"></activity>
-        <activity android:name=".layout.signup.SignupUserInfoCameraActivity" android:screenOrientation="portrait"></activity>
-        <activity android:name=".layout.signup.SignupAccountActivity" android:screenOrientation="portrait"></activity>
-        <activity android:name=".layout.signup.SignupRoleActivity" android:screenOrientation="portrait"></activity>
-        <activity android:name=".layout.signup.SignupPolicyActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".layout.signup.customer.SignupUserInfoActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".layout.signup.customer.SignupUserInfoCameraActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".layout.signup.customer.SignupAccountActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".layout.signup.customer.SignupRoleActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".layout.signup.customer.SignupPolicyActivity" android:screenOrientation="portrait"></activity>
         <activity android:name=".layout.signup.owner.SignupOwnerOne" android:screenOrientation="portrait"></activity>
         <activity android:name=".layout.signup.owner.SignupOwnerTwo" android:screenOrientation="portrait"></activity>
+        <activity android:name=".layout.signup.owner.SignupOwnerTwoPlus" android:screenOrientation="portrait"></activity>
         <activity android:name=".layout.signup.owner.SignupOwnerThree" android:screenOrientation="portrait"></activity>
         <activity android:name=".layout.signup.owner.SignupOwnerFour" android:screenOrientation="portrait"></activity>
         <activity android:name=".layout.main.MainActivity" android:screenOrientation="portrait"></activity>

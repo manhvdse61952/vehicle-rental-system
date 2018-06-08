@@ -1,4 +1,4 @@
-package com.example.manhvdse61952.vrc_android.layout.signup;
+package com.example.manhvdse61952.vrc_android.layout.signup.customer;
 
 import android.content.Intent;
 import android.os.Bundle;

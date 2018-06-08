@@ -14,5 +14,6 @@ public class ImmutableValue {
     public static final int CAMERA_REQUEST_CODE = 101;
     public static final int CAMERA_OPEN_CODE = 0;
     public static final int CAMERA_SELECT_IMAGE_CODE = 1;
+    public static final String SHARED_PREFERENCES_CODE = "VRS_GLOBAL_VALUE";
 
 }
