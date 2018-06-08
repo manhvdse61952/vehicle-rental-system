@@ -3,14 +3,11 @@ package com.example.manhvdse61952.vrc_android.remote;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.example.manhvdse61952.vrc_android.api.AccountAPI;
 import com.example.manhvdse61952.vrc_android.layout.main.MainActivity;
-import com.example.manhvdse61952.vrc_android.layout.signup.SignupAccountActivity;
-import com.example.manhvdse61952.vrc_android.layout.signup.SignupPolicyActivity;
-import com.example.manhvdse61952.vrc_android.layout.signup.SignupUserInfoActivity;
+import com.example.manhvdse61952.vrc_android.layout.signup.customer.SignupUserInfoActivity;
 import com.example.manhvdse61952.vrc_android.model.Account;
 import com.example.manhvdse61952.vrc_android.model.Signup;
 import com.fasterxml.jackson.core.JsonProcessingException;
