@@ -1,5 +1,6 @@
 package com.example.manhvdse61952.vrc_android.remote;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -28,41 +29,41 @@ import retrofit2.Retrofit;
 
 public class RetrofitCallAPI {
 
-    public void checkLogin(final String username, String password, final Context ctx){
+    public void checkLogin(final String username, String password, final Context ctx, final ProgressDialog progressDialog) {
         Retrofit test = RetrofitConnect.getClient();
         final AccountAPI testAPI = test.create(AccountAPI.class);
         Call<ResponseBody> responseBodyCall = testAPI.login(new Account(username, password));
         responseBodyCall.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if (response.body() == null){
+                if (response.body() == null) {
                     Toast.makeText(ctx, "Sai tài khoản hoặc mật khẩu", Toast.LENGTH_SHORT).show();
-                }
-                else{
+                } else {
                     Intent it = new Intent(ctx, MainActivity.class);
-                                it.putExtra(ImmutableValue.MESSAGE_CODE, username);
-                                ctx.startActivity(it);
+                    it.putExtra(ImmutableValue.MESSAGE_CODE, username);
+                    ctx.startActivity(it);
                 }
+                progressDialog.dismiss();
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Toast.makeText(ctx, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
             }
         });
     }
 
-    public void checkExistedUsername(final String username, final String password, final String email, final Context ctx){
+    public void checkExistedUsername(final String username, final String password, final String email, final Context ctx) {
         Retrofit test = RetrofitConnect.getClient();
         final AccountAPI testAPI = test.create(AccountAPI.class);
         Call<Boolean> responseBodyCall = testAPI.checkDuplicated(username);
         responseBodyCall.enqueue(new Callback<Boolean>() {
             @Override
             public void onResponse(Call<Boolean> call, Response<Boolean> response) {
-                if (response.body().toString().equals("true")){
+                if (response.body().toString().equals("true")) {
                     Toast.makeText(ctx, "Tài khoản đã tồn tại", Toast.LENGTH_SHORT).show();
-                }
-                else{
+                } else {
                     //add value to json object to pass it from SignupAccount activity to SignupUserInfo activity
                     ObjectMapper objectMapper = new ObjectMapper();
                     try {
@@ -74,6 +75,7 @@ public class RetrofitCallAPI {
                     } catch (JsonProcessingException e) {
                         e.printStackTrace();
                     }
+
                 }
             }
 
@@ -84,7 +86,7 @@ public class RetrofitCallAPI {
         });
     }
 
-    public void SignupAccount(String imagePath, String receiveValue, final Context ctx){
+    public void SignupAccount(String imagePath, String receiveValue, final Context ctx) {
         Retrofit retrofit = RetrofitConnect.getClient();
         final AccountAPI accountAPI = retrofit.create(AccountAPI.class);
         String IMG_JPEG = "image/jpeg";
@@ -92,7 +94,7 @@ public class RetrofitCallAPI {
         RequestBody fileBody = RequestBody.create(okhttp3.MediaType.parse(IMG_JPEG), imageFile);
         RequestBody data = RequestBody.create(MediaType.parse("text/plain"), receiveValue);
         MultipartBody.Part body = MultipartBody.Part.createFormData("file", imageFile.getName(), fileBody);
-        Call<ResponseBody> responseBodyCall = accountAPI.signup(data,body);
+        Call<ResponseBody> responseBodyCall = accountAPI.signup(data, body);
         responseBodyCall.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

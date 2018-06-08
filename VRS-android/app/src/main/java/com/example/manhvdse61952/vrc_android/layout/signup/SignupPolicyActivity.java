@@ -55,30 +55,6 @@ public class SignupPolicyActivity extends AppCompatActivity {
                     RetrofitCallAPI rfCall = new RetrofitCallAPI();
                     rfCall.SignupAccount(imagePath, receiveValue, SignupPolicyActivity.this);
 
-
-//                    Retrofit retrofit = RetrofitConnect.getClient();
-//                    final AccountAPI accountAPI = retrofit.create(AccountAPI.class);
-//                    String IMG_JPEG = "image/jpeg";
-//                    File imageFile = new File(imagePath);
-//                    RequestBody fileBody = RequestBody.create(okhttp3.MediaType.parse(IMG_JPEG), imageFile);
-//                    RequestBody data = RequestBody.create(MediaType.parse("text/plain"), receiveValue);
-//                    MultipartBody.Part body = MultipartBody.Part.createFormData("file", imageFile.getName(), fileBody);
-//                    Call<ResponseBody> responseBodyCall = accountAPI.signup(data,body);
-//                    responseBodyCall.enqueue(new Callback<ResponseBody>() {
-//                        @Override
-//                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-//                            Log.e("RESPONSE SIGNUP", response.message().toString());
-//                            Toast.makeText(SignupPolicyActivity.this, response.message(), Toast.LENGTH_SHORT).show();
-//                            Intent it = new Intent(SignupPolicyActivity.this, MainActivity.class);
-//                            startActivity(it);
-//                        }
-//
-//                        @Override
-//                        public void onFailure(Call<ResponseBody> call, Throwable t) {
-//                            Toast.makeText(SignupPolicyActivity.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
-//                        }
-//                    });
-
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

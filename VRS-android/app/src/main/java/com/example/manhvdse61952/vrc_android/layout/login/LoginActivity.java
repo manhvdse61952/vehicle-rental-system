@@ -1,6 +1,8 @@
 package com.example.manhvdse61952.vrc_android.layout.login;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -31,10 +33,12 @@ public class LoginActivity extends AppCompatActivity {
     EditText edtUsername, edtPassword;
     String username = "";
     String password = "";
+    ProgressDialog dialog;
 
     //public final static String MESSAGE_KEY = "loginActivity.to.mainActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //setTheme(R.style.splashScreenTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
@@ -42,6 +46,8 @@ public class LoginActivity extends AppCompatActivity {
         edtUsername = (EditText) findViewById(R.id.username);
         edtPassword = (EditText) findViewById(R.id.password);
         btnLogin = (Button) findViewById(R.id.btnLogin);
+
+
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -50,8 +56,11 @@ public class LoginActivity extends AppCompatActivity {
                 if (username.equals("") || password.equals("")) {
                     Toast.makeText(LoginActivity.this, "Vui lòng nhập tài khoản hoặc mật khẩu", Toast.LENGTH_SHORT).show();
                 } else {
+                    dialog = ProgressDialog.show(LoginActivity.this, "Đăng nhập",
+                            "Đang xác thực ...", true);
                     RetrofitCallAPI rfCall = new RetrofitCallAPI();
-                    rfCall.checkLogin(username, password, LoginActivity.this);
+                    rfCall.checkLogin(username, password, LoginActivity.this, dialog);
+
                 }
             }
         });
@@ -68,4 +77,6 @@ public class LoginActivity extends AppCompatActivity {
 
 
     }
+
+
 }
