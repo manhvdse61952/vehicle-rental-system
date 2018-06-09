@@ -26,6 +26,7 @@ import com.example.manhvdse61952.vrc_android.model.Signup;
 import com.example.manhvdse61952.vrc_android.remote.ImmutableValue;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -48,7 +49,7 @@ public class SignupUserInfoActivity extends AppCompatActivity {
     String name = "", phone = "", cmnd = "", paypal = "", address = "";
 
     //New test//
-    private String pictureFilePath;
+    private String pictureFilePath = "";
 
 
     @Override
@@ -198,9 +199,9 @@ public class SignupUserInfoActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case ImmutableValue.CAMERA_SELECT_IMAGE_CODE:
-                //Select image from gallery
                 if (resultCode == RESULT_OK) {
                     Uri selectedImage = data.getData();
+                    imgSignupCMND.setImageURI(selectedImage);
                     try {
 
                         //Create new file
@@ -219,9 +220,6 @@ public class SignupUserInfoActivity extends AppCompatActivity {
                         fos.write(bitmapData);
                         fos.flush();
                         fos.close();
-
-                        //test
-                        imgSignupCMND.setImageURI(Uri.fromFile(f));
                         File compressor = new Compressor(this).setQuality(75).compressToFile(f);
                         pictureFilePath = compressor.getAbsolutePath();
 
@@ -233,11 +231,11 @@ public class SignupUserInfoActivity extends AppCompatActivity {
                 break;
 
             case ImmutableValue.CAMERA_OPEN_CODE:
-                //Select image from camera
                 if (resultCode == RESULT_OK) {
                     File imgFile = new File(pictureFilePath);
                     if (imgFile.exists()) {
-                        imgSignupCMND.setImageURI(Uri.fromFile(imgFile));
+                        //imgSignupCMND.setImageURI(Uri.fromFile(imgFile));
+                        Picasso.get().load(imgFile).into(imgSignupCMND);
                         File compressor = null;
                         try {
                             compressor = new Compressor(this).setQuality(75).compressToFile(imgFile);
@@ -290,8 +288,21 @@ public class SignupUserInfoActivity extends AppCompatActivity {
         switch (requestCode) {
             case ImmutableValue.CAMERA_REQUEST_CODE:
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Intent it = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivityForResult(it, 0);
+//                    Intent it = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                    startActivityForResult(it, ImmutableValue.CAMERA_OPEN_CODE);
+                    Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    if (cameraIntent.resolveActivity(getPackageManager()) != null) {
+                        File pictureFile = null;
+                        pictureFile = getPictureFile();
+                        if (pictureFile != null) {
+                            Uri photoURI = FileProvider.getUriForFile(SignupUserInfoActivity.this,
+                                    "com.example.manhvdse61952.vrc_android.provider",
+                                    pictureFile);
+                            cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                            startActivityForResult(cameraIntent, ImmutableValue.CAMERA_OPEN_CODE);
+                        }
+
+                    }
                 } else {
                     Toast.makeText(this, "Permission not granted !", Toast.LENGTH_SHORT).show();
                     finish();

@@ -35,6 +35,8 @@ public class SignupOwnerTwo extends AppCompatActivity {
         spnVehicleTranmission = (Spinner)findViewById(R.id.spnVehicleTranmission);
         spnVehicleSeat = (Spinner)findViewById(R.id.spnVehicleSeat);
 
+        //save value when user press back button
+
 
         //Button next
         btnVehicleNext.setOnClickListener(new View.OnClickListener() {

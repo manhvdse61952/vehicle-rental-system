@@ -1,11 +1,14 @@
 package com.example.manhvdse61952.vrc_android.remote;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.widget.Toast;
 
 import com.example.manhvdse61952.vrc_android.api.AccountAPI;
+import com.example.manhvdse61952.vrc_android.layout.login.LoginActivity;
 import com.example.manhvdse61952.vrc_android.layout.main.MainActivity;
 import com.example.manhvdse61952.vrc_android.layout.signup.customer.SignupUserInfoActivity;
 import com.example.manhvdse61952.vrc_android.model.Account;
@@ -83,7 +86,7 @@ public class RetrofitCallAPI {
         });
     }
 
-    public void SignupAccount(String imagePath, String receiveValue, final Context ctx) {
+    public void SignupAccount(String imagePath, String receiveValue, final Context ctx, final ProgressDialog progressDialog) {
         Retrofit retrofit = RetrofitConnect.getClient();
         final AccountAPI accountAPI = retrofit.create(AccountAPI.class);
         String IMG_JPEG = "image/jpeg";
@@ -95,13 +98,24 @@ public class RetrofitCallAPI {
         responseBodyCall.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                Intent it = new Intent(ctx, MainActivity.class);
-                ctx.startActivity(it);
+                progressDialog.dismiss();
+                AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
+                builder.setMessage("Chúng tôi sẽ gửi email cho bạn sau khi xác thực tài khoản thành công ! Cảm ơn bạn đã đăng ký VRS");
+                builder.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent it = new Intent(ctx, LoginActivity.class);
+                        ctx.startActivity(it);
+                    }
+                });
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Toast.makeText(ctx, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
             }
         });
     }

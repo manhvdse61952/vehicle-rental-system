@@ -48,6 +48,7 @@
     </LinearLayout>
 
     <ImageView
+        android:id="@+id/imgSignupOwner"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@drawable/border"
@@ -127,25 +128,28 @@
             android:textSize="16sp" />
 
         <CheckBox
-            android:id="@+id/cbxSignupOwner1"
+            android:id="@+id/cbxHouseHold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="Chứng minh nhân dân"
+            android:text="Sộ hộ khẩu"
+            android:checked="false"
             android:textSize="16sp" />
 
         <CheckBox
-            android:id="@+id/cbxSignupOwner2"
+            android:id="@+id/cbxVehicle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Giấy đăng kiểm xe"
+            android:checked="false"
             android:textSize="16sp" />
 
         <CheckBox
-            android:id="@+id/cbxSignupOwner3"
+            android:id="@+id/cbxIdCard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Bằng lái xe"
+            android:text="Chứng minh nhân dân"
+            android:checked="false"
             android:textSize="16sp" />
     </LinearLayout>
 

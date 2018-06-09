@@ -9,6 +9,7 @@ import android.widget.Button;
 
 import com.example.manhvdse61952.vrc_android.layout.main.MainActivity;
 import com.example.manhvdse61952.vrc_android.R;
+import com.example.manhvdse61952.vrc_android.layout.signup.customer.SignupPolicyActivity;
 
 public class SignupOwnerFour extends AppCompatActivity {
 
@@ -22,7 +23,7 @@ public class SignupOwnerFour extends AppCompatActivity {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent it = new Intent(SignupOwnerFour.this, MainActivity.class);
+                Intent it = new Intent(SignupOwnerFour.this, SignupPolicyActivity.class);
                 startActivity(it);
             }
         });
