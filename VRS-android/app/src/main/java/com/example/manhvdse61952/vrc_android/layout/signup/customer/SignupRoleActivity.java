@@ -1,6 +1,7 @@
 package com.example.manhvdse61952.vrc_android.layout.signup.customer;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -58,19 +59,10 @@ public class SignupRoleActivity extends AppCompatActivity {
         imgOwner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ObjectMapper objectMapper = new ObjectMapper();
-                try {
-                    signup = objectMapper.readValue(receiveValue, Signup.class);
-                    signup.setRolename("ROLE_OWNER");
+                SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
+                editor.putString("rolename", "ROLE_OWNER");
+                editor.apply();
 
-                    //add value to json object to pass it from SignupRole activity to SignupPolicy activity
-                    Intent it = new Intent(SignupRoleActivity.this, SignupPolicyActivity.class);
-                    it.putExtra(ImmutableValue.MESSAGE_CODE, objectMapper.writeValueAsString(signup));
-                    it.putExtra("PICTURE_FILE_PATH", imagePath);
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
                 Intent it = new Intent(SignupRoleActivity.this, SignupOwnerOne.class);
                 startActivity(it);
             }

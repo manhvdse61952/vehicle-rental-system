@@ -47,7 +47,7 @@ public class SignupOwnerFour extends AppCompatActivity {
     Button btnNext;
     private static final String TAG = SignupOwnerTwo.class.getSimpleName();
     Signup signupObj = new Signup();
-    String receiveValue = "", imagePath = "";
+    String receiveValue = "", imageCustomerPath = "";
     ProgressDialog dialog;
 
 
@@ -57,9 +57,6 @@ public class SignupOwnerFour extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup_owner_four);
 
-        Intent receiveIt = getIntent();
-        receiveValue = receiveIt.getStringExtra(ImmutableValue.MESSAGE_CODE);
-        imagePath = receiveIt.getStringExtra("PICTURE_FILE_PATH");
 
         btnNext = (Button)findViewById(R.id.btnNext);
         btnNext.setOnClickListener(new View.OnClickListener() {
@@ -67,13 +64,60 @@ public class SignupOwnerFour extends AppCompatActivity {
             public void onClick(View view) {
 
                 //Signup for customer
-                dialog = ProgressDialog.show(SignupOwnerFour.this, "Đăng ký chủ xe",
-                        "Đang xử lý ...", true);
-                RetrofitCallAPI rfCall = new RetrofitCallAPI();
-                rfCall.SignupAccount(imagePath, receiveValue, SignupOwnerFour.this, dialog);
-
                 SharedPreferences editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE);
-                createVehicle(editor.getString("user-id", "37"));
+                String username = editor.getString("username", null);
+                String password = editor.getString("password", null);
+                String email = editor.getString("email", null);
+                String name = editor.getString("name", null);
+                String phone = editor.getString("phone", null);
+                String cmnd = editor.getString("cmnd", null);
+                String paypal = editor.getString("paypal", null);
+                String address = editor.getString("address", null);
+                String CMND_image_path = editor.getString("CMND_image_path", null);
+                String rolename = editor.getString("rolename", null);
+
+                //call api
+                ObjectMapper objectMapper = new ObjectMapper();
+                Signup signupObj = new Signup(address, email, cmnd, CMND_image_path, name, password, paypal, phone, rolename, username);
+                try {
+                    String json = objectMapper.writeValueAsString(signupObj);
+                    Retrofit retrofit = RetrofitConnect.getClient();
+                    final AccountAPI accountAPI = retrofit.create(AccountAPI.class);
+                    String IMG_JPEG = "image/jpeg";
+                    File imageFile = new File(CMND_image_path);
+                    RequestBody fileBody = RequestBody.create(okhttp3.MediaType.parse(IMG_JPEG), imageFile);
+                    RequestBody data = RequestBody.create(MediaType.parse("text/plain"), json);
+                    MultipartBody.Part body = MultipartBody.Part.createFormData("file", imageFile.getName(), fileBody);
+                    Call<ResponseBody> responseBodyCall = accountAPI.signup(data, body);
+                    responseBodyCall.enqueue(new Callback<ResponseBody>() {
+                        @Override
+                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                            //progressDialog.dismiss();
+                            JSONObject testObj = null;
+                            try {
+                                testObj = new JSONObject(response.body().string());
+                                SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
+                                editor.putString("user-id", testObj.get("message").toString());
+                                editor.apply();
+                                //Signup for vehicle
+                                SharedPreferences editor2 = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE);
+                                createVehicle(editor2.getString("user-id", "37"));
+                            } catch(Exception e) {
+
+                            }
+
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResponseBody> call, Throwable t) {
+                            Toast.makeText(SignupOwnerFour.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
+                            //progressDialog.dismiss();
+                        }
+                    });
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
+                }
+
 
 
             }
@@ -103,10 +147,9 @@ public class SignupOwnerFour extends AppCompatActivity {
 
         String seat = editor.getString("seat", null);
         ObjectMapper objectMapper = new ObjectMapper();
-        VehiclePayload vehiclePayload = new VehiclePayload(frameNumber,Integer.parseInt(userID), null, Float.valueOf(rent),Float.valueOf(deposite),"", vehicleName,Integer.valueOf(seat), Integer.valueOf(year),engine,transmission);
+        VehiclePayload vehiclePayload = new VehiclePayload(frameNumber,Integer.valueOf(userID), null, Float.valueOf(rent),Float.valueOf(deposite),"", vehicleName,Integer.valueOf(seat), Integer.valueOf(year),engine,transmission);
         try {
             String json = objectMapper.writeValueAsString(vehiclePayload);
-
             String IMG_JPEG = "image/jpeg";
             File imageFile = new File(imagePath);
             RequestBody fileBody = RequestBody.create(okhttp3.MediaType.parse(IMG_JPEG), imageFile);
@@ -125,19 +168,22 @@ public class SignupOwnerFour extends AppCompatActivity {
                     try {
                         testObj = new JSONObject(response.body().string());
                         jObjError = new JSONObject(response.errorBody().string());
-                        Toast.makeText(SignupOwnerFour.this, jObjError.getString("message"), Toast.LENGTH_LONG).show();
+                        //Toast.makeText(SignupOwnerFour.this, jObjError.getString("message"), Toast.LENGTH_LONG).show();
 
                     } catch (JSONException e) {
                         e.printStackTrace();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    Toast.makeText(SignupOwnerFour.this, response.errorBody().toString()+ response.body().toString(), Toast.LENGTH_SHORT).show();
+                    Intent it = new Intent(SignupOwnerFour.this, MainActivity.class);
+                    startActivity(it);
+                    //Toast.makeText(SignupOwnerFour.this, response.errorBody().toString()+ response.body().toString(), Toast.LENGTH_SHORT).show();
+
                 }
 
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    Toast.makeText(SignupOwnerFour.this, "NAHHHHHHHH", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(SignupOwnerFour.this, "NAHHHHHHHH", Toast.LENGTH_SHORT).show();
 
                 }
             });

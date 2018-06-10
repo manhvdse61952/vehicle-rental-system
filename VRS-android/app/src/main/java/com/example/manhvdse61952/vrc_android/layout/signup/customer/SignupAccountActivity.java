@@ -1,6 +1,7 @@
 package com.example.manhvdse61952.vrc_android.layout.signup.customer;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import com.example.manhvdse61952.vrc_android.R;
 import com.example.manhvdse61952.vrc_android.layout.login.LoginActivity;
+import com.example.manhvdse61952.vrc_android.remote.ImmutableValue;
 import com.example.manhvdse61952.vrc_android.remote.RetrofitCallAPI;
 
 public class SignupAccountActivity extends AppCompatActivity {
@@ -45,6 +47,14 @@ public class SignupAccountActivity extends AppCompatActivity {
                 //Call API
                 RetrofitCallAPI rfCall = new RetrofitCallAPI();
                 rfCall.checkExistedUsername(username, password, email, SignupAccountActivity.this);
+
+
+                //shared preferences
+                SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
+                editor.putString("username", username);
+                editor.putString("password", password);
+                editor.putString("email", email);
+                editor.apply();
 
 
             }

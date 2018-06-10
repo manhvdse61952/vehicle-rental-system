@@ -2,6 +2,7 @@ package com.example.manhvdse61952.vrc_android.layout.signup.customer;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -96,6 +97,16 @@ public class SignupUserInfoActivity extends AppCompatActivity {
                 cmnd = edtSignupCNMD.getText().toString();
                 paypal = edtSignupPaypal.getText().toString();
                 address = spnAddress.getSelectedItem().toString();
+
+                //shared preferences
+                SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
+                editor.putString("name", name);
+                editor.putString("phone", phone);
+                editor.putString("cmnd", cmnd);
+                editor.putString("paypal", paypal);
+                editor.putString("address", address);
+                editor.putString("CMND_image_path", pictureFilePath);
+                editor.apply();
 
                 //add value to json object to pass it from SignupUserInfo activity to SignupRole activity
                 ObjectMapper objectMapper = new ObjectMapper();
