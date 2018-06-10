@@ -80,6 +80,45 @@ public class SignupOwnerTwoPlus extends AppCompatActivity {
             cbxIdCard.setChecked(true);
         }
 
+        //house_hold checkbox
+        cbxHouseHold.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (((CheckBox)view).isChecked()){
+                    required_household_registration = 1;
+                }
+                else {
+                    required_household_registration = 0;
+                }
+            }
+        });
+
+        //vehicle_registration
+        cbxVehicle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (((CheckBox)view).isChecked()){
+                    required_vehicle_registration = 1;
+                }
+                else {
+                    required_vehicle_registration = 0;
+                }
+            }
+        });
+
+        //id_card_registration
+        cbxIdCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (((CheckBox)view).isChecked()){
+                    required_id_card = 1;
+                }
+                else {
+                    required_id_card = 0;
+                }
+            }
+        });
+
         //Button next
         btnVehicleNext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,17 +126,6 @@ public class SignupOwnerTwoPlus extends AppCompatActivity {
                 frameNumber = edtVehicleFrameNumber.getText().toString();
                 rent = edtVehicleRent.getText().toString();
                 deposit = edtVehicleDeposit.getText().toString();
-
-                //get value from checkbox
-                if (cbxHouseHold.isChecked()){
-                    required_household_registration = 1;
-                }
-                if (cbxVehicle.isChecked()){
-                    required_vehicle_registration = 1;
-                }
-                if (cbxIdCard.isChecked()){
-                    required_id_card = 1;
-                }
 
                 //Declare shared preferences
                 SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();

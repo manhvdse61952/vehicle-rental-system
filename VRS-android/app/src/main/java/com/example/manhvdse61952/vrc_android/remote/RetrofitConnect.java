@@ -9,10 +9,11 @@ public class RetrofitConnect {
     static String offlineTest = "http://192.168.0.100:8080";
     static String onlineTest = "https://vrcapi.azurewebsites.net/";
     static String offlineTest2 = "http://103.90.224.144:8080";
+    static String offlineTest3 = "http://192.168.100.139:8080";
     public static Retrofit getClient(){
         if (retrofit == null){
             retrofit = new Retrofit.Builder()
-                    .baseUrl(offlineTest)
+                    .baseUrl(offlineTest3)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }

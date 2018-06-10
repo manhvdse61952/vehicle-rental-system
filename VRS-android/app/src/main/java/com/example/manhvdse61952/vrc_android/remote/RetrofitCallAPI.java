@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.widget.Toast;
 
 import com.example.manhvdse61952.vrc_android.api.AccountAPI;
@@ -15,6 +16,8 @@ import com.example.manhvdse61952.vrc_android.model.Account;
 import com.example.manhvdse61952.vrc_android.model.Signup;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.json.JSONObject;
 
 import java.io.File;
 
@@ -99,6 +102,15 @@ public class RetrofitCallAPI {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 progressDialog.dismiss();
+                JSONObject testObj = null;
+                try {
+                    testObj = new JSONObject(response.body().string());
+                    SharedPreferences.Editor editor = ctx.getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, ctx.MODE_PRIVATE).edit();
+                    editor.putString("user-id", testObj.get("message").toString());
+                    editor.apply();
+                } catch(Exception e) {
+
+                }
                 AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
                 builder.setMessage("Chúng tôi sẽ gửi email cho bạn sau khi xác thực tài khoản thành công ! Cảm ơn bạn đã đăng ký VRS");
                 builder.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
@@ -110,6 +122,7 @@ public class RetrofitCallAPI {
                 });
                 AlertDialog alertDialog = builder.create();
                 alertDialog.show();
+
             }
 
             @Override

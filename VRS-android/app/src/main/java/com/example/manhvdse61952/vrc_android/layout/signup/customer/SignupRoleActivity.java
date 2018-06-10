@@ -24,6 +24,9 @@ public class SignupRoleActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup_role);
+        Intent receiveIt = getIntent();
+        receiveValue = receiveIt.getStringExtra(ImmutableValue.MESSAGE_CODE);
+        imagePath = receiveIt.getStringExtra("PICTURE_FILE_PATH");
 
         imgCustomer = (ImageView) findViewById(R.id.customer_icon);
         imgCustomer.setOnClickListener(new View.OnClickListener() {
@@ -31,11 +34,9 @@ public class SignupRoleActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 //get value from SignupUserInfo activity
-                Intent receiveIt = getIntent();
-                receiveValue = receiveIt.getStringExtra(ImmutableValue.MESSAGE_CODE);
-                imagePath = receiveIt.getStringExtra("PICTURE_FILE_PATH");
-                ObjectMapper objectMapper = new ObjectMapper();
 
+
+                ObjectMapper objectMapper = new ObjectMapper();
                 try {
                     signup = objectMapper.readValue(receiveValue, Signup.class);
                     signup.setRolename("ROLE_USER");
@@ -57,6 +58,19 @@ public class SignupRoleActivity extends AppCompatActivity {
         imgOwner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                ObjectMapper objectMapper = new ObjectMapper();
+                try {
+                    signup = objectMapper.readValue(receiveValue, Signup.class);
+                    signup.setRolename("ROLE_OWNER");
+
+                    //add value to json object to pass it from SignupRole activity to SignupPolicy activity
+                    Intent it = new Intent(SignupRoleActivity.this, SignupPolicyActivity.class);
+                    it.putExtra(ImmutableValue.MESSAGE_CODE, objectMapper.writeValueAsString(signup));
+                    it.putExtra("PICTURE_FILE_PATH", imagePath);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 Intent it = new Intent(SignupRoleActivity.this, SignupOwnerOne.class);
                 startActivity(it);
             }

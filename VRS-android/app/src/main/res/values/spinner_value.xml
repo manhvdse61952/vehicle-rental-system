@@ -7,8 +7,8 @@
         <item>Nha Trang</item>
     </string-array>
     <string-array name="spinnerTransmission">
-        <item>XE TAY GA</item>
-        <item>XE SỐ</item>
+        <item>XETAYGA</item>
+        <item>XESO</item>
     </string-array>
     <string-array name="spinnerEngine">
         <item>DIESEL</item>
