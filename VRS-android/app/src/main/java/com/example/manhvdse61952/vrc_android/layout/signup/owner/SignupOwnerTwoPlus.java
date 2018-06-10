@@ -107,6 +107,7 @@ public class SignupOwnerTwoPlus extends AppCompatActivity {
                 editor.putInt("household_registration", required_household_registration);
                 editor.putInt("vehicle_registration", required_vehicle_registration);
                 editor.putInt("id_card", required_id_card);
+                editor.putString("picture_path", pictureFilePath);
                 editor.apply();
 
                 //Start signupOwnerThree activity

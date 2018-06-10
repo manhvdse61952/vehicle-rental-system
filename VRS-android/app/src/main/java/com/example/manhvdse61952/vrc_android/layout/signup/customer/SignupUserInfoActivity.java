@@ -150,7 +150,6 @@ public class SignupUserInfoActivity extends AppCompatActivity {
                             cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                             startActivityForResult(cameraIntent, ImmutableValue.CAMERA_OPEN_CODE);
                         }
-
                     }
                 }
             }

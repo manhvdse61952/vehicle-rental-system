@@ -16,10 +16,10 @@ import com.example.manhvdse61952.vrc_android.remote.ImmutableValue;
 public class SignupOwnerTwo extends AppCompatActivity {
 
     Button btnVehicleNext, btnVehicleBack;
-    EditText edtVehicleName, edtVehicleYear;
-    Spinner spnVehicleEngineType, spnVehicleTranmission, spnVehicleSeat;
-
+    EditText edtVehicleName, edtVehicleYear, edtVehicleSeat;
+    Spinner spnVehicleEngineType, spnVehicleTranmission;
     String vehicleName = "", vehicleYear = "", engine = "", tranmission = "", seat = "";
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -33,7 +33,9 @@ public class SignupOwnerTwo extends AppCompatActivity {
         edtVehicleYear = (EditText)findViewById(R.id.edtVehicleYear);
         spnVehicleEngineType = (Spinner)findViewById(R.id.spnVehicleEngineType);
         spnVehicleTranmission = (Spinner)findViewById(R.id.spnVehicleTranmission);
-        spnVehicleSeat = (Spinner)findViewById(R.id.spnVehicleSeat);
+        edtVehicleSeat = (EditText)findViewById(R.id.txtVehicleSeat);
+
+
 
         //save value when user press back button
 
@@ -46,7 +48,7 @@ public class SignupOwnerTwo extends AppCompatActivity {
                 vehicleYear = edtVehicleYear.getText().toString();
                 engine = spnVehicleEngineType.getSelectedItem().toString();
                 tranmission = spnVehicleTranmission.getSelectedItem().toString();
-                seat = spnVehicleSeat.getSelectedItem().toString();
+                seat = edtVehicleSeat.getText().toString();
 
                 //Declare shared preferences
                 SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();

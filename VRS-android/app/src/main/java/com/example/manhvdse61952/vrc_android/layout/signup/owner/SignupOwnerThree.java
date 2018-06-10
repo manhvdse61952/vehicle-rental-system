@@ -17,7 +17,7 @@ public class SignupOwnerThree extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup_owner_three);
 
-        btnNext = (Button)findViewById(R.id.btnNext);
+        btnNext = (Button)findViewById(R.id.btnVehicleNext);
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

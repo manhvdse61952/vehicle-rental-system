@@ -28,4 +28,8 @@ public interface AccountAPI {
     @Multipart
     @POST("api/auth/signupwithimage")
     Call<ResponseBody> signup(@Part("data") RequestBody data, @Part MultipartBody.Part file);
+
+    @Multipart
+    @POST("vehicle/create")
+    Call<ResponseBody> createVehicle(@Part("data") RequestBody data, @Part MultipartBody.Part[] files);
 }

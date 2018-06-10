@@ -6,6 +6,49 @@ public class Vehicle implements Serializable {
     private String frameNumber;
     private double rentFee;
     private double depositFee;
-    private VehicleType vehicleType;
+    private VehicleInformation vehicleInformation;
+    public int ownerID;
 
+    public Vehicle() {
+    }
+
+    public Vehicle(String frameNumber, double rentFee, double depositFee, VehicleInformation vehicleInformation, int ownerID) {
+        this.frameNumber = frameNumber;
+        this.rentFee = rentFee;
+        this.depositFee = depositFee;
+        this.vehicleInformation = vehicleInformation;
+        this.ownerID = ownerID;
+    }
+
+    public String getFrameNumber() {
+        return frameNumber;
+    }
+
+    public void setFrameNumber(String frameNumber) {
+        this.frameNumber = frameNumber;
+    }
+
+    public double getRentFee() {
+        return rentFee;
+    }
+
+    public void setRentFee(double rentFee) {
+        this.rentFee = rentFee;
+    }
+
+    public double getDepositFee() {
+        return depositFee;
+    }
+
+    public void setDepositFee(double depositFee) {
+        this.depositFee = depositFee;
+    }
+
+    public VehicleInformation getVehicleInformation() {
+        return vehicleInformation;
+    }
+
+    public void setVehicleInformation(VehicleInformation vehicleInformation) {
+        this.vehicleInformation = vehicleInformation;
+    }
 }
