@@ -102,15 +102,15 @@ public class RetrofitCallAPI {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 progressDialog.dismiss();
-                JSONObject testObj = null;
-                try {
-                    testObj = new JSONObject(response.body().string());
-                    SharedPreferences.Editor editor = ctx.getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, ctx.MODE_PRIVATE).edit();
-                    editor.putString("user-id", testObj.get("message").toString());
-                    editor.apply();
-                } catch(Exception e) {
-
-                }
+//                JSONObject testObj = null;
+//                try {
+//                    testObj = new JSONObject(response.body().string());
+//                    //SharedPreferences.Editor editor = ctx.getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, ctx.MODE_PRIVATE).edit();
+//                    //editor.putString("user-id", testObj.get("message").toString());
+//                    //editor.apply();
+//                } catch(Exception e) {
+//
+//                }
                 AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
                 builder.setMessage("Chúng tôi sẽ gửi email cho bạn sau khi xác thực tài khoản thành công ! Cảm ơn bạn đã đăng ký VRS");
                 builder.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {

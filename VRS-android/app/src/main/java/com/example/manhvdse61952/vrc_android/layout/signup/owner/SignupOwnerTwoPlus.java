@@ -38,6 +38,7 @@ import id.zelory.compressor.Compressor;
 
 public class SignupOwnerTwoPlus extends AppCompatActivity {
 
+    private ImmutableValue cameraObj = new ImmutableValue();
     EditText edtVehicleFrameNumber, edtVehicleRent, edtVehicleDeposit;
     Button btnVehicleNext, btnVehicleBack;
     CheckBox cbxHouseHold, cbxVehicle, cbxIdCard;
@@ -45,7 +46,7 @@ public class SignupOwnerTwoPlus extends AppCompatActivity {
 
     int required_household_registration = 0, required_vehicle_registration = 0, required_id_card = 0;
     String frameNumber = "", rent = "", deposit = "";
-    private String pictureFilePath = "";
+    //private String pictureFilePath = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -135,7 +136,7 @@ public class SignupOwnerTwoPlus extends AppCompatActivity {
                 editor.putInt("household_registration", required_household_registration);
                 editor.putInt("vehicle_registration", required_vehicle_registration);
                 editor.putInt("id_card", required_id_card);
-                editor.putString("picture_path", pictureFilePath);
+                editor.putString("picture_path", ImmutableValue.picturePath);
                 editor.apply();
 
                 //Start signupOwnerThree activity
@@ -157,25 +158,27 @@ public class SignupOwnerTwoPlus extends AppCompatActivity {
         btnTakePictureVehicle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.CAMERA)
-                        != PackageManager.PERMISSION_GRANTED) {
-                    requestPermissions(new String[]{Manifest.permission.CAMERA}, ImmutableValue.CAMERA_REQUEST_CODE);
-                } else {
-                    //Open take picture intent
-                    Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    if (cameraIntent.resolveActivity(getPackageManager()) != null) {
-                        File pictureFile = null;
-                        pictureFile = getPictureFile();
-                        if (pictureFile != null) {
-                            Uri photoURI = FileProvider.getUriForFile(SignupOwnerTwoPlus.this,
-                                    "com.example.manhvdse61952.vrc_android.provider",
-                                    pictureFile);
-                            cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                            startActivityForResult(cameraIntent, ImmutableValue.CAMERA_OPEN_CODE);
-                        }
-
-                    }
-                }
+//                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.CAMERA)
+//                        != PackageManager.PERMISSION_GRANTED) {
+//                    requestPermissions(new String[]{Manifest.permission.CAMERA}, ImmutableValue.CAMERA_REQUEST_CODE);
+//                } else {
+//                    //Open take picture intent
+//                    Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                    if (cameraIntent.resolveActivity(getPackageManager()) != null) {
+//                        File pictureFile = null;
+//                        pictureFile = getPictureFile();
+//                        if (pictureFile != null) {
+//                            Uri photoURI = FileProvider.getUriForFile(SignupOwnerTwoPlus.this,
+//                                    "com.example.manhvdse61952.vrc_android.provider",
+//                                    pictureFile);
+//                            cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+//                            startActivityForResult(cameraIntent, ImmutableValue.CAMERA_OPEN_CODE);
+//                        }
+//
+//                    }
+//                }
+                //testObj.takePicture(SignupOwnerTwoPlus.this, SignupOwnerTwoPlus.this);
+                cameraObj.checkPermission(SignupOwnerTwoPlus.this, SignupOwnerTwoPlus.this, ImmutableValue.CAMERA_OPEN_CODE);
             }
         });
 
@@ -191,21 +194,21 @@ public class SignupOwnerTwoPlus extends AppCompatActivity {
     }
 
     //Get image file name -> use for button take picture
-    private File getPictureFile() {
-        try {
-            String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-            String pictureFile = "IMG_" + timeStamp;
-            File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-            File image = File.createTempFile(pictureFile, ".jpg", storageDir);
-            pictureFilePath = image.getAbsolutePath();
-            return image;
-        } catch (Exception ex) {
-            Log.e("getPictureFile", ex.getMessage());
-            Toast.makeText(this, "ERROR: at getPictureFile" +ex.getMessage(), Toast.LENGTH_LONG).show();
-            return null;
-        }
-
-    }
+//    private File getPictureFile() {
+//        try {
+//            String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+//            String pictureFile = "IMG_" + timeStamp;
+//            File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+//            File image = File.createTempFile(pictureFile, ".jpg", storageDir);
+//            pictureFilePath = image.getAbsolutePath();
+//            return image;
+//        } catch (Exception ex) {
+//            Log.e("getPictureFile", ex.getMessage());
+//            Toast.makeText(this, "ERROR: at getPictureFile" +ex.getMessage(), Toast.LENGTH_LONG).show();
+//            return null;
+//        }
+//
+//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -213,51 +216,52 @@ public class SignupOwnerTwoPlus extends AppCompatActivity {
         switch (requestCode) {
             case ImmutableValue.CAMERA_SELECT_IMAGE_CODE:
                 if (resultCode == RESULT_OK) {
-                    Uri selectedImage = data.getData();
-                    imgSignupOwner.setImageURI(selectedImage);
-                    try {
-
-                        //Create new file
-                        File f = new File(getApplicationContext().getCacheDir(), "example_image");
-                        f.createNewFile();
-
-                        //Convert bitmap to file
-                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
-                        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
-                        byte[] bitmapData = bos.toByteArray();
-
-
-                        //write byte to file
-                        FileOutputStream fos = new FileOutputStream(f);
-                        fos.write(bitmapData);
-                        fos.flush();
-                        fos.close();
-                        File compressor = new Compressor(this).setQuality(75).compressToFile(f);
-                        pictureFilePath = compressor.getAbsolutePath();
-
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+//                    Uri selectedImage = data.getData();
+//                    imgSignupOwner.setImageURI(selectedImage);
+//                    try {
+//
+//                        //Create new file
+//                        File f = new File(getApplicationContext().getCacheDir(), "example_image");
+//                        f.createNewFile();
+//
+//                        //Convert bitmap to file
+//                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
+//                        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+//                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+//                        byte[] bitmapData = bos.toByteArray();
+//
+//
+//                        //write byte to file
+//                        FileOutputStream fos = new FileOutputStream(f);
+//                        fos.write(bitmapData);
+//                        fos.flush();
+//                        fos.close();
+//                        File compressor = new Compressor(this).setQuality(75).compressToFile(f);
+//                        pictureFilePath = compressor.getAbsolutePath();
+//
+//
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
                 }
                 break;
 
             case ImmutableValue.CAMERA_OPEN_CODE:
                 if (resultCode == RESULT_OK) {
-                    File imgFile = new File(pictureFilePath);
-                    if (imgFile.exists()) {
-                        //imgSignupCMND.setImageURI(Uri.fromFile(imgFile));
-                        Picasso.get().load(imgFile).into(imgSignupOwner);
-                        File compressor = null;
-                        try {
-                            compressor = new Compressor(this).setQuality(75).compressToFile(imgFile);
-                            pictureFilePath = compressor.getAbsolutePath();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
+//                    File imgFile = new File(pictureFilePath);
+//                    if (imgFile.exists()) {
+//                        //imgSignupCMND.setImageURI(Uri.fromFile(imgFile));
+//                        Picasso.get().load(imgFile).into(imgSignupOwner);
+//                        File compressor = null;
+//                        try {
+//                            compressor = new Compressor(this).setQuality(75).compressToFile(imgFile);
+//                            pictureFilePath = compressor.getAbsolutePath();
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+//
+//                    }
+                    cameraObj.showImageCamera(imgSignupOwner, SignupOwnerTwoPlus.this);
                 }
         }
     }
@@ -268,21 +272,7 @@ public class SignupOwnerTwoPlus extends AppCompatActivity {
         switch (requestCode) {
             case ImmutableValue.CAMERA_REQUEST_CODE:
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                    Intent it = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//                    startActivityForResult(it, ImmutableValue.CAMERA_OPEN_CODE);
-                    Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    if (cameraIntent.resolveActivity(getPackageManager()) != null) {
-                        File pictureFile = null;
-                        pictureFile = getPictureFile();
-                        if (pictureFile != null) {
-                            Uri photoURI = FileProvider.getUriForFile(SignupOwnerTwoPlus.this,
-                                    "com.example.manhvdse61952.vrc_android.provider",
-                                    pictureFile);
-                            cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                            startActivityForResult(cameraIntent, ImmutableValue.CAMERA_OPEN_CODE);
-                        }
-
-                    }
+                    cameraObj.takePicture(SignupOwnerTwoPlus.this, SignupOwnerTwoPlus.this, ImmutableValue.CAMERA_OPEN_CODE );
                 } else {
                     Toast.makeText(this, "Permission not granted !", Toast.LENGTH_SHORT).show();
                     finish();

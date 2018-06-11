@@ -45,12 +45,6 @@ import retrofit2.Retrofit;
 public class SignupOwnerFour extends AppCompatActivity {
 
     Button btnNext;
-    private static final String TAG = SignupOwnerTwo.class.getSimpleName();
-    Signup signupObj = new Signup();
-    String receiveValue = "", imageCustomerPath = "";
-    ProgressDialog dialog;
-
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -92,14 +86,12 @@ public class SignupOwnerFour extends AppCompatActivity {
                     responseBodyCall.enqueue(new Callback<ResponseBody>() {
                         @Override
                         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                            //progressDialog.dismiss();
                             JSONObject testObj = null;
                             try {
                                 testObj = new JSONObject(response.body().string());
                                 SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
                                 editor.putString("user-id", testObj.get("message").toString());
                                 editor.apply();
-                                //Signup for vehicle
                                 SharedPreferences editor2 = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE);
                                 createVehicle(editor2.getString("user-id", "37"));
                             } catch(Exception e) {
@@ -132,6 +124,8 @@ public class SignupOwnerFour extends AppCompatActivity {
     }
 
     public void createVehicle(String userID){
+
+        //Get vehicle value from shared preferences
         SharedPreferences editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE);
         String frameNumber = editor.getString("frameNumber",null);
         String rent = editor.getString("rent",null);
@@ -144,6 +138,12 @@ public class SignupOwnerFour extends AppCompatActivity {
         String engine = editor.getString("engine", null);
         String transmission = editor.getString("tranmission", null);
         String imagePath = editor.getString("picture_path",  null);
+        String imageVehicle1 = editor.getString("img_vehicle_1", null);
+        String imageVehicle2 = editor.getString("img_vehicle_2", null);
+        String imageVehicle3 = editor.getString("img_vehicle_3", null);
+        String imageVehicle4 = editor.getString("img_vehicle_4", null);
+        String imageVehicle5 = editor.getString("img_vehicle_5", null);
+        String imageVehicle6 = editor.getString("img_vehicle_6", null);
 
         String seat = editor.getString("seat", null);
         ObjectMapper objectMapper = new ObjectMapper();
@@ -152,38 +152,51 @@ public class SignupOwnerFour extends AppCompatActivity {
             String json = objectMapper.writeValueAsString(vehiclePayload);
             String IMG_JPEG = "image/jpeg";
             File imageFile = new File(imagePath);
+            File imageVehicleFile1 = new File(imageVehicle1);
+            File imageVehicleFile2 = new File(imageVehicle2);
+            File imageVehicleFile3 = new File(imageVehicle3);
+            File imageVehicleFile4 = new File(imageVehicle4);
+            File imageVehicleFile5 = new File(imageVehicle5);
+            File imageVehicleFile6 = new File(imageVehicle6);
             RequestBody fileBody = RequestBody.create(okhttp3.MediaType.parse(IMG_JPEG), imageFile);
+            RequestBody fileBody2 = RequestBody.create(okhttp3.MediaType.parse(IMG_JPEG), imageVehicleFile1);
+            RequestBody fileBody3 = RequestBody.create(okhttp3.MediaType.parse(IMG_JPEG), imageVehicleFile2);
+            RequestBody fileBody4 = RequestBody.create(okhttp3.MediaType.parse(IMG_JPEG), imageVehicleFile3);
+            RequestBody fileBody5 = RequestBody.create(okhttp3.MediaType.parse(IMG_JPEG), imageVehicleFile4);
+            RequestBody fileBody6 = RequestBody.create(okhttp3.MediaType.parse(IMG_JPEG), imageVehicleFile5);
+            RequestBody fileBody7 = RequestBody.create(okhttp3.MediaType.parse(IMG_JPEG), imageVehicleFile6);
+
             RequestBody data = RequestBody.create(MediaType.parse("text/plain"), json);
+
             MultipartBody.Part body = MultipartBody.Part.createFormData("files", imageFile.getName(), fileBody);
-            MultipartBody.Part[] imagesParts = new MultipartBody.Part[1];
+            MultipartBody.Part body2 = MultipartBody.Part.createFormData("files", imageVehicleFile1.getName(), fileBody2);
+            MultipartBody.Part body3 = MultipartBody.Part.createFormData("files", imageVehicleFile2.getName(), fileBody3);
+            MultipartBody.Part body4 = MultipartBody.Part.createFormData("files", imageVehicleFile3.getName(), fileBody4);
+            MultipartBody.Part body5 = MultipartBody.Part.createFormData("files", imageVehicleFile4.getName(), fileBody5);
+            MultipartBody.Part body6 = MultipartBody.Part.createFormData("files", imageVehicleFile5.getName(), fileBody6);
+            MultipartBody.Part body7 = MultipartBody.Part.createFormData("files", imageVehicleFile6.getName(), fileBody7);
+            MultipartBody.Part[] imagesParts = new MultipartBody.Part[7];
             imagesParts[0] = body;
+            imagesParts[1] = body2;
+            imagesParts[2] = body3;
+            imagesParts[3] = body4;
+            imagesParts[4] = body5;
+            imagesParts[5] = body6;
+            imagesParts[6] = body7;
             Retrofit test = RetrofitConnect.getClient();
             final AccountAPI testAPI = test.create(AccountAPI.class);
             Call<ResponseBody> responseBodyCall = testAPI.createVehicle(data,imagesParts);
             responseBodyCall.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    JSONObject jObjError = null;
-                    JSONObject testObj = null;
-                    try {
-                        testObj = new JSONObject(response.body().string());
-                        jObjError = new JSONObject(response.errorBody().string());
-                        //Toast.makeText(SignupOwnerFour.this, jObjError.getString("message"), Toast.LENGTH_LONG).show();
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
                     Intent it = new Intent(SignupOwnerFour.this, MainActivity.class);
                     startActivity(it);
-                    //Toast.makeText(SignupOwnerFour.this, response.errorBody().toString()+ response.body().toString(), Toast.LENGTH_SHORT).show();
 
                 }
 
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    //Toast.makeText(SignupOwnerFour.this, "NAHHHHHHHH", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SignupOwnerFour.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
 
                 }
             });

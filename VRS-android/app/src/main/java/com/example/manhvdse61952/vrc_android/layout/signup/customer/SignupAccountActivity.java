@@ -39,15 +39,11 @@ public class SignupAccountActivity extends AppCompatActivity {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 //get value from edittext
                 username = edtSignupUsername.getText().toString();
                 password = edtSignupPassword.getText().toString();
                 email = edtSignupEmail.getText().toString();
-
-                //Call API
-                RetrofitCallAPI rfCall = new RetrofitCallAPI();
-                rfCall.checkExistedUsername(username, password, email, SignupAccountActivity.this);
-
 
                 //shared preferences
                 SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
@@ -56,6 +52,9 @@ public class SignupAccountActivity extends AppCompatActivity {
                 editor.putString("email", email);
                 editor.apply();
 
+                //Call API
+                RetrofitCallAPI rfCall = new RetrofitCallAPI();
+                rfCall.checkExistedUsername(username, password, email, SignupAccountActivity.this);
 
             }
         });
