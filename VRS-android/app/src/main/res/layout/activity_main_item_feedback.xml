@@ -1,43 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:id="@+id/itemFeedback">
+    android:id="@+id/itemFeedback"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="10dp"
+    android:weightSum="10">
+
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="80dp"
+        android:layout_weight="2.5"
+        android:src="@drawable/img_customer" />
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:orientation="horizontal">
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="7.5"
+        android:layout_marginLeft="10dp"
+        android:orientation="vertical"
+        android:weightSum="10">
 
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_weight="0.2"
-            android:layout_height="70dp"
-            android:layout_gravity="center_vertical"
-            android:src="@drawable/img_customer"/>
+        <TextView
+            android:id="@+id/txtFeedbackName"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3"
+            android:maxLength="40"
+            android:text="Nguyễn Văn A"
+            android:textColor="#000"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_weight="0.8"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dp">
-            <TextView
-                android:id="@+id/txtFeedbackName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:maxLength="40"
-                android:textColor="#000"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:text="Nguyễn Văn A"/>
-            <TextView
-                android:layout_below="@+id/txtFeedbackName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="#000"
-                android:textSize="16sp"
-                android:text="Xe chạy êm, còn mới, sử dụng rất phù hợp với tôi, chủ xe nhiệt tình thân thiện"/>
-        </RelativeLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="7"
+            android:layout_below="@+id/txtFeedbackName"
+            android:text="Xe chạy êm, còn mới, sử dụng rất phù hợp với tôi, chủ xe nhiệt tình"
+            android:textColor="#000"
+            android:maxLength="70"
+            android:textSize="16sp" />
     </LinearLayout>
+
+
 </LinearLayout>

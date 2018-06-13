@@ -7,34 +7,24 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:weightSum="10"
         >
         <ScrollView
             android:layout_margin="10dp"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.9">
+            android:layout_weight="9">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-                
-                <LinearLayout
-                    android:id="@+id/lnl1"
+
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/vpg"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_height="200dp">
 
-                    <ImageView
-                        android:layout_width="0dp"
-                        android:layout_height="150dp"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="0.4"
-                        android:src="@drawable/xe_oto"/>
-
-                    <RelativeLayout
-                        android:layout_width="0dp"
-                        android:layout_weight="0.6"
-                        android:layout_height="wrap_content">
+                </android.support.v4.view.ViewPager>
 
                         <TextView
                             android:id="@+id/txtItemName"
@@ -43,16 +33,23 @@
                             android:text="Toyota Fortuner 2018 màu xám bạc"
                             android:textColor="#000"
                             android:textStyle="bold"
-                            android:textSize="20sp"/>
+                            android:textSize="22sp"/>
                         <TextView
                             android:layout_marginTop="5dp"
-                            android:id="@+id/txtItemPrice"
+                            android:id="@+id/txtItemSLotPrice"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Giá thuê: 300.000 vnd / giờ"
-                            android:layout_below="@+id/txtItemName"
+                            android:text="Giá thuê theo buổi: 300.000 vnd"
                             android:textColor="#000"
                             android:textSize="18sp"/>
+                <TextView
+                    android:layout_marginTop="5dp"
+                    android:id="@+id/txtItemDayPrice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Giá thuê theo ngày: 500.000 vnd"
+                    android:textColor="#000"
+                    android:textSize="18sp"/>
 
                         <TextView
                             android:layout_marginTop="5dp"
@@ -60,18 +57,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Giá cọc: 20.000.000 vnd"
-                            android:layout_below="@+id/txtItemPrice"
                             android:textColor="#000"
                             android:textSize="18sp"/>
-                    </RelativeLayout>
-                </LinearLayout>
-
-                <android.support.v4.view.ViewPager
-                    android:id="@+id/vpg"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp">
-
-                </android.support.v4.view.ViewPager>
 
 
                 <TextView
@@ -133,13 +120,6 @@
                     android:layout_marginTop="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/cbx2"
-                    android:text="Giấy đăng kiểm xe"/>
-
-                <CheckBox
-                    android:layout_marginTop="5dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:id="@+id/cbx3"
                     android:text="Bằng lái xe"/>
 
@@ -165,10 +145,10 @@
             android:id="@+id/btnOrderRent"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.1"
+            android:layout_weight="1"
             android:text="thuê xe"
             android:textColor="#fff"
-            android:background="#0097A7"
+            android:background="#155000"
             android:textSize="20sp"/>
     </LinearLayout>
 </LinearLayout>

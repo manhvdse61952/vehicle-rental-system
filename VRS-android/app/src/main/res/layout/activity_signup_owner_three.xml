@@ -3,294 +3,380 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="5dp"
+    android:background="#EEEEEE"
     android:weightSum="10">
-    
+
+    <ImageView
+        android:id="@+id/imgShowVehicle1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3.5"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:src="@drawable/img_default_image"
+        android:scaleType="centerCrop"
+        android:layout_marginTop="5dp" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_weight="1"
         android:orientation="horizontal"
-        android:weightSum="10"
-        android:layout_weight="3">
-        <LinearLayout
+        android:gravity="center_vertical"
+        android:weightSum="10">
+        <TextView
             android:layout_width="0dp"
-            android:layout_weight="5"
-            android:padding="5dp"
-            android:weightSum="10"
-            android:orientation="vertical"
-            android:layout_height="match_parent">
-            <ImageView
-                android:id="@+id/imgShowVehicle1"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:background="@drawable/border"
-                android:layout_weight="8"/>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:weightSum="10"
-                android:layout_weight="2">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="6"
-                    android:layout_height="wrap_content"
-                    android:textColor="#000"
-                    android:textSize="14sp"
-                    android:text="Ảnh mặt trước"/>
-
-                <ImageView
-                    android:id="@+id/btnTakePictureVehicle1"
-                    android:layout_width="0dp"
-                    android:layout_weight="2"
-                    android:layout_height="match_parent"
-                    android:padding="2dp"
-                    android:src="@drawable/ic_camera"/>
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_weight="2"
-                    android:layout_height="match_parent"
-                    android:padding="2dp"
-                    android:src="@drawable/ic_gallery"/>
-            </LinearLayout>
-        </LinearLayout>
-        <LinearLayout
+            android:layout_weight="6"
+            android:paddingLeft="10dp"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:text="Chụp ảnh trước xe"
+            android:textColor="#000"/>
+        <ImageView
+            android:id="@+id/btnTakePictureVehicle1"
             android:layout_width="0dp"
-            android:layout_weight="5"
-            android:padding="5dp"
-            android:weightSum="10"
-            android:orientation="vertical"
-            android:layout_height="match_parent">
-            <ImageView
-                android:id="@+id/imgShowVehicle2"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:background="@drawable/border"
-                android:layout_weight="8"/>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:weightSum="10"
-                android:layout_weight="2">
+            android:layout_weight="2"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_camera"
+            android:padding="10dp"/>
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="match_parent"
+            android:padding="10dp"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/ic_gallery"/>
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="6"
-                    android:layout_height="wrap_content"
-                    android:textColor="#000"
-                    android:textSize="14sp"
-                    android:text="Ảnh mặt sau"/>
-
-                <ImageView
-                    android:id="@+id/btnTakePictureVehicle2"
-                    android:layout_width="0dp"
-                    android:layout_weight="2"
-                    android:layout_height="match_parent"
-                    android:padding="2dp"
-                    android:src="@drawable/ic_camera"/>
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_weight="2"
-                    android:layout_height="match_parent"
-                    android:padding="2dp"
-                    android:src="@drawable/ic_gallery"/>
-            </LinearLayout>
-        </LinearLayout>
     </LinearLayout>
+    <ImageView
+        android:id="@+id/imgShowVehicle2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3.5"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:src="@drawable/img_default_image"
+        android:scaleType="centerCrop"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_weight="1"
         android:orientation="horizontal"
-        android:weightSum="10"
-        android:layout_weight="3">
-        <LinearLayout
+        android:gravity="center_vertical"
+        android:weightSum="10">
+        <TextView
             android:layout_width="0dp"
-            android:layout_weight="5"
-            android:padding="5dp"
-            android:weightSum="10"
-            android:orientation="vertical"
-            android:layout_height="match_parent">
-            <ImageView
-                android:id="@+id/imgShowVehicle3"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:background="@drawable/border"
-                android:layout_weight="8"/>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:weightSum="10"
-                android:layout_weight="2">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="6"
-                    android:layout_height="wrap_content"
-                    android:textColor="#000"
-                    android:textSize="14sp"
-                    android:text="Ảnh bên trái"/>
-
-                <ImageView
-                    android:id="@+id/btnTakePictureVehicle3"
-                    android:layout_width="0dp"
-                    android:layout_weight="2"
-                    android:layout_height="match_parent"
-                    android:padding="2dp"
-                    android:src="@drawable/ic_camera"/>
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_weight="2"
-                    android:layout_height="match_parent"
-                    android:padding="2dp"
-                    android:src="@drawable/ic_gallery"/>
-            </LinearLayout>
-        </LinearLayout>
-        <LinearLayout
+            android:layout_weight="6"
+            android:paddingLeft="10dp"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:text="Chụp ảnh sau xe"
+            android:textColor="#000"/>
+        <ImageView
+            android:id="@+id/btnTakePictureVehicle2"
             android:layout_width="0dp"
-            android:layout_weight="5"
-            android:padding="5dp"
-            android:weightSum="10"
-            android:orientation="vertical"
-            android:layout_height="match_parent">
-            <ImageView
-                android:id="@+id/imgShowVehicle4"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:background="@drawable/border"
-                android:layout_weight="8"/>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:weightSum="10"
-                android:layout_weight="2">
+            android:layout_weight="2"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_camera"
+            android:padding="10dp"/>
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="match_parent"
+            android:padding="10dp"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/ic_gallery"/>
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="6"
-                    android:layout_height="wrap_content"
-                    android:textColor="#000"
-                    android:textSize="14sp"
-                    android:text="Ảnh bên phải"/>
-
-                <ImageView
-                    android:id="@+id/btnTakePictureVehicle4"
-                    android:layout_width="0dp"
-                    android:layout_weight="2"
-                    android:layout_height="match_parent"
-                    android:padding="2dp"
-                    android:src="@drawable/ic_camera"/>
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_weight="2"
-                    android:layout_height="match_parent"
-                    android:padding="2dp"
-                    android:src="@drawable/ic_gallery"/>
-            </LinearLayout>
-        </LinearLayout>
     </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:orientation="horizontal"
-        android:weightSum="10"
-        android:layout_weight="3">
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="5"
-            android:padding="5dp"
-            android:weightSum="10"
-            android:orientation="vertical"
-            android:layout_height="match_parent">
-            <ImageView
-                android:id="@+id/imgShowVehicle5"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:background="@drawable/border"
-                android:layout_weight="8"/>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:weightSum="10"
-                android:layout_weight="2">
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="6"
-                    android:layout_height="wrap_content"
-                    android:textColor="#000"
-                    android:textSize="14sp"
-                    android:text="Ảnh nội thất"/>
 
-                <ImageView
-                    android:id="@+id/btnTakePictureVehicle5"
-                    android:layout_width="0dp"
-                    android:layout_weight="2"
-                    android:layout_height="match_parent"
-                    android:padding="2dp"
-                    android:src="@drawable/ic_camera"/>
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_weight="2"
-                    android:layout_height="match_parent"
-                    android:padding="2dp"
-                    android:src="@drawable/ic_gallery"/>
-            </LinearLayout>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="5"
-            android:padding="5dp"
-            android:weightSum="10"
-            android:orientation="vertical"
-            android:layout_height="match_parent">
-            <ImageView
-                android:id="@+id/imgShowVehicle6"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:background="@drawable/border"
-                android:layout_weight="8"/>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:weightSum="10"
-                android:layout_weight="2">
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:weightSum="10"-->
+        <!--android:layout_weight="3">-->
+        <!--<LinearLayout-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_weight="5"-->
+            <!--android:padding="5dp"-->
+            <!--android:weightSum="10"-->
+            <!--android:orientation="vertical"-->
+            <!--android:layout_height="match_parent">-->
+            <!--<ImageView-->
+                <!--android:id="@+id/imgShowVehicle1"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="0dp"-->
+                <!--android:background="@drawable/border"-->
+                <!--android:layout_weight="8"/>-->
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="0dp"-->
+                <!--android:orientation="horizontal"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:weightSum="10"-->
+                <!--android:layout_weight="2">-->
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="6"
-                    android:layout_height="wrap_content"
-                    android:textColor="#000"
-                    android:textSize="14sp"
-                    android:text="Ảnh nội thất"/>
+                <!--<TextView-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_weight="6"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:textColor="#000"-->
+                    <!--android:textSize="14sp"-->
+                    <!--android:text="Ảnh mặt trước"/>-->
 
-                <ImageView
-                    android:id="@+id/btnTakePictureVehicle6"
-                    android:layout_width="0dp"
-                    android:layout_weight="2"
-                    android:layout_height="match_parent"
-                    android:padding="2dp"
-                    android:src="@drawable/ic_camera"/>
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_weight="2"
-                    android:layout_height="match_parent"
-                    android:padding="2dp"
-                    android:src="@drawable/ic_gallery"/>
-            </LinearLayout>
-        </LinearLayout>
-    </LinearLayout>
+                <!--<ImageView-->
+                    <!--android:id="@+id/btnTakePictureVehicle1"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_weight="2"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:padding="2dp"-->
+                    <!--android:src="@drawable/ic_camera"/>-->
+                <!--<ImageView-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_weight="2"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:padding="2dp"-->
+                    <!--android:src="@drawable/ic_gallery"/>-->
+            <!--</LinearLayout>-->
+        <!--</LinearLayout>-->
+        <!--<LinearLayout-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_weight="5"-->
+            <!--android:padding="5dp"-->
+            <!--android:weightSum="10"-->
+            <!--android:orientation="vertical"-->
+            <!--android:layout_height="match_parent">-->
+            <!--<ImageView-->
+                <!--android:id="@+id/imgShowVehicle2"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="0dp"-->
+                <!--android:background="@drawable/border"-->
+                <!--android:layout_weight="8"/>-->
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="0dp"-->
+                <!--android:orientation="horizontal"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:weightSum="10"-->
+                <!--android:layout_weight="2">-->
+
+                <!--<TextView-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_weight="6"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:textColor="#000"-->
+                    <!--android:textSize="14sp"-->
+                    <!--android:text="Ảnh mặt sau"/>-->
+
+                <!--<ImageView-->
+                    <!--android:id="@+id/btnTakePictureVehicle2"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_weight="2"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:padding="2dp"-->
+                    <!--android:src="@drawable/ic_camera"/>-->
+                <!--<ImageView-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_weight="2"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:padding="2dp"-->
+                    <!--android:src="@drawable/ic_gallery"/>-->
+            <!--</LinearLayout>-->
+        <!--</LinearLayout>-->
+    <!--</LinearLayout>-->
+
+
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:weightSum="10"-->
+        <!--android:layout_weight="3">-->
+        <!--<LinearLayout-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_weight="5"-->
+            <!--android:padding="5dp"-->
+            <!--android:weightSum="10"-->
+            <!--android:orientation="vertical"-->
+            <!--android:layout_height="match_parent">-->
+            <!--<ImageView-->
+                <!--android:id="@+id/imgShowVehicle3"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="0dp"-->
+                <!--android:background="@drawable/border"-->
+                <!--android:layout_weight="8"/>-->
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="0dp"-->
+                <!--android:orientation="horizontal"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:weightSum="10"-->
+                <!--android:layout_weight="2">-->
+
+                <!--<TextView-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_weight="6"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:textColor="#000"-->
+                    <!--android:textSize="14sp"-->
+                    <!--android:text="Ảnh bên trái"/>-->
+
+                <!--<ImageView-->
+                    <!--android:id="@+id/btnTakePictureVehicle3"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_weight="2"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:padding="2dp"-->
+                    <!--android:src="@drawable/ic_camera"/>-->
+                <!--<ImageView-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_weight="2"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:padding="2dp"-->
+                    <!--android:src="@drawable/ic_gallery"/>-->
+            <!--</LinearLayout>-->
+        <!--</LinearLayout>-->
+        <!--<LinearLayout-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_weight="5"-->
+            <!--android:padding="5dp"-->
+            <!--android:weightSum="10"-->
+            <!--android:orientation="vertical"-->
+            <!--android:layout_height="match_parent">-->
+            <!--<ImageView-->
+                <!--android:id="@+id/imgShowVehicle4"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="0dp"-->
+                <!--android:background="@drawable/border"-->
+                <!--android:layout_weight="8"/>-->
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="0dp"-->
+                <!--android:orientation="horizontal"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:weightSum="10"-->
+                <!--android:layout_weight="2">-->
+
+                <!--<TextView-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_weight="6"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:textColor="#000"-->
+                    <!--android:textSize="14sp"-->
+                    <!--android:text="Ảnh bên phải"/>-->
+
+                <!--<ImageView-->
+                    <!--android:id="@+id/btnTakePictureVehicle4"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_weight="2"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:padding="2dp"-->
+                    <!--android:src="@drawable/ic_camera"/>-->
+                <!--<ImageView-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_weight="2"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:padding="2dp"-->
+                    <!--android:src="@drawable/ic_gallery"/>-->
+            <!--</LinearLayout>-->
+        <!--</LinearLayout>-->
+    <!--</LinearLayout>-->
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:weightSum="10"-->
+        <!--android:layout_weight="3">-->
+        <!--<LinearLayout-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_weight="5"-->
+            <!--android:padding="5dp"-->
+            <!--android:weightSum="10"-->
+            <!--android:orientation="vertical"-->
+            <!--android:layout_height="match_parent">-->
+            <!--<ImageView-->
+                <!--android:id="@+id/imgShowVehicle5"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="0dp"-->
+                <!--android:background="@drawable/border"-->
+                <!--android:layout_weight="8"/>-->
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="0dp"-->
+                <!--android:orientation="horizontal"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:weightSum="10"-->
+                <!--android:layout_weight="2">-->
+
+                <!--<TextView-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_weight="6"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:textColor="#000"-->
+                    <!--android:textSize="14sp"-->
+                    <!--android:text="Ảnh nội thất"/>-->
+
+                <!--<ImageView-->
+                    <!--android:id="@+id/btnTakePictureVehicle5"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_weight="2"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:padding="2dp"-->
+                    <!--android:src="@drawable/ic_camera"/>-->
+                <!--<ImageView-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_weight="2"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:padding="2dp"-->
+                    <!--android:src="@drawable/ic_gallery"/>-->
+            <!--</LinearLayout>-->
+        <!--</LinearLayout>-->
+        <!--<LinearLayout-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_weight="5"-->
+            <!--android:padding="5dp"-->
+            <!--android:weightSum="10"-->
+            <!--android:orientation="vertical"-->
+            <!--android:layout_height="match_parent">-->
+            <!--<ImageView-->
+                <!--android:id="@+id/imgShowVehicle6"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="0dp"-->
+                <!--android:background="@drawable/border"-->
+                <!--android:layout_weight="8"/>-->
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="0dp"-->
+                <!--android:orientation="horizontal"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:weightSum="10"-->
+                <!--android:layout_weight="2">-->
+
+                <!--<TextView-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_weight="6"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:textColor="#000"-->
+                    <!--android:textSize="14sp"-->
+                    <!--android:text="Ảnh nội thất"/>-->
+
+                <!--<ImageView-->
+                    <!--android:id="@+id/btnTakePictureVehicle6"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_weight="2"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:padding="2dp"-->
+                    <!--android:src="@drawable/ic_camera"/>-->
+                <!--<ImageView-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_weight="2"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:padding="2dp"-->
+                    <!--android:src="@drawable/ic_gallery"/>-->
+            <!--</LinearLayout>-->
+        <!--</LinearLayout>-->
+    <!--</LinearLayout>-->
 
     <com.google.android.flexbox.FlexboxLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -299,6 +385,7 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         app:alignItems="center"
+        android:layout_marginBottom="5dp"
         app:flexWrap="wrap"
         app:justifyContent="space_around">
 
@@ -309,8 +396,9 @@
             android:layout_gravity="center_horizontal"
             android:background="@drawable/btn_login"
             android:text="Quay lại"
-            android:textColor="#FFF"
-            android:textSize="16sp"
+            android:textColor="#000"
+            android:textAllCaps="false"
+            android:textSize="18sp"
             app:layout_flexBasisPercent="@fraction/signup_btn" />
 
         <Button
@@ -322,7 +410,8 @@
             android:background="@drawable/btn_next"
             android:text="Tiếp tục"
             android:textColor="#FFF"
-            android:textSize="16sp"
+            android:textAllCaps="false"
+            android:textSize="18sp"
             app:layout_flexBasisPercent="@fraction/signup_btn" />
 
     </com.google.android.flexbox.FlexboxLayout>

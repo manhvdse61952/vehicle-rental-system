@@ -121,6 +121,17 @@
 
     </LinearLayout>
 
+    <ImageView
+        android:id="@+id/imgSignupCMND"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:src="@drawable/img_default_image"
+        android:scaleType="centerCrop"
+        android:layout_weight="3.3" />
+    <!--android:scaleType="fitXY"-->
+    <!--android:adjustViewBounds="true"-->
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -140,18 +151,6 @@
             android:textColor="#000" />
 
     </android.support.design.widget.TextInputLayout>
-
-    <ImageView
-        android:id="@+id/imgSignupCMND"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:background="@drawable/border"
-        android:layout_weight="3.3" />
-    <!--android:scaleType="fitXY"-->
-    <!--android:adjustViewBounds="true"-->
-
 
 
     <com.google.android.flexbox.FlexboxLayout xmlns:android="http://schemas.android.com/apk/res/android"

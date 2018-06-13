@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.manhvdse61952.vrc_android.R;
 import com.example.manhvdse61952.vrc_android.layout.login.LoginActivity;
@@ -41,20 +42,25 @@ public class SignupAccountActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 //get value from edittext
-                username = edtSignupUsername.getText().toString();
-                password = edtSignupPassword.getText().toString();
-                email = edtSignupEmail.getText().toString();
+                username = edtSignupUsername.getText().toString().trim();
+                password = edtSignupPassword.getText().toString().trim();
+                email = edtSignupEmail.getText().toString().trim();
 
-                //shared preferences
-                SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
-                editor.putString("username", username);
-                editor.putString("password", password);
-                editor.putString("email", email);
-                editor.apply();
+                if (username.length()!= 0 || password.length() != 0 || email.length() != 0){
+                    //shared preferences
+                    SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
+                    editor.putString("username", username);
+                    editor.putString("password", password);
+                    editor.putString("email", email);
+                    editor.apply();
 
-                //Call API
-                RetrofitCallAPI rfCall = new RetrofitCallAPI();
-                rfCall.checkExistedUsername(username, password, email, SignupAccountActivity.this);
+                    //Call API
+                    RetrofitCallAPI rfCall = new RetrofitCallAPI();
+                    rfCall.checkExistedUsername(username, password, email, SignupAccountActivity.this);
+                }
+                else {
+                    Toast.makeText(SignupAccountActivity.this, "Vui lòng điền đầy đủ thông tin", Toast.LENGTH_SHORT).show();
+                }
 
             }
         });

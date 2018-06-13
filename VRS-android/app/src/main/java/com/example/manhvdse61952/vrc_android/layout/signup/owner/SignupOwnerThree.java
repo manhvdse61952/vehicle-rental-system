@@ -21,9 +21,9 @@ import com.example.manhvdse61952.vrc_android.remote.ImmutableValue;
 public class SignupOwnerThree extends AppCompatActivity {
 
     Button btnNext;
-    String imgPath_1 = "", imgPath_2 = "", imgPath_3 = "", imgPath_4 = "", imgPath_5 = "", imgPath_6 = "";
-    ImageView btnTakePictureVehicle1, btnTakePictureVehicle2, btnTakePictureVehicle3, btnTakePictureVehicle4, btnTakePictureVehicle5, btnTakePictureVehicle6;
-    ImageView imgShowVehicle1, imgShowVehicle2, imgShowVehicle3, imgShowVehicle4, imgShowVehicle5, imgShowVehicle6;
+    String imgPath_1 = "", imgPath_2 = "";
+    ImageView btnTakePictureVehicle1, btnTakePictureVehicle2;
+    ImageView imgShowVehicle1, imgShowVehicle2;
 
     //Testttttt /////////////
     private ImmutableValue cameraObj = new ImmutableValue();
@@ -38,16 +38,16 @@ public class SignupOwnerThree extends AppCompatActivity {
         btnNext = (Button) findViewById(R.id.btnVehicleNext);
         btnTakePictureVehicle1 = (ImageView) findViewById(R.id.btnTakePictureVehicle1);
         btnTakePictureVehicle2 = (ImageView) findViewById(R.id.btnTakePictureVehicle2);
-        btnTakePictureVehicle3 = (ImageView) findViewById(R.id.btnTakePictureVehicle3);
-        btnTakePictureVehicle4 = (ImageView) findViewById(R.id.btnTakePictureVehicle4);
-        btnTakePictureVehicle5 = (ImageView) findViewById(R.id.btnTakePictureVehicle5);
-        btnTakePictureVehicle6 = (ImageView) findViewById(R.id.btnTakePictureVehicle6);
+//        btnTakePictureVehicle3 = (ImageView) findViewById(R.id.btnTakePictureVehicle3);
+//        btnTakePictureVehicle4 = (ImageView) findViewById(R.id.btnTakePictureVehicle4);
+//        btnTakePictureVehicle5 = (ImageView) findViewById(R.id.btnTakePictureVehicle5);
+//        btnTakePictureVehicle6 = (ImageView) findViewById(R.id.btnTakePictureVehicle6);
         imgShowVehicle1 = (ImageView) findViewById(R.id.imgShowVehicle1);
         imgShowVehicle2 = (ImageView) findViewById(R.id.imgShowVehicle2);
-        imgShowVehicle3 = (ImageView) findViewById(R.id.imgShowVehicle3);
-        imgShowVehicle4 = (ImageView) findViewById(R.id.imgShowVehicle4);
-        imgShowVehicle5 = (ImageView) findViewById(R.id.imgShowVehicle5);
-        imgShowVehicle6 = (ImageView) findViewById(R.id.imgShowVehicle6);
+//        imgShowVehicle3 = (ImageView) findViewById(R.id.imgShowVehicle3);
+//        imgShowVehicle4 = (ImageView) findViewById(R.id.imgShowVehicle4);
+//        imgShowVehicle5 = (ImageView) findViewById(R.id.imgShowVehicle5);
+//        imgShowVehicle6 = (ImageView) findViewById(R.id.imgShowVehicle6);
 
         //take picture 1
         btnTakePictureVehicle1.setOnClickListener(new View.OnClickListener() {
@@ -66,37 +66,37 @@ public class SignupOwnerThree extends AppCompatActivity {
             }
         });
 
-        //Take picture 3
-        btnTakePictureVehicle3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                cameraObj.checkPermission(SignupOwnerThree.this, SignupOwnerThree.this, ImmutableValue.CAMERA_VEHICLE_CODE_3);
-            }
-        });
-
-        //Take picture 4
-        btnTakePictureVehicle4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                cameraObj.checkPermission(SignupOwnerThree.this, SignupOwnerThree.this, ImmutableValue.CAMERA_VEHICLE_CODE_4);
-            }
-        });
-
-        //Take picture 5
-        btnTakePictureVehicle5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                cameraObj.checkPermission(SignupOwnerThree.this, SignupOwnerThree.this, ImmutableValue.CAMERA_VEHICLE_CODE_5);
-            }
-        });
-
-        //Take picture 6
-        btnTakePictureVehicle6.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                cameraObj.checkPermission(SignupOwnerThree.this, SignupOwnerThree.this, ImmutableValue.CAMERA_VEHICLE_CODE_6);
-            }
-        });
+//        //Take picture 3
+//        btnTakePictureVehicle3.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                cameraObj.checkPermission(SignupOwnerThree.this, SignupOwnerThree.this, ImmutableValue.CAMERA_VEHICLE_CODE_3);
+//            }
+//        });
+//
+//        //Take picture 4
+//        btnTakePictureVehicle4.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                cameraObj.checkPermission(SignupOwnerThree.this, SignupOwnerThree.this, ImmutableValue.CAMERA_VEHICLE_CODE_4);
+//            }
+//        });
+//
+//        //Take picture 5
+//        btnTakePictureVehicle5.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                cameraObj.checkPermission(SignupOwnerThree.this, SignupOwnerThree.this, ImmutableValue.CAMERA_VEHICLE_CODE_5);
+//            }
+//        });
+//
+//        //Take picture 6
+//        btnTakePictureVehicle6.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                cameraObj.checkPermission(SignupOwnerThree.this, SignupOwnerThree.this, ImmutableValue.CAMERA_VEHICLE_CODE_6);
+//            }
+//        });
 
         //Button next
         btnNext.setOnClickListener(new View.OnClickListener() {
@@ -107,10 +107,10 @@ public class SignupOwnerThree extends AppCompatActivity {
                 SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
                 editor.putString("img_vehicle_1", imgPath_1);
                 editor.putString("img_vehicle_2", imgPath_2);
-                editor.putString("img_vehicle_3", imgPath_3);
-                editor.putString("img_vehicle_4", imgPath_4);
-                editor.putString("img_vehicle_5", imgPath_5);
-                editor.putString("img_vehicle_6", imgPath_6);
+//                editor.putString("img_vehicle_3", imgPath_3);
+//                editor.putString("img_vehicle_4", imgPath_4);
+//                editor.putString("img_vehicle_5", imgPath_5);
+//                editor.putString("img_vehicle_6", imgPath_6);
                 editor.apply();
 
                 //Start SignupOwnerFour activity
@@ -123,7 +123,7 @@ public class SignupOwnerThree extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent it = new Intent(SignupOwnerThree.this, SignupOwnerTwo.class);
+        Intent it = new Intent(SignupOwnerThree.this, SignupOwnerTwoPlus.class);
         startActivity(it);
     }
 
@@ -143,30 +143,30 @@ public class SignupOwnerThree extends AppCompatActivity {
                     imgPath_2 = ImmutableValue.picturePath;
                 }
                 break;
-            case ImmutableValue.CAMERA_VEHICLE_CODE_3:
-                if (resultCode == RESULT_OK) {
-                    cameraObj.showImageCamera(imgShowVehicle3, SignupOwnerThree.this);
-                    imgPath_3 = ImmutableValue.picturePath;
-                }
-                break;
-            case ImmutableValue.CAMERA_VEHICLE_CODE_4:
-                if (resultCode == RESULT_OK) {
-                    cameraObj.showImageCamera(imgShowVehicle4, SignupOwnerThree.this);
-                    imgPath_4 = ImmutableValue.picturePath;
-                }
-                break;
-            case ImmutableValue.CAMERA_VEHICLE_CODE_5:
-                if (resultCode == RESULT_OK) {
-                    cameraObj.showImageCamera(imgShowVehicle5, SignupOwnerThree.this);
-                    imgPath_5 = ImmutableValue.picturePath;
-                }
-                break;
-            case ImmutableValue.CAMERA_VEHICLE_CODE_6:
-                if (resultCode == RESULT_OK) {
-                    cameraObj.showImageCamera(imgShowVehicle6, SignupOwnerThree.this);
-                    imgPath_6 = ImmutableValue.picturePath;
-                }
-                break;
+//            case ImmutableValue.CAMERA_VEHICLE_CODE_3:
+//                if (resultCode == RESULT_OK) {
+//                    cameraObj.showImageCamera(imgShowVehicle3, SignupOwnerThree.this);
+//                    imgPath_3 = ImmutableValue.picturePath;
+//                }
+//                break;
+//            case ImmutableValue.CAMERA_VEHICLE_CODE_4:
+//                if (resultCode == RESULT_OK) {
+//                    cameraObj.showImageCamera(imgShowVehicle4, SignupOwnerThree.this);
+//                    imgPath_4 = ImmutableValue.picturePath;
+//                }
+//                break;
+//            case ImmutableValue.CAMERA_VEHICLE_CODE_5:
+//                if (resultCode == RESULT_OK) {
+//                    cameraObj.showImageCamera(imgShowVehicle5, SignupOwnerThree.this);
+//                    imgPath_5 = ImmutableValue.picturePath;
+//                }
+//                break;
+//            case ImmutableValue.CAMERA_VEHICLE_CODE_6:
+//                if (resultCode == RESULT_OK) {
+//                    cameraObj.showImageCamera(imgShowVehicle6, SignupOwnerThree.this);
+//                    imgPath_6 = ImmutableValue.picturePath;
+//                }
+//                break;
         }
     }
 
@@ -182,4 +182,5 @@ public class SignupOwnerThree extends AppCompatActivity {
         }
 
     }
+
 }

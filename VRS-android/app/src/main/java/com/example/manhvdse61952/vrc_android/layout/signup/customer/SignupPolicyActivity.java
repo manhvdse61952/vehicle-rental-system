@@ -24,9 +24,6 @@ import java.io.IOException;
 
 public class SignupPolicyActivity extends AppCompatActivity {
 
-    private String receiveValue = "";
-    String imagePath = "";
-    Signup signup = new Signup();
     Button btnAccept;
     CheckBox cbxSignupPolicy;
 
@@ -58,21 +55,6 @@ public class SignupPolicyActivity extends AppCompatActivity {
         btnAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //get value from SignupRole activity
-//                Intent receiveIt = getIntent();
-//                receiveValue = receiveIt.getStringExtra(ImmutableValue.MESSAGE_CODE);
-//                imagePath = receiveIt.getStringExtra("PICTURE_FILE_PATH");
-//                ObjectMapper objectMapper = new ObjectMapper();
-//                try {
-//                    signup = objectMapper.readValue(receiveValue, Signup.class);
-//                    dialog = ProgressDialog.show(SignupPolicyActivity.this, "Đăng ký",
-//                            "Đang xử lý ...", true);
-//                    RetrofitCallAPI rfCall = new RetrofitCallAPI();
-//                    rfCall.SignupAccount(imagePath, receiveValue, SignupPolicyActivity.this, dialog);
-//
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
 
                 //Get value from shared preferences
                 SharedPreferences editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE);

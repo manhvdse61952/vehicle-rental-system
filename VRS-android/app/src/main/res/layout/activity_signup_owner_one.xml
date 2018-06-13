@@ -36,29 +36,35 @@
                     android:id="@+id/btnSignupOwner1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_flexBasisPercent="@fraction/signup_owner_vehicle_type"
+                    app:layout_flexBasisPercent="@fraction/main_search_edt"
                     android:text="Xe máy"
-                    android:background="#0097A7"
+                    android:background="@drawable/btn_create_vehicle_type"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
                     android:textColor="#fff"/>
                 <Button
                     android:id="@+id/btnSignupOwner2"
                     android:layout_below="@+id/btnSignupOwner1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:background="#0097A7"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/btn_create_vehicle_type"
                     android:textColor="#fff"
-                    app:layout_flexBasisPercent="@fraction/signup_owner_vehicle_type"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    app:layout_flexBasisPercent="@fraction/main_search_edt"
                     android:text="Xe ô tô cá nhân (4-7 chỗ)" />
                 <Button
                     android:id="@+id/btnSignupOwner3"
                     android:layout_below="@+id/btnSignupOwner2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:background="#0097A7"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/btn_create_vehicle_type"
                     android:textColor="#fff"
-                    app:layout_flexBasisPercent="@fraction/signup_owner_vehicle_type"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    app:layout_flexBasisPercent="@fraction/main_search_edt"
                     android:text="Xe ô tô du lịch (trên 7 chỗ)" />
 
 

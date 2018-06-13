@@ -162,7 +162,7 @@ public class SignupUserInfoActivity extends AppCompatActivity {
         switch (requestCode) {
             case ImmutableValue.CAMERA_SELECT_IMAGE_CODE:
                 if (resultCode == RESULT_OK) {
-                    cameraObj.showImageGallery(data, imgShowCMND, SignupUserInfoActivity.this);
+                    //cameraObj.showImageGallery(data, imgShowCMND, SignupUserInfoActivity.this);
 //                    Uri selectedImage = data.getData();
 //                    imgShowCMND.setImageURI(selectedImage);
 //                    try {
@@ -196,8 +196,6 @@ public class SignupUserInfoActivity extends AppCompatActivity {
             case ImmutableValue.CAMERA_OPEN_CODE:
                 if (resultCode == RESULT_OK) {
                     cameraObj.showImageCamera(imgShowCMND, SignupUserInfoActivity.this);
-
-
                     //cameraObj.showImageCamera(imgShowCMND, SignupUserInfoActivity.this);
 
 

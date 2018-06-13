@@ -65,7 +65,16 @@
                         android:padding="10dp"
                         android:textSize="16sp"
                         android:layout_below="@id/txt3"/>
-
+                    <TextView
+                        android:id="@+id/txt7"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Quản lý tài xế"
+                        android:textColor="#000"
+                        android:background="@drawable/border"
+                        android:padding="10dp"
+                        android:textSize="16sp"
+                        android:layout_below="@id/txt4"/>
                     <TextView
                         android:id="@+id/txt5"
                         android:layout_width="match_parent"
@@ -87,6 +96,16 @@
                         android:padding="10dp"
                         android:textSize="16sp"
                         android:layout_below="@id/txt5"/>
+                    <TextView
+                        android:id="@+id/txt8"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Xem feedback"
+                        android:textColor="#000"
+                        android:background="@drawable/border"
+                        android:padding="10dp"
+                        android:textSize="16sp"
+                        android:layout_below="@id/txt6"/>
 
                 </RelativeLayout>
 
@@ -139,7 +158,7 @@
                             android:id="@+id/ib_more_info"
                             android:layout_width="wrap_content"
                             app:layout_flexBasisPercent="@fraction/signup_btn"
-                            android:layout_height="70dp"
+                            android:layout_height="50dp"
                             android:layout_marginBottom="30dp"
                             android:gravity="center"
                             android:clickable="true"
@@ -161,7 +180,7 @@
                                 android:layout_toRightOf="@+id/imgMainSearch"
                                 android:layout_centerVertical="true"
                                 android:textColor="#fff"
-                                android:textSize="22sp"
+                                android:textSize="20sp"
                                 android:text="Tìm xe"/>
                         </RelativeLayout>
 

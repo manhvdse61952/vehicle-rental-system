@@ -41,7 +41,7 @@ public class SignupOwnerTwoPlus extends AppCompatActivity {
     private ImmutableValue cameraObj = new ImmutableValue();
     EditText edtVehicleFrameNumber, edtVehicleRent, edtVehicleDeposit;
     Button btnVehicleNext, btnVehicleBack;
-    CheckBox cbxHouseHold, cbxVehicle, cbxIdCard;
+    CheckBox cbxHouseHold, cbxIdCard;
     ImageView btnTakePictureVehicle, btnSelectPictureVehicle, imgSignupOwner;
 
     int required_household_registration = 0, required_vehicle_registration = 0, required_id_card = 0;
@@ -60,7 +60,6 @@ public class SignupOwnerTwoPlus extends AppCompatActivity {
         btnVehicleNext = (Button)findViewById(R.id.btnVehicleNext);
         btnVehicleBack = (Button)findViewById(R.id.btnVehicleBack);
         cbxHouseHold = (CheckBox)findViewById(R.id.cbxHouseHold);
-        cbxVehicle = (CheckBox)findViewById(R.id.cbxVehicle);
         cbxIdCard = (CheckBox)findViewById(R.id.cbxIdCard);
         btnTakePictureVehicle = (ImageView)findViewById(R.id.btnTakePictureVehicle);
         btnSelectPictureVehicle = (ImageView)findViewById(R.id.btnSelectPictureVehicle);
@@ -73,9 +72,6 @@ public class SignupOwnerTwoPlus extends AppCompatActivity {
         edtVehicleDeposit.setText(prefs.getString("deposit", ""));
         if (prefs.getInt("household_registration", 0) == 1){
             cbxHouseHold.setChecked(true);
-        }
-        if (prefs.getInt("vehicle_registration", 0) == 1){
-            cbxVehicle.setChecked(true);
         }
         if (prefs.getInt("id_card", 0) == 1){
             cbxIdCard.setChecked(true);
@@ -90,19 +86,6 @@ public class SignupOwnerTwoPlus extends AppCompatActivity {
                 }
                 else {
                     required_household_registration = 0;
-                }
-            }
-        });
-
-        //vehicle_registration
-        cbxVehicle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (((CheckBox)view).isChecked()){
-                    required_vehicle_registration = 1;
-                }
-                else {
-                    required_vehicle_registration = 0;
                 }
             }
         });
@@ -134,7 +117,7 @@ public class SignupOwnerTwoPlus extends AppCompatActivity {
                 editor.putString("rent", rent);
                 editor.putString("deposit", deposit);
                 editor.putInt("household_registration", required_household_registration);
-                editor.putInt("vehicle_registration", required_vehicle_registration);
+                editor.putInt("vehicle_registration", 0);
                 editor.putInt("id_card", required_id_card);
                 editor.putString("picture_path", ImmutableValue.picturePath);
                 editor.apply();
@@ -216,6 +199,7 @@ public class SignupOwnerTwoPlus extends AppCompatActivity {
         switch (requestCode) {
             case ImmutableValue.CAMERA_SELECT_IMAGE_CODE:
                 if (resultCode == RESULT_OK) {
+                    cameraObj.showImageGallery(data, imgSignupOwner, SignupOwnerTwoPlus.this);
 //                    Uri selectedImage = data.getData();
 //                    imgSignupOwner.setImageURI(selectedImage);
 //                    try {

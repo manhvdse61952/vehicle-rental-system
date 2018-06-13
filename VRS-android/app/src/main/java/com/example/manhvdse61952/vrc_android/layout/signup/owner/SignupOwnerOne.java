@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.manhvdse61952.vrc_android.R;
+import com.example.manhvdse61952.vrc_android.layout.signup.customer.SignupRoleActivity;
 import com.example.manhvdse61952.vrc_android.model.VehicleType;
 
 public class SignupOwnerOne extends AppCompatActivity {
@@ -50,5 +51,12 @@ public class SignupOwnerOne extends AppCompatActivity {
                 startActivity(it);
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent it = new Intent(SignupOwnerOne.this, SignupRoleActivity.class);
+        startActivity(it);
     }
 }
