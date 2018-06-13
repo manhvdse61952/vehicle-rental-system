@@ -45,7 +45,7 @@ public class SignupUserInfoActivity extends AppCompatActivity {
     ImageView imgPictureCMND, imgShowCMND, imgSelectPictureCMND;
     //String receiveValue = "";
     //Signup signup = new Signup();
-    EditText edtSignupName, edtSignupPhone, edtSignupCNMD, edtSignupPaypal;
+    EditText edtSignupName, edtSignupPhone, edtSignupCNMD;
     Spinner spnAddress;
     String name = "", phone = "", cmnd = "", paypal = "", address = "";
     //private String pictureFilePath = "";
@@ -89,14 +89,14 @@ public class SignupUserInfoActivity extends AppCompatActivity {
                 //Declare id
                 edtSignupName = (EditText) findViewById(R.id.edtSignupName);
                 edtSignupPhone = (EditText) findViewById(R.id.edtSignupPhone);
-                edtSignupPaypal = (EditText) findViewById(R.id.edtSignupPaypal);
+                //edtSignupPaypal = (EditText) findViewById(R.id.edtSignupPaypal);
                 spnAddress = (Spinner) findViewById(R.id.spnAddress);
 
                 //Get value from edittex
                 name = edtSignupName.getText().toString();
                 phone = edtSignupPhone.getText().toString();
                 cmnd = edtSignupCNMD.getText().toString();
-                paypal = edtSignupPaypal.getText().toString();
+                //paypal = edtSignupPaypal.getText().toString();
                 address = spnAddress.getSelectedItem().toString();
 
                 //save data to shared preferences
@@ -104,7 +104,7 @@ public class SignupUserInfoActivity extends AppCompatActivity {
                 editor.putString("name", name);
                 editor.putString("phone", phone);
                 editor.putString("cmnd", cmnd);
-                editor.putString("paypal", paypal);
+                editor.putString("paypal", "default");
                 editor.putString("address", address);
                 editor.putString("CMND_image_path", ImmutableValue.picturePath);
                 editor.apply();
@@ -161,7 +161,8 @@ public class SignupUserInfoActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case ImmutableValue.CAMERA_SELECT_IMAGE_CODE:
-//                if (resultCode == RESULT_OK) {
+                if (resultCode == RESULT_OK) {
+                    cameraObj.showImageGallery(data, imgShowCMND, SignupUserInfoActivity.this);
 //                    Uri selectedImage = data.getData();
 //                    imgShowCMND.setImageURI(selectedImage);
 //                    try {
@@ -189,7 +190,7 @@ public class SignupUserInfoActivity extends AppCompatActivity {
 //                    } catch (IOException e) {
 //                        e.printStackTrace();
 //                    }
-//                }
+                }
                 break;
 
             case ImmutableValue.CAMERA_OPEN_CODE:

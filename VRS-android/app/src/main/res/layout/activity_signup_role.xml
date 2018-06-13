@@ -34,14 +34,14 @@
                 android:layout_marginTop="20dp"
                 app:justifyContent="space_around">
 
-                <android.support.v7.widget.AppCompatImageView
+                <ImageView
                     android:id="@+id/customer_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_flexBasisPercent="@fraction/signup_img"
-                    app:srcCompat="@drawable/img_customer"/>
+                    app:srcCompat="@drawable/img_customer_edit_2" />
 
-                <android.support.v7.widget.AppCompatImageView
+                <ImageView
                     android:id="@+id/owner_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

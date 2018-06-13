@@ -21,7 +21,7 @@ public class SignupAccountActivity extends AppCompatActivity {
     private String username = "", password = "", email = "";
 
     /////////////// use for test ////////////
-    TextView txtSignupEmail;
+    //TextView txtSignupEmail;
     /////////////////////////////////////////
 
     @Override
@@ -71,16 +71,16 @@ public class SignupAccountActivity extends AppCompatActivity {
 
 
         /////////////////////////// Use for test ////////////////////////////
-        txtSignupEmail = (TextView)findViewById(R.id.txtSignupEmail);
-        txtSignupEmail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                email = edtSignupEmail.getText().toString();
-                email = email + "@gmail.com";
-                edtSignupEmail.setText(email);
-
-            }
-        });
+//        txtSignupEmail = (TextView)findViewById(R.id.txtSignupEmail);
+//        txtSignupEmail.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                email = edtSignupEmail.getText().toString();
+//                email = email + "@gmail.com";
+//                edtSignupEmail.setText(email);
+//
+//            }
+//        });
         /////////////////////////////////////////////////////////////////////
     }
 
