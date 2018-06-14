@@ -24,7 +24,7 @@
             android:layout_marginBottom="10dp"
             android:text="Điều khoản sử dụng" />
         <ScrollView
-            android:background="@drawable/border"
+            android:background="@drawable/border_white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="5dp"

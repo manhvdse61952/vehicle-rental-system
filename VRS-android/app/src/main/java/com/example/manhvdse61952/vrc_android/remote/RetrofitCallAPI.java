@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.widget.Toast;
 
+import com.example.manhvdse61952.vrc_android.activity_main_2;
 import com.example.manhvdse61952.vrc_android.api.AccountAPI;
 import com.example.manhvdse61952.vrc_android.layout.login.LoginActivity;
 import com.example.manhvdse61952.vrc_android.layout.main.MainActivity;
@@ -42,7 +43,7 @@ public class RetrofitCallAPI {
                 if (response.body() == null) {
                     Toast.makeText(ctx, "Sai tài khoản hoặc mật khẩu", Toast.LENGTH_SHORT).show();
                 } else {
-                    Intent it = new Intent(ctx, MainActivity.class);
+                    Intent it = new Intent(ctx, activity_main_2.class);
                     it.putExtra(ImmutableValue.MESSAGE_CODE, username);
                     ctx.startActivity(it);
                 }

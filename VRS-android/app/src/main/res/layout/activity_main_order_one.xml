@@ -40,7 +40,7 @@
                     app:layout_flexBasisPercent="@fraction/signup_owner_vehicle_type"
                     android:text="nhận xe tại chỗ"
                     android:textSize="18sp"
-                    android:background="#0097A7"
+                    android:background="@color/colorPrimary"
                     android:textColor="#fff"/>
                 <Button
                     android:id="@+id/btnSignupOwner2"
@@ -49,7 +49,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:textSize="18sp"
-                    android:background="#0097A7"
+                    android:background="@color/colorPrimary"
                     android:textColor="#fff"
                     app:layout_flexBasisPercent="@fraction/signup_owner_vehicle_type"
                     android:text="tự đến lấy xe" />

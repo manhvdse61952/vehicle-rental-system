@@ -40,8 +40,8 @@ public class MainListSearchAdapter extends BaseAdapter{
     }
 
     private class ViewHolder{
-        ImageView imgSearchItem;
-        TextView txtSearchItemName, txtSearchItemSeat, txtSearchItemPrice, txtSearchItemDescription;
+        ImageView img_main;
+        TextView txt_main_name, txt_main_seat, txt_main_price;
     }
 
     @Override
@@ -50,22 +50,21 @@ public class MainListSearchAdapter extends BaseAdapter{
         final SearchItem obj = listSearchItem.get(i);
         if (view == null){
             holder = new ViewHolder();
-            view = inf.inflate(R.layout.activity_main_list_search_item, null);
-            holder.imgSearchItem = (ImageView)view.findViewById(R.id.imgSearchItem);
-            holder.txtSearchItemName = (TextView)view.findViewById(R.id.txtSearchItemName);
-            holder.txtSearchItemSeat = (TextView)view.findViewById(R.id.txtSearchItemSeat);
-            holder.txtSearchItemPrice = (TextView)view.findViewById(R.id.txtSearchItemPrice);
-            holder.txtSearchItemDescription = (TextView)view.findViewById(R.id.txtSearchItemDescription);
+            view = inf.inflate(R.layout.main_slider, null);
+            holder.img_main = (ImageView)view.findViewById(R.id.img_main);
+            holder.txt_main_name = (TextView)view.findViewById(R.id.txt_main_name);
+            holder.txt_main_seat = (TextView)view.findViewById(R.id.txt_main_seat);
+            holder.txt_main_price = (TextView)view.findViewById(R.id.txt_main_price);
+
             view.setTag(holder);
         } else {
             holder = (ViewHolder)view.getTag();
         }
         //holder.imgSearchItem.setImageResource(view.getResources().getIdentifier(obj.getImg_vehicle(), "drawable", view.getContext().getPackageName()));
-        holder.imgSearchItem.setImageResource(R.drawable.xe_oto);
-        holder.txtSearchItemName.setText(obj.getVehicle_name());
-        holder.txtSearchItemSeat.setText(obj.getSeat() + " chỗ");
-        holder.txtSearchItemPrice.setText(obj.getRent_price());
-        holder.txtSearchItemDescription.setText(obj.getVehicle_description());
+        holder.img_main.setImageResource(R.drawable.img_bus_huyndai_univer);
+        holder.txt_main_name.setText(obj.getVehicle_name());
+        holder.txt_main_seat.setText(obj.getSeat() + " chỗ");
+        holder.txt_main_price.setText(obj.getRent_price());
         return view;
     }
 }

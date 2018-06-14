@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.manhvdse61952.vrc_android">
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
-    <uses-permission android:name="android.permission.CAMERA"></uses-permission>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-feature android:name="android.hardware.camera" android:required="false" />
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
 
     <application
         android:allowBackup="true"
@@ -18,29 +21,69 @@
         <activity android:name=".layout.login.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".layout.signup.customer.SignupUserInfoActivity" android:screenOrientation="portrait"></activity>
-        <activity android:name=".layout.signup.customer.SignupUserInfoCameraActivity" android:screenOrientation="portrait"></activity>
-        <activity android:name=".layout.signup.customer.SignupAccountActivity" android:screenOrientation="portrait"></activity>
-        <activity android:name=".layout.signup.customer.SignupRoleActivity" android:screenOrientation="portrait"></activity>
-        <activity android:name=".layout.signup.customer.SignupPolicyActivity" android:screenOrientation="portrait"></activity>
-        <activity android:name=".layout.signup.owner.SignupOwnerOne" android:screenOrientation="portrait"></activity>
-        <activity android:name=".layout.signup.owner.SignupOwnerTwo" android:screenOrientation="portrait"></activity>
-        <activity android:name=".layout.signup.owner.SignupOwnerTwoPlus" android:screenOrientation="portrait"></activity>
-        <activity android:name=".layout.signup.owner.SignupOwnerThree" android:screenOrientation="portrait"></activity>
-        <activity android:name=".layout.signup.owner.SignupOwnerFour" android:screenOrientation="portrait"></activity>
-        <activity android:name=".layout.signup.owner.SignupOwnerPolicy" android:screenOrientation="portrait"></activity>
-        <activity android:name=".layout.main.MainActivity" android:screenOrientation="portrait"></activity>
-        <activity android:name=".layout.main.MainListSearch" android:screenOrientation="portrait"></activity>
-        <activity android:name=".layout.main.MainItem" android:screenOrientation="portrait"></activity>
-        <activity android:name=".layout.order.MainOrderOne" android:screenOrientation="portrait"></activity>
-        <activity android:name=".layout.order.MainOrderTwo" android:screenOrientation="portrait"></activity>
-        <activity android:name=".layout.order.MainOrderThree" android:screenOrientation="portrait"></activity>
-        <activity android:name=".layout.order.MainOrderFour" android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".layout.signup.customer.SignupUserInfoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".layout.signup.customer.SignupUserInfoCameraActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".layout.signup.customer.SignupAccountActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".layout.signup.customer.SignupRoleActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".layout.signup.customer.SignupPolicyActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".layout.signup.owner.SignupOwnerOne"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".layout.signup.owner.SignupOwnerTwo"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".layout.signup.owner.SignupOwnerTwoPlus"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".layout.signup.owner.SignupOwnerThree"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".layout.signup.owner.SignupOwnerFour"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".layout.signup.owner.SignupOwnerPolicy"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".layout.main.MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".layout.main.MainListSearch"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".layout.main.MainItem"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".layout.order.MainOrderOne"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".layout.order.MainOrderTwo"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".layout.order.MainOrderThree"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".layout.order.MainOrderFour"
+            android:screenOrientation="portrait" />
 
-        <meta-data android:name="com.google.android.gms.vision.DEPENDENCIES" android:value="ocr"/>
+        <meta-data
+            android:name="com.google.android.gms.vision.DEPENDENCIES"
+            android:value="ocr" />
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="${applicationId}.provider"
@@ -48,8 +91,13 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_path"></meta-data>
+                android:resource="@xml/file_path" />
         </provider>
+
+        <activity
+            android:name=".activity_main_2"
+            android:label="@string/title_activity_main_2"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

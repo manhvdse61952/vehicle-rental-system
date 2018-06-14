@@ -22,9 +22,6 @@ public class SearchItem {
     @Expose
     private String rent_price;
 
-    @SerializedName("vehicle_description")
-    @Expose
-    private String vehicle_description;
 
 
     public String getImg_vehicle() {
@@ -49,14 +46,6 @@ public class SearchItem {
 
     public void setRent_price(String rent_price) {
         this.rent_price = rent_price;
-    }
-
-    public String getVehicle_description() {
-        return vehicle_description;
-    }
-
-    public void setVehicle_description(String vehicle_description) {
-        this.vehicle_description = vehicle_description;
     }
 
     public String getVehicle_name() {
