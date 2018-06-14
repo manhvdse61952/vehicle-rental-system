@@ -33,26 +33,41 @@
                 android:ems="10"
                 android:inputType="textMultiLine" />
 
-            <com.google.android.flexbox.FlexboxLayout
-                xmlns:android="http://schemas.android.com/apk/res/android"
+            <com.google.android.flexbox.FlexboxLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/signup_ico"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_marginTop="15dp"
                 app:alignItems="center"
+                android:layout_below="@+id/edtSignupVehicleDescription"
+                android:layout_marginTop="20dp"
                 app:flexWrap="wrap"
                 app:justifyContent="space_around">
 
                 <Button
-                    android:id="@+id/btnNext"
+                    android:id="@+id/btnVehicleBack"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/btn_login"
+                    android:text="Quay lại"
+                    android:textColor="#000"
+                    android:textAllCaps="false"
+                    android:textSize="18sp"
+                    app:layout_flexBasisPercent="@fraction/signup_btn" />
+
+                <Button
+                    android:id="@+id/btnVehicleNext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_gravity="center_horizontal"
                     android:background="@drawable/btn_next"
-                    android:textColor="#fff"
-                    app:layout_flexBasisPercent="@fraction/signup_img"
-                    android:layout_below="@+id/cbxSignupOwner3"
-                    android:text="tiếp tục" />
+                    android:text="Tiếp tục"
+                    android:textColor="#FFF"
+                    android:textAllCaps="false"
+                    android:textSize="18sp"
+                    app:layout_flexBasisPercent="@fraction/signup_btn" />
 
             </com.google.android.flexbox.FlexboxLayout>
         </RelativeLayout>

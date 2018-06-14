@@ -39,6 +39,7 @@
             android:src="@drawable/ic_camera"
             android:padding="10dp"/>
         <ImageView
+            android:id="@+id/btnSelectPictureVehicle1"
             android:layout_width="0dp"
             android:layout_weight="2"
             android:layout_height="match_parent"
@@ -80,6 +81,7 @@
             android:src="@drawable/ic_camera"
             android:padding="10dp"/>
         <ImageView
+            android:id="@+id/btnSelectPictureVehicle2"
             android:layout_width="0dp"
             android:layout_weight="2"
             android:layout_height="match_parent"

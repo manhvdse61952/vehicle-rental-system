@@ -44,6 +44,7 @@ public class ImmutableValue {
     public static final int CAMERA_VEHICLE_CODE_6 = 206;
 
     public static final int CAMERA_SELECT_IMAGE_CODE = 1;
+    public static final int CAMERA_SELECT_IMAGE_CODE_2 = 2;
     public static final String SHARED_PREFERENCES_CODE = "VRS_GLOBAL_VALUE";
     public static String picturePath = "";
 

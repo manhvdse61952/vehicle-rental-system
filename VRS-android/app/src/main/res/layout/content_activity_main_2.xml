@@ -37,7 +37,7 @@
             </LinearLayout>
             <android.support.v4.view.ViewPager
                 android:id="@+id/viewPagerMotorbycle"
-                android:layout_height="264dp"
+                android:layout_height="280dp"
                 android:layout_marginTop="10dp"
                 android:layout_width="match_parent">
             </android.support.v4.view.ViewPager>
@@ -64,7 +64,7 @@
             </LinearLayout>
             <android.support.v4.view.ViewPager
                 android:id="@+id/viewPagerCar"
-                android:layout_height="264dp"
+                android:layout_height="280dp"
                 android:layout_marginTop="10dp"
                 android:layout_width="match_parent">
             </android.support.v4.view.ViewPager>
@@ -91,7 +91,7 @@
             </LinearLayout>
             <android.support.v4.view.ViewPager
                 android:id="@+id/viewPagerBus"
-                android:layout_height="264dp"
+                android:layout_height="280dp"
                 android:layout_marginTop="10dp"
                 android:layout_width="match_parent">
             </android.support.v4.view.ViewPager>

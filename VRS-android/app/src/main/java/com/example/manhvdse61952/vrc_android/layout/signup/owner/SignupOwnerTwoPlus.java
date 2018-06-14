@@ -12,6 +12,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -25,6 +26,7 @@ import android.widget.Toast;
 import com.example.manhvdse61952.vrc_android.R;
 import com.example.manhvdse61952.vrc_android.layout.signup.customer.SignupUserInfoActivity;
 import com.example.manhvdse61952.vrc_android.remote.ImmutableValue;
+import com.example.manhvdse61952.vrc_android.remote.Validate;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
@@ -43,10 +45,10 @@ public class SignupOwnerTwoPlus extends AppCompatActivity {
     Button btnVehicleNext, btnVehicleBack;
     CheckBox cbxHouseHold, cbxIdCard;
     ImageView btnTakePictureVehicle, btnSelectPictureVehicle, imgSignupOwner;
+    Validate validObj;
 
     int required_household_registration = 0, required_vehicle_registration = 0, required_id_card = 0;
     String frameNumber = "", rent = "", deposit = "";
-    //private String pictureFilePath = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,16 +68,16 @@ public class SignupOwnerTwoPlus extends AppCompatActivity {
         imgSignupOwner = (ImageView)findViewById(R.id.imgSignupOwner);
 
         //Save value when user press back button
-        SharedPreferences prefs = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE);
-        edtVehicleFrameNumber.setText(prefs.getString("frameNumber", ""));
-        edtVehicleRent.setText(prefs.getString("rent", ""));
-        edtVehicleDeposit.setText(prefs.getString("deposit", ""));
-        if (prefs.getInt("household_registration", 0) == 1){
-            cbxHouseHold.setChecked(true);
-        }
-        if (prefs.getInt("id_card", 0) == 1){
-            cbxIdCard.setChecked(true);
-        }
+//        SharedPreferences prefs = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE);
+//        edtVehicleFrameNumber.setText(prefs.getString("frameNumber", ""));
+//        edtVehicleRent.setText(prefs.getString("rent", ""));
+//        edtVehicleDeposit.setText(prefs.getString("deposit", ""));
+//        if (prefs.getInt("household_registration", 0) == 1){
+//            cbxHouseHold.setChecked(true);
+//        }
+//        if (prefs.getInt("id_card", 0) == 1){
+//            cbxIdCard.setChecked(true);
+//        }
 
         //house_hold checkbox
         cbxHouseHold.setOnClickListener(new View.OnClickListener() {
@@ -111,20 +113,29 @@ public class SignupOwnerTwoPlus extends AppCompatActivity {
                 rent = edtVehicleRent.getText().toString();
                 deposit = edtVehicleDeposit.getText().toString();
 
-                //Declare shared preferences
-                SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
-                editor.putString("frameNumber", frameNumber);
-                editor.putString("rent", rent);
-                editor.putString("deposit", deposit);
-                editor.putInt("household_registration", required_household_registration);
-                editor.putInt("vehicle_registration", 0);
-                editor.putInt("id_card", required_id_card);
-                editor.putString("picture_path", ImmutableValue.picturePath);
-                editor.apply();
+                validObj = new Validate();
+                Boolean checkFrameNumber = validObj.validFrameNumber(frameNumber, edtVehicleFrameNumber);
+                Boolean checkRentPrice = validObj.validPrice(rent, edtVehicleRent);
+                Boolean checkDepositPrice = validObj.validPrice(deposit, edtVehicleDeposit);
+                Boolean checkImageLink = validObj.validImageLink(ImmutableValue.picturePath, SignupOwnerTwoPlus.this);
 
-                //Start signupOwnerThree activity
-                Intent it = new Intent(SignupOwnerTwoPlus.this, SignupOwnerThree.class);
-                startActivity(it);
+                if (checkFrameNumber && checkRentPrice && checkDepositPrice && checkImageLink){
+                    //Declare shared preferences
+                    SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
+                    editor.putString("frameNumber", frameNumber);
+                    editor.putString("rent", rent);
+                    editor.putString("deposit", deposit);
+                    editor.putInt("household_registration", required_household_registration);
+                    editor.putInt("vehicle_registration", 0);
+                    editor.putInt("id_card", required_id_card);
+                    editor.putString("picture_path", ImmutableValue.picturePath);
+                    editor.apply();
+
+                    //Start signupOwnerThree activity
+                    Intent it = new Intent(SignupOwnerTwoPlus.this, SignupOwnerThree.class);
+                    startActivity(it);
+                }
+
             }
         });
 

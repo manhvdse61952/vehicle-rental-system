@@ -13,7 +13,7 @@ import com.example.manhvdse61952.vrc_android.model.VehicleType;
 
 public class SignupOwnerOne extends AppCompatActivity {
 
-    Button btnSignupVehicle1, btnSignupVehicle2, btnSignupVehicle3;
+    Button btnSignupVehicle1, btnSignupVehicle2, btnSignupVehicle3, btnSignupAccountBack;
     private final String VEHICLE_TYPE = "VEHICLE_TYPE";
 
     @Override
@@ -24,6 +24,7 @@ public class SignupOwnerOne extends AppCompatActivity {
         btnSignupVehicle1 = (Button) findViewById(R.id.btnSignupOwner1);
         btnSignupVehicle2 = (Button) findViewById(R.id.btnSignupOwner2);
         btnSignupVehicle3 = (Button) findViewById(R.id.btnSignupOwner3);
+        btnSignupAccountBack = (Button)findViewById(R.id.btnSignupAccountBack);
 
         btnSignupVehicle1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,6 +49,14 @@ public class SignupOwnerOne extends AppCompatActivity {
             public void onClick(View view) {
                 Intent it = new Intent(SignupOwnerOne.this, SignupOwnerTwo.class);
                 it.putExtra(VEHICLE_TYPE, VehicleType.BUS.toString());
+                startActivity(it);
+            }
+        });
+
+        btnSignupAccountBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent it = new Intent(SignupOwnerOne.this, SignupRoleActivity.class);
                 startActivity(it);
             }
         });

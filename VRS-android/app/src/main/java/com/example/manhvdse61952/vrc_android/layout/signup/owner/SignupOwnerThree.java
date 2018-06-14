@@ -22,7 +22,7 @@ public class SignupOwnerThree extends AppCompatActivity {
 
     Button btnNext;
     String imgPath_1 = "", imgPath_2 = "";
-    ImageView btnTakePictureVehicle1, btnTakePictureVehicle2;
+    ImageView btnTakePictureVehicle1, btnTakePictureVehicle2, btnSelectPictureVehicle1, btnSelectPictureVehicle2;
     ImageView imgShowVehicle1, imgShowVehicle2;
 
     //Testttttt /////////////
@@ -38,6 +38,8 @@ public class SignupOwnerThree extends AppCompatActivity {
         btnNext = (Button) findViewById(R.id.btnVehicleNext);
         btnTakePictureVehicle1 = (ImageView) findViewById(R.id.btnTakePictureVehicle1);
         btnTakePictureVehicle2 = (ImageView) findViewById(R.id.btnTakePictureVehicle2);
+        btnSelectPictureVehicle1 = (ImageView) findViewById(R.id.btnSelectPictureVehicle1);
+        btnSelectPictureVehicle2 = (ImageView) findViewById(R.id.btnSelectPictureVehicle2);
 //        btnTakePictureVehicle3 = (ImageView) findViewById(R.id.btnTakePictureVehicle3);
 //        btnTakePictureVehicle4 = (ImageView) findViewById(R.id.btnTakePictureVehicle4);
 //        btnTakePictureVehicle5 = (ImageView) findViewById(R.id.btnTakePictureVehicle5);
@@ -62,10 +64,29 @@ public class SignupOwnerThree extends AppCompatActivity {
         btnTakePictureVehicle2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                cameraObj.checkPermission(SignupOwnerThree.this, SignupOwnerThree.this,ImmutableValue.CAMERA_VEHICLE_CODE_2);
+                cameraObj.checkPermission(SignupOwnerThree.this, SignupOwnerThree.this, ImmutableValue.CAMERA_VEHICLE_CODE_2);
             }
         });
 
+        //Select gallery 1
+        btnSelectPictureVehicle1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent pickPhoto = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                pickPhoto.setType("image/*");
+                startActivityForResult(pickPhoto, ImmutableValue.CAMERA_SELECT_IMAGE_CODE);
+            }
+        });
+
+        //Select gallery 2
+        btnSelectPictureVehicle2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent pickPhoto = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                pickPhoto.setType("image/*");
+                startActivityForResult(pickPhoto, ImmutableValue.CAMERA_SELECT_IMAGE_CODE_2);
+            }
+        });
 //        //Take picture 3
 //        btnTakePictureVehicle3.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -143,6 +164,15 @@ public class SignupOwnerThree extends AppCompatActivity {
                     imgPath_2 = ImmutableValue.picturePath;
                 }
                 break;
+            case ImmutableValue.CAMERA_SELECT_IMAGE_CODE:
+                if (resultCode == RESULT_OK) {
+                    cameraObj.showImageGallery(data, imgShowVehicle1, SignupOwnerThree.this);
+                }
+                break;
+            case ImmutableValue.CAMERA_SELECT_IMAGE_CODE_2:
+                if (resultCode == RESULT_OK) {
+                    cameraObj.showImageGallery(data, imgShowVehicle2, SignupOwnerThree.this);
+                }
 //            case ImmutableValue.CAMERA_VEHICLE_CODE_3:
 //                if (resultCode == RESULT_OK) {
 //                    cameraObj.showImageCamera(imgShowVehicle3, SignupOwnerThree.this);
@@ -172,9 +202,9 @@ public class SignupOwnerThree extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode){
+        switch (requestCode) {
             case ImmutableValue.CAMERA_REQUEST_CODE:
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Intent it = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     startActivityForResult(it, ImmutableValue.CAMERA_OPEN_CODE);
 

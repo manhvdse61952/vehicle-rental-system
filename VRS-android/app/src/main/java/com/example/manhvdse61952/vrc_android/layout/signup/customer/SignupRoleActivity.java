@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import com.example.manhvdse61952.vrc_android.R;
@@ -17,39 +18,28 @@ import java.io.IOException;
 
 public class SignupRoleActivity extends AppCompatActivity {
 
-    //String receiveValue = "", imagePath = "";
-    //Signup signup = new Signup();
     ImageView imgCustomer, imgOwner;
+    Button btnSignupAccountBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup_role);
-//        Intent receiveIt = getIntent();
-//        receiveValue = receiveIt.getStringExtra(ImmutableValue.MESSAGE_CODE);
-//        imagePath = receiveIt.getStringExtra("PICTURE_FILE_PATH");
 
         imgCustomer = (ImageView) findViewById(R.id.customer_icon);
+        btnSignupAccountBack = (Button)findViewById(R.id.btnSignupAccountBack);
+
+        btnSignupAccountBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent it = new Intent(SignupRoleActivity.this, SignupUserInfoActivity.class);
+                startActivity(it);
+            }
+        });
+
         imgCustomer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                //get value from SignupUserInfo activity
-//                ObjectMapper objectMapper = new ObjectMapper();
-//                try {
-//                    signup = objectMapper.readValue(receiveValue, Signup.class);
-//                    signup.setRolename("ROLE_USER");
-//
-//                    //add value to json object to pass it from SignupRole activity to SignupPolicy activity
-//                    Intent it = new Intent(SignupRoleActivity.this, SignupPolicyActivity.class);
-//                    it.putExtra(ImmutableValue.MESSAGE_CODE, objectMapper.writeValueAsString(signup));
-//                    it.putExtra("PICTURE_FILE_PATH", imagePath);
-//                    startActivity(it);
-//
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-
                 SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
                 editor.putString("rolename", "ROLE_USER");
                 editor.apply();

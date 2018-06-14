@@ -24,7 +24,7 @@ import java.io.IOException;
 
 public class SignupPolicyActivity extends AppCompatActivity {
 
-    Button btnAccept;
+    Button btnSignupAccountAccept, btnSignupAccountBack;
     CheckBox cbxSignupPolicy;
 
     ProgressDialog dialog;
@@ -35,7 +35,8 @@ public class SignupPolicyActivity extends AppCompatActivity {
         setContentView(R.layout.activity_signup_policy);
 
         //Declare id
-        btnAccept = (Button)findViewById(R.id.btnAccept);
+        btnSignupAccountAccept = (Button)findViewById(R.id.btnSignupAccountAccept);
+        btnSignupAccountBack = (Button)findViewById(R.id.btnSignupAccountBack);
         cbxSignupPolicy = (CheckBox)findViewById(R.id.cbxSignupPolicy);
 
         //Checkbox
@@ -43,16 +44,16 @@ public class SignupPolicyActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (((CheckBox)view).isChecked()){
-                    btnAccept.setEnabled(true);
-                    btnAccept.setBackground(getResources().getDrawable(R.drawable.btn_accept));
+                    btnSignupAccountAccept.setEnabled(true);
+                    btnSignupAccountAccept.setBackground(getResources().getDrawable(R.drawable.btn_accept));
                 } else {
-                    btnAccept.setEnabled(false);
-                    btnAccept.setBackground(getResources().getDrawable(R.drawable.btn_accept_hide));
+                    btnSignupAccountAccept.setEnabled(false);
+                    btnSignupAccountAccept.setBackground(getResources().getDrawable(R.drawable.btn_accept_hide));
                 }
             }
         });
 
-        btnAccept.setOnClickListener(new View.OnClickListener() {
+        btnSignupAccountAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -81,6 +82,14 @@ public class SignupPolicyActivity extends AppCompatActivity {
                 } catch (JsonProcessingException e) {
                     e.printStackTrace();
                 }
+            }
+        });
+
+        btnSignupAccountBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent it = new Intent(SignupPolicyActivity.this, SignupRoleActivity.class);
+                startActivity(it);
             }
         });
 

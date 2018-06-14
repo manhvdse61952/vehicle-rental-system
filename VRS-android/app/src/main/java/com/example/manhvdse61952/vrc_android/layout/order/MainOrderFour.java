@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.manhvdse61952.vrc_android.R;
+import com.example.manhvdse61952.vrc_android.activity_main_2;
 import com.example.manhvdse61952.vrc_android.layout.main.MainActivity;
 
 public class MainOrderFour extends AppCompatActivity {
@@ -22,7 +23,7 @@ public class MainOrderFour extends AppCompatActivity {
         btnAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent it = new Intent(MainOrderFour.this, MainActivity.class);
+                Intent it = new Intent(MainOrderFour.this, activity_main_2.class);
                 startActivity(it);
             }
         });

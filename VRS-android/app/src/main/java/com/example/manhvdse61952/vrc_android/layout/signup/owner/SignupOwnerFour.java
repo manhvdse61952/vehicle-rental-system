@@ -44,7 +44,7 @@ import retrofit2.Retrofit;
 
 public class SignupOwnerFour extends AppCompatActivity {
 
-    Button btnNext;
+    Button btnVehicleNext, btnVehicleBack;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,13 +52,24 @@ public class SignupOwnerFour extends AppCompatActivity {
         setContentView(R.layout.activity_signup_owner_four);
 
 
-        btnNext = (Button)findViewById(R.id.btnNext);
-        btnNext.setOnClickListener(new View.OnClickListener() {
+        btnVehicleNext = (Button) findViewById(R.id.btnVehicleNext);
+        btnVehicleBack = (Button) findViewById(R.id.btnVehicleBack);
+        //Next button
+        btnVehicleNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent it = new Intent(SignupOwnerFour.this, SignupOwnerPolicy.class);
                 startActivity(it);
 
+            }
+        });
+
+        //Back button
+        btnVehicleBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent it = new Intent(SignupOwnerFour.this, SignupOwnerThree.class);
+                startActivity(it);
             }
         });
     }

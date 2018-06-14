@@ -30,6 +30,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.http.Header;
 
 public class RetrofitCallAPI {
 
@@ -40,8 +41,10 @@ public class RetrofitCallAPI {
         responseBodyCall.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if (response.body() == null) {
+                if (response.code() == 401) {
                     Toast.makeText(ctx, "Sai tài khoản hoặc mật khẩu", Toast.LENGTH_SHORT).show();
+                } else if (response.code() == 403) {
+                    Toast.makeText(ctx, "Tài khoản chưa được chấp nhận! Vui lòng quay lại sau", Toast.LENGTH_SHORT).show();
                 } else {
                     Intent it = new Intent(ctx, activity_main_2.class);
                     it.putExtra(ImmutableValue.MESSAGE_CODE, username);
@@ -103,15 +106,6 @@ public class RetrofitCallAPI {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 progressDialog.dismiss();
-//                JSONObject testObj = null;
-//                try {
-//                    testObj = new JSONObject(response.body().string());
-//                    //SharedPreferences.Editor editor = ctx.getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, ctx.MODE_PRIVATE).edit();
-//                    //editor.putString("user-id", testObj.get("message").toString());
-//                    //editor.apply();
-//                } catch(Exception e) {
-//
-//                }
                 AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
                 builder.setMessage("Chúng tôi sẽ gửi email cho bạn sau khi xác thực tài khoản thành công ! Cảm ơn bạn đã đăng ký VRS");
                 builder.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
@@ -123,6 +117,7 @@ public class RetrofitCallAPI {
                 });
                 AlertDialog alertDialog = builder.create();
                 alertDialog.show();
+                alertDialog.setCanceledOnTouchOutside(false);
 
             }
 

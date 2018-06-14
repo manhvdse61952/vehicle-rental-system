@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ import android.widget.Toast;
 import com.example.manhvdse61952.vrc_android.R;
 import com.example.manhvdse61952.vrc_android.model.Signup;
 import com.example.manhvdse61952.vrc_android.remote.ImmutableValue;
+import com.example.manhvdse61952.vrc_android.remote.Validate;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squareup.picasso.Picasso;
@@ -43,14 +45,12 @@ public class SignupUserInfoActivity extends AppCompatActivity {
     TextView txtTestCMND;
     Button btnBack, btnNext;
     ImageView imgPictureCMND, imgShowCMND, imgSelectPictureCMND;
-    //String receiveValue = "";
-    //Signup signup = new Signup();
     EditText edtSignupName, edtSignupPhone, edtSignupCNMD;
+    TextInputLayout signup_name_txt, signup_phone_txt, signup_cmnd_txt;
     Spinner spnAddress;
     String name = "", phone = "", cmnd = "", paypal = "", address = "";
-    //private String pictureFilePath = "";
+    Validate validObj;
 
-    //Testttttt /////////////
     private ImmutableValue cameraObj = new ImmutableValue();
 
 
@@ -58,16 +58,6 @@ public class SignupUserInfoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup_userinfo);
-
-        //get value from SignupAccount activity (username, password, email)
-//        Intent receiveIt = getIntent();
-//        receiveValue = receiveIt.getStringExtra(ImmutableValue.MESSAGE_CODE);
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        try {
-//            signup = objectMapper.readValue(receiveValue, Signup.class);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
 
 
         //Declare id
@@ -78,7 +68,9 @@ public class SignupUserInfoActivity extends AppCompatActivity {
         imgSelectPictureCMND = (ImageView) findViewById(R.id.imgSelectPictureCMND);
         edtSignupCNMD = (EditText) findViewById(R.id.edtSignupCMND);
         txtTestCMND = (TextView) findViewById(R.id.txtTest);
-
+        signup_name_txt = (TextInputLayout) findViewById(R.id.signup_name_txt);
+        signup_phone_txt = (TextInputLayout) findViewById(R.id.signup_phone_txt);
+        signup_cmnd_txt = (TextInputLayout) findViewById(R.id.signup_cmnd_txt);
 
         //button Next
         btnNext.setOnClickListener(new View.OnClickListener() {
@@ -89,30 +81,33 @@ public class SignupUserInfoActivity extends AppCompatActivity {
                 //Declare id
                 edtSignupName = (EditText) findViewById(R.id.edtSignupName);
                 edtSignupPhone = (EditText) findViewById(R.id.edtSignupPhone);
-                //edtSignupPaypal = (EditText) findViewById(R.id.edtSignupPaypal);
                 spnAddress = (Spinner) findViewById(R.id.spnAddress);
 
                 //Get value from edittex
                 name = edtSignupName.getText().toString();
                 phone = edtSignupPhone.getText().toString();
                 cmnd = edtSignupCNMD.getText().toString();
-                //paypal = edtSignupPaypal.getText().toString();
                 address = spnAddress.getSelectedItem().toString();
 
-                //save data to shared preferences
-                SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
-                editor.putString("name", name);
-                editor.putString("phone", phone);
-                editor.putString("cmnd", cmnd);
-                editor.putString("paypal", "default");
-                editor.putString("address", address);
-                editor.putString("CMND_image_path", ImmutableValue.picturePath);
-                editor.apply();
+                validObj = new Validate();
+                Boolean checkName = validObj.validName(name, edtSignupName);
+                Boolean checkPhone = validObj.validPhone(phone, edtSignupPhone);
+                Boolean checkCMND = validObj.validCMND(cmnd, edtSignupCNMD);
+                Boolean checkImage = validObj.validImageLink(ImmutableValue.picturePath, SignupUserInfoActivity.this);
+                if (checkName && checkPhone && checkCMND && checkImage) {
+                    //save data to shared preferences
+                    SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
+                    editor.putString("name", name);
+                    editor.putString("phone", phone);
+                    editor.putString("cmnd", cmnd);
+                    editor.putString("paypal", "default");
+                    editor.putString("address", address);
+                    editor.putString("CMND_image_path", ImmutableValue.picturePath);
+                    editor.apply();
 
-                Intent it = new Intent(SignupUserInfoActivity.this, SignupRoleActivity.class);
-                startActivity(it);
-
-
+                    Intent it = new Intent(SignupUserInfoActivity.this, SignupRoleActivity.class);
+                    startActivity(it);
+                }
             }
         });
 
@@ -162,7 +157,7 @@ public class SignupUserInfoActivity extends AppCompatActivity {
         switch (requestCode) {
             case ImmutableValue.CAMERA_SELECT_IMAGE_CODE:
                 if (resultCode == RESULT_OK) {
-                    //cameraObj.showImageGallery(data, imgShowCMND, SignupUserInfoActivity.this);
+                    cameraObj.showImageGallery(data, imgShowCMND, SignupUserInfoActivity.this);
 //                    Uri selectedImage = data.getData();
 //                    imgShowCMND.setImageURI(selectedImage);
 //                    try {

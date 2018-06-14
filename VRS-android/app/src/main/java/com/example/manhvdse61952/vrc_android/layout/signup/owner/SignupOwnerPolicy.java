@@ -40,7 +40,7 @@ import retrofit2.Retrofit;
 
 public class SignupOwnerPolicy extends AppCompatActivity {
 
-    Button btnAccept;
+    Button btnSignupAccept, btnSignupBack;
     CheckBox cbxSignupPolicy;
     ProgressDialog dialog;
     @Override
@@ -49,7 +49,8 @@ public class SignupOwnerPolicy extends AppCompatActivity {
         setContentView(R.layout.activity_signup_policy_owner);
 
         //Declare id
-        btnAccept = (Button)findViewById(R.id.btnAccept);
+        btnSignupAccept = (Button)findViewById(R.id.btnSignupAccept);
+        btnSignupBack = (Button)findViewById(R.id.btnSignupBack);
         cbxSignupPolicy = (CheckBox)findViewById(R.id.cbxSignupPolicy);
 
         //Checkbox
@@ -57,16 +58,17 @@ public class SignupOwnerPolicy extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (((CheckBox)view).isChecked()){
-                    btnAccept.setEnabled(true);
-                    btnAccept.setBackground(getResources().getDrawable(R.drawable.btn_accept));
+                    btnSignupAccept.setEnabled(true);
+                    btnSignupAccept.setBackground(getResources().getDrawable(R.drawable.btn_accept));
                 } else {
-                    btnAccept.setEnabled(false);
-                    btnAccept.setBackground(getResources().getDrawable(R.drawable.btn_accept_hide));
+                    btnSignupAccept.setEnabled(false);
+                    btnSignupAccept.setBackground(getResources().getDrawable(R.drawable.btn_accept_hide));
                 }
             }
         });
 
-        btnAccept.setOnClickListener(new View.OnClickListener() {
+        //Accept button
+        btnSignupAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 dialog = ProgressDialog.show(SignupOwnerPolicy.this, "Đăng ký",
@@ -118,12 +120,20 @@ public class SignupOwnerPolicy extends AppCompatActivity {
                         public void onFailure(Call<ResponseBody> call, Throwable t) {
                             dialog.dismiss();
                             Toast.makeText(SignupOwnerPolicy.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
-                            //progressDialog.dismiss();
                         }
                     });
                 } catch (JsonProcessingException e) {
                     e.printStackTrace();
                 }
+            }
+        });
+
+        //Back button
+        btnSignupBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent it = new Intent(SignupOwnerPolicy.this, SignupOwnerFour.class);
+                startActivity(it);
             }
         });
     }
@@ -207,6 +217,7 @@ public class SignupOwnerPolicy extends AppCompatActivity {
                     });
                     AlertDialog alertDialog = builder.create();
                     alertDialog.show();
+                    alertDialog.setCanceledOnTouchOutside(false);
                 }
 
                 @Override

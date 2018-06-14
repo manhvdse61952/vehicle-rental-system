@@ -41,7 +41,8 @@
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
                 android:inputType="text"
-                android:theme="@style/TextLabel">
+                android:theme="@style/SecondAppTheme"
+                app:errorTextAppearance="@style/error_apperance">
 
                 <EditText
                     android:id="@+id/username"
@@ -60,7 +61,8 @@
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
                 android:layout_marginTop="10dp"
-                android:theme="@style/TextLabel">
+                android:theme="@style/SecondAppTheme"
+                app:errorTextAppearance="@style/error_apperance">
 
                 <EditText
                     android:id="@+id/password"
