@@ -42,7 +42,6 @@
                 android:layout_marginRight="10dp"
                 android:hint="Tài khoản mới"
                 android:inputType="text"
-                android:text="tester5"
                 android:textColor="#000" />
 
         </android.support.design.widget.TextInputLayout>
@@ -64,7 +63,6 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:hint="Mật khẩu"
-                android:text="123789"
                 android:inputType="text"
                 android:textColor="#000" />
 
@@ -87,7 +85,6 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:hint="Email"
-                android:text="tester5@gmail.com"
                 android:inputType="textEmailAddress"
                 android:textColor="#000" />
 

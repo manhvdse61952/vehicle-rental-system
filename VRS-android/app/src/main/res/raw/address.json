@@ -1,0 +1,216 @@
+{
+  "address":[
+    {
+      "city": "Hồ Chí Minh",
+      "district": "quận 1"
+    },
+    {
+      "city": "Hồ Chí Minh",
+      "district": "quận 2"
+    },
+    {
+      "city": "Hồ Chí Minh",
+      "district": "quận 3"
+    },
+    {
+      "city": "Hồ Chí Minh",
+      "district": "quận 4"
+    },
+    {
+      "city": "Hồ Chí Minh",
+      "district": "quận 5"
+    },
+    {
+      "city": "Hồ Chí Minh",
+      "district": "quận 6"
+    },
+    {
+      "city": "Hồ Chí Minh",
+      "district": "quận 7"
+    },
+    {
+      "city": "Hồ Chí Minh",
+      "district": "quận 8"
+    },
+    {
+      "city": "Hồ Chí Minh",
+      "district": "quận 9"
+    },
+    {
+      "city": "Hồ Chí Minh",
+      "district": "quận 10"
+    },
+    {
+      "city": "Hồ Chí Minh",
+      "district": "quận 11"
+    },
+    {
+      "city": "Hồ Chí Minh",
+      "district": "quận 12"
+    },
+    {
+      "city": "Hồ Chí Minh",
+      "district": "quận Gò Vấp"
+    },
+    {
+      "city": "Hồ Chí Minh",
+      "district": "quận Thủ Đức"
+    },
+    {
+      "city": "Hồ Chí Minh",
+      "district": "quận Bình Thạnh"
+    },
+    {
+      "city": "Hồ Chí Minh",
+      "district": "quận Tân Bình"
+    },
+    {
+      "city": "Hồ Chí Minh",
+      "district": "quận Tân Phú"
+    },
+    {
+      "city": "Hồ Chí Minh",
+      "district": "quận Phú Nhuận"
+    },
+    {
+      "city": "Hồ Chí Minh",
+      "district": "quận Bình Tân"
+    },
+    {
+      "city": "Hồ Chí Minh",
+      "district": "huyện Củ Chi"
+    },
+    {
+      "city": "Hồ Chí Minh",
+      "district": "huyện Hóc Môn"
+    },
+    {
+      "city": "Hồ Chí Minh",
+      "district": "huyện Bình Chánh"
+    },
+    {
+      "city": "Hồ Chí Minh",
+      "district": "huyện Nhà Bè"
+    },
+    {
+      "city": "Hồ Chí Minh",
+      "district": "huyện Cần Giờ"
+    },
+    {
+      "city": "Hà Nội",
+      "district": "quận Ba Đình"
+    },
+    {
+      "city": "Hà Nội",
+      "district": "quận Hoàn Kiếm"
+    },
+    {
+      "city": "Hà Nội",
+      "district": "quận Hai Bà Trưng"
+    },
+    {
+      "city": "Hà Nội",
+      "district": "quận Đống Đa"
+    },
+    {
+      "city": "Hà Nội",
+      "district": "quận Tây Hồ"
+    },
+    {
+      "city": "Hà Nội",
+      "district": "quận Cầu Giấy"
+    },
+    {
+      "city": "Hà Nội",
+      "district": "quận Thanh Xuân"
+    },
+    {
+      "city": "Hà Nội",
+      "district": "quận Hoàng Mai"
+    },
+    {
+      "city": "Hà Nội",
+      "district": "quận Long Biên"
+    },
+    {
+      "city": "Hà Nội",
+      "district": "huyện Từ Liêm"
+    },
+    {
+      "city": "Hà Nội",
+      "district": "huyện Thanh Trì"
+    },
+    {
+      "city": "Hà Nội",
+      "district": "huyện Gia Lâm"
+    },
+    {
+      "city": "Hà Nội",
+      "district": "huyện Đông Anh"
+    },
+    {
+      "city": "Hà Nội",
+      "district": "huyện Sóc Sơn"
+    },
+    {
+      "city": "Hà Nội",
+      "district": "quận Hà Đông"
+    },
+    {
+      "city": "Hà Nội",
+      "district": "thị xã Sơn Tây"
+    },
+    {
+      "city": "Hà Nội",
+      "district": "huyện Ba Vì"
+    },
+    {
+      "city": "Hà Nội",
+      "district": "huyện Phúc Thọ"
+    },
+    {
+      "city": "Hà Nội",
+      "district": "huyện Thạch Thất"
+    },
+    {
+      "city": "Hà Nội",
+      "district": "huyện Quốc Oai"
+    },
+    {
+      "city": "Hà Nội",
+      "district": "huyện Chương Mỹ"
+    },
+    {
+      "city": "Hà Nội",
+      "district": "huyện Đan Phượng"
+    },
+    {
+      "city": "Hà Nội",
+      "district": "huyện Hoài Đức"
+    },
+    {
+      "city": "Hà Nội",
+      "district": "huyện Thanh Oai"
+    },
+    {
+      "city": "Hà Nội",
+      "district": "huyện Mỹ Đức"
+    },
+    {
+      "city": "Hà Nội",
+      "district": "huyện Ứng Hòa"
+    },
+    {
+      "city": "Hà Nội",
+      "district": "huyện Thường Tín"
+    },
+    {
+      "city": "Hà Nội",
+      "district": "huyện Phú Xuyên"
+    },
+    {
+      "city": "Hà Nội",
+      "district": "huyện Mê Linh"
+    }
+  ]
+}

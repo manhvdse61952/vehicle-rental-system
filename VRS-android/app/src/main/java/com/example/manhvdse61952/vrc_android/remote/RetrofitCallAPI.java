@@ -5,20 +5,16 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.widget.Toast;
 
-import com.example.manhvdse61952.vrc_android.activity_main_2;
+import com.example.manhvdse61952.vrc_android.layout.main.activity_main_2;
 import com.example.manhvdse61952.vrc_android.api.AccountAPI;
 import com.example.manhvdse61952.vrc_android.layout.login.LoginActivity;
-import com.example.manhvdse61952.vrc_android.layout.main.MainActivity;
 import com.example.manhvdse61952.vrc_android.layout.signup.customer.SignupUserInfoActivity;
 import com.example.manhvdse61952.vrc_android.model.Account;
 import com.example.manhvdse61952.vrc_android.model.Signup;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import org.json.JSONObject;
 
 import java.io.File;
 
@@ -30,7 +26,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.http.Header;
 
 public class RetrofitCallAPI {
 

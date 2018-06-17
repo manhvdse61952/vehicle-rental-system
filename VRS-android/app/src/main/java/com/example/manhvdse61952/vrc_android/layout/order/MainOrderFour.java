@@ -8,8 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.manhvdse61952.vrc_android.R;
-import com.example.manhvdse61952.vrc_android.activity_main_2;
-import com.example.manhvdse61952.vrc_android.layout.main.MainActivity;
+import com.example.manhvdse61952.vrc_android.layout.main.activity_main_2;
 
 public class MainOrderFour extends AppCompatActivity {
 

@@ -143,4 +143,15 @@ public class Validate {
         }
         return isValid;
     }
+
+    public String removeAccentCharacter(String str){
+        str = str.toLowerCase();
+        str = str.replaceAll("[áàảãạâấầẩẫậăắằẳẵặ]","a");
+        str = str.replaceAll("đ","d");
+        str = str.replaceAll("[éèẻẽẹêếềểễệ]","e");
+        str = str.replaceAll("[íìỉĩị]","i");
+        str = str.replaceAll("[óòỏõọôốồổỗộơớờởỡợ]","o");
+        str = str.replaceAll("[úùủũụưứừửữự]","u");
+        return str;
+    }
 }

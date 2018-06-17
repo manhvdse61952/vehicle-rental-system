@@ -1,9 +1,7 @@
-package com.example.manhvdse61952.vrc_android;
+package com.example.manhvdse61952.vrc_android.layout.main;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -14,28 +12,42 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
 import android.widget.ImageView;
 
-import com.example.manhvdse61952.vrc_android.layout.main.MainListSearch;
-import com.example.manhvdse61952.vrc_android.layout.main.SliderMotorbycle;
-import com.example.manhvdse61952.vrc_android.layout.main.SliderPersonalCar;
-import com.example.manhvdse61952.vrc_android.layout.main.SliderTravelCar;
+import com.example.manhvdse61952.vrc_android.MapsActivity;
+import com.example.manhvdse61952.vrc_android.R;
+import com.example.manhvdse61952.vrc_android.model.Address;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public class activity_main_2 extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    public static List<Address> listAddress;
 
     SliderMotorbycle sld1;
     ViewPager viewPagerMotorbycle, viewPagerCar, viewPagerBus;
     SliderPersonalCar sld2;
     SliderTravelCar sld3;
-    ImageView main_search;
+    ImageView main_search, main_extra_search;
+    EditText edtMainSearch;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_2);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        edtMainSearch = (EditText)findViewById(R.id.edtMainSearch);
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
@@ -68,6 +80,21 @@ public class activity_main_2 extends AppCompatActivity
             }
         });
 
+        main_extra_search = (ImageView)findViewById(R.id.main_extra_search);
+        main_extra_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent it = new Intent(activity_main_2.this, MapsActivity.class);
+                startActivity(it);
+            }
+        });
+
+
+        //Search function
+        readAddressJsonFile();
+        edtMainSearch.setText("có " + listAddress.size() + " kết quả");
+
+        //Toggle the actionbar
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -133,5 +160,39 @@ public class activity_main_2 extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    //Read JSON File
+    public void readAddressJsonFile(){
+        listAddress = new ArrayList<Address>();
+        InputStream inputStream = this.getResources().openRawResource(R.raw.address);
+        String json = null;
+
+        //Read json file
+        try {
+            int size = inputStream.available();
+            byte[] buffer = new byte[size];
+            inputStream.read(buffer);
+            inputStream.close();
+            json = new String(buffer, "UTF-8");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //Move json file to list
+        try {
+            JSONObject obj = new JSONObject(json);
+            JSONArray jsonArray = obj.getJSONArray("address");
+            for (int i= 0; i< jsonArray.length(); i++){
+                JSONObject item = jsonArray.getJSONObject(i);
+                Address itemTemp = new Address();
+                itemTemp.setCity(item.getString("city"));
+                itemTemp.setDistrict(item.getString("district"));
+
+                listAddress.add(itemTemp);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }
