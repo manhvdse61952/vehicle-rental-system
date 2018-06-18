@@ -1,8 +1,17 @@
 package com.example.manhvdse61952.vrc_android.layout.main;
 
+import android.Manifest;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,16 +23,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import com.example.manhvdse61952.vrc_android.MapsActivity;
+import com.example.manhvdse61952.vrc_android.layout.login.LoginActivity;
+import com.example.manhvdse61952.vrc_android.layout.order.MapsActivity;
 import com.example.manhvdse61952.vrc_android.R;
 import com.example.manhvdse61952.vrc_android.model.Address;
+import com.example.manhvdse61952.vrc_android.remote.ImmutableValue;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -40,6 +52,15 @@ public class activity_main_2 extends AppCompatActivity
     SliderTravelCar sld3;
     ImageView main_search, main_extra_search;
     EditText edtMainSearch;
+
+    ///////////////////////use for get address/////////////////////
+
+    //    LocationManager locationManager;
+//    String longtitude, latitude;
+    TextView txtAddressString;
+    ImmutableValue locationObj = new ImmutableValue();
+    ///////////////////////////////////////////////////////////////
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +68,15 @@ public class activity_main_2 extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        edtMainSearch = (EditText)findViewById(R.id.edtMainSearch);
+        txtAddressString = (TextView) findViewById(R.id.txtAddressString);
+        txtAddressString.setText("Longtitude: " + ImmutableValue.longtitudeCurrent + "\n"
+                + "Latitude: " + ImmutableValue.latitudeCurrent + "\n"
+                + "Địa chỉ: " + ImmutableValue.address + "\n"
+                + "Quốc gia: " + ImmutableValue.country + "\n"
+                + "Thành phố: " + ImmutableValue.city + "\n"
+                + "Quận/huyện: " + ImmutableValue.district + "\n");
+
+        edtMainSearch = (EditText) findViewById(R.id.edtMainSearch);
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
@@ -59,19 +88,19 @@ public class activity_main_2 extends AppCompatActivity
 //        });
 
         //Use for motorbycle slider
-        viewPagerMotorbycle = (ViewPager)findViewById(R.id.viewPagerMotorbycle);
+        viewPagerMotorbycle = (ViewPager) findViewById(R.id.viewPagerMotorbycle);
         sld1 = new SliderMotorbycle(activity_main_2.this);
         viewPagerMotorbycle.setAdapter(sld1);
 
-        viewPagerCar = (ViewPager)findViewById(R.id.viewPagerCar);
+        viewPagerCar = (ViewPager) findViewById(R.id.viewPagerCar);
         sld2 = new SliderPersonalCar(activity_main_2.this);
         viewPagerCar.setAdapter(sld2);
 
-        viewPagerBus = (ViewPager)findViewById(R.id.viewPagerBus);
+        viewPagerBus = (ViewPager) findViewById(R.id.viewPagerBus);
         sld3 = new SliderTravelCar(activity_main_2.this);
         viewPagerBus.setAdapter(sld3);
 
-        main_search = (ImageView)findViewById(R.id.main_search);
+        main_search = (ImageView) findViewById(R.id.main_search);
         main_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -80,12 +109,13 @@ public class activity_main_2 extends AppCompatActivity
             }
         });
 
-        main_extra_search = (ImageView)findViewById(R.id.main_extra_search);
+        main_extra_search = (ImageView) findViewById(R.id.main_extra_search);
         main_extra_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent it = new Intent(activity_main_2.this, MapsActivity.class);
-                startActivity(it);
+//                Intent it = new Intent(activity_main_2.this, MapsActivity.class);
+//                startActivity(it);
+                locationObj.checkAddressPermission(activity_main_2.this, activity_main_2.this);
             }
         });
 
@@ -163,7 +193,7 @@ public class activity_main_2 extends AppCompatActivity
     }
 
     //Read JSON File
-    public void readAddressJsonFile(){
+    public void readAddressJsonFile() {
         listAddress = new ArrayList<Address>();
         InputStream inputStream = this.getResources().openRawResource(R.raw.address);
         String json = null;
@@ -183,7 +213,7 @@ public class activity_main_2 extends AppCompatActivity
         try {
             JSONObject obj = new JSONObject(json);
             JSONArray jsonArray = obj.getJSONArray("address");
-            for (int i= 0; i< jsonArray.length(); i++){
+            for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject item = jsonArray.getJSONObject(i);
                 Address itemTemp = new Address();
                 itemTemp.setCity(item.getString("city"));

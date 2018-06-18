@@ -15,6 +15,14 @@
             android:layout_width="match_parent"
             android:orientation="vertical"
             android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/txtAddressString"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Bạn đang ở "
+                android:gravity="center_vertical"
+                android:padding="5dp"
+                android:textColor="@color/secondary_text"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
