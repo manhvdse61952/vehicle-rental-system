@@ -1,214 +1,267 @@
 {
   "address":[
     {
+      "districtID": "1",
       "city": "Hồ Chí Minh",
       "district": "quận 1"
     },
     {
+      "districtID": "2",
       "city": "Hồ Chí Minh",
       "district": "quận 2"
     },
     {
+      "districtID": "3",
       "city": "Hồ Chí Minh",
       "district": "quận 3"
     },
     {
+      "districtID": "4",
       "city": "Hồ Chí Minh",
       "district": "quận 4"
     },
     {
+      "districtID": "5",
       "city": "Hồ Chí Minh",
       "district": "quận 5"
     },
     {
+      "districtID": "6",
       "city": "Hồ Chí Minh",
       "district": "quận 6"
     },
     {
+      "districtID": "7",
       "city": "Hồ Chí Minh",
       "district": "quận 7"
     },
     {
+      "districtID": "8",
       "city": "Hồ Chí Minh",
       "district": "quận 8"
     },
     {
+      "districtID": "9",
       "city": "Hồ Chí Minh",
       "district": "quận 9"
     },
     {
+      "districtID": "10",
       "city": "Hồ Chí Minh",
       "district": "quận 10"
     },
     {
+      "districtID": "11",
       "city": "Hồ Chí Minh",
       "district": "quận 11"
     },
     {
+      "districtID": "12",
       "city": "Hồ Chí Minh",
       "district": "quận 12"
     },
     {
+      "districtID": "13",
       "city": "Hồ Chí Minh",
       "district": "quận Gò Vấp"
     },
     {
+      "districtID": "14",
       "city": "Hồ Chí Minh",
       "district": "quận Thủ Đức"
     },
     {
+      "districtID": "15",
       "city": "Hồ Chí Minh",
       "district": "quận Bình Thạnh"
     },
     {
+      "districtID": "16",
       "city": "Hồ Chí Minh",
       "district": "quận Tân Bình"
     },
     {
+      "districtID": "17",
       "city": "Hồ Chí Minh",
       "district": "quận Tân Phú"
     },
     {
+      "districtID": "18",
       "city": "Hồ Chí Minh",
       "district": "quận Phú Nhuận"
     },
     {
+      "districtID": "19",
       "city": "Hồ Chí Minh",
       "district": "quận Bình Tân"
     },
     {
+      "districtID": "20",
       "city": "Hồ Chí Minh",
       "district": "huyện Củ Chi"
     },
     {
+      "districtID": "21",
       "city": "Hồ Chí Minh",
       "district": "huyện Hóc Môn"
     },
     {
+      "districtID": "22",
       "city": "Hồ Chí Minh",
       "district": "huyện Bình Chánh"
     },
     {
+      "districtID": "23",
       "city": "Hồ Chí Minh",
       "district": "huyện Nhà Bè"
     },
     {
+      "districtID": "24",
       "city": "Hồ Chí Minh",
       "district": "huyện Cần Giờ"
     },
     {
+      "districtID": "25",
       "city": "Hà Nội",
       "district": "quận Ba Đình"
     },
     {
+      "districtID": "26",
       "city": "Hà Nội",
       "district": "quận Hoàn Kiếm"
     },
     {
+      "districtID": "27",
       "city": "Hà Nội",
       "district": "quận Hai Bà Trưng"
     },
     {
+      "districtID": "28",
       "city": "Hà Nội",
       "district": "quận Đống Đa"
     },
     {
+      "districtID": "29",
       "city": "Hà Nội",
       "district": "quận Tây Hồ"
     },
     {
+      "districtID": "30",
       "city": "Hà Nội",
       "district": "quận Cầu Giấy"
     },
     {
+      "districtID": "31",
       "city": "Hà Nội",
       "district": "quận Thanh Xuân"
     },
     {
+      "districtID": "32",
       "city": "Hà Nội",
       "district": "quận Hoàng Mai"
     },
     {
+      "districtID": "33",
       "city": "Hà Nội",
       "district": "quận Long Biên"
     },
     {
+      "districtID": "34",
       "city": "Hà Nội",
       "district": "huyện Từ Liêm"
     },
     {
+      "districtID": "35",
       "city": "Hà Nội",
       "district": "huyện Thanh Trì"
     },
     {
+      "districtID": "36",
       "city": "Hà Nội",
       "district": "huyện Gia Lâm"
     },
     {
+      "districtID": "37",
       "city": "Hà Nội",
       "district": "huyện Đông Anh"
     },
     {
+      "districtID": "38",
       "city": "Hà Nội",
       "district": "huyện Sóc Sơn"
     },
     {
+      "districtID": "39",
       "city": "Hà Nội",
       "district": "quận Hà Đông"
     },
     {
+      "districtID": "40",
       "city": "Hà Nội",
       "district": "thị xã Sơn Tây"
     },
     {
+      "districtID": "41",
       "city": "Hà Nội",
       "district": "huyện Ba Vì"
     },
     {
+      "districtID": "42",
       "city": "Hà Nội",
       "district": "huyện Phúc Thọ"
     },
     {
+      "districtID": "43",
       "city": "Hà Nội",
       "district": "huyện Thạch Thất"
     },
     {
+      "districtID": "44",
       "city": "Hà Nội",
       "district": "huyện Quốc Oai"
     },
     {
+      "districtID": "45",
       "city": "Hà Nội",
       "district": "huyện Chương Mỹ"
     },
     {
+      "districtID": "46",
       "city": "Hà Nội",
       "district": "huyện Đan Phượng"
     },
     {
+      "districtID": "47",
       "city": "Hà Nội",
       "district": "huyện Hoài Đức"
     },
     {
+      "districtID": "48",
       "city": "Hà Nội",
       "district": "huyện Thanh Oai"
     },
     {
+      "districtID": "49",
       "city": "Hà Nội",
       "district": "huyện Mỹ Đức"
     },
     {
+      "districtID": "50",
       "city": "Hà Nội",
       "district": "huyện Ứng Hòa"
     },
     {
+      "districtID": "51",
       "city": "Hà Nội",
       "district": "huyện Thường Tín"
     },
     {
+      "districtID": "52",
       "city": "Hà Nội",
       "district": "huyện Phú Xuyên"
     },
     {
+      "districtID": "53",
       "city": "Hà Nội",
       "district": "huyện Mê Linh"
     }

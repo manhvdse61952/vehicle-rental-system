@@ -1,17 +1,9 @@
 package com.example.manhvdse61952.vrc_android.layout.main;
 
-import android.Manifest;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.support.v4.app.ActivityCompat;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AlertDialog;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -26,40 +18,27 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.manhvdse61952.vrc_android.layout.login.LoginActivity;
-import com.example.manhvdse61952.vrc_android.layout.order.MapsActivity;
 import com.example.manhvdse61952.vrc_android.R;
-import com.example.manhvdse61952.vrc_android.model.Address;
 import com.example.manhvdse61952.vrc_android.remote.ImmutableValue;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.List;
+
+import ir.mirrajabi.searchdialog.SimpleSearchDialogCompat;
+import ir.mirrajabi.searchdialog.core.BaseSearchDialogCompat;
+import ir.mirrajabi.searchdialog.core.SearchResultListener;
+import ir.mirrajabi.searchdialog.core.Searchable;
 
 public class activity_main_2 extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    public static List<Address> listAddress;
-
-    SliderMotorbycle sld1;
-    ViewPager viewPagerMotorbycle, viewPagerCar, viewPagerBus;
-    SliderPersonalCar sld2;
-    SliderTravelCar sld3;
     ImageView main_search, main_extra_search;
     EditText edtMainSearch;
 
-    ///////////////////////use for get address/////////////////////
-
-    //    LocationManager locationManager;
-//    String longtitude, latitude;
-    TextView txtAddressString;
-    ImmutableValue locationObj = new ImmutableValue();
-    ///////////////////////////////////////////////////////////////
+    ///////////////// USE FOR TAB LAYOUT /////////
+    public static ViewPager viewPager;
+    private TabLayout tabLayout;
+    public static SectionPageAdapter secAdapter;
+    /////////////////////////////////////////////////////////////
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,61 +47,41 @@ public class activity_main_2 extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        txtAddressString = (TextView) findViewById(R.id.txtAddressString);
-        txtAddressString.setText("Longtitude: " + ImmutableValue.longtitudeCurrent + "\n"
-                + "Latitude: " + ImmutableValue.latitudeCurrent + "\n"
-                + "Địa chỉ: " + ImmutableValue.address + "\n"
-                + "Quốc gia: " + ImmutableValue.country + "\n"
-                + "Thành phố: " + ImmutableValue.city + "\n"
-                + "Quận/huyện: " + ImmutableValue.district + "\n");
+
+        //////////////////////// USE FOR TABLAYOUT /////////////////
+        ImmutableValue importantObj = new ImmutableValue();
+        importantObj.readAddressJsonFile(activity_main_2.this);
+
+
+        viewPager = (ViewPager) findViewById(R.id.container);
+        setupViewPager(viewPager);
+        tabLayout = (TabLayout)findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
+        createTabIcons();
+        /////////////////////////////////////////////////////////////
 
         edtMainSearch = (EditText) findViewById(R.id.edtMainSearch);
-
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
-
-        //Use for motorbycle slider
-        viewPagerMotorbycle = (ViewPager) findViewById(R.id.viewPagerMotorbycle);
-        sld1 = new SliderMotorbycle(activity_main_2.this);
-        viewPagerMotorbycle.setAdapter(sld1);
-
-        viewPagerCar = (ViewPager) findViewById(R.id.viewPagerCar);
-        sld2 = new SliderPersonalCar(activity_main_2.this);
-        viewPagerCar.setAdapter(sld2);
-
-        viewPagerBus = (ViewPager) findViewById(R.id.viewPagerBus);
-        sld3 = new SliderTravelCar(activity_main_2.this);
-        viewPagerBus.setAdapter(sld3);
-
-        main_search = (ImageView) findViewById(R.id.main_search);
-        main_search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent it = new Intent(activity_main_2.this, MainListSearch.class);
-                startActivity(it);
-            }
-        });
-
         main_extra_search = (ImageView) findViewById(R.id.main_extra_search);
         main_extra_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                Intent it = new Intent(activity_main_2.this, MapsActivity.class);
 //                startActivity(it);
-                locationObj.checkAddressPermission(activity_main_2.this, activity_main_2.this);
+                //locationObj.checkAddressPermission(activity_main_2.this, activity_main_2.this);
+
+                /////////////////// USE FOR TEST SEARCH //////////////////////
+                new SimpleSearchDialogCompat(activity_main_2.this, "", "Nhập đia điểm cần kiếm xe", null, initData(), new SearchResultListener<Searchable>() {
+                    @Override
+                    public void onSelected(BaseSearchDialogCompat baseSearchDialogCompat, Searchable searchable, int i) {
+                        Toast.makeText(activity_main_2.this, "" + searchable.getTitle(), Toast.LENGTH_SHORT).show();
+                        if (!searchable.getTitle().equals("")){
+                            edtMainSearch.setText("" + searchable.getTitle());
+                        }
+                        baseSearchDialogCompat.dismiss();
+                    }
+                }).show();
             }
         });
-
-
-        //Search function
-        readAddressJsonFile();
-        edtMainSearch.setText("có " + listAddress.size() + " kết quả");
 
         //Toggle the actionbar
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -134,6 +93,55 @@ public class activity_main_2 extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
+
+    /////////////// USE for TAB Layout/////////
+    private void createTabIcons() {
+        TextView tabOne = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
+        tabOne.setText("Xe máy");
+        tabOne.setTextSize(15);
+        tabOne.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_motorcycle, 0, 0);
+        tabLayout.getTabAt(0).setCustomView(tabOne);
+
+        TextView tabTwo = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
+        tabTwo.setText("Ô tô cá nhân");
+        tabTwo.setTextSize(15);
+        tabTwo.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_car, 0, 0);
+        tabLayout.getTabAt(1).setCustomView(tabTwo);
+
+        TextView tabThree = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
+        tabThree.setText("Ô tô du lịch");
+        tabThree.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_bus, 0, 0);
+        tabThree.setTextSize(15);
+        tabLayout.getTabAt(2).setCustomView(tabThree);
+
+    }
+
+    private void setupViewPager(ViewPager viewPager){
+        secAdapter = new SectionPageAdapter(getSupportFragmentManager());
+        secAdapter.addFragment(new tab1(), "Xe máy");
+        secAdapter.addFragment(new tab2(), "Ô tô cá nhân");
+        secAdapter.addFragment(new tab3(), "Ô tô du lịch");
+        viewPager.setAdapter(secAdapter);
+    }
+
+
+    ///////////////////////////////////////////////////////////////
+
+
+
+
+    //////////////////////////////////// USE FOR SEARCH //////////////////////////////////
+    private ArrayList<SearchAddressModel> initData(){
+        ArrayList<SearchAddressModel> items = new ArrayList<>();
+        items.add(new SearchAddressModel("quan 1 ho chi minh"));
+        items.add(new SearchAddressModel("quan 2 ho chi minh"));
+        items.add(new SearchAddressModel("quan 3 ho chi minh"));
+        items.add(new SearchAddressModel("quan 4 ho chi minh"));
+        items.add(new SearchAddressModel("quan go vap ho chi minh"));
+        items.add(new SearchAddressModel("quan 5 ho chi minh"));
+        return items;
+    }
+    //////////////////////////////////////////////////////////////////////////////////////
 
     @Override
     public void onBackPressed() {
@@ -147,23 +155,17 @@ public class activity_main_2 extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.activity_main_2, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
         //noinspection SimplifiableIfStatement
 //        if (id == R.id.action_settings) {
 //            return true;
 //        }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -192,37 +194,5 @@ public class activity_main_2 extends AppCompatActivity
         return true;
     }
 
-    //Read JSON File
-    public void readAddressJsonFile() {
-        listAddress = new ArrayList<Address>();
-        InputStream inputStream = this.getResources().openRawResource(R.raw.address);
-        String json = null;
 
-        //Read json file
-        try {
-            int size = inputStream.available();
-            byte[] buffer = new byte[size];
-            inputStream.read(buffer);
-            inputStream.close();
-            json = new String(buffer, "UTF-8");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        //Move json file to list
-        try {
-            JSONObject obj = new JSONObject(json);
-            JSONArray jsonArray = obj.getJSONArray("address");
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject item = jsonArray.getJSONObject(i);
-                Address itemTemp = new Address();
-                itemTemp.setCity(item.getString("city"));
-                itemTemp.setDistrict(item.getString("district"));
-
-                listAddress.add(itemTemp);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
 }

@@ -7,102 +7,25 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".layout.main.activity_main_2"
     tools:showIn="@layout/app_bar_activity_main_2">
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="none">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:orientation="vertical"
             android:layout_height="wrap_content">
-            <TextView
-                android:id="@+id/txtAddressString"
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tabs"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Bạn đang ở "
-                android:gravity="center_vertical"
-                android:padding="5dp"
-                android:textColor="@color/secondary_text"/>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:orientation="horizontal"
-                android:layout_marginTop="10dp"
-                android:gravity="center_horizontal|center_vertical"
-                android:layout_height="wrap_content">
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:tint="@color/secondary_text"
-                    android:src="@drawable/ic_motorcycle"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Xe máy"
-                    android:gravity="center_horizontal"
-                    android:textSize="20sp"
-                    android:layout_marginLeft="10dp"
-                    android:textColor="@color/secondary_text"/>
-            </LinearLayout>
-            <android.support.v4.view.ViewPager
-                android:id="@+id/viewPagerMotorbycle"
-                android:layout_height="280dp"
-                android:layout_marginTop="10dp"
-                android:layout_width="match_parent">
-            </android.support.v4.view.ViewPager>
+                android:layout_height="70dp"
+                android:background="@color/primary_text"
+                app:tabIndicatorColor="@color/colorPrimary"
+                app:tabIndicatorHeight="5dp"/>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:orientation="horizontal"
-                android:layout_marginTop="20dp"
-                android:gravity="center_horizontal|center_vertical"
-                android:layout_height="wrap_content">
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:tint="@color/secondary_text"
-                    android:src="@drawable/ic_car"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Ô tô cá nhân"
-                    android:gravity="center_horizontal"
-                    android:textSize="20sp"
-                    android:layout_marginLeft="10dp"
-                    android:textColor="@color/secondary_text"/>
-            </LinearLayout>
             <android.support.v4.view.ViewPager
-                android:id="@+id/viewPagerCar"
-                android:layout_height="280dp"
-                android:layout_marginTop="10dp"
-                android:layout_width="match_parent">
-            </android.support.v4.view.ViewPager>
+                android:id="@+id/container"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:orientation="horizontal"
-                android:layout_marginTop="20dp"
-                android:gravity="center_horizontal|center_vertical"
-                android:layout_height="wrap_content">
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:tint="@color/secondary_text"
-                    android:src="@drawable/ic_bus"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Ô tô du lịch"
-                    android:gravity="center_horizontal"
-                    android:textSize="20sp"
-                    android:layout_marginLeft="10dp"
-                    android:textColor="@color/secondary_text"/>
-            </LinearLayout>
-            <android.support.v4.view.ViewPager
-                android:id="@+id/viewPagerBus"
-                android:layout_height="280dp"
-                android:layout_marginTop="10dp"
-                android:layout_width="match_parent">
-            </android.support.v4.view.ViewPager>
         </LinearLayout>
-    </ScrollView>
 </android.support.constraint.ConstraintLayout>

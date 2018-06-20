@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class Vehicle implements Serializable {
     private String frameNumber;
-    private double rentFee;
+    private double rentFeePerSlot;
     private double depositFee;
     private VehicleInformation vehicleInformation;
     public int ownerID;
@@ -14,7 +14,7 @@ public class Vehicle implements Serializable {
 
     public Vehicle(String frameNumber, double rentFee, double depositFee, VehicleInformation vehicleInformation, int ownerID) {
         this.frameNumber = frameNumber;
-        this.rentFee = rentFee;
+        this.rentFeePerSlot = rentFee;
         this.depositFee = depositFee;
         this.vehicleInformation = vehicleInformation;
         this.ownerID = ownerID;
@@ -29,11 +29,11 @@ public class Vehicle implements Serializable {
     }
 
     public double getRentFee() {
-        return rentFee;
+        return rentFeePerSlot;
     }
 
     public void setRentFee(double rentFee) {
-        this.rentFee = rentFee;
+        this.rentFeePerSlot = rentFee;
     }
 
     public double getDepositFee() {

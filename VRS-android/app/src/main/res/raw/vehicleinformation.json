@@ -1,0 +1,92 @@
+{
+  "vehicle_information":[
+    {
+      "vehicleInformationID": "1",
+      "vehicleMaker": "Ford",
+      "seat": "4",
+      "modelYear": "2015",
+      "vehicleType": "XE_CA_NHAN",
+      "vehicleModel": "Fiesta"
+    },
+    {
+      "vehicleInformationID": "2",
+      "vehicleMaker": "Ford",
+      "seat": "5",
+      "modelYear": "2016",
+      "vehicleType": "XE_CA_NHAN",
+      "vehicleModel": "New Focus"
+    },
+    {
+      "vehicleInformationID": "3",
+      "vehicleMaker": "Ford",
+      "seat": "4",
+      "modelYear": "2015",
+      "vehicleType": "XE_CA_NHAN",
+      "vehicleModel": "ABC"
+    },
+    {
+      "vehicleInformationID": "4",
+      "vehicleMaker": "Toyota",
+      "seat": "5",
+      "modelYear": "2018",
+      "vehicleType": "XE_CA_NHAN",
+      "vehicleModel": "Corolla iM"
+    },
+    {
+      "vehicleInformationID": "5",
+      "vehicleMaker": "Toyota",
+      "seat": "7",
+      "modelYear": "2018",
+      "vehicleType": "XE_CA_NHAN",
+      "vehicleModel": "Sienna"
+    },
+    {
+      "vehicleInformationID": "6",
+      "vehicleMaker": "Honda",
+      "seat": "2",
+      "modelYear": "2017",
+      "vehicleType": "XE_MAY",
+      "vehicleModel": "Future 125cc"
+    },
+    {
+      "vehicleInformationID": "7",
+      "vehicleMaker": "Honda",
+      "seat": "2",
+      "modelYear": "2017",
+      "vehicleType": "XE_MAY",
+      "vehicleModel": "Air Blade 125cc"
+    },
+    {
+      "vehicleInformationID": "8",
+      "vehicleMaker": "Honda",
+      "seat": "2",
+      "modelYear": "2016",
+      "vehicleType": "XE_MAY",
+      "vehicleModel": "Wave Alpha 110cc"
+    },
+    {
+      "vehicleInformationID": "9",
+      "vehicleMaker": "Toyota",
+      "seat": "16",
+      "modelYear": "2018",
+      "vehicleType": "XE_DU_LICH",
+      "vehicleModel": "Hiace"
+    },
+    {
+      "vehicleInformationID": "10",
+      "vehicleMaker": "Ford",
+      "seat": "16",
+      "modelYear": "2017",
+      "vehicleType": "XE_DU_LICH",
+      "vehicleModel": "Transit"
+    },
+    {
+      "vehicleInformationID": "11",
+      "vehicleMaker": "Huyndai",
+      "seat": "47",
+      "modelYear": "2017",
+      "vehicleType": "XE_DU_LICH",
+      "vehicleModel": "Universe New"
+    }
+  ]
+}

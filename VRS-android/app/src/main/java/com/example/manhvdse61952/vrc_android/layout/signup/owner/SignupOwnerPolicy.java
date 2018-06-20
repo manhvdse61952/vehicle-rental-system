@@ -16,7 +16,6 @@ import android.widget.Toast;
 import com.example.manhvdse61952.vrc_android.R;
 import com.example.manhvdse61952.vrc_android.api.AccountAPI;
 import com.example.manhvdse61952.vrc_android.layout.login.LoginActivity;
-import com.example.manhvdse61952.vrc_android.layout.main.MainActivity;
 import com.example.manhvdse61952.vrc_android.layout.signup.customer.SignupPolicyActivity;
 import com.example.manhvdse61952.vrc_android.model.Signup;
 import com.example.manhvdse61952.vrc_android.payload.VehiclePayload;
