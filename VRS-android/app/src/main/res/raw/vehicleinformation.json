@@ -19,10 +19,10 @@
     {
       "vehicleInformationID": "3",
       "vehicleMaker": "Ford",
-      "seat": "4",
+      "seat": "7",
       "modelYear": "2015",
       "vehicleType": "XE_CA_NHAN",
-      "vehicleModel": "ABC"
+      "vehicleModel": "Ecosport"
     },
     {
       "vehicleInformationID": "4",

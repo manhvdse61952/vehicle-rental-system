@@ -13,7 +13,6 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_margin="10dp"
             android:layout_weight="9"
             android:scrollbars="none">
 
@@ -31,22 +30,25 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="chi tiết"
+                    android:text="chi tiết xe"
                     android:textColor="#000"
                     android:textAllCaps="true"
-                    android:paddingTop="10dp"
+                    android:gravity="center_vertical|center_horizontal"
                     android:background="@drawable/border_grey"
+                    android:paddingTop="10dp"
                     android:paddingBottom="10dp"
-                    android:paddingLeft="20dp"
                     android:textSize="22sp"/>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:orientation="horizontal"
                     android:weightSum="10"
-                    android:background="@drawable/border_white"
-                    android:padding="5dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
                     android:layout_height="wrap_content">
                     <TextView
+                        android:id="@+id/item_price_unit"
                         android:layout_width="0dp"
                         android:layout_weight="5"
                         android:layout_height="wrap_content"
@@ -55,6 +57,7 @@
                         android:textColor="#797979"
                         android:textSize="19sp" />
                     <TextView
+                        android:id="@+id/item_price_slot"
                         android:layout_width="0dp"
                         android:layout_weight="5"
                         android:layout_height="wrap_content"
@@ -68,7 +71,10 @@
                     android:orientation="horizontal"
                     android:weightSum="10"
                     android:background="@drawable/border_white"
-                    android:padding="5dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
                     android:layout_height="wrap_content">
                     <TextView
                         android:layout_width="0dp"
@@ -78,6 +84,7 @@
                         android:textColor="#797979"
                         android:textSize="19sp" />
                     <TextView
+                        android:id="@+id/item_price_day"
                         android:layout_width="0dp"
                         android:layout_weight="5"
                         android:layout_height="wrap_content"
@@ -90,8 +97,10 @@
                     android:layout_width="match_parent"
                     android:orientation="horizontal"
                     android:weightSum="10"
-                    android:background="@drawable/border_white"
-                    android:padding="5dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
                     android:layout_height="wrap_content">
                     <TextView
                         android:layout_width="0dp"
@@ -101,6 +110,7 @@
                         android:textColor="#797979"
                         android:textSize="19sp" />
                     <TextView
+                        android:id="@+id/item_seat"
                         android:layout_width="0dp"
                         android:layout_weight="5"
                         android:layout_height="wrap_content"
@@ -114,7 +124,10 @@
                     android:orientation="horizontal"
                     android:weightSum="10"
                     android:background="@drawable/border_white"
-                    android:padding="5dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
                     android:layout_height="wrap_content">
                     <TextView
                         android:layout_width="0dp"
@@ -124,6 +137,7 @@
                         android:textColor="#797979"
                         android:textSize="19sp" />
                     <TextView
+                        android:id="@+id/item_year"
                         android:layout_width="0dp"
                         android:layout_weight="5"
                         android:layout_height="wrap_content"
@@ -136,21 +150,24 @@
                     android:layout_width="match_parent"
                     android:orientation="horizontal"
                     android:weightSum="10"
-                    android:background="@drawable/border_white"
-                    android:padding="5dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
                     android:layout_height="wrap_content">
                     <TextView
                         android:layout_width="0dp"
                         android:layout_weight="5"
                         android:layout_height="wrap_content"
-                        android:text="Loại động cơ"
+                        android:text="Biển số xe"
                         android:textColor="#797979"
                         android:textSize="19sp" />
                     <TextView
+                        android:id="@+id/item_plateNumber"
                         android:layout_width="0dp"
                         android:layout_weight="5"
                         android:layout_height="wrap_content"
-                        android:text="Xăng"
+                        android:text="60A1-111.11"
                         android:textColor="#000"
                         android:textAlignment="textEnd"
                         android:textSize="19sp"/>
@@ -160,20 +177,24 @@
                     android:orientation="horizontal"
                     android:weightSum="10"
                     android:background="@drawable/border_white"
-                    android:padding="5dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
                     android:layout_height="wrap_content">
                     <TextView
                         android:layout_width="0dp"
                         android:layout_weight="5"
                         android:layout_height="wrap_content"
-                        android:text="Loại truyền tải"
+                        android:text="Chủ xe"
                         android:textColor="#797979"
                         android:textSize="19sp" />
                     <TextView
+                        android:id="@+id/item_ownerName"
                         android:layout_width="0dp"
                         android:layout_weight="5"
                         android:layout_height="wrap_content"
-                        android:text="Số tự động"
+                        android:text="Vũ Đức Mạnh"
                         android:textColor="#000"
                         android:textAlignment="textEnd"
                         android:textSize="19sp"/>
@@ -181,32 +202,49 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="10dp"
                     android:text="Giấy tờ kèm theo:"
+                    android:paddingLeft="10dp"
                     android:textColor="#000"
-                    android:textSize="18sp" />
+                    android:textSize="19sp" />
 
                 <CheckBox
                     android:id="@+id/cbx1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
+                    android:layout_marginLeft="20dp"
+                    android:textSize="15sp"
                     android:text="Chứng minh nhân dân" />
 
                 <CheckBox
-                    android:id="@+id/cbx3"
+                    android:id="@+id/cbx2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
+                    android:layout_marginLeft="20dp"
+                    android:textSize="15sp"
                     android:text="Bằng lái xe" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged"
+                    android:text="Mô tả thêm:"
+                    android:paddingLeft="10dp"
                     android:textColor="#000"
-                    android:textSize="16sp" />
+                    android:textSize="19sp" />
+
+                <TextView
+                    android:id="@+id/item_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. It has survived not"
+                    android:textColor="#000"
+                    android:textSize="15sp" />
 
                 <ListView
                     android:id="@+id/lvFeedback"

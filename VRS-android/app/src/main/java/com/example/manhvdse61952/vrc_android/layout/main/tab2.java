@@ -1,5 +1,6 @@
 package com.example.manhvdse61952.vrc_android.layout.main;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -31,6 +32,7 @@ public class tab2 extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         ////////////////// Init to list view ///////////////////
         List<VehicleInformation_New> vehicleInformationNewList = new ArrayList<>();
         List<Vehicle_New> vehicleNewList = new ArrayList<>();

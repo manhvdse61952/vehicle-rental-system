@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.widget.Toast;
 
 import com.example.manhvdse61952.vrc_android.layout.main.activity_main_2;
@@ -41,8 +42,10 @@ public class RetrofitCallAPI {
                 } else if (response.code() == 403) {
                     Toast.makeText(ctx, "Tài khoản chưa được chấp nhận! Vui lòng quay lại sau", Toast.LENGTH_SHORT).show();
                 } else {
+                    SharedPreferences.Editor editor = ctx.getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, ctx.MODE_PRIVATE).edit();
+                    editor.putString("usernameAfterLogin", username);
+                    editor.apply();
                     Intent it = new Intent(ctx, activity_main_2.class);
-                    it.putExtra(ImmutableValue.MESSAGE_CODE, username);
                     ctx.startActivity(it);
                 }
                 progressDialog.dismiss();
@@ -68,15 +71,9 @@ public class RetrofitCallAPI {
                 } else {
                     //add value to json object to pass it from SignupAccount activity to SignupUserInfo activity
                     ObjectMapper objectMapper = new ObjectMapper();
-                    try {
-                        Signup signup = new Signup(username, password, email);
-                        String json = objectMapper.writeValueAsString(signup);
-                        Intent it = new Intent(ctx, SignupUserInfoActivity.class);
-                        it.putExtra(ImmutableValue.MESSAGE_CODE, json);
-                        ctx.startActivity(it);
-                    } catch (JsonProcessingException e) {
-                        e.printStackTrace();
-                    }
+                    Intent it = new Intent(ctx, SignupUserInfoActivity.class);
+                    ctx.startActivity(it);
+
 
                 }
             }

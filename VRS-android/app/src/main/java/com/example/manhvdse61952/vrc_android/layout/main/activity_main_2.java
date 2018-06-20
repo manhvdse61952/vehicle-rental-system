@@ -1,5 +1,6 @@
 package com.example.manhvdse61952.vrc_android.layout.main;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -46,7 +47,6 @@ public class activity_main_2 extends AppCompatActivity
         setContentView(R.layout.activity_main_2);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
 
         //////////////////////// USE FOR TABLAYOUT /////////////////
         ImmutableValue importantObj = new ImmutableValue();
@@ -99,18 +99,18 @@ public class activity_main_2 extends AppCompatActivity
         TextView tabOne = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
         tabOne.setText("Xe máy");
         tabOne.setTextSize(15);
-        tabOne.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_motorcycle, 0, 0);
+        tabOne.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_motorbike, 0, 0);
         tabLayout.getTabAt(0).setCustomView(tabOne);
 
         TextView tabTwo = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
         tabTwo.setText("Ô tô cá nhân");
         tabTwo.setTextSize(15);
-        tabTwo.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_car, 0, 0);
+        tabTwo.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_car_green, 0, 0);
         tabLayout.getTabAt(1).setCustomView(tabTwo);
 
         TextView tabThree = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
         tabThree.setText("Ô tô du lịch");
-        tabThree.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_bus, 0, 0);
+        tabThree.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_bus_green, 0, 0);
         tabThree.setTextSize(15);
         tabLayout.getTabAt(2).setCustomView(tabThree);
 

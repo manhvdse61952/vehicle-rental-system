@@ -388,4 +388,14 @@ public class ImmutableValue {
         }
         return receiveObj;
     }
+
+    public Vehicle_New getVehicle(String frameNumber, List<Vehicle_New> vehicleNewList){
+        Vehicle_New receiveObj = new Vehicle_New();
+        for (int i = 0; i < vehicleNewList.size() ; i++){
+            if (frameNumber.equalsIgnoreCase(vehicleNewList.get(i).getFrameNumber())){
+                receiveObj = vehicleNewList.get(i);
+            }
+        }
+        return receiveObj;
+    }
 }
