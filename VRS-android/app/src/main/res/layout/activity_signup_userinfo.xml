@@ -2,200 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="10dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:focusableInTouchMode="true"
     android:orientation="vertical"
-    android:weightSum="11">
-
-    <!--<RelativeLayout-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:layout_marginLeft="10dp"-->
-    <!--android:layout_marginRight="10dp">-->
-
-    <!--<TextView-->
-    <!--android:id="@+id/txtSignUpTitle"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:text="Tạo tài khoản"-->
-    <!--android:textColor="#000"-->
-    <!--android:textSize="24sp"-->
-    <!--android:textStyle="bold"-->
-    <!--android:layout_marginTop="20dp"-->
-    <!--android:textAlignment="center"/>-->
-
-    <!--<TextView-->
-    <!--android:id="@+id/txtSignUpTitle2"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_below="@+id/txtSignUpTitle"-->
-    <!--android:text="(thông tin cá nhân)"-->
-    <!--android:textColor="#000"-->
-    <!--android:textSize="16sp"-->
-    <!--android:textStyle="bold"-->
-    <!--android:layout_marginBottom="20dp"-->
-    <!--android:textAlignment="center"/>-->
-
-    <!--<TextView-->
-    <!--android:id="@+id/txtSignupName"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:text="Họ và tên (*)"-->
-    <!--android:layout_below="@+id/txtSignUpTitle2"-->
-    <!--android:textColor="#000"-->
-    <!--android:textSize="16sp"/>-->
-
-    <!--<EditText-->
-    <!--android:id="@+id/edtSignupName"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:ems="10"-->
-    <!--android:inputType="textPersonName"-->
-    <!--android:layout_below="@+id/txtSignupName"-->
-    <!--android:hint="Có thể viết không dấu hoặc có dấu"-->
-    <!--android:layout_marginTop="5dp"-->
-    <!--android:textSize="14sp" />-->
-
-    <!--<TextView-->
-    <!--android:id="@+id/txtSignupPhone"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:text="Số điện thoại (*)"-->
-    <!--android:layout_below="@+id/edtSignupName"-->
-    <!--android:textColor="#000"-->
-    <!--android:textSize="16sp"/>-->
-
-    <!--<EditText-->
-    <!--android:id="@+id/edtSignupPhone"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:ems="10"-->
-    <!--android:inputType="number"-->
-    <!--android:layout_below="@+id/txtSignupPhone"-->
-    <!--android:layout_marginTop="5dp"-->
-    <!--android:textSize="14sp"-->
-    <!--android:hint="Chỉ được điền số" />-->
-
-    <!--<TextView-->
-    <!--android:id="@+id/txtPictureCMND"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:text="Chụp hình mặt trước CMND (*)"-->
-    <!--android:layout_below="@+id/edtSignupPhone"-->
-    <!--android:textColor="#000"-->
-    <!--android:textSize="16sp"/>-->
-
-    <!--<Button-->
-    <!--android:id="@+id/btnPictureCMND"-->
-    <!--android:layout_width="50dp"-->
-    <!--android:layout_height="45dp"-->
-    <!--android:drawableTop="@drawable/ic_camera"-->
-    <!--android:layout_below="@+id/edtSignupPhone"-->
-    <!--android:layout_alignParentRight="true"-->
-    <!--android:layout_marginRight="10dp"-->
-    <!--/>-->
-    <!--<TextView-->
-    <!--android:id="@+id/txtSignupCMND"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:text="Số CMND nhận được"-->
-    <!--android:layout_below="@+id/txtPictureCMND"-->
-    <!--android:textColor="#000"-->
-    <!--android:textSize="16sp"/>-->
-
-    <!--<EditText-->
-    <!--android:id="@+id/edtSignupCNMD"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:ems="10"-->
-    <!--android:inputType="textPersonName"-->
-    <!--android:layout_below="@+id/txtSignupCMND"-->
-    <!--android:layout_marginTop="5dp"-->
-    <!--android:textSize="14sp"-->
-    <!--android:hint="Số CMND sẽ tự nhận diện sau khi chụp ảnh" />-->
-
-    <!--<TextView-->
-    <!--android:id="@+id/txtSignupAddress"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:text="Địa chỉ (*)"-->
-    <!--android:layout_below="@+id/edtSignupCNMD"-->
-    <!--android:textColor="#000"-->
-    <!--android:hint=""-->
-    <!--android:textSize="16sp"/>-->
-
-    <!--<Spinner-->
-    <!--android:id="@+id/spnAddress"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_marginTop="5dp"-->
-    <!--android:layout_below="@+id/txtSignupAddress"-->
-    <!--android:entries="@array/spinnerItems"-->
-    <!--android:drawSelectorOnTop="true"-->
-    <!--android:layout_height="40dp">-->
-
-    <!--</Spinner>-->
-
-
-    <!--<TextView-->
-    <!--android:id="@+id/txtSignupPaypal"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:text="Tài khoản paypal (*)"-->
-    <!--android:layout_below="@+id/spnAddress"-->
-    <!--android:textColor="#000"-->
-    <!--android:hint=""-->
-    <!--android:textSize="16sp"/>-->
-
-    <!--<EditText-->
-    <!--android:id="@+id/edtSignupPaypal"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:ems="10"-->
-    <!--android:inputType="textPersonName"-->
-    <!--android:textSize="14sp"-->
-    <!--android:layout_marginTop="5dp"-->
-    <!--android:layout_below="@+id/txtSignupPaypal"-->
-    <!--android:text="" />-->
-
-
-    <!--<com.google.android.flexbox.FlexboxLayout-->
-    <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
-    <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
-    <!--android:id="@+id/signup_ico"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--app:alignItems="center"-->
-    <!--app:flexWrap="wrap"-->
-    <!--android:layout_marginTop="20dp"-->
-    <!--android:layout_below="@+id/edtSignupPaypal"-->
-    <!--app:justifyContent="space_around">-->
-
-    <!--<Button-->
-    <!--android:id="@+id/btnSignupAccountBack"-->
-    <!--android:textSize="16sp"-->
-    <!--android:layout_gravity="center_horizontal"-->
-    <!--android:textColor="#FFF"-->
-    <!--android:background="@drawable/btn_login"-->
-    <!--app:layout_flexBasisPercent="@fraction/signup_btn"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="50dp"-->
-    <!--android:text="Quay lại" />-->
-
-    <!--<Button-->
-    <!--android:id="@+id/btnSignupAccountNext"-->
-    <!--android:layout_alignParentRight="true"-->
-    <!--android:textSize="16sp"-->
-    <!--android:layout_gravity="center_horizontal"-->
-    <!--android:textColor="#FFF"-->
-    <!--android:background="@drawable/btn_next"-->
-    <!--app:layout_flexBasisPercent="@fraction/signup_btn"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="50dp"-->
-    <!--android:text="Tiếp tục" />-->
-
-    <!--</com.google.android.flexbox.FlexboxLayout>-->
-    <!--</RelativeLayout>-->
-
+    android:background="#EEEEEE"
+    android:weightSum="10">
 
     <TextView
         android:layout_width="match_parent"
@@ -206,34 +17,51 @@
         android:textColor="#000"
         android:textSize="24sp" />
 
-    <LinearLayout
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/signup_name_txt"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:weightSum="10">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="3.5"
-            android:paddingLeft="10dp"
-            android:text="Họ và tên (*)"
-            android:textColor="#000"
-            android:textSize="16sp" />
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:theme="@style/ThirdAppTheme"
+        app:errorTextAppearance="@style/error_apperance">
 
         <EditText
             android:id="@+id/edtSignupName"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="6.5"
-            android:hint="Chỉ được điền chữ"
+            android:hint="Họ và tên"
             android:inputType="text"
-            android:text="example user 1"
-            android:textSize="14sp" />
-    </LinearLayout>
+            android:text="tester user"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:textColor="#000" />
 
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/signup_phone_txt"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:theme="@style/ThirdAppTheme"
+        app:errorTextAppearance="@style/error_apperance">
+
+        <EditText
+            android:id="@+id/edtSignupPhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Số điện thoại"
+            android:inputType="number"
+            android:text="0969971111"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:textColor="#000" />
+
+    </android.support.design.widget.TextInputLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -245,23 +73,22 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="3.5"
+            android:layout_weight="3"
             android:paddingLeft="10dp"
-            android:text="Số điện thoại (*)"
+            android:text="Địa chỉ"
             android:textColor="#000"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
 
-        <EditText
-            android:id="@+id/edtSignupPhone"
+        <Spinner
+            android:id="@+id/spnAddress"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="6.5"
-            android:hint="Chỉ được điền số"
-            android:inputType="number"
-            android:text="123456789"
-            android:textSize="14sp" />
-    </LinearLayout>
+            android:layout_height="match_parent"
+            android:layout_weight="7"
+            android:drawSelectorOnTop="true"
+            android:entries="@array/spinnerItems">
 
+        </Spinner>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -287,6 +114,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1.5"
             android:layout_marginRight="5dp"
+            android:padding="5dp"
             android:src="@drawable/ic_camera" />
 
         <ImageView
@@ -295,22 +123,10 @@
             android:layout_height="match_parent"
             android:layout_marginRight="10dp"
             android:src="@drawable/ic_gallery"
+            android:padding="5dp"
             android:layout_weight="1.5"/>
 
     </LinearLayout>
-
-    <EditText
-        android:id="@+id/edtSignupCMND"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_weight="0.7"
-        android:hint="Số CMND"
-        android:inputType="number"
-        android:textColor="#000"
-        android:text="2725398123"
-        android:textSize="14sp" />
 
     <ImageView
         android:id="@+id/imgSignupCMND"
@@ -318,64 +134,34 @@
         android:layout_height="0dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_weight="3.6" />
+        android:src="@drawable/img_default_image"
+        android:scaleType="centerCrop"
+        android:layout_weight="3.3" />
     <!--android:scaleType="fitXY"-->
     <!--android:adjustViewBounds="true"-->
-
-    <LinearLayout
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/signup_cmnd_txt"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:weightSum="10">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:paddingLeft="10dp"
-            android:text="Địa chỉ (*)"
-            android:textColor="#000"
-            android:textSize="16sp" />
-
-        <Spinner
-            android:id="@+id/spnAddress"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="7"
-            android:drawSelectorOnTop="true"
-            android:entries="@array/spinnerItems">
-
-        </Spinner>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:weightSum="10">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="4"
-            android:paddingLeft="10dp"
-            android:text="Địa chỉ paypal (*)"
-            android:textColor="#000"
-            android:textSize="16sp" />
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:theme="@style/ThirdAppTheme"
+        app:errorTextAppearance="@style/error_apperance">
 
         <EditText
-            android:id="@+id/edtSignupPaypal"
-            android:layout_width="0dp"
+            android:id="@+id/edtSignupCMND"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="6"
-            android:hint="Không được bỏ trống"
-            android:text="example_paypal_1"
-            android:textSize="14sp" />
-    </LinearLayout>
+            android:hint="Số chứng minh thư"
+            android:inputType="number"
+            android:text="272531122"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:textColor="#000" />
+
+    </android.support.design.widget.TextInputLayout>
+
 
     <com.google.android.flexbox.FlexboxLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -383,6 +169,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         app:alignItems="center"
         app:flexWrap="wrap"
         app:justifyContent="space_around">
@@ -393,8 +181,9 @@
             android:layout_height="50dp"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/btn_login"
+            android:textAllCaps="false"
             android:text="Quay lại"
-            android:textColor="#FFF"
+            android:textColor="#000"
             android:textSize="16sp"
             app:layout_flexBasisPercent="@fraction/signup_btn" />
 
@@ -405,6 +194,7 @@
             android:layout_alignParentRight="true"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/btn_next"
+            android:textAllCaps="false"
             android:text="Tiếp tục"
             android:textColor="#FFF"
             android:textSize="16sp"

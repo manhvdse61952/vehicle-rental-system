@@ -8,23 +8,29 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.manhvdse61952.vrc_android.R;
+import com.example.manhvdse61952.vrc_android.layout.signup.customer.SignupRoleActivity;
+import com.example.manhvdse61952.vrc_android.model.VehicleType;
 
 public class SignupOwnerOne extends AppCompatActivity {
 
-    Button btnSignupVehicle1, btnSignupVehicle2, btnSignupVehicle3;
+    Button btnSignupVehicle1, btnSignupVehicle2, btnSignupVehicle3, btnSignupAccountBack;
+    private final String VEHICLE_TYPE = "VEHICLE_TYPE";
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup_owner_one);
 
-        btnSignupVehicle1 = (Button)findViewById(R.id.btnSignupOwner1);
-        btnSignupVehicle2 = (Button)findViewById(R.id.btnSignupOwner2);
-        btnSignupVehicle3 = (Button)findViewById(R.id.btnSignupOwner3);
+        btnSignupVehicle1 = (Button) findViewById(R.id.btnSignupOwner1);
+        btnSignupVehicle2 = (Button) findViewById(R.id.btnSignupOwner2);
+        btnSignupVehicle3 = (Button) findViewById(R.id.btnSignupOwner3);
+        btnSignupAccountBack = (Button)findViewById(R.id.btnSignupAccountBack);
 
         btnSignupVehicle1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent it = new Intent(SignupOwnerOne.this, SignupOwnerTwo.class);
+                it.putExtra(VEHICLE_TYPE, VehicleType.MOTOBIKE.toString());
                 startActivity(it);
             }
         });
@@ -33,6 +39,7 @@ public class SignupOwnerOne extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent it = new Intent(SignupOwnerOne.this, SignupOwnerTwo.class);
+                it.putExtra(VEHICLE_TYPE, VehicleType.CAR.toString());
                 startActivity(it);
             }
         });
@@ -41,8 +48,24 @@ public class SignupOwnerOne extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent it = new Intent(SignupOwnerOne.this, SignupOwnerTwo.class);
+                it.putExtra(VEHICLE_TYPE, VehicleType.BUS.toString());
                 startActivity(it);
             }
         });
+
+        btnSignupAccountBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent it = new Intent(SignupOwnerOne.this, SignupRoleActivity.class);
+                startActivity(it);
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent it = new Intent(SignupOwnerOne.this, SignupRoleActivity.class);
+        startActivity(it);
     }
 }

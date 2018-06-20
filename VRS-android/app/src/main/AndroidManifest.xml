@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.manhvdse61952.vrc_android">
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
-    <uses-permission android:name="android.permission.CAMERA"></uses-permission>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-feature android:name="android.hardware.camera" android:required="false" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
+    <!--
+         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
+         Google Maps Android API v2, but you must specify either coarse or fine
+         location permissions for the 'MyLocation' functionality. 
+    -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
 
     <application
@@ -22,24 +34,59 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".layout.signup.SignupUserInfoActivity" android:screenOrientation="portrait"></activity>
-        <activity android:name=".layout.signup.SignupUserInfoCameraActivity" android:screenOrientation="portrait"></activity>
-        <activity android:name=".layout.signup.SignupAccountActivity" android:screenOrientation="portrait"></activity>
-        <activity android:name=".layout.signup.SignupRoleActivity" android:screenOrientation="portrait"></activity>
-        <activity android:name=".layout.signup.SignupPolicyActivity" android:screenOrientation="portrait"></activity>
-        <activity android:name=".layout.signup.owner.SignupOwnerOne" android:screenOrientation="portrait"></activity>
-        <activity android:name=".layout.signup.owner.SignupOwnerTwo" android:screenOrientation="portrait"></activity>
-        <activity android:name=".layout.signup.owner.SignupOwnerThree" android:screenOrientation="portrait"></activity>
-        <activity android:name=".layout.signup.owner.SignupOwnerFour" android:screenOrientation="portrait"></activity>
-        <activity android:name=".layout.main.MainActivity" android:screenOrientation="portrait"></activity>
-        <activity android:name=".layout.main.MainListSearch" android:screenOrientation="portrait"></activity>
-        <activity android:name=".layout.main.MainItem" android:screenOrientation="portrait"></activity>
-        <activity android:name=".layout.order.MainOrderOne" android:screenOrientation="portrait"></activity>
-        <activity android:name=".layout.order.MainOrderTwo" android:screenOrientation="portrait"></activity>
-        <activity android:name=".layout.order.MainOrderThree" android:screenOrientation="portrait"></activity>
-        <activity android:name=".layout.order.MainOrderFour" android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".layout.signup.customer.SignupUserInfoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".layout.signup.customer.SignupUserInfoCameraActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".layout.signup.customer.SignupAccountActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".layout.signup.customer.SignupRoleActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".layout.signup.customer.SignupPolicyActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".layout.signup.owner.SignupOwnerOne"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".layout.signup.owner.SignupOwnerTwo"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".layout.signup.owner.SignupOwnerTwoPlus"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".layout.signup.owner.SignupOwnerThree"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".layout.signup.owner.SignupOwnerFour"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".layout.signup.owner.SignupOwnerPolicy"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".layout.main.MainItem"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".layout.order.MainOrderOne"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".layout.order.MainOrderTwo"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".layout.order.MainOrderThree"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".layout.order.MainOrderFour"
+            android:screenOrientation="portrait" />
 
-        <meta-data android:name="com.google.android.gms.vision.DEPENDENCIES" android:value="ocr"/>
+        <meta-data
+            android:name="com.google.android.gms.vision.DEPENDENCIES"
+            android:value="ocr" />
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="${applicationId}.provider"
@@ -47,8 +94,29 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_path"></meta-data>
+                android:resource="@xml/file_path" />
         </provider>
+
+        <activity
+            android:name=".layout.main.activity_main_2"
+            android:label="@string/title_activity_main_2"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
+        <!--
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/. 
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <activity
+            android:name=".layout.order.MapsActivity"
+            android:label="@string/title_activity_maps"></activity>
     </application>
 
 </manifest>

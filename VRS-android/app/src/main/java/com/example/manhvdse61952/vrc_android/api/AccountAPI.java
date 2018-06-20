@@ -9,6 +9,7 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
@@ -19,6 +20,7 @@ public interface AccountAPI {
     @Headers({"Accept: application/json"})
     @POST("api/auth/signin")
     Call<ResponseBody> login(@Body Account account);
+    //Call<Header> login(@Body Account account);
 
     @Headers({"Accept: application/json"})
     @GET("api/auth/checkUserNameExist/{userName}")
@@ -28,4 +30,8 @@ public interface AccountAPI {
     @Multipart
     @POST("api/auth/signupwithimage")
     Call<ResponseBody> signup(@Part("data") RequestBody data, @Part MultipartBody.Part file);
+
+    @Multipart
+    @POST("vehicle/create")
+    Call<ResponseBody> createVehicle(@Part("data") RequestBody data, @Part MultipartBody.Part[] files);
 }

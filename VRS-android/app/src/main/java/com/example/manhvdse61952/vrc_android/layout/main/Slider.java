@@ -13,7 +13,7 @@ import com.example.manhvdse61952.vrc_android.R;
 
 public class Slider extends PagerAdapter {
 
-    private int[] listImage = {R.drawable.xe_oto, R.drawable.img_customer, R.drawable.img_owner, R.drawable.ic_user};
+    private int[] listImage = {R.drawable.img_car_toyota_innova, R.drawable.img_car_toyota_camry, R.drawable.img_bus_mercedes_sprinter};
 
     private LayoutInflater inflater;
     private Context ctx;
@@ -37,7 +37,9 @@ public class Slider extends PagerAdapter {
         inflater = (LayoutInflater)ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = inflater.inflate(R.layout.activity_main_item_slider, container, false);
         ImageView img = (ImageView)v.findViewById(R.id.sliderImgItem);
+        TextView txtTitle = (TextView)v.findViewById(R.id.txtTitle);
         img.setImageResource(listImage[position]);
+        txtTitle.setText("Toyota Fortuner");
         container.addView(v);
         return v;
     }
