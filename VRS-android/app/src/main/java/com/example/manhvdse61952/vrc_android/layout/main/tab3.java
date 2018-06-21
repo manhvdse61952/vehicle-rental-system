@@ -1,6 +1,5 @@
 package com.example.manhvdse61952.vrc_android.layout.main;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,9 +9,9 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.example.manhvdse61952.vrc_android.R;
-import com.example.manhvdse61952.vrc_android.model.SearchItemNew;
-import com.example.manhvdse61952.vrc_android.model.VehicleInformation_New;
-import com.example.manhvdse61952.vrc_android.model.Vehicle_New;
+import com.example.manhvdse61952.vrc_android.model.searchModel.SearchItemNew;
+import com.example.manhvdse61952.vrc_android.model.apiModel.VehicleInformation_New;
+import com.example.manhvdse61952.vrc_android.model.apiModel.Vehicle_New;
 import com.example.manhvdse61952.vrc_android.remote.ImmutableValue;
 
 import java.util.ArrayList;
@@ -37,8 +36,6 @@ public class tab3 extends Fragment {
         List<Vehicle_New> vehicleNewList = new ArrayList<>();
 
         ImmutableValue importantObj = new ImmutableValue();
-        vehicleInformationNewList = importantObj.readVehicleInforFile(getActivity());
-        vehicleNewList = importantObj.readVehicleFile(getActivity());
 
 
         ImmutableValue.searchItemNewList3 = new ArrayList<>();
@@ -48,11 +45,11 @@ public class tab3 extends Fragment {
                 SearchItemNew obj = new SearchItemNew();
                 String vehicleName = checkObj.getVehicleMaker() + " " + checkObj.getVehicleModel();
                 int vehicleSeat = checkObj.getSeat();
-                String address = ImmutableValue.getAddressName(vehicleNewList.get(i).getDistrictID());
+                //String address = ImmutableValue.getAddressName(vehicleNewList.get(i).getDistrictID());
 
                 obj.setVehicleName(vehicleName);
                 obj.setVehicleSeat(vehicleSeat);
-                obj.setAddress(address);
+                //obj.setAddress(address);
                 obj.setFrameNumber(vehicleNewList.get(i).getFrameNumber());
                 obj.setVehiclePrice(vehicleNewList.get(i).getRentFeePerSlot());
                 obj.setImageLinkFront(vehicleNewList.get(i).getImageLinkFront());

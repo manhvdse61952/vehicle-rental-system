@@ -1,4 +1,4 @@
-package com.example.manhvdse61952.vrc_android.model;
+package com.example.manhvdse61952.vrc_android.model.searchModel;
 
 import java.io.Serializable;
 

@@ -6,18 +6,21 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.manhvdse61952.vrc_android.api.AddressAPI;
 import com.example.manhvdse61952.vrc_android.layout.main.activity_main_2;
 import com.example.manhvdse61952.vrc_android.api.AccountAPI;
 import com.example.manhvdse61952.vrc_android.layout.login.LoginActivity;
-import com.example.manhvdse61952.vrc_android.layout.signup.customer.SignupUserInfoActivity;
-import com.example.manhvdse61952.vrc_android.model.Account;
-import com.example.manhvdse61952.vrc_android.model.Signup;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.example.manhvdse61952.vrc_android.layout.signup.customer.SignupRoleActivity;
+import com.example.manhvdse61952.vrc_android.model.GlobalData;
+import com.example.manhvdse61952.vrc_android.model.apiModel.City;
+import com.example.manhvdse61952.vrc_android.model.apiModel.Login;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -29,11 +32,15 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class RetrofitCallAPI {
+    public static Boolean usernameResult;
+    public static Boolean emailResult;
+    public static List<City> lisCityTest = new ArrayList<>();
 
+    /// Check login////
     public void checkLogin(final String username, String password, final Context ctx, final ProgressDialog progressDialog) {
         Retrofit test = RetrofitConnect.getClient();
         final AccountAPI testAPI = test.create(AccountAPI.class);
-        Call<ResponseBody> responseBodyCall = testAPI.login(new Account(username, password));
+        Call<ResponseBody> responseBodyCall = testAPI.login(new Login(username, password));
         responseBodyCall.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -59,7 +66,9 @@ public class RetrofitCallAPI {
         });
     }
 
-    public void checkExistedUsername(final String username, final String password, final String email, final Context ctx) {
+    /// Check duplicated username ///
+    public void checkExistedUsername(final String username, final Context ctx) {
+        //usernameResult = false;
         Retrofit test = RetrofitConnect.getClient();
         final AccountAPI testAPI = test.create(AccountAPI.class);
         Call<Boolean> responseBodyCall = testAPI.checkDuplicated(username);
@@ -67,14 +76,61 @@ public class RetrofitCallAPI {
             @Override
             public void onResponse(Call<Boolean> call, Response<Boolean> response) {
                 if (response.body().toString().equals("true")) {
-                    Toast.makeText(ctx, "Tài khoản đã tồn tại", Toast.LENGTH_SHORT).show();
+                    usernameResult = false;
+                    //input.setError("Tài khoản đã có người sử dụng");
+                    Toast.makeText(ctx, "Tài khoản đã có người sử dụng", Toast.LENGTH_SHORT).show();
                 } else {
-                    //add value to json object to pass it from SignupAccount activity to SignupUserInfo activity
-                    ObjectMapper objectMapper = new ObjectMapper();
-                    Intent it = new Intent(ctx, SignupUserInfoActivity.class);
+                    usernameResult = true;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Boolean> call, Throwable t) {
+                usernameResult = false;
+                Toast.makeText(ctx, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    /// Check duplicated email ///
+    public void checkExistedEmail(final String email, final Context ctx) {
+        emailResult = false;
+        Retrofit test = RetrofitConnect.getClient();
+        final AccountAPI testAPI = test.create(AccountAPI.class);
+        Call<Boolean> responseBodyCall = testAPI.checkEmail(email);
+        responseBodyCall.enqueue(new Callback<Boolean>() {
+            @Override
+            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                if (response.body().toString().equals("true")) {
+                    emailResult = false;
+                    //input.setError("Email đã có người sử dụng");
+                    Toast.makeText(ctx, "Email đã có người sử dụng", Toast.LENGTH_SHORT).show();
+                } else {
+                    emailResult = true;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Boolean> call, Throwable t) {
+                emailResult = false;
+                Toast.makeText(ctx, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    /// Check duplicated CMND ///
+    public void checkExistedCmnd(final String cmnd, final Context ctx, final EditText input) {
+        Retrofit test = RetrofitConnect.getClient();
+        final AccountAPI testAPI = test.create(AccountAPI.class);
+        Call<Boolean> responseBodyCall = testAPI.checkCmnd(cmnd);
+        responseBodyCall.enqueue(new Callback<Boolean>() {
+            @Override
+            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                if (response.body().toString().equals("true")) {
+                    input.setError("CMND đã có người sử dụng");
+                } else {
+                    Intent it = new Intent(ctx, SignupRoleActivity.class);
                     ctx.startActivity(it);
-
-
                 }
             }
 
@@ -85,6 +141,26 @@ public class RetrofitCallAPI {
         });
     }
 
+    public List<City> getAllAddress (){
+        Retrofit test = RetrofitConnect.getClient();
+        final AddressAPI testAPI = test.create(AddressAPI.class);
+        Call<List<City>> responseBodyCall = testAPI.getDistrict();
+
+        responseBodyCall.enqueue(new Callback<List<City>>() {
+            @Override
+            public void onResponse(Call<List<City>> call, Response<List<City>> response) {
+                lisCityTest = response.body();
+            }
+
+            @Override
+            public void onFailure(Call<List<City>> call, Throwable t) {
+
+            }
+        });
+        return lisCityTest;
+    }
+
+    /// Signup customer account
     public void SignupAccount(String imagePath, String receiveValue, final Context ctx, final ProgressDialog progressDialog) {
         Retrofit retrofit = RetrofitConnect.getClient();
         final AccountAPI accountAPI = retrofit.create(AccountAPI.class);

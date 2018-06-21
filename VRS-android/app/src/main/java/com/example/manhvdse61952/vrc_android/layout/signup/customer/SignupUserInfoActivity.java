@@ -1,21 +1,16 @@
 package com.example.manhvdse61952.vrc_android.layout.signup.customer;
 
-import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.os.Build;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
-import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -24,31 +19,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.manhvdse61952.vrc_android.R;
-import com.example.manhvdse61952.vrc_android.model.Signup;
+import com.example.manhvdse61952.vrc_android.model.apiModel.City;
+import com.example.manhvdse61952.vrc_android.model.apiModel.District;
 import com.example.manhvdse61952.vrc_android.remote.ImmutableValue;
+import com.example.manhvdse61952.vrc_android.remote.RetrofitCallAPI;
 import com.example.manhvdse61952.vrc_android.remote.Validate;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.squareup.picasso.Picasso;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import id.zelory.compressor.Compressor;
+import java.util.List;
 
 public class SignupUserInfoActivity extends AppCompatActivity {
 
-    TextView txtTestCMND;
+    int cityPosition = 0;
     Button btnBack, btnNext;
     ImageView imgPictureCMND, imgShowCMND, imgSelectPictureCMND;
     EditText edtSignupName, edtSignupPhone, edtSignupCNMD;
     TextInputLayout signup_name_txt, signup_phone_txt, signup_cmnd_txt;
-    Spinner spnAddress;
-    String name = "", phone = "", cmnd = "", paypal = "", address = "";
+    String name = "", phone = "", cmnd = "";
     Validate validObj;
 
     private ImmutableValue cameraObj = new ImmutableValue();
@@ -67,10 +53,43 @@ public class SignupUserInfoActivity extends AppCompatActivity {
         imgShowCMND = (ImageView) findViewById(R.id.imgSignupCMND);
         imgSelectPictureCMND = (ImageView) findViewById(R.id.imgSelectPictureCMND);
         edtSignupCNMD = (EditText) findViewById(R.id.edtSignupCMND);
-        txtTestCMND = (TextView) findViewById(R.id.txtTest);
         signup_name_txt = (TextInputLayout) findViewById(R.id.signup_name_txt);
         signup_phone_txt = (TextInputLayout) findViewById(R.id.signup_phone_txt);
         signup_cmnd_txt = (TextInputLayout) findViewById(R.id.signup_cmnd_txt);
+
+
+//        final List<City> listAddress =  RetrofitCallAPI.lisCityTest;
+//        ArrayAdapter<City> cityArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, listAddress);
+//        cityArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        spnAddress.setAdapter(cityArrayAdapter);
+//        spnAddress.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                List<District> districts = listAddress.get(position).getDistrict();
+//                cityPosition = position;
+//                ArrayAdapter<District> districtAdapter = new ArrayAdapter<>(SignupUserInfoActivity.this, android.R.layout.simple_spinner_dropdown_item, districts);
+//                spnDistrict.setAdapter(districtAdapter);
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//
+//            }
+//        });
+//        spnDistrict.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                District district = listAddress.get(cityPosition).getDistrict().get(position);
+//                SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
+//                editor.putString("districtID", district.getId().toString());
+//                Toast.makeText(SignupUserInfoActivity.this, district.getId().toString(), Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//
+//            }
+//        });
 
         //button Next
         btnNext.setOnClickListener(new View.OnClickListener() {
@@ -81,13 +100,11 @@ public class SignupUserInfoActivity extends AppCompatActivity {
                 //Declare id
                 edtSignupName = (EditText) findViewById(R.id.edtSignupName);
                 edtSignupPhone = (EditText) findViewById(R.id.edtSignupPhone);
-                spnAddress = (Spinner) findViewById(R.id.spnAddress);
 
                 //Get value from edittex
                 name = edtSignupName.getText().toString();
                 phone = edtSignupPhone.getText().toString();
                 cmnd = edtSignupCNMD.getText().toString();
-                address = spnAddress.getSelectedItem().toString();
 
                 validObj = new Validate();
                 Boolean checkName = validObj.validName(name, edtSignupName);
@@ -101,7 +118,6 @@ public class SignupUserInfoActivity extends AppCompatActivity {
                     editor.putString("phone", phone);
                     editor.putString("cmnd", cmnd);
                     editor.putString("paypal", "default");
-                    editor.putString("address", address);
                     editor.putString("CMND_image_path", ImmutableValue.picturePath);
                     editor.apply();
 

@@ -10,11 +10,7 @@ import android.widget.ImageView;
 
 import com.example.manhvdse61952.vrc_android.R;
 import com.example.manhvdse61952.vrc_android.layout.signup.owner.SignupOwnerOne;
-import com.example.manhvdse61952.vrc_android.model.Signup;
 import com.example.manhvdse61952.vrc_android.remote.ImmutableValue;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.io.IOException;
 
 public class SignupRoleActivity extends AppCompatActivity {
 

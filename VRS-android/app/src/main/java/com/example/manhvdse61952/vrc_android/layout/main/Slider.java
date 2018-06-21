@@ -11,8 +11,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.manhvdse61952.vrc_android.R;
-import com.example.manhvdse61952.vrc_android.model.VehicleInformation_New;
-import com.example.manhvdse61952.vrc_android.model.Vehicle_New;
+import com.example.manhvdse61952.vrc_android.model.apiModel.VehicleInformation_New;
+import com.example.manhvdse61952.vrc_android.model.apiModel.Vehicle_New;
 import com.example.manhvdse61952.vrc_android.remote.ImmutableValue;
 import com.squareup.picasso.Picasso;
 
@@ -48,8 +48,6 @@ public class Slider extends PagerAdapter {
         List<VehicleInformation_New> vehicleInformationNewList = new ArrayList<>();
         List<Vehicle_New> vehicleNewList = new ArrayList<>();
         ImmutableValue importantObj = new ImmutableValue();
-        vehicleInformationNewList = importantObj.readVehicleInforFile(ctx);
-        vehicleNewList = importantObj.readVehicleFile(ctx);
 
         /////// Object ////
         VehicleInformation_New tempObj = new VehicleInformation_New();

@@ -1,4 +1,4 @@
-package com.example.manhvdse61952.vrc_android.model;
+package com.example.manhvdse61952.vrc_android.model.apiModel;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;

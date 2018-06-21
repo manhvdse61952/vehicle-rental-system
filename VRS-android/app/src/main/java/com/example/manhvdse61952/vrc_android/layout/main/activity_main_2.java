@@ -50,7 +50,6 @@ public class activity_main_2 extends AppCompatActivity
 
         //////////////////////// USE FOR TABLAYOUT /////////////////
         ImmutableValue importantObj = new ImmutableValue();
-        importantObj.readAddressJsonFile(activity_main_2.this);
 
 
         viewPager = (ViewPager) findViewById(R.id.container);

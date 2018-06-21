@@ -1,8 +1,6 @@
 package com.example.manhvdse61952.vrc_android.layout.signup.customer;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -13,14 +11,11 @@ import android.widget.Button;
 import android.widget.CheckBox;
 
 import com.example.manhvdse61952.vrc_android.R;
-import com.example.manhvdse61952.vrc_android.layout.login.LoginActivity;
-import com.example.manhvdse61952.vrc_android.model.Signup;
+import com.example.manhvdse61952.vrc_android.model.apiModel.Signup;
 import com.example.manhvdse61952.vrc_android.remote.ImmutableValue;
 import com.example.manhvdse61952.vrc_android.remote.RetrofitCallAPI;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.io.IOException;
 
 public class SignupPolicyActivity extends AppCompatActivity {
 
@@ -66,13 +61,13 @@ public class SignupPolicyActivity extends AppCompatActivity {
                 String phone = editor.getString("phone", null);
                 String cmnd = editor.getString("cmnd", null);
                 String paypal = editor.getString("paypal", null);
-                String address = editor.getString("address", null);
+                //String address = editor.getString("address", null);
                 String CMND_image_path = editor.getString("CMND_image_path", null);
                 String rolename = editor.getString("rolename", null);
 
                 //Call API
                 ObjectMapper objectMapper = new ObjectMapper();
-                Signup signupObj = new Signup(address, email, cmnd, CMND_image_path, name, password, paypal, phone, rolename, username);
+                Signup signupObj = new Signup("", email, cmnd, CMND_image_path, name, password, paypal, phone, rolename, username);
                 try {
                     String json = objectMapper.writeValueAsString(signupObj);
                     dialog = ProgressDialog.show(SignupPolicyActivity.this, "Đăng ký",

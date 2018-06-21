@@ -25,6 +25,7 @@ public class SignupAccountActivity extends AppCompatActivity {
     private String username = "", password = "", email = "";
     Validate validObj;
 
+    RetrofitCallAPI rfCall = new RetrofitCallAPI();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +41,30 @@ public class SignupAccountActivity extends AppCompatActivity {
         signup_email_txt = (TextInputLayout) findViewById(R.id.signup_email_txt);
         btnNext = (Button) findViewById(R.id.btnSignupAccountNext);
 
+        edtSignupUsername.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus){
+                }
+                else {
+                    Toast.makeText(SignupAccountActivity.this, "OK", Toast.LENGTH_SHORT).show();
+
+
+                }
+            }
+        });
+
+//        edtSignupEmail.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//                if (!hasFocus){
+//                }
+//                else {
+//                    Toast.makeText(SignupAccountActivity.this, "OK", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
+
         //button Next
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,16 +79,20 @@ public class SignupAccountActivity extends AppCompatActivity {
                 Boolean checkPassword = validObj.validPassword(password, edtSignupPassword);
                 Boolean checkEmail = validObj.validEmail(email, edtSignupEmail);
                 if (checkUsername && checkPassword && checkEmail) {
-                    //shared preferences
-                    SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
-                    editor.putString("username", username);
-                    editor.putString("password", password);
-                    editor.putString("email", email);
-                    editor.apply();
-
                     //Call API
-                    RetrofitCallAPI rfCall = new RetrofitCallAPI();
-                    rfCall.checkExistedUsername(username, password, email, SignupAccountActivity.this);
+                    rfCall.checkExistedUsername(username, SignupAccountActivity.this);
+                    rfCall.checkExistedEmail(email, SignupAccountActivity.this);
+                    if (RetrofitCallAPI.emailResult == true && RetrofitCallAPI.usernameResult == true){
+                        //shared preferences
+                        SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
+                        editor.putString("username", username);
+                        editor.putString("password", password);
+                        editor.putString("email", email);
+                        editor.apply();
+
+                        Intent it = new Intent(SignupAccountActivity.this, SignupUserInfoActivity.class);
+                        startActivity(it);
+                    }
                 }
             }
         });

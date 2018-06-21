@@ -9,7 +9,6 @@ import android.widget.Button;
 
 import com.example.manhvdse61952.vrc_android.R;
 import com.example.manhvdse61952.vrc_android.layout.signup.customer.SignupRoleActivity;
-import com.example.manhvdse61952.vrc_android.model.VehicleType;
 
 public class SignupOwnerOne extends AppCompatActivity {
 
@@ -26,32 +25,32 @@ public class SignupOwnerOne extends AppCompatActivity {
         btnSignupVehicle3 = (Button) findViewById(R.id.btnSignupOwner3);
         btnSignupAccountBack = (Button)findViewById(R.id.btnSignupAccountBack);
 
-        btnSignupVehicle1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent it = new Intent(SignupOwnerOne.this, SignupOwnerTwo.class);
-                it.putExtra(VEHICLE_TYPE, VehicleType.MOTOBIKE.toString());
-                startActivity(it);
-            }
-        });
-
-        btnSignupVehicle2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent it = new Intent(SignupOwnerOne.this, SignupOwnerTwo.class);
-                it.putExtra(VEHICLE_TYPE, VehicleType.CAR.toString());
-                startActivity(it);
-            }
-        });
-
-        btnSignupVehicle3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent it = new Intent(SignupOwnerOne.this, SignupOwnerTwo.class);
-                it.putExtra(VEHICLE_TYPE, VehicleType.BUS.toString());
-                startActivity(it);
-            }
-        });
+//        btnSignupVehicle1.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent it = new Intent(SignupOwnerOne.this, SignupOwnerTwo.class);
+//                it.putExtra(VEHICLE_TYPE, VehicleType.MOTOBIKE.toString());
+//                startActivity(it);
+//            }
+//        });
+//
+//        btnSignupVehicle2.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent it = new Intent(SignupOwnerOne.this, SignupOwnerTwo.class);
+//                it.putExtra(VEHICLE_TYPE, VehicleType.CAR.toString());
+//                startActivity(it);
+//            }
+//        });
+//
+//        btnSignupVehicle3.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent it = new Intent(SignupOwnerOne.this, SignupOwnerTwo.class);
+//                it.putExtra(VEHICLE_TYPE, VehicleType.BUS.toString());
+//                startActivity(it);
+//            }
+//        });
 
         btnSignupAccountBack.setOnClickListener(new View.OnClickListener() {
             @Override

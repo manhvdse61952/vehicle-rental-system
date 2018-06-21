@@ -23,13 +23,9 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.manhvdse61952.vrc_android.R;
-import com.example.manhvdse61952.vrc_android.layout.login.LoginActivity;
-import com.example.manhvdse61952.vrc_android.layout.signup.customer.SignupUserInfoActivity;
-import com.example.manhvdse61952.vrc_android.layout.signup.owner.SignupOwnerThree;
-import com.example.manhvdse61952.vrc_android.layout.signup.owner.SignupOwnerTwoPlus;
-import com.example.manhvdse61952.vrc_android.model.SearchItemNew;
-import com.example.manhvdse61952.vrc_android.model.VehicleInformation_New;
-import com.example.manhvdse61952.vrc_android.model.Vehicle_New;
+import com.example.manhvdse61952.vrc_android.model.searchModel.SearchItemNew;
+import com.example.manhvdse61952.vrc_android.model.apiModel.VehicleInformation_New;
+import com.example.manhvdse61952.vrc_android.model.apiModel.Vehicle_New;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -66,7 +62,6 @@ public class ImmutableValue {
 
     ////////////////////// EXECUTE DATA //////////////////////
 
-    public static List<com.example.manhvdse61952.vrc_android.model.Address> addressItemList;
     public static List<SearchItemNew> searchItemNewList1;
     public static List<SearchItemNew> searchItemNewList2;
     public static List<SearchItemNew> searchItemNewList3;
@@ -244,140 +239,17 @@ public class ImmutableValue {
 
     }
 
-    /////////////////// READ JSON FILE ////////////
-    public void readAddressJsonFile(Context ctx){
-        addressItemList = new ArrayList<>();
-        InputStream inputStream = ctx.getResources().openRawResource(R.raw.address);
-        String json = null;
-
-        //Read json file
-        try {
-            int size = inputStream.available();
-            byte[] buffer = new byte[size];
-            inputStream.read(buffer);
-            inputStream.close();
-            json = new String(buffer, "UTF-8");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        //Move json file to list
-        try {
-            JSONObject obj = new JSONObject(json);
-            JSONArray jsonArray = obj.getJSONArray("address");
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject item = jsonArray.getJSONObject(i);
-                com.example.manhvdse61952.vrc_android.model.Address itemTemp = new com.example.manhvdse61952.vrc_android.model.Address();
-                int id = Integer.parseInt(item.getString("districtID"));
-                itemTemp.setDistrictId(id);
-                itemTemp.setCity(item.getString("city"));
-                itemTemp.setDistrict(item.getString("district"));
-
-                addressItemList.add(itemTemp);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+    public static String removeAccentCharacter(String str){
+        str = str.toLowerCase().trim();
+        str = str.replaceAll("[áàảãạâấầẩẫậăắằẳẵặ]","a");
+        str = str.replaceAll("đ","d");
+        str = str.replaceAll("[éèẻẽẹêếềểễệ]","e");
+        str = str.replaceAll("[íìỉĩị]","i");
+        str = str.replaceAll("[óòỏõọôốồổỗộơớờởỡợ]","o");
+        str = str.replaceAll("[úùủũụưứừửữự]","u");
+        return str;
     }
 
-    public List<VehicleInformation_New> readVehicleInforFile(Context ctx){
-        List<VehicleInformation_New> vehicleInformationItemList = new ArrayList<>();
-        InputStream inputStream = ctx.getResources().openRawResource(R.raw.vehicleinformation);
-        String json = null;
-
-        //Read json file
-        try {
-            int size = inputStream.available();
-            byte[] buffer = new byte[size];
-            inputStream.read(buffer);
-            inputStream.close();
-            json = new String(buffer, "UTF-8");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        //Move json file to list
-        try {
-            JSONObject obj = new JSONObject(json);
-            JSONArray jsonArray = obj.getJSONArray("vehicle_information");
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject item = jsonArray.getJSONObject(i);
-                VehicleInformation_New itemTemp = new VehicleInformation_New();
-                int id = Integer.parseInt(item.getString("vehicleInformationID"));
-                itemTemp.setVehicleInformationID(id);
-                itemTemp.setVehicleMaker(item.getString("vehicleMaker"));
-                itemTemp.setSeat(Integer.parseInt(item.getString("seat")));
-                itemTemp.setModelYear(Integer.parseInt(item.getString("modelYear")));
-                itemTemp.setVehicleType(item.getString("vehicleType"));
-                itemTemp.setVehicleModel(item.getString("vehicleModel"));
-
-                vehicleInformationItemList.add(itemTemp);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return vehicleInformationItemList;
-    }
-
-    public List<Vehicle_New> readVehicleFile(Context ctx){
-        List<Vehicle_New> vehicleItemList = new ArrayList<>();
-        InputStream inputStream = ctx.getResources().openRawResource(R.raw.vehicle);
-        String json = null;
-
-        //Read json file
-        try {
-            int size = inputStream.available();
-            byte[] buffer = new byte[size];
-            inputStream.read(buffer);
-            inputStream.close();
-            json = new String(buffer, "UTF-8");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        //Move json file to list
-        try {
-            JSONObject obj = new JSONObject(json);
-            JSONArray jsonArray = obj.getJSONArray("vehicle");
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject item = jsonArray.getJSONObject(i);
-                Vehicle_New itemTemp = new Vehicle_New();
-                itemTemp.setFrameNumber(item.getString("frameNumber"));
-                itemTemp.setOwnerUserID(Integer.parseInt(item.getString("ownerUserID")));
-                itemTemp.setVehicleInformationID(Integer.parseInt(item.getString("vehicleID")));
-                itemTemp.setDescription(item.getString("description"));
-                itemTemp.setRentFeePerSlot(item.getString("rentFeePerSlot"));
-                itemTemp.setRentFeePerDay(item.getString("rentFeePerDay"));
-                itemTemp.setRentFeePerHours(item.getString("rentFeePerHours"));
-                itemTemp.setDepositFee(item.getString("depositFee"));
-                itemTemp.setPlateNumber(item.getString("plateNumber"));
-                itemTemp.setRequireHouseHold(item.getString("requireHouseHold"));
-                itemTemp.setRequireIdCard(item.getString("requireIdCard"));
-                itemTemp.setDiscountID(Integer.parseInt(item.getString("discountID")));
-                itemTemp.setDistrictID(Integer.parseInt(item.getString("districtID")));
-                itemTemp.setCurrentStatus(item.getString("currentStatus"));
-                itemTemp.setImageLinkFront(item.getString("imageLinkFront"));
-                itemTemp.setImageLinkBack(item.getString("imageLinkBack"));
-                itemTemp.setAddress(item.getString("address"));
-                vehicleItemList.add(itemTemp);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return vehicleItemList;
-    }
-
-    //////////////////////////////////////////////////
-
-    public static String getAddressName(int addressID){
-        String address = "";
-        for (int i=0;i< addressItemList.size(); i++){
-            if (addressID == addressItemList.get(i).getDistrictId()){
-                address = addressItemList.get(i).getDistrict() + ", " + addressItemList.get(i).getCity();
-            }
-        }
-        return address;
-    }
 
     public VehicleInformation_New getVehicleInfo(int vehicleInfoID, List<VehicleInformation_New> vehicleInformationItemList){
         VehicleInformation_New receiveObj = new VehicleInformation_New();

@@ -13,8 +13,8 @@ import android.widget.TextView;
 
 import com.example.manhvdse61952.vrc_android.R;
 import com.example.manhvdse61952.vrc_android.layout.order.MainOrderOne;
-import com.example.manhvdse61952.vrc_android.model.VehicleInformation_New;
-import com.example.manhvdse61952.vrc_android.model.Vehicle_New;
+import com.example.manhvdse61952.vrc_android.model.apiModel.VehicleInformation_New;
+import com.example.manhvdse61952.vrc_android.model.apiModel.Vehicle_New;
 import com.example.manhvdse61952.vrc_android.remote.ImmutableValue;
 
 import java.util.ArrayList;
@@ -53,8 +53,7 @@ public class MainItem extends AppCompatActivity {
         List<VehicleInformation_New> vehicleInformationNewList = new ArrayList<>();
         List<Vehicle_New> vehicleNewList = new ArrayList<>();
         ImmutableValue importantObj = new ImmutableValue();
-        vehicleInformationNewList = importantObj.readVehicleInforFile(MainItem.this);
-        vehicleNewList = importantObj.readVehicleFile(MainItem.this);
+
 
         VehicleInformation_New tempObj = new VehicleInformation_New();
         for (int i = 0; i < vehicleNewList.size(); i++){
