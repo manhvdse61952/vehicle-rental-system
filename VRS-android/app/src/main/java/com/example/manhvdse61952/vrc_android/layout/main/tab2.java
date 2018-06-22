@@ -40,24 +40,24 @@ public class tab2 extends Fragment {
 
 
         ImmutableValue.searchItemNewList2 = new ArrayList<>();
-        for (int i=0; i< vehicleNewList.size(); i++){
-            VehicleInformation_New checkObj = importantObj.getVehicleInfo(vehicleNewList.get(i).getVehicleInformationID(), vehicleInformationNewList);
-            if (checkObj.getVehicleType().equals("XE_CA_NHAN")){
-                SearchItemNew obj = new SearchItemNew();
-                String vehicleName = checkObj.getVehicleMaker() + " " + checkObj.getVehicleModel();
-                int vehicleSeat = checkObj.getSeat();
-                //String address = ImmutableValue.getAddressName(vehicleNewList.get(i).getDistrictID());
-
-                obj.setVehicleName(vehicleName);
-                obj.setVehicleSeat(vehicleSeat);
-                //obj.setAddress(address);
-                obj.setFrameNumber(vehicleNewList.get(i).getFrameNumber());
-                obj.setVehiclePrice(vehicleNewList.get(i).getRentFeePerSlot());
-                obj.setImageLinkFront(vehicleNewList.get(i).getImageLinkFront());
-
-                ImmutableValue.searchItemNewList2.add(obj);
-            }
-        }
+//        for (int i=0; i< vehicleNewList.size(); i++){
+//            VehicleInformation_New checkObj = importantObj.getVehicleInfo(vehicleNewList.get(i).getVehicleInformationID(), vehicleInformationNewList);
+//            if (checkObj.getVehicleType().equals("XE_CA_NHAN")){
+//                SearchItemNew obj = new SearchItemNew();
+//                String vehicleName = checkObj.getVehicleMaker() + " " + checkObj.getVehicleModel();
+//                int vehicleSeat = checkObj.getSeat();
+//                //String address = ImmutableValue.getAddressName(vehicleNewList.get(i).getDistrictID());
+//
+//                obj.setVehicleName(vehicleName);
+//                obj.setVehicleSeat(vehicleSeat);
+//                //obj.setAddress(address);
+//                obj.setFrameNumber(vehicleNewList.get(i).getFrameNumber());
+//                obj.setVehiclePrice(vehicleNewList.get(i).getRentFeePerSlot());
+//                obj.setImageLinkFront(vehicleNewList.get(i).getImageLinkFront());
+//
+//                ImmutableValue.searchItemNewList2.add(obj);
+//            }
+//        }
 
 
         listView = (ListView)view.findViewById(R.id.lvtab2);

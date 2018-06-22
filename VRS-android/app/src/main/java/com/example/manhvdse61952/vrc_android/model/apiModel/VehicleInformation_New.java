@@ -1,34 +1,48 @@
 package com.example.manhvdse61952.vrc_android.model.apiModel;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 public class VehicleInformation_New implements Serializable {
-    private int vehicleInformationID;
+    @SerializedName("id")
+    @Expose
+    private int id;
+    @SerializedName("vehicleMaker")
+    @Expose
     private String vehicleMaker;
+    @SerializedName("seat")
+    @Expose
     private int seat;
+    @SerializedName("modelYear")
+    @Expose
     private int modelYear;
-    private String vehicleType;
+    @SerializedName("vehicleModel")
+    @Expose
     private String vehicleModel;
+    @SerializedName("vehicleType")
+    @Expose
+    private String vehicleType;
 
-    public VehicleInformation_New(int vehicleInformationID, String vehicleMaker, int seat, int modelYear, String vehicleType, String vehicleModel) {
-        this.vehicleInformationID = vehicleInformationID;
+    public VehicleInformation_New(int id, String vehicleMaker, int seat, int modelYear, String vehicleModel, String vehicleType) {
+        this.id = id;
         this.vehicleMaker = vehicleMaker;
         this.seat = seat;
         this.modelYear = modelYear;
-        this.vehicleType = vehicleType;
         this.vehicleModel = vehicleModel;
+        this.vehicleType = vehicleType;
     }
 
-    public VehicleInformation_New(){
-
+    public VehicleInformation_New() {
     }
 
-    public int getVehicleInformationID() {
-        return vehicleInformationID;
+    public int getId() {
+        return id;
     }
 
-    public void setVehicleInformationID(int vehicleInformationID) {
-        this.vehicleInformationID = vehicleInformationID;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getVehicleMaker() {
@@ -55,19 +69,19 @@ public class VehicleInformation_New implements Serializable {
         this.modelYear = modelYear;
     }
 
-    public String getVehicleType() {
-        return vehicleType;
-    }
-
-    public void setVehicleType(String vehicleType) {
-        this.vehicleType = vehicleType;
-    }
-
     public String getVehicleModel() {
         return vehicleModel;
     }
 
     public void setVehicleModel(String vehicleModel) {
         this.vehicleModel = vehicleModel;
+    }
+
+    public String getVehicleType() {
+        return vehicleType;
+    }
+
+    public void setVehicleType(String vehicleType) {
+        this.vehicleType = vehicleType;
     }
 }

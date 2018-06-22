@@ -102,19 +102,6 @@ public class Validate {
         return isValid;
     }
 
-    public Boolean validVehicleName(String vehicleName, EditText input){
-        Boolean isValid = true;
-        if (vehicleName.trim().isEmpty()){
-            isValid = false;
-            input.setError("Tên xe không được để trống");
-        } else if(vehicleName.trim().matches("[0-9a-zA-Z\\s]{1,}") == false){
-            isValid = false;
-            input.setError("Tên xe chỉ chứa chữ, số, khoảng trắng");
-        } else {
-            isValid = true;
-        }
-        return isValid;
-    }
 
     public Boolean validPrice(String price, EditText input){
         Boolean isValid = true;

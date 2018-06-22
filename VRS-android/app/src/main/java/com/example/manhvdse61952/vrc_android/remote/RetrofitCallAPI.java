@@ -15,6 +15,7 @@ import com.example.manhvdse61952.vrc_android.api.VehicleAPI;
 import com.example.manhvdse61952.vrc_android.layout.main.activity_main_2;
 import com.example.manhvdse61952.vrc_android.api.AccountAPI;
 import com.example.manhvdse61952.vrc_android.layout.login.LoginActivity;
+import com.example.manhvdse61952.vrc_android.layout.signup.customer.SignupAccountActivity;
 import com.example.manhvdse61952.vrc_android.layout.signup.customer.SignupRoleActivity;
 import com.example.manhvdse61952.vrc_android.layout.signup.customer.SignupUserInfoActivity;
 import com.example.manhvdse61952.vrc_android.model.apiModel.City;
@@ -35,8 +36,6 @@ import retrofit2.Retrofit;
 
 public class RetrofitCallAPI {
     public static List<City> lisCityTest = new ArrayList<>();
-    public static List<String> vehicleMaker = new ArrayList<>();
-    public static List<String> vehicleModel = new ArrayList<>();
     public static List<String> vehicleYear = new ArrayList<>();
 
     /// Check login////
@@ -162,7 +161,7 @@ public class RetrofitCallAPI {
     }
 
     /// Get all district and city in database ///
-    public List<City> getAllAddress() {
+    public void getAllAddress(final ProgressDialog progressDialog, final Context ctx) {
         lisCityTest = new ArrayList<>();
         Retrofit test = RetrofitConnect.getClient();
         final AddressAPI testAPI = test.create(AddressAPI.class);
@@ -172,19 +171,22 @@ public class RetrofitCallAPI {
             @Override
             public void onResponse(Call<List<City>> call, Response<List<City>> response) {
                 lisCityTest = response.body();
+                getAllVehicleMaker(ctx, progressDialog);
+
+                //progressDialog.dismiss();
             }
 
             @Override
             public void onFailure(Call<List<City>> call, Throwable t) {
-
+                progressDialog.dismiss();
+                Toast.makeText(ctx, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
             }
         });
-        return lisCityTest;
     }
 
     /// Get all vehicle maker  ///
-    public List<String> getAllVehicleMaker() {
-        vehicleMaker = new ArrayList<>();
+    public void getAllVehicleMaker(final Context ctx, final ProgressDialog dialog) {
+        ImmutableValue.listVehicleMaker = new ArrayList<>();
         Retrofit test = RetrofitConnect.getClient();
         final VehicleAPI testAPI = test.create(VehicleAPI.class);
         Call<List<String>> responseBodyCall = testAPI.getVehicleMarker();
@@ -194,43 +196,19 @@ public class RetrofitCallAPI {
             public void onResponse(Call<List<String>> call, Response<List<String>> response) {
                 if (response.body() != null) {
                     for (int i = 0; i < response.body().size(); i++) {
-                        vehicleMaker.add(response.body().get(i).toString());
+                        ImmutableValue.listVehicleMaker.add(response.body().get(i).toString());
                     }
                 }
+                dialog.dismiss();
 
             }
 
             @Override
             public void onFailure(Call<List<String>> call, Throwable t) {
-
+                dialog.dismiss();
+                Toast.makeText(ctx, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
             }
         });
-        return vehicleMaker;
-    }
-
-    /// get all vehicle model by maker ///
-    public List<String> getAllVehicleModel(String maker) {
-        vehicleModel = new ArrayList<>();
-        Retrofit test = RetrofitConnect.getClient();
-        final VehicleAPI testAPI = test.create(VehicleAPI.class);
-        Call<List<String>> responseBodyCall = testAPI.getVehicleModel(maker);
-
-        responseBodyCall.enqueue(new Callback<List<String>>() {
-            @Override
-            public void onResponse(Call<List<String>> call, Response<List<String>> response) {
-                if (response.body() != null) {
-                    for (int i = 0; i < response.body().size(); i++) {
-                        vehicleModel.add(response.body().get(i).toString());
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<String>> call, Throwable t) {
-
-            }
-        });
-        return vehicleModel;
     }
 
     /// get all vehicle year by maker and model ///

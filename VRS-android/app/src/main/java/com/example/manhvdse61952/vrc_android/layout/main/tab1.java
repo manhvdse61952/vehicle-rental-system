@@ -38,24 +38,24 @@ public class tab1 extends Fragment {
         ImmutableValue importantObj = new ImmutableValue();
 
         ImmutableValue.searchItemNewList1 = new ArrayList<>();
-        for (int i=0; i< vehicleNewList.size(); i++){
-            VehicleInformation_New checkObj = importantObj.getVehicleInfo(vehicleNewList.get(i).getVehicleInformationID(), vehicleInformationNewList);
-            if (checkObj.getVehicleType().equals("XE_MAY")){
-                SearchItemNew obj = new SearchItemNew();
-                String vehicleName = checkObj.getVehicleMaker() + " " + checkObj.getVehicleModel();
-                int vehicleSeat = checkObj.getSeat();
-                //String address = ImmutableValue.getAddressName(vehicleNewList.get(i).getDistrictID());
-
-                obj.setVehicleName(vehicleName);
-                obj.setVehicleSeat(vehicleSeat);
-                //obj.setAddress(address);
-                obj.setFrameNumber(vehicleNewList.get(i).getFrameNumber());
-                obj.setVehiclePrice(vehicleNewList.get(i).getRentFeePerHours());
-                obj.setImageLinkFront(vehicleNewList.get(i).getImageLinkFront());
-
-                ImmutableValue.searchItemNewList1.add(obj);
-            }
-        }
+//        for (int i=0; i< vehicleNewList.size(); i++){
+//            VehicleInformation_New checkObj = importantObj.getVehicleInfo(vehicleNewList.get(i).getVehicleInformationID(), vehicleInformationNewList);
+//            if (checkObj.getVehicleType().equals("XE_MAY")){
+//                SearchItemNew obj = new SearchItemNew();
+//                String vehicleName = checkObj.getVehicleMaker() + " " + checkObj.getVehicleModel();
+//                int vehicleSeat = checkObj.getSeat();
+//                //String address = ImmutableValue.getAddressName(vehicleNewList.get(i).getDistrictID());
+//
+//                obj.setVehicleName(vehicleName);
+//                obj.setVehicleSeat(vehicleSeat);
+//                //obj.setAddress(address);
+//                obj.setFrameNumber(vehicleNewList.get(i).getFrameNumber());
+//                obj.setVehiclePrice(vehicleNewList.get(i).getRentFeePerHours());
+//                obj.setImageLinkFront(vehicleNewList.get(i).getImageLinkFront());
+//
+//                ImmutableValue.searchItemNewList1.add(obj);
+//            }
+//        }
 
         listView = (ListView)view.findViewById(R.id.lvtab1);
         adapter = new SearchAdapter(tab1.this, ImmutableValue.searchItemNewList1, getActivity());

@@ -60,39 +60,6 @@ public class SignupUserInfoActivity extends AppCompatActivity {
         signup_cmnd_txt = (TextInputLayout) findViewById(R.id.signup_cmnd_txt);
 
 
-//        final List<City> listAddress =  RetrofitCallAPI.lisCityTest;
-//        ArrayAdapter<City> cityArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, listAddress);
-//        cityArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        spnAddress.setAdapter(cityArrayAdapter);
-//        spnAddress.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                List<District> districts = listAddress.get(position).getDistrict();
-//                cityPosition = position;
-//                ArrayAdapter<District> districtAdapter = new ArrayAdapter<>(SignupUserInfoActivity.this, android.R.layout.simple_spinner_dropdown_item, districts);
-//                spnDistrict.setAdapter(districtAdapter);
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//
-//            }
-//        });
-//        spnDistrict.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                District district = listAddress.get(cityPosition).getDistrict().get(position);
-//                SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
-//                editor.putString("districtID", district.getId().toString());
-//                Toast.makeText(SignupUserInfoActivity.this, district.getId().toString(), Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//
-//            }
-//        });
-
         //button Next
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override

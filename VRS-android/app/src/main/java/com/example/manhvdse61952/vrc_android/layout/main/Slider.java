@@ -53,13 +53,13 @@ public class Slider extends PagerAdapter {
         VehicleInformation_New tempObj = new VehicleInformation_New();
         String imageLinkFront = "", imageLinkBack = "";
 
-        for (int i = 0; i < vehicleNewList.size();i++){
-            if (framenumber.equalsIgnoreCase(vehicleNewList.get(i).getFrameNumber())){
-                imageLinkFront = vehicleNewList.get(i).getImageLinkFront();
-                imageLinkBack = vehicleNewList.get(i).getImageLinkBack();
-                tempObj = importantObj.getVehicleInfo(vehicleNewList.get(i).getVehicleInformationID(), vehicleInformationNewList);
-            }
-        }
+//        for (int i = 0; i < vehicleNewList.size();i++){
+//            if (framenumber.equalsIgnoreCase(vehicleNewList.get(i).getFrameNumber())){
+//                imageLinkFront = vehicleNewList.get(i).getImageLinkFront();
+//                imageLinkBack = vehicleNewList.get(i).getImageLinkBack();
+//                tempObj = importantObj.getVehicleInfo(vehicleNewList.get(i).getVehicleInformationID(), vehicleInformationNewList);
+//            }
+//        }
 
 
 

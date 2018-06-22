@@ -7,13 +7,13 @@ public class Vehicle_New implements Serializable {
     private int ownerUserID;
     private int vehicleInformationID;
     private String description;
-    private String rentFeePerSlot;
-    private String rentFeePerDay;
-    private String rentFeePerHours;
-    private String depositFee;
+    private float rentFeePerSlot;
+    private float rentFeePerDay;
+    private float rentFeePerHours;
+    private float depositFee;
     private String plateNumber;
-    private String requireHouseHold;
-    private String requireIdCard;
+    private int requireHouseHold;
+    private int requireIdCard;
     private int discountID;
     private int districtID;
     private String currentStatus;
@@ -21,9 +21,8 @@ public class Vehicle_New implements Serializable {
     private String imageLinkVehicleRegistration;
     private String imageLinkFront;
     private String imageLinkBack;
-    private String address;
 
-    public Vehicle_New(String frameNumber, int ownerUserID, int vehicleInformationID, String description, String rentFeePerSlot, String rentFeePerDay, String rentFeePerHours, String depositFee, String plateNumber, String requireHouseHold, String requireIdCard, int discountID, int districtID, String currentStatus, String approveStatus, String imageLinkVehicleRegistration, String imageLinkFront, String imageLinkBack, String address) {
+    public Vehicle_New(String frameNumber, int ownerUserID, int vehicleInformationID, String description, float rentFeePerSlot, float rentFeePerDay, float rentFeePerHours, float depositFee, String plateNumber, int requireHouseHold, int requireIdCard, int discountID, int districtID, String currentStatus, String approveStatus, String imageLinkVehicleRegistration, String imageLinkFront, String imageLinkBack) {
         this.frameNumber = frameNumber;
         this.ownerUserID = ownerUserID;
         this.vehicleInformationID = vehicleInformationID;
@@ -42,7 +41,21 @@ public class Vehicle_New implements Serializable {
         this.imageLinkVehicleRegistration = imageLinkVehicleRegistration;
         this.imageLinkFront = imageLinkFront;
         this.imageLinkBack = imageLinkBack;
-        this.address = address;
+    }
+
+    public Vehicle_New(String frameNumber, int ownerUserID, int vehicleInformationID, String description, float rentFeePerSlot, float rentFeePerDay, float rentFeePerHours, float depositFee, String plateNumber, int requireHouseHold, int requireIdCard, int districtID) {
+        this.frameNumber = frameNumber;
+        this.ownerUserID = ownerUserID;
+        this.vehicleInformationID = vehicleInformationID;
+        this.description = description;
+        this.rentFeePerSlot = rentFeePerSlot;
+        this.rentFeePerDay = rentFeePerDay;
+        this.rentFeePerHours = rentFeePerHours;
+        this.depositFee = depositFee;
+        this.plateNumber = plateNumber;
+        this.requireHouseHold = requireHouseHold;
+        this.requireIdCard = requireIdCard;
+        this.districtID = districtID;
     }
 
     public Vehicle_New(){
@@ -81,35 +94,35 @@ public class Vehicle_New implements Serializable {
         this.description = description;
     }
 
-    public String getRentFeePerSlot() {
+    public float getRentFeePerSlot() {
         return rentFeePerSlot;
     }
 
-    public void setRentFeePerSlot(String rentFeePerSlot) {
+    public void setRentFeePerSlot(float rentFeePerSlot) {
         this.rentFeePerSlot = rentFeePerSlot;
     }
 
-    public String getRentFeePerDay() {
+    public float getRentFeePerDay() {
         return rentFeePerDay;
     }
 
-    public void setRentFeePerDay(String rentFeePerDay) {
+    public void setRentFeePerDay(float rentFeePerDay) {
         this.rentFeePerDay = rentFeePerDay;
     }
 
-    public String getRentFeePerHours() {
+    public float getRentFeePerHours() {
         return rentFeePerHours;
     }
 
-    public void setRentFeePerHours(String rentFeePerHours) {
+    public void setRentFeePerHours(float rentFeePerHours) {
         this.rentFeePerHours = rentFeePerHours;
     }
 
-    public String getDepositFee() {
+    public float getDepositFee() {
         return depositFee;
     }
 
-    public void setDepositFee(String depositFee) {
+    public void setDepositFee(float depositFee) {
         this.depositFee = depositFee;
     }
 
@@ -121,19 +134,19 @@ public class Vehicle_New implements Serializable {
         this.plateNumber = plateNumber;
     }
 
-    public String getRequireHouseHold() {
+    public int getRequireHouseHold() {
         return requireHouseHold;
     }
 
-    public void setRequireHouseHold(String requireHouseHold) {
+    public void setRequireHouseHold(int requireHouseHold) {
         this.requireHouseHold = requireHouseHold;
     }
 
-    public String getRequireIdCard() {
+    public int getRequireIdCard() {
         return requireIdCard;
     }
 
-    public void setRequireIdCard(String requireIdCard) {
+    public void setRequireIdCard(int requireIdCard) {
         this.requireIdCard = requireIdCard;
     }
 
@@ -191,13 +204,5 @@ public class Vehicle_New implements Serializable {
 
     public void setImageLinkBack(String imageLinkBack) {
         this.imageLinkBack = imageLinkBack;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
     }
 }

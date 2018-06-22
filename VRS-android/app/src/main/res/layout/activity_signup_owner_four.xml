@@ -1,76 +1,226 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:focusableInTouchMode="true">
+    android:focusableInTouchMode="true"
+    android:orientation="vertical"
+    android:weightSum="10">
 
-
-
-    <RelativeLayout
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_margin="20dp"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_weight="1.5"
+        android:gravity="center_vertical"
+        android:theme="@style/ThirdAppTheme"
+        app:errorTextAppearance="@style/error_apperance">
 
-        <RelativeLayout
+        <EditText
+            android:id="@+id/edtRentPerSlot"
             android:layout_width="match_parent"
-            android:layout_centerVertical="true"
-            android:layout_height="200dp">
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:hint="Giá thuê xe theo buổi - gợi ý: 700.000 đ"
+            android:inputType="numberDecimal"
+            android:textColor="#000" />
 
-            <TextView
-                android:id="@+id/txt1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="#000"
-                android:textSize="18sp"
-                android:text="Thêm ghi chú về xe (có thể bỏ trống)" />
+    </android.support.design.widget.TextInputLayout>
 
-            <EditText
-                android:id="@+id/edtSignupVehicleDescription"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/txt1"
-                android:layout_marginTop="10dp"
-                android:ems="10"
-                android:inputType="textMultiLine" />
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_weight="1.5"
+        android:gravity="center_vertical"
+        android:theme="@style/ThirdAppTheme"
+        app:errorTextAppearance="@style/error_apperance">
 
-            <com.google.android.flexbox.FlexboxLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/signup_ico"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:alignItems="center"
-                android:layout_below="@+id/edtSignupVehicleDescription"
-                android:layout_marginTop="20dp"
-                app:flexWrap="wrap"
-                app:justifyContent="space_around">
+        <EditText
+            android:id="@+id/edtRentPerDay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:hint="Giá thuê xe theo ngày - gợi ý: 1.300.000 đ"
+            android:inputType="numberDecimal"
+            android:textColor="#000" />
 
-                <Button
-                    android:id="@+id/btnVehicleBack"
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:layout_gravity="center_horizontal"
-                    android:background="@drawable/btn_login"
-                    android:text="Quay lại"
-                    android:textColor="#000"
-                    android:textAllCaps="false"
-                    android:textSize="18sp"
-                    app:layout_flexBasisPercent="@fraction/signup_btn" />
+    </android.support.design.widget.TextInputLayout>
 
-                <Button
-                    android:id="@+id/btnVehicleNext"
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_gravity="center_horizontal"
-                    android:background="@drawable/btn_next"
-                    android:text="Tiếp tục"
-                    android:textColor="#FFF"
-                    android:textAllCaps="false"
-                    android:textSize="18sp"
-                    app:layout_flexBasisPercent="@fraction/signup_btn" />
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_weight="1.5"
+        android:gravity="center_vertical"
+        android:theme="@style/ThirdAppTheme"
+        app:errorTextAppearance="@style/error_apperance">
 
-            </com.google.android.flexbox.FlexboxLayout>
-        </RelativeLayout>
+        <EditText
+            android:id="@+id/edtRentPerHours"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:hint="Tiền phạt quá giờ - gợi ý: 200.000 đ"
+            android:inputType="numberDecimal"
+            android:textColor="#000" />
 
-    </RelativeLayout>
+    </android.support.design.widget.TextInputLayout>
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_weight="1.5"
+        android:gravity="center_vertical"
+        android:theme="@style/ThirdAppTheme"
+        app:errorTextAppearance="@style/error_apperance">
+
+        <EditText
+            android:id="@+id/edtDepositFee"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:hint="Tiền đặt cọc - gợi ý: 5.000.000 đ"
+            android:inputType="numberDecimal"
+            android:textColor="#000" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_weight="2"
+        android:gravity="center_vertical"
+        android:theme="@style/ThirdAppTheme"
+        app:errorTextAppearance="@style/error_apperance">
+
+        <EditText
+            android:id="@+id/edtSignupVehicleDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:hint="Ghi chú thêm về xe (có thể bỏ trống)"
+            android:inputType="text"
+            android:textColor="#000" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <com.google.android.flexbox.FlexboxLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        app:alignItems="center"
+        app:flexWrap="wrap"
+        app:justifyContent="space_around">
+
+        <Button
+            android:id="@+id/btnVehicleBack"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/btn_login"
+            android:text="Quay lại"
+            android:textAllCaps="false"
+            android:textColor="#000"
+            android:textSize="18sp"
+            app:layout_flexBasisPercent="@fraction/signup_btn" />
+
+        <Button
+            android:id="@+id/btnVehicleNext"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/btn_next"
+            android:text="Tiếp tục"
+            android:textAllCaps="false"
+            android:textColor="#FFF"
+            android:textSize="18sp"
+            app:layout_flexBasisPercent="@fraction/signup_btn" />
+
+    </com.google.android.flexbox.FlexboxLayout>
+    <!--<RelativeLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_margin="20dp"-->
+    <!--android:layout_height="match_parent">-->
+
+    <!--<RelativeLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_centerVertical="true"-->
+    <!--android:layout_height="200dp">-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/txt1"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:textColor="#000"-->
+    <!--android:textSize="18sp"-->
+    <!--android:text="Thêm ghi chú về xe (có thể bỏ trống)" />-->
+
+    <!--<EditText-->
+    <!--android:id="@+id/edtSignupVehicleDescription"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_below="@+id/txt1"-->
+    <!--android:layout_marginTop="10dp"-->
+    <!--android:ems="10"-->
+    <!--android:inputType="textMultiLine" />-->
+
+    <!--<com.google.android.flexbox.FlexboxLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+    <!--android:id="@+id/signup_ico"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--app:alignItems="center"-->
+    <!--android:layout_below="@+id/edtSignupVehicleDescription"-->
+    <!--android:layout_marginTop="20dp"-->
+    <!--app:flexWrap="wrap"-->
+    <!--app:justifyContent="space_around">-->
+
+    <!--<Button-->
+    <!--android:id="@+id/btnVehicleBack"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="50dp"-->
+    <!--android:layout_gravity="center_horizontal"-->
+    <!--android:background="@drawable/btn_login"-->
+    <!--android:text="Quay lại"-->
+    <!--android:textColor="#000"-->
+    <!--android:textAllCaps="false"-->
+    <!--android:textSize="18sp"-->
+    <!--app:layout_flexBasisPercent="@fraction/signup_btn" />-->
+
+    <!--<Button-->
+    <!--android:id="@+id/btnVehicleNext"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="50dp"-->
+    <!--android:layout_alignParentRight="true"-->
+    <!--android:layout_gravity="center_horizontal"-->
+    <!--android:background="@drawable/btn_next"-->
+    <!--android:text="Tiếp tục"-->
+    <!--android:textColor="#FFF"-->
+    <!--android:textAllCaps="false"-->
+    <!--android:textSize="18sp"-->
+    <!--app:layout_flexBasisPercent="@fraction/signup_btn" />-->
+
+    <!--</com.google.android.flexbox.FlexboxLayout>-->
+    <!--</RelativeLayout>-->
+
+    <!--</RelativeLayout>-->
 </LinearLayout>
