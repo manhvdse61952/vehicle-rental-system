@@ -41,14 +41,14 @@ import id.zelory.compressor.Compressor;
 public class SignupOwnerTwoPlus extends AppCompatActivity {
 
     private ImmutableValue cameraObj = new ImmutableValue();
-    EditText edtVehicleFrameNumber, edtVehicleRent, edtVehicleDeposit;
+    EditText edtVehicleFrameNumber, edtVehiclePlate;
     Button btnVehicleNext, btnVehicleBack;
     CheckBox cbxHouseHold, cbxIdCard;
     ImageView btnTakePictureVehicle, btnSelectPictureVehicle, imgSignupOwner;
     Validate validObj;
 
-    int required_household_registration = 0, required_vehicle_registration = 0, required_id_card = 0;
-    String frameNumber = "", rent = "", deposit = "";
+    int required_household_registration = 0, required_id_card = 0;
+    String frameNumber = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,8 +57,7 @@ public class SignupOwnerTwoPlus extends AppCompatActivity {
 
         //Decalre id
         edtVehicleFrameNumber = (EditText)findViewById(R.id.edtVehicleFrameNumber);
-        edtVehicleRent = (EditText)findViewById(R.id.edtVehicleRent);
-        edtVehicleDeposit = (EditText)findViewById(R.id.edtVehicleDeposit);
+        edtVehiclePlate = (EditText)findViewById(R.id.edtVehiclePlate);
         btnVehicleNext = (Button)findViewById(R.id.btnVehicleNext);
         btnVehicleBack = (Button)findViewById(R.id.btnVehicleBack);
         cbxHouseHold = (CheckBox)findViewById(R.id.cbxHouseHold);
@@ -66,18 +65,6 @@ public class SignupOwnerTwoPlus extends AppCompatActivity {
         btnTakePictureVehicle = (ImageView)findViewById(R.id.btnTakePictureVehicle);
         btnSelectPictureVehicle = (ImageView)findViewById(R.id.btnSelectPictureVehicle);
         imgSignupOwner = (ImageView)findViewById(R.id.imgSignupOwner);
-
-        //Save value when user press back button
-//        SharedPreferences prefs = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE);
-//        edtVehicleFrameNumber.setText(prefs.getString("frameNumber", ""));
-//        edtVehicleRent.setText(prefs.getString("rent", ""));
-//        edtVehicleDeposit.setText(prefs.getString("deposit", ""));
-//        if (prefs.getInt("household_registration", 0) == 1){
-//            cbxHouseHold.setChecked(true);
-//        }
-//        if (prefs.getInt("id_card", 0) == 1){
-//            cbxIdCard.setChecked(true);
-//        }
 
         //house_hold checkbox
         cbxHouseHold.setOnClickListener(new View.OnClickListener() {
@@ -110,24 +97,19 @@ public class SignupOwnerTwoPlus extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 frameNumber = edtVehicleFrameNumber.getText().toString();
-                rent = edtVehicleRent.getText().toString();
-                deposit = edtVehicleDeposit.getText().toString();
-
                 validObj = new Validate();
                 Boolean checkFrameNumber = validObj.validFrameNumber(frameNumber, edtVehicleFrameNumber);
-                Boolean checkRentPrice = validObj.validPrice(rent, edtVehicleRent);
-                Boolean checkDepositPrice = validObj.validPrice(deposit, edtVehicleDeposit);
+                Boolean checkPlate = validObj.validFrameNumber(edtVehiclePlate.getText().toString(), edtVehiclePlate);
+
                 Boolean checkImageLink = validObj.validImageLink(ImmutableValue.picturePath, SignupOwnerTwoPlus.this);
 
-                if (checkFrameNumber && checkRentPrice && checkDepositPrice && checkImageLink){
+                if (checkFrameNumber && checkImageLink && checkPlate){
                     //Declare shared preferences
                     SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
                     editor.putString("frameNumber", frameNumber);
-                    editor.putString("rent", rent);
-                    editor.putString("deposit", deposit);
-                    editor.putInt("household_registration", required_household_registration);
-                    editor.putInt("vehicle_registration", 0);
-                    editor.putInt("id_card", required_id_card);
+                    editor.putInt("requireHouseHold", required_household_registration);
+                    editor.putInt("requireIdCard", required_id_card);
+                    editor.putString("plateNumber", edtVehiclePlate.getText().toString());
                     editor.putString("picture_path", ImmutableValue.picturePath);
                     editor.apply();
 
@@ -152,26 +134,6 @@ public class SignupOwnerTwoPlus extends AppCompatActivity {
         btnTakePictureVehicle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.CAMERA)
-//                        != PackageManager.PERMISSION_GRANTED) {
-//                    requestPermissions(new String[]{Manifest.permission.CAMERA}, ImmutableValue.CAMERA_REQUEST_CODE);
-//                } else {
-//                    //Open take picture intent
-//                    Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//                    if (cameraIntent.resolveActivity(getPackageManager()) != null) {
-//                        File pictureFile = null;
-//                        pictureFile = getPictureFile();
-//                        if (pictureFile != null) {
-//                            Uri photoURI = FileProvider.getUriForFile(SignupOwnerTwoPlus.this,
-//                                    "com.example.manhvdse61952.vrc_android.provider",
-//                                    pictureFile);
-//                            cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-//                            startActivityForResult(cameraIntent, ImmutableValue.CAMERA_OPEN_CODE);
-//                        }
-//
-//                    }
-//                }
-                //testObj.takePicture(SignupOwnerTwoPlus.this, SignupOwnerTwoPlus.this);
                 cameraObj.checkPermission(SignupOwnerTwoPlus.this, SignupOwnerTwoPlus.this, ImmutableValue.CAMERA_OPEN_CODE);
             }
         });
@@ -187,22 +149,6 @@ public class SignupOwnerTwoPlus extends AppCompatActivity {
         });
     }
 
-    //Get image file name -> use for button take picture
-//    private File getPictureFile() {
-//        try {
-//            String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-//            String pictureFile = "IMG_" + timeStamp;
-//            File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-//            File image = File.createTempFile(pictureFile, ".jpg", storageDir);
-//            pictureFilePath = image.getAbsolutePath();
-//            return image;
-//        } catch (Exception ex) {
-//            Log.e("getPictureFile", ex.getMessage());
-//            Toast.makeText(this, "ERROR: at getPictureFile" +ex.getMessage(), Toast.LENGTH_LONG).show();
-//            return null;
-//        }
-//
-//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -211,51 +157,11 @@ public class SignupOwnerTwoPlus extends AppCompatActivity {
             case ImmutableValue.CAMERA_SELECT_IMAGE_CODE:
                 if (resultCode == RESULT_OK) {
                     cameraObj.showImageGallery(data, imgSignupOwner, SignupOwnerTwoPlus.this);
-//                    Uri selectedImage = data.getData();
-//                    imgSignupOwner.setImageURI(selectedImage);
-//                    try {
-//
-//                        //Create new file
-//                        File f = new File(getApplicationContext().getCacheDir(), "example_image");
-//                        f.createNewFile();
-//
-//                        //Convert bitmap to file
-//                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
-//                        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-//                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
-//                        byte[] bitmapData = bos.toByteArray();
-//
-//
-//                        //write byte to file
-//                        FileOutputStream fos = new FileOutputStream(f);
-//                        fos.write(bitmapData);
-//                        fos.flush();
-//                        fos.close();
-//                        File compressor = new Compressor(this).setQuality(75).compressToFile(f);
-//                        pictureFilePath = compressor.getAbsolutePath();
-//
-//
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
                 }
                 break;
 
             case ImmutableValue.CAMERA_OPEN_CODE:
                 if (resultCode == RESULT_OK) {
-//                    File imgFile = new File(pictureFilePath);
-//                    if (imgFile.exists()) {
-//                        //imgSignupCMND.setImageURI(Uri.fromFile(imgFile));
-//                        Picasso.get().load(imgFile).into(imgSignupOwner);
-//                        File compressor = null;
-//                        try {
-//                            compressor = new Compressor(this).setQuality(75).compressToFile(imgFile);
-//                            pictureFilePath = compressor.getAbsolutePath();
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
-//                        }
-//
-//                    }
                     cameraObj.showImageCamera(imgSignupOwner, SignupOwnerTwoPlus.this);
                 }
         }

@@ -9,13 +9,30 @@
     android:weightSum="9">
 
     <TextView
+        android:id="@+id/txtVehicleType"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:gravity="center_horizontal|center_vertical"
-        android:text="Đăng ký xe"
-        android:textColor="#000"
-        android:textSize="24sp" />
+        android:layout_weight="0.7"
+        android:text="Thông tin của xe"
+        android:gravity="center_vertical|center_horizontal"
+        android:textColor="@color/secondary_text"
+        android:textSize="16sp"
+        android:textStyle="italic|bold"
+        android:layout_marginLeft="10dp"/>
+
+
+        <TextView
+            android:id="@+id/edtSignupVehicleName"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.8"
+            android:textSize="16sp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:text="Nhấn để chọn xe ..."
+            android:background="@drawable/btn_login"
+            android:gravity="center_vertical|center_horizontal"
+            android:textColor="#000" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -30,44 +47,18 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="5"
-            android:text="Hãng sản xuất"
+            android:text="Năm sản xuất"
             android:textColor="#000"
             android:textSize="16sp" />
 
         <Spinner
-            android:id="@+id/spnVehicleMaker"
+            android:id="@+id/spnVehicleYear"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="5"
             android:drawSelectorOnTop="true">
         </Spinner>
     </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:weightSum="10">
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="5"
-            android:text="Tên xe"
-            android:textColor="#000"
-            android:textSize="16sp" />
-
-        <Spinner
-            android:id="@+id/spnVehicleModel"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="5"
-            android:drawSelectorOnTop="true">
-        </Spinner>
-    </LinearLayout>
-
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -89,10 +80,9 @@
         <Spinner
             android:id="@+id/spnVehicleEngineType"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="5"
-            android:drawSelectorOnTop="true"
-            android:entries="@array/spinnerEngine">
+            android:drawSelectorOnTop="true">
         </Spinner>
     </LinearLayout>
 
@@ -116,10 +106,9 @@
         <Spinner
             android:id="@+id/spnVehicleTranmission"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="5"
-            android:drawSelectorOnTop="true"
-            android:entries="@array/spinnerTransmission">
+            android:drawSelectorOnTop="true">
         </Spinner>
     </LinearLayout>
 
@@ -128,9 +117,9 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:gravity="center_vertical"
+        android:orientation="horizontal"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:orientation="horizontal"
         android:weightSum="10">
         <TextView
             android:layout_width="0dp"
@@ -140,49 +129,85 @@
             android:textColor="#000"
             android:textSize="16sp" />
 
-        <EditText
+        <TextView
             android:id="@+id/txtVehicleSeat"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
             android:layout_weight="5"
-            android:text="2"
-            android:inputType="number"
-            android:textSize="16sp"></EditText>
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textColor="@color/secondary_text"
+            android:gravity="end"
+            android:textSize="18sp"
+            android:paddingRight="20dp"
+            />
     </LinearLayout>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+        android:text="Vị trí của xe"
+        android:gravity="center_vertical|center_horizontal"
+        android:textColor="@color/secondary_text"
+        android:textSize="16sp"
+        android:textStyle="italic|bold"
+        android:layout_marginLeft="10dp"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:orientation="horizontal"
-        android:weightSum="10"
+        android:layout_weight="1"
         android:gravity="center_vertical"
-        android:paddingRight="10dp"
+        android:orientation="horizontal"
         android:paddingLeft="10dp"
-        android:layout_weight="1">
+        android:paddingRight="10dp"
+        android:weightSum="10">
         <TextView
             android:layout_width="0dp"
-            android:layout_weight="5"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
+            android:layout_weight="5"
+            android:text="Tỉnh thành"
             android:textColor="#000"
-            android:text="Năm sản xuất"/>
+            android:textSize="16sp" />
 
-        <EditText
-            android:id="@+id/edtVehicleYear"
+        <Spinner
+            android:id="@+id/spnVehicleCity"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+            android:drawSelectorOnTop="true">
+        </Spinner>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:weightSum="10">
+        <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
             android:layout_weight="5"
-            android:text="2014"
+            android:text="Quận / Huyện"
+            android:textColor="#000"
             android:textSize="16sp" />
+
+        <Spinner
+            android:id="@+id/spnVehicleDistrict"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+            android:drawSelectorOnTop="true">
+        </Spinner>
     </LinearLayout>
     <com.google.android.flexbox.FlexboxLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/signup_ico"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2"
+        android:layout_weight="1"
         app:alignItems="center"
         app:flexWrap="wrap"
         app:justifyContent="space_around">

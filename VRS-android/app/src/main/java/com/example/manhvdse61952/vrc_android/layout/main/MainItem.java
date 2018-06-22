@@ -55,31 +55,31 @@ public class MainItem extends AppCompatActivity {
         ImmutableValue importantObj = new ImmutableValue();
 
 
-        VehicleInformation_New tempObj = new VehicleInformation_New();
-        for (int i = 0; i < vehicleNewList.size(); i++){
-            if (framenumber.equalsIgnoreCase(vehicleNewList.get(i).getFrameNumber())){
-                tempObj = importantObj.getVehicleInfo(vehicleNewList.get(i).getVehicleInformationID(), vehicleInformationNewList);
-                if (tempObj.getVehicleType().equalsIgnoreCase("XE_MAY")){
-                    item_price_unit.setText("Đơn giá / giờ");
-                    item_price_slot.setText(vehicleNewList.get(i).getRentFeePerHours());
-                }
-                else {
-                    item_price_unit.setText("Đơn giá / buổi");
-                    item_price_slot.setText(vehicleNewList.get(i).getRentFeePerSlot());
-                }
-
-                item_price_day.setText(vehicleNewList.get(i).getRentFeePerDay());
-                item_seat.setText(tempObj.getSeat() + "");
-                item_year.setText(tempObj.getModelYear() + "");
-                item_plateNumber.setText(vehicleNewList.get(i).getPlateNumber());
-                if (vehicleNewList.get(i).getDescription().trim().equals("")){
-                    item_description.setText("Không có");
-                } else {
-                    item_description.setText(vehicleNewList.get(i).getDescription());
-                }
-
-            }
-        }
+//        VehicleInformation_New tempObj = new VehicleInformation_New();
+//        for (int i = 0; i < vehicleNewList.size(); i++){
+//            if (framenumber.equalsIgnoreCase(vehicleNewList.get(i).getFrameNumber())){
+//                tempObj = importantObj.getVehicleInfo(vehicleNewList.get(i).getVehicleInformationID(), vehicleInformationNewList);
+//                if (tempObj.getVehicleType().equalsIgnoreCase("XE_MAY")){
+//                    item_price_unit.setText("Đơn giá / giờ");
+//                    item_price_slot.setText(vehicleNewList.get(i).getRentFeePerHours());
+//                }
+//                else {
+//                    item_price_unit.setText("Đơn giá / buổi");
+//                    item_price_slot.setText(vehicleNewList.get(i).getRentFeePerSlot());
+//                }
+//
+//                item_price_day.setText(vehicleNewList.get(i).getRentFeePerDay());
+//                item_seat.setText(tempObj.getSeat() + "");
+//                item_year.setText(tempObj.getModelYear() + "");
+//                item_plateNumber.setText(vehicleNewList.get(i).getPlateNumber());
+//                if (vehicleNewList.get(i).getDescription().trim().equals("")){
+//                    item_description.setText("Không có");
+//                } else {
+//                    item_description.setText(vehicleNewList.get(i).getDescription());
+//                }
+//
+//            }
+//        }
 
 
         btnOrderRent = (Button)findViewById(R.id.btnOrderRent);

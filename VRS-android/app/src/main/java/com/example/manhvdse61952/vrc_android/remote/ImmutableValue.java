@@ -60,6 +60,11 @@ public class ImmutableValue {
     public static final int CAMERA_SELECT_IMAGE_CODE_2 = 2;
     public static final String SHARED_PREFERENCES_CODE = "VRS_GLOBAL_VALUE";
 
+    public static List<String> listVehicleMaker;
+    public static List<String> listVehicleModelOne = new ArrayList<>();
+    public static List<String> listVehicleModelTwo = new ArrayList<>();
+    public static List<String> listVehicleModelThree = new ArrayList<>();
+
     ////////////////////// EXECUTE DATA //////////////////////
 
     public static List<SearchItemNew> searchItemNewList1;
@@ -251,23 +256,4 @@ public class ImmutableValue {
     }
 
 
-    public VehicleInformation_New getVehicleInfo(int vehicleInfoID, List<VehicleInformation_New> vehicleInformationItemList){
-        VehicleInformation_New receiveObj = new VehicleInformation_New();
-        for (int i = 0; i< vehicleInformationItemList.size();i++){
-            if (vehicleInfoID == vehicleInformationItemList.get(i).getVehicleInformationID()){
-                receiveObj = vehicleInformationItemList.get(i);
-            }
-        }
-        return receiveObj;
-    }
-
-    public Vehicle_New getVehicle(String frameNumber, List<Vehicle_New> vehicleNewList){
-        Vehicle_New receiveObj = new Vehicle_New();
-        for (int i = 0; i < vehicleNewList.size() ; i++){
-            if (frameNumber.equalsIgnoreCase(vehicleNewList.get(i).getFrameNumber())){
-                receiveObj = vehicleNewList.get(i);
-            }
-        }
-        return receiveObj;
-    }
 }
