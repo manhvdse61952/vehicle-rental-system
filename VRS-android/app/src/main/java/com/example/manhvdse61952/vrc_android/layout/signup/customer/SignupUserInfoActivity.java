@@ -1,5 +1,6 @@
 package com.example.manhvdse61952.vrc_android.layout.signup.customer;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -38,6 +39,7 @@ public class SignupUserInfoActivity extends AppCompatActivity {
     Validate validObj;
 
     private ImmutableValue cameraObj = new ImmutableValue();
+    ProgressDialog dialog;
 
 
     @Override
@@ -112,17 +114,11 @@ public class SignupUserInfoActivity extends AppCompatActivity {
                 Boolean checkCMND = validObj.validCMND(cmnd, edtSignupCNMD);
                 Boolean checkImage = validObj.validImageLink(ImmutableValue.picturePath, SignupUserInfoActivity.this);
                 if (checkName && checkPhone && checkCMND && checkImage) {
-                    //save data to shared preferences
-                    SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
-                    editor.putString("name", name);
-                    editor.putString("phone", phone);
-                    editor.putString("cmnd", cmnd);
-                    editor.putString("paypal", "default");
-                    editor.putString("CMND_image_path", ImmutableValue.picturePath);
-                    editor.apply();
-
-                    Intent it = new Intent(SignupUserInfoActivity.this, SignupRoleActivity.class);
-                    startActivity(it);
+                    dialog = ProgressDialog.show(SignupUserInfoActivity.this, "Đăng ký",
+                            "Đang kiểm tra ...", true);
+                    RetrofitCallAPI testApi = new RetrofitCallAPI();
+                    testApi.checkExistedCmnd(cmnd, name, phone,
+                            ImmutableValue.picturePath, SignupUserInfoActivity.this, edtSignupCNMD, dialog);
                 }
             }
         });

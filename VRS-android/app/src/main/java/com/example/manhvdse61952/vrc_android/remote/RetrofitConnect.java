@@ -13,7 +13,7 @@ public class RetrofitConnect {
     public static Retrofit getClient(){
         if (retrofit == null){
             retrofit = new Retrofit.Builder()
-                    .baseUrl(offlineTest3)
+                    .baseUrl(offlineTest2)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }

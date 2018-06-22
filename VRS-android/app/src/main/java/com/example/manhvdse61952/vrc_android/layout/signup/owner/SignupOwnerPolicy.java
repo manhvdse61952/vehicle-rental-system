@@ -80,7 +80,7 @@ public class SignupOwnerPolicy extends AppCompatActivity {
                 String phone = editor.getString("phone", null);
                 String cmnd = editor.getString("cmnd", null);
                 String paypal = editor.getString("paypal", null);
-                String address = editor.getString("address", null);
+                String address = editor.getString("address", "");
                 String CMND_image_path = editor.getString("CMND_image_path", null);
                 String rolename = editor.getString("rolename", null);
 

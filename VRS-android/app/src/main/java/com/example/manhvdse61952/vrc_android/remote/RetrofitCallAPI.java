@@ -6,15 +6,17 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.manhvdse61952.vrc_android.api.AddressAPI;
+import com.example.manhvdse61952.vrc_android.api.VehicleAPI;
 import com.example.manhvdse61952.vrc_android.layout.main.activity_main_2;
 import com.example.manhvdse61952.vrc_android.api.AccountAPI;
 import com.example.manhvdse61952.vrc_android.layout.login.LoginActivity;
 import com.example.manhvdse61952.vrc_android.layout.signup.customer.SignupRoleActivity;
-import com.example.manhvdse61952.vrc_android.model.GlobalData;
+import com.example.manhvdse61952.vrc_android.layout.signup.customer.SignupUserInfoActivity;
 import com.example.manhvdse61952.vrc_android.model.apiModel.City;
 import com.example.manhvdse61952.vrc_android.model.apiModel.Login;
 
@@ -32,9 +34,10 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class RetrofitCallAPI {
-    public static Boolean usernameResult;
-    public static Boolean emailResult;
     public static List<City> lisCityTest = new ArrayList<>();
+    public static List<String> vehicleMaker = new ArrayList<>();
+    public static List<String> vehicleModel = new ArrayList<>();
+    public static List<String> vehicleYear = new ArrayList<>();
 
     /// Check login////
     public void checkLogin(final String username, String password, final Context ctx, final ProgressDialog progressDialog) {
@@ -67,8 +70,8 @@ public class RetrofitCallAPI {
     }
 
     /// Check duplicated username ///
-    public void checkExistedUsername(final String username, final Context ctx) {
-        //usernameResult = false;
+    public void checkExistedUsername(final String username, final String password,
+                                     final String email, final Context ctx, final EditText edt1, final EditText edt2, final ProgressDialog progressDialog) {
         Retrofit test = RetrofitConnect.getClient();
         final AccountAPI testAPI = test.create(AccountAPI.class);
         Call<Boolean> responseBodyCall = testAPI.checkDuplicated(username);
@@ -76,25 +79,25 @@ public class RetrofitCallAPI {
             @Override
             public void onResponse(Call<Boolean> call, Response<Boolean> response) {
                 if (response.body().toString().equals("true")) {
-                    usernameResult = false;
-                    //input.setError("Tài khoản đã có người sử dụng");
-                    Toast.makeText(ctx, "Tài khoản đã có người sử dụng", Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();
+                    edt1.setError("Tài khoản đã có người sử dụng");
                 } else {
-                    usernameResult = true;
+                    checkExistedEmail(username, email, password, ctx, edt2, progressDialog);
                 }
+
             }
 
             @Override
             public void onFailure(Call<Boolean> call, Throwable t) {
-                usernameResult = false;
+                progressDialog.dismiss();
                 Toast.makeText(ctx, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     /// Check duplicated email ///
-    public void checkExistedEmail(final String email, final Context ctx) {
-        emailResult = false;
+    public void checkExistedEmail(final String username, final String email,
+                                  final String password, final Context ctx, final EditText edt, final ProgressDialog progressDialog) {
         Retrofit test = RetrofitConnect.getClient();
         final AccountAPI testAPI = test.create(AccountAPI.class);
         Call<Boolean> responseBodyCall = testAPI.checkEmail(email);
@@ -102,24 +105,31 @@ public class RetrofitCallAPI {
             @Override
             public void onResponse(Call<Boolean> call, Response<Boolean> response) {
                 if (response.body().toString().equals("true")) {
-                    emailResult = false;
-                    //input.setError("Email đã có người sử dụng");
-                    Toast.makeText(ctx, "Email đã có người sử dụng", Toast.LENGTH_SHORT).show();
+                    edt.setError("Email đã có người sử dụng");
                 } else {
-                    emailResult = true;
+                    SharedPreferences.Editor editor = ctx.getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, ctx.MODE_PRIVATE).edit();
+                    editor.putString("username", username);
+                    editor.putString("password", password);
+                    editor.putString("email", email);
+                    editor.apply();
+
+                    Intent it = new Intent(ctx, SignupUserInfoActivity.class);
+                    ctx.startActivity(it);
                 }
+                progressDialog.dismiss();
             }
 
             @Override
             public void onFailure(Call<Boolean> call, Throwable t) {
-                emailResult = false;
+                progressDialog.dismiss();
                 Toast.makeText(ctx, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     /// Check duplicated CMND ///
-    public void checkExistedCmnd(final String cmnd, final Context ctx, final EditText input) {
+    public void checkExistedCmnd(final String cmnd, final String name, final String phone,
+                                 final String imagePath, final Context ctx, final EditText input, final ProgressDialog progressDialog) {
         Retrofit test = RetrofitConnect.getClient();
         final AccountAPI testAPI = test.create(AccountAPI.class);
         Call<Boolean> responseBodyCall = testAPI.checkCmnd(cmnd);
@@ -129,19 +139,31 @@ public class RetrofitCallAPI {
                 if (response.body().toString().equals("true")) {
                     input.setError("CMND đã có người sử dụng");
                 } else {
+                    SharedPreferences.Editor editor = ctx.getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, ctx.MODE_PRIVATE).edit();
+                    editor.putString("name", name);
+                    editor.putString("phone", phone);
+                    editor.putString("cmnd", cmnd);
+                    editor.putString("paypal", "default");
+                    editor.putString("CMND_image_path", imagePath);
+                    editor.apply();
+
                     Intent it = new Intent(ctx, SignupRoleActivity.class);
                     ctx.startActivity(it);
                 }
+                progressDialog.dismiss();
             }
 
             @Override
             public void onFailure(Call<Boolean> call, Throwable t) {
+                progressDialog.dismiss();
                 Toast.makeText(ctx, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    public List<City> getAllAddress (){
+    /// Get all district and city in database ///
+    public List<City> getAllAddress() {
+        lisCityTest = new ArrayList<>();
         Retrofit test = RetrofitConnect.getClient();
         final AddressAPI testAPI = test.create(AddressAPI.class);
         Call<List<City>> responseBodyCall = testAPI.getDistrict();
@@ -158,6 +180,82 @@ public class RetrofitCallAPI {
             }
         });
         return lisCityTest;
+    }
+
+    /// Get all vehicle maker  ///
+    public List<String> getAllVehicleMaker() {
+        vehicleMaker = new ArrayList<>();
+        Retrofit test = RetrofitConnect.getClient();
+        final VehicleAPI testAPI = test.create(VehicleAPI.class);
+        Call<List<String>> responseBodyCall = testAPI.getVehicleMarker();
+
+        responseBodyCall.enqueue(new Callback<List<String>>() {
+            @Override
+            public void onResponse(Call<List<String>> call, Response<List<String>> response) {
+                if (response.body() != null) {
+                    for (int i = 0; i < response.body().size(); i++) {
+                        vehicleMaker.add(response.body().get(i).toString());
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<List<String>> call, Throwable t) {
+
+            }
+        });
+        return vehicleMaker;
+    }
+
+    /// get all vehicle model by maker ///
+    public List<String> getAllVehicleModel(String maker) {
+        vehicleModel = new ArrayList<>();
+        Retrofit test = RetrofitConnect.getClient();
+        final VehicleAPI testAPI = test.create(VehicleAPI.class);
+        Call<List<String>> responseBodyCall = testAPI.getVehicleModel(maker);
+
+        responseBodyCall.enqueue(new Callback<List<String>>() {
+            @Override
+            public void onResponse(Call<List<String>> call, Response<List<String>> response) {
+                if (response.body() != null) {
+                    for (int i = 0; i < response.body().size(); i++) {
+                        vehicleModel.add(response.body().get(i).toString());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<String>> call, Throwable t) {
+
+            }
+        });
+        return vehicleModel;
+    }
+
+    /// get all vehicle year by maker and model ///
+    public List<String> getAllYear(String maker, String model) {
+        vehicleYear = new ArrayList<>();
+        Retrofit test = RetrofitConnect.getClient();
+        final VehicleAPI testAPI = test.create(VehicleAPI.class);
+        Call<List<String>> responseBodyCall = testAPI.getVehicleYear(maker, model);
+
+        responseBodyCall.enqueue(new Callback<List<String>>() {
+            @Override
+            public void onResponse(Call<List<String>> call, Response<List<String>> response) {
+                if (response.body() != null) {
+                    for (int i = 0; i < response.body().size(); i++) {
+                        vehicleYear.add(response.body().get(i).toString());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<String>> call, Throwable t) {
+
+            }
+        });
+        return vehicleYear;
     }
 
     /// Signup customer account

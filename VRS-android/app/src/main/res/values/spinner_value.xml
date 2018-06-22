@@ -7,12 +7,12 @@
         <item>Nha Trang</item>
     </string-array>
     <string-array name="spinnerTransmission">
-        <item>XETAYGA</item>
-        <item>XESO</item>
+        <item>Số sàn</item>
+        <item>Số tự động</item>
     </string-array>
     <string-array name="spinnerEngine">
-        <item>DIESEL</item>
-        <item>GASOLINE</item>
+        <item>Xăng</item>
+        <item>Dầu</item>
     </string-array>
     <string-array name="spinnerRole">
         <item>Người thuê xe</item>

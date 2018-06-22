@@ -1,5 +1,6 @@
 package com.example.manhvdse61952.vrc_android.layout.signup.customer;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -25,7 +26,7 @@ public class SignupAccountActivity extends AppCompatActivity {
     private String username = "", password = "", email = "";
     Validate validObj;
 
-    RetrofitCallAPI rfCall = new RetrofitCallAPI();
+    ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,35 +42,12 @@ public class SignupAccountActivity extends AppCompatActivity {
         signup_email_txt = (TextInputLayout) findViewById(R.id.signup_email_txt);
         btnNext = (Button) findViewById(R.id.btnSignupAccountNext);
 
-        edtSignupUsername.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus){
-                }
-                else {
-                    Toast.makeText(SignupAccountActivity.this, "OK", Toast.LENGTH_SHORT).show();
-
-
-                }
-            }
-        });
-
-//        edtSignupEmail.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-//            @Override
-//            public void onFocusChange(View v, boolean hasFocus) {
-//                if (!hasFocus){
-//                }
-//                else {
-//                    Toast.makeText(SignupAccountActivity.this, "OK", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
-
         //button Next
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //get value from edittext
+
                 username = edtSignupUsername.getText().toString().trim();
                 password = edtSignupPassword.getText().toString().trim();
                 email = edtSignupEmail.getText().toString().trim();
@@ -80,19 +58,11 @@ public class SignupAccountActivity extends AppCompatActivity {
                 Boolean checkEmail = validObj.validEmail(email, edtSignupEmail);
                 if (checkUsername && checkPassword && checkEmail) {
                     //Call API
-                    rfCall.checkExistedUsername(username, SignupAccountActivity.this);
-                    rfCall.checkExistedEmail(email, SignupAccountActivity.this);
-                    if (RetrofitCallAPI.emailResult == true && RetrofitCallAPI.usernameResult == true){
-                        //shared preferences
-                        SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
-                        editor.putString("username", username);
-                        editor.putString("password", password);
-                        editor.putString("email", email);
-                        editor.apply();
+                    dialog = ProgressDialog.show(SignupAccountActivity.this, "Đăng ký",
+                            "Đang kiểm tra ...", true);
+                    RetrofitCallAPI rfCall = new RetrofitCallAPI();
+                    rfCall.checkExistedUsername(username, password, email, SignupAccountActivity.this, edtSignupUsername, edtSignupEmail, dialog);
 
-                        Intent it = new Intent(SignupAccountActivity.this, SignupUserInfoActivity.class);
-                        startActivity(it);
-                    }
                 }
             }
         });

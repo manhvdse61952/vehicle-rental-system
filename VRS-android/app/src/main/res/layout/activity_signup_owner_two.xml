@@ -11,34 +11,63 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2"
+        android:layout_weight="1"
         android:gravity="center_horizontal|center_vertical"
         android:text="Đăng ký xe"
         android:textColor="#000"
         android:textSize="24sp" />
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/signup_vehicle_name_txt"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:theme="@style/ThirdAppTheme"
-        app:errorTextAppearance="@style/error_apperance">
-
-        <EditText
-            android:id="@+id/edtVehicleName"
-            android:layout_width="match_parent"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:weightSum="10">
+        <TextView
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="Tên xe"
-            android:inputType="text"
-            android:text="Honda airblade"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:textColor="#000" />
+            android:layout_weight="5"
+            android:text="Hãng sản xuất"
+            android:textColor="#000"
+            android:textSize="16sp" />
 
-    </android.support.design.widget.TextInputLayout>
+        <Spinner
+            android:id="@+id/spnVehicleMaker"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:drawSelectorOnTop="true">
+        </Spinner>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:weightSum="10">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:text="Tên xe"
+            android:textColor="#000"
+            android:textSize="16sp" />
+
+        <Spinner
+            android:id="@+id/spnVehicleModel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:drawSelectorOnTop="true">
+        </Spinner>
+    </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"

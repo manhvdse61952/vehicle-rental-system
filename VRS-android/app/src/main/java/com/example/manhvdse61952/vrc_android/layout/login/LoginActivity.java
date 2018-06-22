@@ -56,17 +56,20 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+
+
+
+
+
+
+
+
         //Clear shared preferences
         SharedPreferences settings = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE);
         settings.edit().clear().commit();
 
-        /// Call 2 API when init ///
-        RetrofitCallAPI testApi = new RetrofitCallAPI();
-        List<City> cityList = testApi.getAllAddress();
-
         //Declare id
         username_txt = (TextInputLayout) findViewById(R.id.username_txt);
-
         password_txt = (TextInputLayout) findViewById(R.id.password_txt);
         edtUsername = (EditText) findViewById(R.id.username);
         edtPassword = (EditText) findViewById(R.id.password);
@@ -107,20 +110,20 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-//        switch (requestCode) {
-//            case ImmutableValue.REQUEST_LOCATION:
-//                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                    locationObj = new ImmutableValue();
-//                    locationObj.checkAddressPermission(LoginActivity.this, LoginActivity.this);
-//                } else if(grantResults[0] != PackageManager.PERMISSION_GRANTED){
-//                    Intent intent = new Intent(Intent.ACTION_MAIN);
-//                    intent.addCategory(Intent.CATEGORY_HOME);
-//                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                    startActivity(intent);
-//                }
-//                break;
-//        }
-//    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case ImmutableValue.REQUEST_LOCATION:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    locationObj = new ImmutableValue();
+                    locationObj.checkAddressPermission(LoginActivity.this, LoginActivity.this);
+                } else if(grantResults[0] != PackageManager.PERMISSION_GRANTED){
+                    Intent intent = new Intent(Intent.ACTION_MAIN);
+                    intent.addCategory(Intent.CATEGORY_HOME);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                }
+                break;
+        }
+    }
 }
