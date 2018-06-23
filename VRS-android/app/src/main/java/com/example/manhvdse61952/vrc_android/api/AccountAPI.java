@@ -18,7 +18,7 @@ import retrofit2.http.Path;
 public interface AccountAPI {
     @Headers({"Accept: application/json"})
     @POST("api/auth/signin")
-    Call<ResponseBody> login(@Body Login loginModel);
+    Call<Account> login(@Body Login loginModel);
 
     @Headers({"Accept: application/json"})
     @GET("api/auth/checkUserNameExist/{userName}")

@@ -14,9 +14,7 @@ public class Signup implements Serializable {
     private String password;
     private String rolename;
     private String phone;
-
     private String address;
-
     private String idCard;
     private String imageLink;
 

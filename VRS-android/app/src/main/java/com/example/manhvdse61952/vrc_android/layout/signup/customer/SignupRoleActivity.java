@@ -68,7 +68,7 @@ public class SignupRoleActivity extends AppCompatActivity {
         imgOwner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (ImmutableValue.listVehicleModelTwo.size() == 0){
+                if (ImmutableValue.listVehicleModelTwo.size() == 0) {
                     dialog = ProgressDialog.show(SignupRoleActivity.this, "Hệ thống",
                             "Vui lòng đợi ...", true);
 

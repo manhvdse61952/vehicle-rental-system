@@ -1,5 +1,6 @@
 package com.example.manhvdse61952.vrc_android.layout.main;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.manhvdse61952.vrc_android.R;
+import com.example.manhvdse61952.vrc_android.layout.login.LoginActivity;
 import com.example.manhvdse61952.vrc_android.remote.ImmutableValue;
 
 import java.util.ArrayList;
@@ -35,6 +37,8 @@ public class activity_main_2 extends AppCompatActivity
     ImageView main_search, main_extra_search;
     EditText edtMainSearch;
 
+    ImmutableValue locationObj = new ImmutableValue();
+
     ///////////////// USE FOR TAB LAYOUT /////////
     public static ViewPager viewPager;
     private TabLayout tabLayout;
@@ -49,31 +53,36 @@ public class activity_main_2 extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         //////////////////////// USE FOR TABLAYOUT /////////////////
-        ImmutableValue importantObj = new ImmutableValue();
-
-
         viewPager = (ViewPager) findViewById(R.id.container);
         setupViewPager(viewPager);
-        tabLayout = (TabLayout)findViewById(R.id.tabs);
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
         createTabIcons();
         /////////////////////////////////////////////////////////////
-
         edtMainSearch = (EditText) findViewById(R.id.edtMainSearch);
+        main_search = (ImageView) findViewById(R.id.main_search);
+        main_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                locationObj.checkAddressPermission(activity_main_2.this, activity_main_2.this);
+                edtMainSearch.setText(locationObj.district + ", " + locationObj.city);
+            }
+        });
+
+
         main_extra_search = (ImageView) findViewById(R.id.main_extra_search);
         main_extra_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                Intent it = new Intent(activity_main_2.this, MapsActivity.class);
 //                startActivity(it);
-                //locationObj.checkAddressPermission(activity_main_2.this, activity_main_2.this);
 
                 /////////////////// USE FOR TEST SEARCH //////////////////////
                 new SimpleSearchDialogCompat(activity_main_2.this, "", "Nhập đia điểm cần kiếm xe", null, initData(), new SearchResultListener<Searchable>() {
                     @Override
                     public void onSelected(BaseSearchDialogCompat baseSearchDialogCompat, Searchable searchable, int i) {
                         Toast.makeText(activity_main_2.this, "" + searchable.getTitle(), Toast.LENGTH_SHORT).show();
-                        if (!searchable.getTitle().equals("")){
+                        if (!searchable.getTitle().equals("")) {
                             edtMainSearch.setText("" + searchable.getTitle());
                         }
                         baseSearchDialogCompat.dismiss();
@@ -89,8 +98,27 @@ public class activity_main_2 extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+
+        //Use for nav layout
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        SharedPreferences editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE);
+        View hView = navigationView.getHeaderView(0);
+        TextView txtNavFullname = (TextView)hView.findViewById(R.id.txtNavFullname);
+        TextView txtNavUsername = (TextView)hView.findViewById(R.id.txtNavUsername);
+        TextView txtNavRole = (TextView)hView.findViewById(R.id.txtNavRole);
+        Toast.makeText(this,editor.getString("roleName", "ROLE_USER") , Toast.LENGTH_SHORT).show();
+        txtNavUsername.setText(editor.getString("usernameAfterLogin", "Empty"));
+        if (editor.getString("roleName", "ROLE_USER").equals("ROLE_USER")) {
+            txtNavRole.setText("Khách hàng");
+            Menu nav_Menu = navigationView.getMenu();
+            nav_Menu.findItem(R.id.nav_manage_vehicle).setVisible(false);
+            nav_Menu.findItem(R.id.nav_manage_drivers).setVisible(false);
+            nav_Menu.findItem(R.id.nav_discount).setVisible(false);
+        } else {
+            txtNavRole.setText("Chủ xe");
+        }
+
     }
 
     /////////////// USE for TAB Layout/////////
@@ -115,7 +143,7 @@ public class activity_main_2 extends AppCompatActivity
 
     }
 
-    private void setupViewPager(ViewPager viewPager){
+    private void setupViewPager(ViewPager viewPager) {
         secAdapter = new SectionPageAdapter(getSupportFragmentManager());
         secAdapter.addFragment(new tab1(), "Xe máy");
         secAdapter.addFragment(new tab2(), "Ô tô cá nhân");
@@ -127,10 +155,8 @@ public class activity_main_2 extends AppCompatActivity
     ///////////////////////////////////////////////////////////////
 
 
-
-
     //////////////////////////////////// USE FOR SEARCH //////////////////////////////////
-    private ArrayList<SearchAddressModel> initData(){
+    private ArrayList<SearchAddressModel> initData() {
         ArrayList<SearchAddressModel> items = new ArrayList<>();
         items.add(new SearchAddressModel("quan 1 ho chi minh"));
         items.add(new SearchAddressModel("quan 2 ho chi minh"));
@@ -187,6 +213,11 @@ public class activity_main_2 extends AppCompatActivity
 //        } else if (id == R.id.nav_send) {
 //
 //        }
+
+        if (id == R.id.nav_logout) {
+            Intent it = new Intent(activity_main_2.this, LoginActivity.class);
+            startActivity(it);
+        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

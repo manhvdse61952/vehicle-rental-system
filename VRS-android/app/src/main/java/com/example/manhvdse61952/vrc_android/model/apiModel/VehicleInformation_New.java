@@ -24,14 +24,26 @@ public class VehicleInformation_New implements Serializable {
     @SerializedName("vehicleType")
     @Expose
     private String vehicleType;
+    @SerializedName("scooter")
+    @Expose
+    private Boolean scooter;
 
-    public VehicleInformation_New(int id, String vehicleMaker, int seat, int modelYear, String vehicleModel, String vehicleType) {
+    public VehicleInformation_New(int id, String vehicleMaker, int seat, int modelYear, String vehicleModel, String vehicleType, Boolean scooter) {
         this.id = id;
         this.vehicleMaker = vehicleMaker;
         this.seat = seat;
         this.modelYear = modelYear;
         this.vehicleModel = vehicleModel;
         this.vehicleType = vehicleType;
+        this.scooter = scooter;
+    }
+
+    public Boolean getScooter() {
+        return scooter;
+    }
+
+    public void setScooter(Boolean scooter) {
+        this.scooter = scooter;
     }
 
     public VehicleInformation_New() {

@@ -90,6 +90,7 @@ public class SignupOwnerTwo extends AppCompatActivity {
             ArrayAdapter<String> engineAdapter = new ArrayAdapter<>(SignupOwnerTwo.this, android.R.layout.simple_spinner_dropdown_item, listEngineType);
             spnVehicleEngineType.setAdapter(engineAdapter);
 
+
             List<String> listTranmission = new ArrayList<>();
             listTranmission.add("XE SỐ");
             listTranmission.add("XE TAY GA");
@@ -208,7 +209,7 @@ public class SignupOwnerTwo extends AppCompatActivity {
 
                 if (vehicleInfoID != 0 && districtID != 0 && edtSignupVehicleName.equals("Nhấn để chọn xe ...") == false) {
                     if (receiveVehicleType.equals(vehicleType) == false){
-                        Toast.makeText(SignupOwnerTwo.this, "Hình như đây không phải là xe " + vehicleTypeTranslate
+                        Toast.makeText(SignupOwnerTwo.this, "Hình như đây không phải là " + vehicleTypeTranslate
                                 +", vui lòng chọn lại", Toast.LENGTH_SHORT).show();
                     } else {
                         SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
@@ -308,6 +309,15 @@ public class SignupOwnerTwo extends AppCompatActivity {
                     vehicleInfoID = vehicleInfoObj.getId();
                     txtVehicleSeat.setText(vehicleInfoObj.getSeat() + "");
                     receiveVehicleType = vehicleInfoObj.getVehicleType();
+                    if (receiveVehicleType.equals("XE_MAY")){
+                        Boolean isScooter = vehicleInfoObj.getScooter();
+                        if (isScooter == true){
+                            spnVehicleTranmission.setSelection(1);
+                        }
+                        else {
+                            spnVehicleTranmission.setSelection(0);
+                        }
+                    }
                 }
             }
 

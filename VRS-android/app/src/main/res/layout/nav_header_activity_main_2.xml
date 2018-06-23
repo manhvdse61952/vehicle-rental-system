@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="80dp"
+    android:layout_height="100dp"
     android:background="@drawable/side_nav_bar"
     android:paddingLeft="10dp"
     android:orientation="vertical">
@@ -16,32 +16,33 @@
         android:layout_height="match_parent">
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight="7.5"
+            android:layout_weight="6"
             android:orientation="vertical"
             android:gravity="bottom"
             android:layout_height="match_parent">
             <TextView
-                android:id="@+id/txtUsername"
+                android:id="@+id/txtNavFullname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="VRS User"
-                android:textColor="#fff"
+                android:textColor="@color/primary_text"
                 android:textSize="16dp"
                 android:textStyle="bold"/>
             <TextView
-                android:id="@+id/txtEmail"
+                android:id="@+id/txtNavUsername"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#fff"
+                android:textColor="@color/primary_text"
                 android:textSize="14sp"
                 android:maxLength="50"
-                android:text="manhvd61952@gmail.com" />
+                android:text="manhvd1" />
         </LinearLayout>
 
         <TextView
+            android:id="@+id/txtNavRole"
             android:layout_width="0dp"
-            android:layout_weight="2.5"
-            android:layout_height="30dp"
+            android:layout_weight="4"
+            android:layout_height="40dp"
             android:text="Chủ xe"
             android:textStyle="bold"
             android:textSize="14sp"

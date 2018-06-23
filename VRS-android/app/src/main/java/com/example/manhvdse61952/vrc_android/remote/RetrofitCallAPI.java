@@ -18,6 +18,7 @@ import com.example.manhvdse61952.vrc_android.layout.login.LoginActivity;
 import com.example.manhvdse61952.vrc_android.layout.signup.customer.SignupAccountActivity;
 import com.example.manhvdse61952.vrc_android.layout.signup.customer.SignupRoleActivity;
 import com.example.manhvdse61952.vrc_android.layout.signup.customer.SignupUserInfoActivity;
+import com.example.manhvdse61952.vrc_android.model.apiModel.Account;
 import com.example.manhvdse61952.vrc_android.model.apiModel.City;
 import com.example.manhvdse61952.vrc_android.model.apiModel.Login;
 
@@ -42,17 +43,22 @@ public class RetrofitCallAPI {
     public void checkLogin(final String username, String password, final Context ctx, final ProgressDialog progressDialog) {
         Retrofit test = RetrofitConnect.getClient();
         final AccountAPI testAPI = test.create(AccountAPI.class);
-        Call<ResponseBody> responseBodyCall = testAPI.login(new Login(username, password));
-        responseBodyCall.enqueue(new Callback<ResponseBody>() {
+        Call<Account> responseBodyCall = testAPI.login(new Login(username, password));
+        responseBodyCall.enqueue(new Callback<Account>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(Call<Account> call, Response<Account> response) {
                 if (response.code() == 401) {
                     Toast.makeText(ctx, "Sai tài khoản hoặc mật khẩu", Toast.LENGTH_SHORT).show();
                 } else if (response.code() == 403) {
                     Toast.makeText(ctx, "Tài khoản chưa được chấp nhận! Vui lòng quay lại sau", Toast.LENGTH_SHORT).show();
                 } else {
+                    Account accObj = new Account();
+                    accObj = response.body();
                     SharedPreferences.Editor editor = ctx.getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, ctx.MODE_PRIVATE).edit();
                     editor.putString("usernameAfterLogin", username);
+                    editor.putInt("userID", accObj.getUserID());
+                    editor.putString("accessToken", accObj.getAccessToken());
+                    editor.putString("roleName", accObj.getRoleName());
                     editor.apply();
                     Intent it = new Intent(ctx, activity_main_2.class);
                     ctx.startActivity(it);
@@ -61,7 +67,7 @@ public class RetrofitCallAPI {
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<Account> call, Throwable t) {
                 Toast.makeText(ctx, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
             }
