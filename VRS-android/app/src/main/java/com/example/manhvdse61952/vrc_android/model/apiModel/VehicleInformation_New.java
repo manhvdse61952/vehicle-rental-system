@@ -28,7 +28,8 @@ public class VehicleInformation_New implements Serializable {
     @Expose
     private Boolean scooter;
 
-    public VehicleInformation_New(int id, String vehicleMaker, int seat, int modelYear, String vehicleModel, String vehicleType, Boolean scooter) {
+
+    public VehicleInformation_New(int id, String vehicleMaker, int seat, int modelYear, String vehicleModel, String vehicleType) {
         this.id = id;
         this.vehicleMaker = vehicleMaker;
         this.seat = seat;

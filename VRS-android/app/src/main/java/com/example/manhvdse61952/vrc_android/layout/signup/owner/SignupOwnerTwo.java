@@ -89,8 +89,6 @@ public class SignupOwnerTwo extends AppCompatActivity {
             listEngineType.add("XĂNG");
             ArrayAdapter<String> engineAdapter = new ArrayAdapter<>(SignupOwnerTwo.this, android.R.layout.simple_spinner_dropdown_item, listEngineType);
             spnVehicleEngineType.setAdapter(engineAdapter);
-
-
             List<String> listTranmission = new ArrayList<>();
             listTranmission.add("XE SỐ");
             listTranmission.add("XE TAY GA");
