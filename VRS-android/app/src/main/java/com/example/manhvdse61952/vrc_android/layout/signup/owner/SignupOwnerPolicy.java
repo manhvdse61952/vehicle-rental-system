@@ -69,65 +69,65 @@ public class SignupOwnerPolicy extends AppCompatActivity {
         });
 
         //Accept button
-//        btnSignupAccept.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                dialog = ProgressDialog.show(SignupOwnerPolicy.this, "Đăng ký",
-//                        "Đang xử lý ...", true);
-//                //Signup for customer
-//                SharedPreferences editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE);
-//                String username = editor.getString("username", null);
-//                String password = editor.getString("password", null);
-//                String email = editor.getString("email", null);
-//                String name = editor.getString("name", null);
-//                String phone = editor.getString("phone", null);
-//                String cmnd = editor.getString("cmnd", null);
-//                String paypal = editor.getString("paypal", null);
-//                //String address = editor.getString("address", null);
-//                String CMND_image_path = editor.getString("CMND_image_path", null);
-//                String rolename = editor.getString("rolename", null);
-//
-//                //call api
-//                ObjectMapper objectMapper = new ObjectMapper();
-//                Signup signupObj = new Signup("", email, cmnd, CMND_image_path, name, password, paypal, phone, rolename, username);
-//                try {
-//                    String json = objectMapper.writeValueAsString(signupObj);
-//                    Retrofit retrofit = RetrofitConnect.getClient();
-//                    final AccountAPI accountAPI = retrofit.create(AccountAPI.class);
-//                    String IMG_JPEG = "image/jpeg";
-//                    File imageFile = new File(CMND_image_path);
-//                    RequestBody fileBody = RequestBody.create(okhttp3.MediaType.parse(IMG_JPEG), imageFile);
-//                    RequestBody data = RequestBody.create(MediaType.parse("text/plain"), json);
-//                    MultipartBody.Part body = MultipartBody.Part.createFormData("file", imageFile.getName(), fileBody);
-//                    Call<ResponseBody> responseBodyCall = accountAPI.signup(data, body);
-//                    responseBodyCall.enqueue(new Callback<ResponseBody>() {
-//                        @Override
-//                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-//                            JSONObject testObj = null;
-//                            try {
-//                                testObj = new JSONObject(response.body().string());
-//                                SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
-//                                editor.putString("user-id", testObj.get("message").toString());
-//                                editor.apply();
-//                                SharedPreferences editor2 = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE);
-//                                createVehicle(editor2.getString("user-id", "37"));
-//                            } catch (Exception e) {
-//
-//                            }
-//
-//                        }
-//
-//                        @Override
-//                        public void onFailure(Call<ResponseBody> call, Throwable t) {
-//                            dialog.dismiss();
-//                            Toast.makeText(SignupOwnerPolicy.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
-//                        }
-//                    });
-//                } catch (JsonProcessingException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
+        btnSignupAccept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog = ProgressDialog.show(SignupOwnerPolicy.this, "Đăng ký",
+                        "Đang xử lý ...", true);
+                //Signup for customer
+                SharedPreferences editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE);
+                String username = editor.getString("username", null);
+                String password = editor.getString("password", null);
+                String email = editor.getString("email", null);
+                String name = editor.getString("name", null);
+                String phone = editor.getString("phone", null);
+                String cmnd = editor.getString("cmnd", null);
+                String paypal = editor.getString("paypal", null);
+                //String address = editor.getString("address", null);
+                String CMND_image_path = editor.getString("CMND_image_path", null);
+                String rolename = editor.getString("rolename", null);
+
+                //call api
+                ObjectMapper objectMapper = new ObjectMapper();
+                Signup signupObj = new Signup("", email, cmnd, CMND_image_path, name, password, paypal, phone, rolename, username);
+                try {
+                    String json = objectMapper.writeValueAsString(signupObj);
+                    Retrofit retrofit = RetrofitConnect.getClient();
+                    final AccountAPI accountAPI = retrofit.create(AccountAPI.class);
+                    String IMG_JPEG = "image/jpeg";
+                    File imageFile = new File(CMND_image_path);
+                    RequestBody fileBody = RequestBody.create(okhttp3.MediaType.parse(IMG_JPEG), imageFile);
+                    RequestBody data = RequestBody.create(MediaType.parse("text/plain"), json);
+                    MultipartBody.Part body = MultipartBody.Part.createFormData("file", imageFile.getName(), fileBody);
+                    Call<ResponseBody> responseBodyCall = accountAPI.signup(data, body);
+                    responseBodyCall.enqueue(new Callback<ResponseBody>() {
+                        @Override
+                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                            JSONObject testObj = null;
+                            try {
+                                testObj = new JSONObject(response.body().string());
+                                SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
+                                editor.putString("user-id", testObj.get("message").toString());
+                                editor.apply();
+                                SharedPreferences editor2 = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE);
+                                createVehicle(editor2.getString("user-id", "37"));
+                            } catch (Exception e) {
+
+                            }
+
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResponseBody> call, Throwable t) {
+                            dialog.dismiss();
+                            Toast.makeText(SignupOwnerPolicy.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
         //Back button
         btnSignupBack.setOnClickListener(new View.OnClickListener() {

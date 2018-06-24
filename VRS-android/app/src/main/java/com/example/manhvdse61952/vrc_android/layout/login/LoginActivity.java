@@ -29,7 +29,9 @@ import com.example.manhvdse61952.vrc_android.layout.main.activity_main_2;
 import com.example.manhvdse61952.vrc_android.layout.signup.customer.SignupAccountActivity;
 import com.example.manhvdse61952.vrc_android.layout.signup.customer.SignupRoleActivity;
 import com.example.manhvdse61952.vrc_android.layout.signup.customer.SignupUserInfoActivity;
+import com.example.manhvdse61952.vrc_android.layout.signup.owner.RegistVehicle;
 import com.example.manhvdse61952.vrc_android.layout.signup.owner.SignupOwnerOne;
+import com.example.manhvdse61952.vrc_android.layout.signup.owner.SignupOwnerThree;
 import com.example.manhvdse61952.vrc_android.model.apiModel.City;
 import com.example.manhvdse61952.vrc_android.model.apiModel.Login;
 import com.example.manhvdse61952.vrc_android.remote.ImmutableValue;
@@ -119,15 +121,16 @@ public class LoginActivity extends AppCompatActivity {
         txtSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (ImmutableValue.listVehicleModelOne.size() == 0){
-                    dialog = ProgressDialog.show(LoginActivity.this, "Hệ thống",
-                            "Vui lòng đợi ...", true);
-                    ImmutableValue.listVehicleModelOne = new ArrayList<>();
-                    getVehicleModelPartOne();
-                } else {
-                    Intent it = new Intent(LoginActivity.this, SignupAccountActivity.class);
-                    startActivity(it);
-                }
+                Intent it = new Intent(LoginActivity.this, RegistVehicle.class);
+                startActivity(it);
+//                if (ImmutableValue.listVehicleModelOne.size() == 0){
+//                    dialog = ProgressDialog.show(LoginActivity.this, "Hệ thống",
+//                            "Vui lòng đợi ...", true);
+//                    ImmutableValue.listVehicleModelOne = new ArrayList<>();
+//                    getVehicleModelPartOne();
+//                } else {
+//                    startActivity(it);
+//                }
 
             }
         });
@@ -153,34 +156,34 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void getVehicleModelPartOne() {
-        if (i >= ImmutableValue.listVehicleMaker.size() / 3) {
-            dialog.dismiss();
-            Intent it = new Intent(LoginActivity.this, SignupAccountActivity.class);
-            startActivity(it);
-            return;
-        }
-
-        i++;
-        Retrofit test = RetrofitConnect.getClient();
-        final VehicleAPI testAPI = test.create(VehicleAPI.class);
-        Call<List<String>> responseBodyCall = testAPI.getVehicleModel(ImmutableValue.listVehicleMaker.get(i).toString());
-
-        responseBodyCall.enqueue(new Callback<List<String>>() {
-            @Override
-            public void onResponse(Call<List<String>> call, Response<List<String>> response) {
-                if (response.body() != null) {
-                    for (int j = 0; j < response.body().size(); j++) {
-                        ImmutableValue.listVehicleModelOne.add(ImmutableValue.listVehicleMaker.get(i).toString() +
-                                " " + response.body().get(j).toString());
-                    }
-                }
-                getVehicleModelPartOne();
-            }
-
-            @Override
-            public void onFailure(Call<List<String>> call, Throwable t) {
-                Toast.makeText(LoginActivity.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
-            }
-        });
+//        if (i >= ImmutableValue.listVehicleMaker.size() / 3) {
+//            dialog.dismiss();
+//            Intent it = new Intent(LoginActivity.this, SignupAccountActivity.class);
+//            startActivity(it);
+//            return;
+//        }
+//
+//        i++;
+//        Retrofit test = RetrofitConnect.getClient();
+//        final VehicleAPI testAPI = test.create(VehicleAPI.class);
+//        Call<List<String>> responseBodyCall = testAPI.getVehicleModel(ImmutableValue.listVehicleMaker.get(i).toString());
+//
+//        responseBodyCall.enqueue(new Callback<List<String>>() {
+//            @Override
+//            public void onResponse(Call<List<String>> call, Response<List<String>> response) {
+//                if (response.body() != null) {
+//                    for (int j = 0; j < response.body().size(); j++) {
+//                        ImmutableValue.listVehicleModelOne.add(ImmutableValue.listVehicleMaker.get(i).toString() +
+//                                " " + response.body().get(j).toString());
+//                    }
+//                }
+//                getVehicleModelPartOne();
+//            }
+//
+//            @Override
+//            public void onFailure(Call<List<String>> call, Throwable t) {
+//                Toast.makeText(LoginActivity.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
+//            }
+//        });
     }
 }

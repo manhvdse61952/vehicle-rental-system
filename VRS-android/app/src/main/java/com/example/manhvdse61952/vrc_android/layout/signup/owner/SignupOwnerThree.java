@@ -135,12 +135,12 @@ public class SignupOwnerThree extends AppCompatActivity {
                 break;
             case ImmutableValue.CAMERA_SELECT_IMAGE_CODE:
                 if (resultCode == RESULT_OK) {
-                    cameraObj.showImageGallery(data, imgShowVehicle1, SignupOwnerThree.this);
+                    imgPath_1 = cameraObj.showImageGallery(data, imgShowVehicle1, SignupOwnerThree.this);
                 }
                 break;
             case ImmutableValue.CAMERA_SELECT_IMAGE_CODE_2:
                 if (resultCode == RESULT_OK) {
-                    cameraObj.showImageGallery(data, imgShowVehicle2, SignupOwnerThree.this);
+                    imgPath_2 =cameraObj.showImageGallery(data, imgShowVehicle2, SignupOwnerThree.this);
                 }
 
         }

@@ -126,13 +126,13 @@ public class ImmutableValue {
 
 
     //Show picture in gallery
-    public void showImageGallery(Intent data, ImageView imgShow, Context ctx) {
+    public String showImageGallery(Intent data, ImageView imgShow, Context ctx) {
         Uri selectedImage = data.getData();
         imgShow.setImageURI(selectedImage);
         try {
 
             //Create new file
-            File f = new File(ctx.getCacheDir(), "example_image");
+            File f = new File(ctx.getCacheDir(), String.valueOf(new Date().getTime()));
             f.createNewFile();
 
             //Convert bitmap to file
@@ -150,10 +150,11 @@ public class ImmutableValue {
             File compressor = new Compressor(ctx).setQuality(75).compressToFile(f);
             picturePath = compressor.getAbsolutePath();
 
-
+            return picturePath;
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return "";
     }
 
     //Show picture in camera
