@@ -150,11 +150,10 @@ public class ImmutableValue {
             File compressor = new Compressor(ctx).setQuality(75).compressToFile(f);
             picturePath = compressor.getAbsolutePath();
 
-            return picturePath;
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return "";
+        return picturePath;
     }
 
     //Show picture in camera

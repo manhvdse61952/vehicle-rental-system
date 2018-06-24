@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.manhvdse61952.vrc_android.R;
@@ -43,6 +44,7 @@ public class SignupOwnerPolicy extends AppCompatActivity {
     Button btnSignupAccept, btnSignupBack;
     CheckBox cbxSignupPolicy;
     ProgressDialog dialog;
+    TextView txtDieuKhoan;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,6 +55,12 @@ public class SignupOwnerPolicy extends AppCompatActivity {
         btnSignupAccept = (Button) findViewById(R.id.btnSignupAccept);
         btnSignupBack = (Button) findViewById(R.id.btnSignupBack);
         cbxSignupPolicy = (CheckBox) findViewById(R.id.cbxSignupPolicy);
+        txtDieuKhoan = (TextView)findViewById(R.id.txtDieuKhoan);
+        SharedPreferences editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE);
+        String imagePath = editor.getString("picture_path", null);
+        String imageVehicle1 = editor.getString("img_vehicle_1", null);
+        String imageVehicle2 = editor.getString("img_vehicle_2", null);
+        txtDieuKhoan.setText(imagePath + "\n" + imageVehicle1 + "\n" + imageVehicle2);
 
         //Checkbox
         cbxSignupPolicy.setOnClickListener(new View.OnClickListener() {
@@ -178,7 +186,6 @@ public class SignupOwnerPolicy extends AppCompatActivity {
             RequestBody fileBody2 = RequestBody.create(okhttp3.MediaType.parse(IMG_JPEG), imageVehicleFile1);
             RequestBody fileBody3 = RequestBody.create(okhttp3.MediaType.parse(IMG_JPEG), imageVehicleFile2);
 
-
             RequestBody data = RequestBody.create(MediaType.parse("text/plain"), json);
 
             MultipartBody.Part body = MultipartBody.Part.createFormData("files", imageFile.getName(), fileBody);
@@ -191,12 +198,11 @@ public class SignupOwnerPolicy extends AppCompatActivity {
 
             Retrofit test = RetrofitConnect.getClient();
             final VehicleAPI testAPI = test.create(VehicleAPI.class);
-            Call<ResponseBody> responseBodyCall = testAPI.createVehicle(data, imagesParts);
+            Call<ResponseBody> responseBodyCall = testAPI.createVehicle(data, null);
             responseBodyCall.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     dialog.dismiss();
-
                     AlertDialog.Builder builder = new AlertDialog.Builder(SignupOwnerPolicy.this);
                     builder.setMessage("Chúng tôi sẽ gửi email cho bạn sau khi xác thực tài khoản thành công ! Cảm ơn bạn đã đăng ký VRS");
                     builder.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
