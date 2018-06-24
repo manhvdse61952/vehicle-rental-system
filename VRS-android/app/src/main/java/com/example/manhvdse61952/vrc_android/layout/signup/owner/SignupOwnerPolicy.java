@@ -44,7 +44,6 @@ public class SignupOwnerPolicy extends AppCompatActivity {
     Button btnSignupAccept, btnSignupBack;
     CheckBox cbxSignupPolicy;
     ProgressDialog dialog;
-    TextView txtDieuKhoan;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,12 +54,6 @@ public class SignupOwnerPolicy extends AppCompatActivity {
         btnSignupAccept = (Button) findViewById(R.id.btnSignupAccept);
         btnSignupBack = (Button) findViewById(R.id.btnSignupBack);
         cbxSignupPolicy = (CheckBox) findViewById(R.id.cbxSignupPolicy);
-        txtDieuKhoan = (TextView)findViewById(R.id.txtDieuKhoan);
-        SharedPreferences editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE);
-        String imagePath = editor.getString("picture_path", null);
-        String imageVehicle1 = editor.getString("img_vehicle_1", null);
-        String imageVehicle2 = editor.getString("img_vehicle_2", null);
-        txtDieuKhoan.setText(imagePath + "\n" + imageVehicle1 + "\n" + imageVehicle2);
 
         //Checkbox
         cbxSignupPolicy.setOnClickListener(new View.OnClickListener() {
@@ -118,7 +111,7 @@ public class SignupOwnerPolicy extends AppCompatActivity {
                                 editor.putString("user-id", testObj.get("message").toString());
                                 editor.apply();
                                 SharedPreferences editor2 = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE);
-                                createVehicle(editor2.getString("user-id", "37"));
+                                createVehicle(editor2.getString("user-id", "1"));
                             } catch (Exception e) {
 
                             }
@@ -198,7 +191,7 @@ public class SignupOwnerPolicy extends AppCompatActivity {
 
             Retrofit test = RetrofitConnect.getClient();
             final VehicleAPI testAPI = test.create(VehicleAPI.class);
-            Call<ResponseBody> responseBodyCall = testAPI.createVehicle(data, null);
+            Call<ResponseBody> responseBodyCall = testAPI.createVehicle(data, imagesParts);
             responseBodyCall.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

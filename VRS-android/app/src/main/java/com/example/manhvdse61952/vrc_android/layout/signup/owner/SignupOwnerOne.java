@@ -120,7 +120,7 @@ public class SignupOwnerOne extends AppCompatActivity {
             SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
             editor.putString("vehicleType", roleValue);
             editor.apply();
-            Intent it = new Intent(SignupOwnerOne.this, SignupOwnerTwo.class);
+            Intent it = new Intent(SignupOwnerOne.this, RegistVehicle.class);
             startActivity(it);
             return;
         }

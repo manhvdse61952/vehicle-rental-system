@@ -55,9 +55,12 @@ public class ImmutableValue {
 
     public static final int CAMERA_VEHICLE_CODE_1 = 201;
     public static final int CAMERA_VEHICLE_CODE_2 = 202;
+    public static final int CAMERA_VEHICLE_CODE_3 = 203;
 
-    public static final int CAMERA_SELECT_IMAGE_CODE = 1;
+    public static final int CAMERA_SELECT_IMAGE_CODE_1 = 1;
     public static final int CAMERA_SELECT_IMAGE_CODE_2 = 2;
+    public static final int CAMERA_SELECT_IMAGE_CODE_3 = 3;
+
     public static final String SHARED_PREFERENCES_CODE = "VRS_GLOBAL_VALUE";
 
     public static List<String> listVehicleMaker;
@@ -171,6 +174,7 @@ public class ImmutableValue {
 
         }
     }
+
     //////////////////////////////////////////////////////////////////////////////////////////////
     /////////////////////////// USE FOR GET CURRENT LOCATION //////////////////////////////////
     public void checkAddressPermission(final Context ctx, final Activity atv){

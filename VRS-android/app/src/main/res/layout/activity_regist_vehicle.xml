@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:focusableInTouchMode="true"
+    android:animateLayoutChanges="true"
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
@@ -24,6 +25,7 @@
             android:textColor="@android:color/white"
             />
         <ImageView
+            android:id="@+id/imgCreateVehicle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
@@ -48,11 +50,10 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="145dp"
                 android:layout_gravity="center"
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/border_shadow"
-                android:minHeight="145dp"
                 android:orientation="horizontal"
                 android:weightSum="9">
 
@@ -63,8 +64,13 @@
                     android:background="@drawable/button_dash_arround"
                     android:layout_marginLeft="5dp"
                     android:layout_height="match_parent">
-
+                    <ImageView
+                        android:id="@+id/imgFront"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        />
                     <TextView
+                        android:id="@+id/txtImageFront"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="phía trước xe"
@@ -72,27 +78,6 @@
                         android:textAllCaps="true"
                         android:layout_centerHorizontal="true"
                         android:layout_centerVertical="true"/>
-                    <LinearLayout
-                        android:id="@+id/lnImageFront"
-                        android:layout_width="match_parent"
-                        android:orientation="horizontal"
-                        android:weightSum="10"
-                        android:visibility="invisible"
-                        android:layout_centerVertical="true"
-                        android:layout_height="wrap_content">
-                        <ImageView
-                            android:layout_width="0dp"
-                            android:layout_weight="5"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/ic_camera"
-                            />
-
-                        <ImageView
-                            android:layout_width="0dp"
-                            android:layout_weight="5"
-                            android:src="@drawable/ic_menu_gallery"
-                            android:layout_height="wrap_content" />
-                    </LinearLayout>
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -103,8 +88,13 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:layout_height="match_parent">
-
+                    <ImageView
+                        android:id="@+id/imgBack"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        />
                     <TextView
+                        android:id="@+id/txtImageBack"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="phía sau xe"
@@ -112,27 +102,6 @@
                         android:textAllCaps="true"
                         android:layout_centerHorizontal="true"
                         android:layout_centerVertical="true"/>
-                    <LinearLayout
-                        android:id="@+id/lnImageBack"
-                        android:layout_width="match_parent"
-                        android:orientation="horizontal"
-                        android:weightSum="10"
-                        android:visibility="invisible"
-                        android:layout_centerVertical="true"
-                        android:layout_height="wrap_content">
-                        <ImageView
-                            android:layout_width="0dp"
-                            android:layout_weight="5"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/ic_camera"
-                            />
-
-                        <ImageView
-                            android:layout_width="0dp"
-                            android:layout_weight="5"
-                            android:src="@drawable/ic_menu_gallery"
-                            android:layout_height="wrap_content" />
-                    </LinearLayout>
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -142,8 +111,13 @@
                     android:background="@drawable/button_dash_arround"
                     android:layout_marginRight="5dp"
                     android:layout_height="match_parent">
-
+                    <ImageView
+                        android:id="@+id/imgFrame"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        />
                     <TextView
+                        android:id="@+id/txtImageFrame"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="giấy đ.ký xe"
@@ -151,27 +125,6 @@
                         android:textAllCaps="true"
                         android:layout_centerHorizontal="true"
                         android:layout_centerVertical="true"/>
-                    <LinearLayout
-                        android:id="@+id/lnImageFrame"
-                        android:layout_width="match_parent"
-                        android:orientation="horizontal"
-                        android:weightSum="10"
-                        android:visibility="invisible"
-                        android:layout_centerVertical="true"
-                        android:layout_height="wrap_content">
-                        <ImageView
-                            android:layout_width="0dp"
-                            android:layout_weight="5"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/ic_camera"
-                            />
-
-                        <ImageView
-                            android:layout_width="0dp"
-                            android:layout_weight="5"
-                            android:src="@drawable/ic_menu_gallery"
-                            android:layout_height="wrap_content" />
-                    </LinearLayout>
                 </RelativeLayout>
             </LinearLayout>
 
@@ -186,7 +139,6 @@
                 android:orientation="horizontal"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-
                 android:weightSum="1">
 
                 <ImageView
@@ -204,27 +156,26 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="0.4"
+                    android:layout_weight="0.3"
                     android:fontFamily="sans-serif"
                     android:text="Tên xe"
                     android:textColor="@android:color/background_dark"
                     android:textSize="14sp"
                     android:typeface="normal" />
 
-                <EditText
-                    android:id="@+id/edtCarModel"
+                <TextView
+                    android:id="@+id/txtCarModel"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.5"
+                    android:layout_weight="0.6"
                     android:background="@android:color/transparent"
                     android:ellipsize="end"
                     android:ems="10"
                     android:gravity="end|center_vertical"
-                    android:hint="Chọn xe"
-                    android:inputType="number"
-                    android:paddingRight="10dp"
+                    android:paddingRight="20dp"
+                    android:text="Nhấn để chọn xe"
                     android:textColorHint="#666666"
-                    android:textSize="14sp" />
+                    android:textSize="16sp" />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -255,7 +206,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="0.4"
+                    android:layout_weight="0.3"
                     android:fontFamily="sans-serif"
                     android:text="Biển số xe"
                     android:textColor="@android:color/background_dark"
@@ -263,20 +214,20 @@
                     android:typeface="normal" />
 
                 <EditText
-                    android:id="@+id/txtPlate"
+                    android:id="@+id/edtPlate"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="0.5"
+                    android:layout_weight="0.6"
                     android:background="@android:color/transparent"
                     android:ellipsize="end"
                     android:ems="10"
                     android:gravity="end|center_vertical"
                     android:hint="Biển số"
-                    android:inputType="number"
-                    android:paddingRight="10dp"
+                    android:inputType="text"
+                    android:paddingRight="20dp"
                     android:textColorHint="#666666"
-                    android:textSize="14sp" />
+                    android:textSize="16sp" />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -307,7 +258,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="0.4"
+                    android:layout_weight="0.3"
                     android:fontFamily="sans-serif"
                     android:text="Số khung"
                     android:textColor="@android:color/background_dark"
@@ -315,20 +266,20 @@
                     android:typeface="normal" />
 
                 <EditText
-                    android:id="@+id/txtFrame"
+                    android:id="@+id/edtFrame"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="0.5"
+                    android:layout_weight="0.6"
                     android:background="@android:color/transparent"
                     android:ellipsize="end"
                     android:ems="10"
                     android:gravity="end|center_vertical"
                     android:hint="Số khung"
-                    android:inputType="number"
-                    android:paddingRight="10dp"
+                    android:inputType="text"
+                    android:paddingRight="20dp"
                     android:textColorHint="#666666"
-                    android:textSize="14sp" />
+                    android:textSize="16sp" />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -512,8 +463,8 @@
                     android:text="0"
                     android:textColor="#666666"
                     android:fontFamily="sans-serif"
-                    android:textSize="14sp"
-                    android:paddingRight="10dp"
+                    android:textSize="16sp"
+                    android:paddingRight="20dp"
                     android:layout_gravity="center_vertical"
                     android:layout_height="match_parent" />
             </LinearLayout>
@@ -634,7 +585,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="0.4"
+                    android:layout_weight="0.3"
                     android:fontFamily="sans-serif"
                     android:text="Giá thuê/giờ"
                     android:textColor="@android:color/background_dark"
@@ -642,20 +593,20 @@
                     android:typeface="normal" />
 
                 <EditText
-                    android:id="@+id/txtpricehour"
+                    android:id="@+id/edtPriceHour"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="0.5"
+                    android:layout_weight="0.6"
                     android:background="@android:color/transparent"
                     android:ellipsize="end"
                     android:ems="10"
                     android:gravity="right|center_vertical"
-                    android:hint="Nhập giá tiền"
+                    android:hint="Gợi ý: 100.000 vnđ"
                     android:inputType="number"
                     android:paddingRight="10dp"
                     android:textColorHint="#666666"
-                    android:textSize="14sp" />
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -670,7 +621,6 @@
                 android:weightSum="1">
 
                 <ImageView
-                    android:id="@+id/imageView3"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -685,7 +635,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="0.4"
+                    android:layout_weight="0.35"
                     android:fontFamily="sans-serif"
                     android:text="Giá thuê/ngày"
                     android:textColor="@android:color/background_dark"
@@ -693,20 +643,20 @@
                     android:typeface="normal" />
 
                 <EditText
-                    android:id="@+id/txtPriceDay"
+                    android:id="@+id/edtPriceDay"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="0.5"
+                    android:layout_weight="0.55"
                     android:background="@android:color/transparent"
                     android:ellipsize="end"
                     android:ems="10"
                     android:gravity="end|center_vertical"
-                    android:hint="Nhập giá tiền"
+                    android:hint="Gợi ý: 1.300.000 vnđ"
                     android:inputType="number"
                     android:paddingRight="10dp"
                     android:textColorHint="#666666"
-                    android:textSize="14sp" />
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -736,7 +686,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="0.4"
+                    android:layout_weight="0.3"
                     android:fontFamily="sans-serif"
                     android:text="Giá thuê/buổi"
                     android:textColor="@android:color/background_dark"
@@ -744,22 +694,105 @@
                     android:typeface="normal" />
 
                 <EditText
-                    android:id="@+id/txtPriceSlot"
+                    android:id="@+id/edtPriceSlot"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="0.5"
+                    android:layout_weight="0.6"
                     android:background="@android:color/transparent"
                     android:ellipsize="end"
                     android:ems="10"
                     android:gravity="end|center_vertical"
-                    android:hint="Nhập giá tiền"
+                    android:hint="Gợi ý: 700.000 vnđ"
                     android:inputType="number"
                     android:paddingRight="10dp"
-
                     android:textColorHint="#666666"
-                    android:textSize="14sp" />
+                    android:textSize="16sp" />
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/border_input"
+                android:minHeight="45dp"
+                android:orientation="horizontal"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:weightSum="1">
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="0.1"
+                    android:adjustViewBounds="true"
+                    android:maxHeight="30dp"
+                    app:srcCompat="@drawable/icon_price" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.3"
+                    android:fontFamily="sans-serif"
+                    android:text="Giá cọc"
+                    android:textColor="@android:color/background_dark"
+                    android:textSize="14sp"
+                    android:typeface="normal" />
+
+                <EditText
+                    android:id="@+id/edtDepositFee"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.6"
+                    android:background="@android:color/transparent"
+                    android:ellipsize="end"
+                    android:ems="10"
+                    android:gravity="end|center_vertical"
+                    android:hint="Gợi ý: 5.000.000 vnđ"
+                    android:inputType="number"
+                    android:paddingRight="10dp"
+                    android:textColorHint="#666666"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:paddingLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Giấy tờ"
+                    android:textColor="#000"
+                    android:textSize="16sp" />
+
+                <CheckBox
+                    android:id="@+id/cbxHouseHold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Sộ hộ khẩu"
+                    android:checked="false"
+                    android:textSize="16sp" />
+
+                <CheckBox
+                    android:id="@+id/cbxIdCard"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Chứng minh nhân dân"
+                    android:checked="false"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
         </LinearLayout>
 
     </ScrollView>

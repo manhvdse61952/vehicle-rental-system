@@ -144,7 +144,7 @@ public class SignupOwnerTwoPlus extends AppCompatActivity {
             public void onClick(View view) {
                 Intent pickPhoto = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 pickPhoto.setType("image/*");
-                startActivityForResult(pickPhoto, ImmutableValue.CAMERA_SELECT_IMAGE_CODE);
+                startActivityForResult(pickPhoto, ImmutableValue.CAMERA_SELECT_IMAGE_CODE_1);
             }
         });
     }
@@ -154,7 +154,7 @@ public class SignupOwnerTwoPlus extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
-            case ImmutableValue.CAMERA_SELECT_IMAGE_CODE:
+            case ImmutableValue.CAMERA_SELECT_IMAGE_CODE_1:
                 if (resultCode == RESULT_OK) {
                     cameraObj.showImageGallery(data, imgSignupOwner, SignupOwnerTwoPlus.this);
                 }

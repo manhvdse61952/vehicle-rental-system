@@ -70,7 +70,7 @@ public class SignupOwnerThree extends AppCompatActivity {
             public void onClick(View view) {
                 Intent pickPhoto = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 pickPhoto.setType("image/*");
-                startActivityForResult(pickPhoto, ImmutableValue.CAMERA_SELECT_IMAGE_CODE);
+                startActivityForResult(pickPhoto, ImmutableValue.CAMERA_SELECT_IMAGE_CODE_1);
             }
         });
 
@@ -133,7 +133,7 @@ public class SignupOwnerThree extends AppCompatActivity {
                     imgPath_2 = ImmutableValue.picturePath;
                 }
                 break;
-            case ImmutableValue.CAMERA_SELECT_IMAGE_CODE:
+            case ImmutableValue.CAMERA_SELECT_IMAGE_CODE_1:
                 if (resultCode == RESULT_OK) {
                     imgPath_1 = cameraObj.showImageGallery(data, imgShowVehicle1, SignupOwnerThree.this);
                 }
