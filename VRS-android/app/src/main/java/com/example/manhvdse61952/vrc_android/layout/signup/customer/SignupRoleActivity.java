@@ -30,7 +30,7 @@ public class SignupRoleActivity extends AppCompatActivity {
 
     ImageView imgCustomer, imgOwner;
     Button btnSignupAccountBack;
-    int i = 1 + ImmutableValue.listVehicleMaker.size() / 3;
+    int i = 0;
 
     ProgressDialog dialog;
 
@@ -98,7 +98,7 @@ public class SignupRoleActivity extends AppCompatActivity {
 
     /////////////////////////////////////////////////////////
     private void getVehicleModelPartTwo() {
-        if (i >= ImmutableValue.listVehicleMaker.size() / 3 * 2) {
+        if (i >= ImmutableValue.listVehicleMaker.size() / 2) {
             dialog.dismiss();
             SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
             editor.putString("rolename", "ROLE_OWNER");

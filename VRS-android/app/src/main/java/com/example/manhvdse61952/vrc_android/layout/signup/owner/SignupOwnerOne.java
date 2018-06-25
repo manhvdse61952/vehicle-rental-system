@@ -30,7 +30,7 @@ public class SignupOwnerOne extends AppCompatActivity {
 
     Button btnSignupVehicle1, btnSignupVehicle2, btnSignupVehicle3, btnSignupAccountBack;
     ProgressDialog dialog;
-    int i = 1 + ImmutableValue.listVehicleMaker.size()/3 * 2;
+    int i = 1 + ImmutableValue.listVehicleMaker.size()/ 2;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

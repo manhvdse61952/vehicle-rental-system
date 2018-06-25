@@ -178,8 +178,6 @@ public class RetrofitCallAPI {
             public void onResponse(Call<List<City>> call, Response<List<City>> response) {
                 lisCityTest = response.body();
                 getAllVehicleMaker(ctx, progressDialog);
-
-                //progressDialog.dismiss();
             }
 
             @Override

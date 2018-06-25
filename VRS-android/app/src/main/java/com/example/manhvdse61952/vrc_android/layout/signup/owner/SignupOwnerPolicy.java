@@ -134,7 +134,7 @@ public class SignupOwnerPolicy extends AppCompatActivity {
         btnSignupBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent it = new Intent(SignupOwnerPolicy.this, SignupOwnerFour.class);
+                Intent it = new Intent(SignupOwnerPolicy.this, RegistVehicle.class);
                 startActivity(it);
             }
         });
@@ -226,7 +226,7 @@ public class SignupOwnerPolicy extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent it = new Intent(SignupOwnerPolicy.this, SignupOwnerFour.class);
+        Intent it = new Intent(SignupOwnerPolicy.this, RegistVehicle.class);
         startActivity(it);
     }
 }

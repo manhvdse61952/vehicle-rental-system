@@ -71,7 +71,6 @@ public class ImmutableValue {
     public static final String SHARED_PREFERENCES_CODE = "VRS_GLOBAL_VALUE";
 
     public static List<String> listVehicleMaker;
-    public static List<String> listVehicleModelOne = new ArrayList<>();
     public static List<String> listVehicleModelTwo = new ArrayList<>();
     public static List<String> listVehicleModelThree = new ArrayList<>();
 
@@ -313,11 +312,6 @@ public class ImmutableValue {
         }
 
         return getCmndFromImage;
-    }
-
-    public String getFrameNumberFromImage(String filename, Context ctx){
-
-        return null;
     }
 
 }

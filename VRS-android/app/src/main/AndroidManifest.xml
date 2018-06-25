@@ -37,9 +37,6 @@
             android:name=".layout.signup.customer.SignupUserInfoActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".layout.signup.customer.SignupUserInfoCameraActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".layout.signup.customer.SignupAccountActivity"
             android:screenOrientation="portrait" />
         <activity
@@ -50,18 +47,6 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".layout.signup.owner.SignupOwnerOne"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".layout.signup.owner.SignupOwnerTwo"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".layout.signup.owner.SignupOwnerTwoPlus"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".layout.signup.owner.SignupOwnerThree"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".layout.signup.owner.SignupOwnerFour"
             android:screenOrientation="portrait" />
         <activity
             android:name=".layout.signup.owner.SignupOwnerPolicy"
@@ -114,9 +99,12 @@
             android:value="@string/google_maps_key" />
 
         <activity
+            android:screenOrientation="portrait"
             android:name=".layout.order.MapsActivity"
             android:label="@string/title_activity_maps" />
-        <activity android:name=".layout.signup.owner.RegistVehicle"></activity>
+
+        <activity android:name=".layout.signup.owner.RegistVehicle" android:screenOrientation="portrait"></activity>
+
     </application>
 
 </manifest>

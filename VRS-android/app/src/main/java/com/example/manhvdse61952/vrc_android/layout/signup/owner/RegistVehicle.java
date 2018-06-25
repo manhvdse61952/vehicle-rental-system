@@ -220,11 +220,6 @@ public class RegistVehicle extends AppCompatActivity {
     //Init data to car model edit text
     private ArrayList<SearchAddressModel> initData() {
         ArrayList<SearchAddressModel> items = new ArrayList<>();
-        if (ImmutableValue.listVehicleModelOne.size() > 0) {
-            for (int i = 0; i < ImmutableValue.listVehicleModelOne.size(); i++) {
-                items.add(new SearchAddressModel(ImmutableValue.listVehicleModelOne.get(i).trim()));
-            }
-        }
         if (ImmutableValue.listVehicleModelTwo.size() > 0) {
             for (int j = 0; j < ImmutableValue.listVehicleModelTwo.size(); j++) {
                 items.add(new SearchAddressModel(ImmutableValue.listVehicleModelTwo.get(j).trim()));

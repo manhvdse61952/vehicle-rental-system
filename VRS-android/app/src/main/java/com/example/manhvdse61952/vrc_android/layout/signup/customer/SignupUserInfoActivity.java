@@ -71,8 +71,8 @@ public class SignupUserInfoActivity extends AppCompatActivity {
         signup_phone_txt = (TextInputLayout) findViewById(R.id.signup_phone_txt);
         signup_cmnd_txt = (TextInputLayout) findViewById(R.id.signup_cmnd_txt);
 
-        edtSignupCNMD.setEnabled(false);
-        edtSignupCNMD.setClickable(true);
+//        edtSignupCNMD.setEnabled(false);
+//        edtSignupCNMD.setClickable(true);
 
         //button Next
         btnNext.setOnClickListener(new View.OnClickListener() {
@@ -159,21 +159,17 @@ public class SignupUserInfoActivity extends AppCompatActivity {
 
             case ImmutableValue.CAMERA_OPEN_CODE:
                 if (resultCode == RESULT_OK) {
-//                    String filename = cameraObj.showImageCamera(imgShowCMND, SignupUserInfoActivity.this);
-//                    String getCMND = cameraObj.getCmndFromImage(filename, SignupUserInfoActivity.this);
-//                    if (getCMND.length() >= 9){
-//                        edtSignupCNMD.setText(getCMND + "");
-//                    } else {
-//                        final AlertDialog.Builder builder = new AlertDialog.Builder(SignupUserInfoActivity.this);
-//                        builder.setMessage("Ảnh cần hiển thị rõ số CMND, vui lòng chụp lại");
-//                        edtSignupCNMD.setText("");
-//                        AlertDialog alertDialog = builder.create();
-//                        alertDialog.show();
-//                    }
-
-
-
-
+                    String filename = cameraObj.showImageCamera(imgShowCMND, SignupUserInfoActivity.this);
+                    String getCMND = cameraObj.getCmndFromImage(filename, SignupUserInfoActivity.this);
+                    if (getCMND.length() >= 9){
+                        edtSignupCNMD.setText(getCMND + "");
+                    } else {
+                        final AlertDialog.Builder builder = new AlertDialog.Builder(SignupUserInfoActivity.this);
+                        builder.setMessage("Ảnh cần hiển thị rõ số CMND, vui lòng chụp lại");
+                        edtSignupCNMD.setText("");
+                        AlertDialog alertDialog = builder.create();
+                        alertDialog.show();
+                    }
                 }
                 break;
         }
