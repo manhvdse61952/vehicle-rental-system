@@ -54,7 +54,7 @@ public class SignupOwnerOne extends AppCompatActivity {
                     SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
                     editor.putString("vehicleType", "XE_MAY");
                     editor.apply();
-                    Intent it = new Intent(SignupOwnerOne.this, SignupOwnerTwo.class);
+                    Intent it = new Intent(SignupOwnerOne.this, RegistVehicle.class);
                     startActivity(it);
                 }
             }
@@ -72,7 +72,7 @@ public class SignupOwnerOne extends AppCompatActivity {
                     SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
                     editor.putString("vehicleType", "XE_CA_NHAN");
                     editor.apply();
-                    Intent it = new Intent(SignupOwnerOne.this, SignupOwnerTwo.class);
+                    Intent it = new Intent(SignupOwnerOne.this, RegistVehicle.class);
                     startActivity(it);
                 }
 
@@ -91,7 +91,7 @@ public class SignupOwnerOne extends AppCompatActivity {
                     SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
                     editor.putString("vehicleType", "XE_DU_LICH");
                     editor.apply();
-                    Intent it = new Intent(SignupOwnerOne.this, SignupOwnerTwo.class);
+                    Intent it = new Intent(SignupOwnerOne.this, RegistVehicle.class);
                     startActivity(it);
                 }
             }

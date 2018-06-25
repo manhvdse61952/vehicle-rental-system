@@ -74,8 +74,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        /// get address data
-        if (RetrofitCallAPI.lisCityTest.size() == 0){
+        /// get address and vehicle maker data
+        if (RetrofitCallAPI.lisCityTest.size() == 0) {
             dialog = ProgressDialog.show(LoginActivity.this, "Đang xử lý",
                     "Vui lòng đợi ...", true);
             RetrofitCallAPI testAPI = new RetrofitCallAPI();
@@ -96,6 +96,7 @@ public class LoginActivity extends AppCompatActivity {
 
         locationObj = new ImmutableValue();
         locationObj.checkAddressPermission(LoginActivity.this, LoginActivity.this);
+
         //Login button
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,14 +123,22 @@ public class LoginActivity extends AppCompatActivity {
         txtSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (ImmutableValue.listVehicleModelOne.size() == 0){
-                    dialog = ProgressDialog.show(LoginActivity.this, "Hệ thống",
+                if (RetrofitCallAPI.lisCityTest.size() != 0 && ImmutableValue.listVehicleMaker.size() != 0){
+                    if (ImmutableValue.listVehicleModelOne.size() == 0) {
+                        dialog = ProgressDialog.show(LoginActivity.this, "Hệ thống",
+                                "Vui lòng đợi ...", true);
+                        ImmutableValue.listVehicleModelOne = new ArrayList<>();
+                        getVehicleModelPartOne();
+                    } else {
+                        Intent it = new Intent(LoginActivity.this, SignupAccountActivity.class);
+                        startActivity(it);
+                    }
+                }
+                else {
+                    dialog = ProgressDialog.show(LoginActivity.this, "Đang xử lý",
                             "Vui lòng đợi ...", true);
-                    ImmutableValue.listVehicleModelOne = new ArrayList<>();
-                    getVehicleModelPartOne();
-                } else {
-                    Intent it = new Intent(LoginActivity.this, SignupAccountActivity.class);
-                    startActivity(it);
+                    RetrofitCallAPI testAPI = new RetrofitCallAPI();
+                    testAPI.getAllAddress(dialog, LoginActivity.this);
                 }
 
             }
@@ -144,7 +153,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     locationObj = new ImmutableValue();
                     locationObj.checkAddressPermission(LoginActivity.this, LoginActivity.this);
-                } else if(grantResults[0] != PackageManager.PERMISSION_GRANTED){
+                } else if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                     Intent intent = new Intent(Intent.ACTION_MAIN);
                     intent.addCategory(Intent.CATEGORY_HOME);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -154,36 +163,44 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-
     private void getVehicleModelPartOne() {
-        if (i >= ImmutableValue.listVehicleMaker.size() / 3) {
-            dialog.dismiss();
-            Intent it = new Intent(LoginActivity.this, SignupAccountActivity.class);
-            startActivity(it);
-            return;
+        if (ImmutableValue.listVehicleMaker.size() != 0) {
+            if (i >= ImmutableValue.listVehicleMaker.size() / 3) {
+                dialog.dismiss();
+                Intent it = new Intent(LoginActivity.this, SignupAccountActivity.class);
+                startActivity(it);
+                return;
+            }
+
+            i++;
+            Retrofit test = RetrofitConnect.getClient();
+            final VehicleAPI testAPI = test.create(VehicleAPI.class);
+            Call<List<String>> responseBodyCall = testAPI.getVehicleModel(ImmutableValue.listVehicleMaker.get(i).toString());
+
+            responseBodyCall.enqueue(new Callback<List<String>>() {
+                @Override
+                public void onResponse(Call<List<String>> call, Response<List<String>> response) {
+                    if (response.body() != null) {
+                        for (int j = 0; j < response.body().size(); j++) {
+                            ImmutableValue.listVehicleModelOne.add(ImmutableValue.listVehicleMaker.get(i).toString() +
+                                    " " + response.body().get(j).toString());
+                        }
+                    }
+                    getVehicleModelPartOne();
+                }
+
+                @Override
+                public void onFailure(Call<List<String>> call, Throwable t) {
+                    dialog.dismiss();
+                    Toast.makeText(LoginActivity.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            dialog = ProgressDialog.show(LoginActivity.this, "Hệ thống",
+                    "Vui lòng đợi ...", true);
+            ImmutableValue.listVehicleModelOne = new ArrayList<>();
+            getVehicleModelPartOne();
         }
 
-        i++;
-        Retrofit test = RetrofitConnect.getClient();
-        final VehicleAPI testAPI = test.create(VehicleAPI.class);
-        Call<List<String>> responseBodyCall = testAPI.getVehicleModel(ImmutableValue.listVehicleMaker.get(i).toString());
-
-        responseBodyCall.enqueue(new Callback<List<String>>() {
-            @Override
-            public void onResponse(Call<List<String>> call, Response<List<String>> response) {
-                if (response.body() != null) {
-                    for (int j = 0; j < response.body().size(); j++) {
-                        ImmutableValue.listVehicleModelOne.add(ImmutableValue.listVehicleMaker.get(i).toString() +
-                                " " + response.body().get(j).toString());
-                    }
-                }
-                getVehicleModelPartOne();
-            }
-
-            @Override
-            public void onFailure(Call<List<String>> call, Throwable t) {
-                Toast.makeText(LoginActivity.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 }

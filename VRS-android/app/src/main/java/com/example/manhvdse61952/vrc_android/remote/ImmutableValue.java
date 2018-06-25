@@ -7,6 +7,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -19,13 +21,18 @@ import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.FileProvider;
 import android.util.Log;
+import android.util.SparseArray;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.manhvdse61952.vrc_android.R;
+import com.example.manhvdse61952.vrc_android.layout.signup.customer.SignupUserInfoActivity;
 import com.example.manhvdse61952.vrc_android.model.searchModel.SearchItemNew;
 import com.example.manhvdse61952.vrc_android.model.apiModel.VehicleInformation_New;
 import com.example.manhvdse61952.vrc_android.model.apiModel.Vehicle_New;
+import com.google.android.gms.vision.Frame;
+import com.google.android.gms.vision.text.TextBlock;
+import com.google.android.gms.vision.text.TextRecognizer;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -85,7 +92,7 @@ public class ImmutableValue {
 
     ///////////////////////////////////// USE FOR CAMERA //////////////////////////////////////
     //check camera permission
-    public void checkPermission(Context ctx, Activity atv, int imageCode){
+    public void checkPermission(Context ctx, Activity atv, int imageCode) {
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M && ctx.checkSelfPermission(Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
             atv.requestPermissions(new String[]{Manifest.permission.CAMERA}, CAMERA_REQUEST_CODE);
@@ -127,7 +134,6 @@ public class ImmutableValue {
         }
     }
 
-
     //Show picture in gallery
     public String showImageGallery(Intent data, ImageView imgShow, Context ctx) {
         Uri selectedImage = data.getData();
@@ -152,7 +158,6 @@ public class ImmutableValue {
             fos.close();
             File compressor = new Compressor(ctx).setQuality(75).compressToFile(f);
             picturePath = compressor.getAbsolutePath();
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -160,10 +165,10 @@ public class ImmutableValue {
     }
 
     //Show picture in camera
-    public void showImageCamera(ImageView imgShow, Context ctx) {
+    public String showImageCamera(ImageView imgShow, Context ctx) {
         File imgFile = new File(ImmutableValue.picturePath);
+        Picasso.get().load(imgFile).into(imgShow);
         if (imgFile.exists()) {
-            Picasso.get().load(imgFile).into(imgShow);
             File compressor = null;
             try {
                 compressor = new Compressor(ctx).setQuality(75).compressToFile(imgFile);
@@ -171,13 +176,13 @@ public class ImmutableValue {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         }
+        return picturePath;
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////////
     /////////////////////////// USE FOR GET CURRENT LOCATION //////////////////////////////////
-    public void checkAddressPermission(final Context ctx, final Activity atv){
+    public void checkAddressPermission(final Context ctx, final Activity atv) {
         locationManager = (LocationManager) ctx.getSystemService(Context.LOCATION_SERVICE);
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             buildAlertMessageNoGps(ctx, atv);
@@ -228,7 +233,7 @@ public class ImmutableValue {
         alertDialog.setCanceledOnTouchOutside(false);
     }
 
-    public void getStringAddress(double longitude, double latitude, Context ctx){
+    public void getStringAddress(double longitude, double latitude, Context ctx) {
         Geocoder geocoder;
         List<Address> addresses;
         geocoder = new Geocoder(ctx, Locale.getDefault());
@@ -248,16 +253,71 @@ public class ImmutableValue {
 
     }
 
-    public static String removeAccentCharacter(String str){
+    public static String removeAccentCharacter(String str) {
         str = str.toLowerCase().trim();
-        str = str.replaceAll("[áàảãạâấầẩẫậăắằẳẵặ]","a");
-        str = str.replaceAll("đ","d");
-        str = str.replaceAll("[éèẻẽẹêếềểễệ]","e");
-        str = str.replaceAll("[íìỉĩị]","i");
-        str = str.replaceAll("[óòỏõọôốồổỗộơớờởỡợ]","o");
-        str = str.replaceAll("[úùủũụưứừửữự]","u");
+        str = str.replaceAll("[áàảãạâấầẩẫậăắằẳẵặ]", "a");
+        str = str.replaceAll("đ", "d");
+        str = str.replaceAll("[éèẻẽẹêếềểễệ]", "e");
+        str = str.replaceAll("[íìỉĩị]", "i");
+        str = str.replaceAll("[óòỏõọôốồổỗộơớờởỡợ]", "o");
+        str = str.replaceAll("[úùủũụưứừửữự]", "u");
         return str;
     }
 
+    public String getCmndFromImage(String filename, Context ctx) {
+        //Temp variable
+        String getCmndFromImage = "";
+
+        //Convert image are displayed in image-view to bitmap
+        Bitmap bitmap = BitmapFactory.decodeFile(filename);
+        TextRecognizer textRecognizer = new TextRecognizer.Builder(ctx.getApplicationContext()).build();
+        if (!textRecognizer.isOperational()) {
+            Toast.makeText(ctx, "Vui lòng thử lại ...", Toast.LENGTH_SHORT).show();
+        } else {
+            Frame frame = new Frame.Builder().setBitmap(bitmap).build();
+            SparseArray<TextBlock> items = textRecognizer.detect(frame);
+            if (items.size() != 0) {
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < items.size(); i++) {
+                    TextBlock item = items.valueAt(i);
+                    sb.append(item.getValue());
+                    sb.append("\n");
+                }
+
+                if (sb.toString() != null) {
+                    String strFromOcrReader = sb.toString().trim().replaceAll("\\s+", "");
+                    String strTemp = "";
+                    String[] arrayCmndTemp = strFromOcrReader.split("");
+                    //get each character in OCR reader and check it's a digit or not
+                    //Error strinArrayIndexOutOfBound when we set i = 0, so that we set i = 1 to ignore this error
+                    for (int i = 1; i < arrayCmndTemp.length; i++) {
+                        if (Character.isDigit(arrayCmndTemp[i].charAt(0))) {
+                            strTemp += arrayCmndTemp[i].charAt(0);
+                        } else {
+                            strTemp += "-";
+                        }
+                    }
+
+                    //execute string temp to get CMND
+                    String[] arrayResult = strTemp.split("-");
+                    for (int i = 0; i < arrayResult.length; i++) {
+                        if (arrayResult[i].length() >= 9) {
+                            getCmndFromImage = arrayResult[i];
+                            break;
+                        }
+                    }
+                }
+
+            }
+
+        }
+
+        return getCmndFromImage;
+    }
+
+    public String getFrameNumberFromImage(String filename, Context ctx){
+
+        return null;
+    }
 
 }

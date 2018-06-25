@@ -113,7 +113,7 @@ public class SignupOwnerPolicy extends AppCompatActivity {
                                 SharedPreferences editor2 = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE);
                                 createVehicle(editor2.getString("user-id", "1"));
                             } catch (Exception e) {
-
+                                e.printStackTrace();
                             }
 
                         }
