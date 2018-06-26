@@ -7,12 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.manhvdse61952.vrc_android.R;
 import com.example.manhvdse61952.vrc_android.model.searchModel.SearchItemNew;
 import com.example.manhvdse61952.vrc_android.model.apiModel.VehicleInformation_New;
 import com.example.manhvdse61952.vrc_android.model.apiModel.Vehicle_New;
 import com.example.manhvdse61952.vrc_android.remote.ImmutableValue;
+import com.example.manhvdse61952.vrc_android.remote.RetrofitCallAPI;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +22,7 @@ import java.util.List;
 public class tab1 extends Fragment {
     ListView listView;
     SearchAdapter adapter;
+    TextView errorTab1;
 
     @Nullable
     @Override
@@ -32,33 +35,17 @@ public class tab1 extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ////////////////// Init to list view ///////////////////
-        List<VehicleInformation_New> vehicleInformationNewList = new ArrayList<>();
-        List<Vehicle_New> vehicleNewList = new ArrayList<>();
-
-        ImmutableValue importantObj = new ImmutableValue();
-
-        ImmutableValue.searchItemNewList1 = new ArrayList<>();
-//        for (int i=0; i< vehicleNewList.size(); i++){
-//            VehicleInformation_New checkObj = importantObj.getVehicleInfo(vehicleNewList.get(i).getVehicleInformationID(), vehicleInformationNewList);
-//            if (checkObj.getVehicleType().equals("XE_MAY")){
-//                SearchItemNew obj = new SearchItemNew();
-//                String vehicleName = checkObj.getVehicleMaker() + " " + checkObj.getVehicleModel();
-//                int vehicleSeat = checkObj.getSeat();
-//                //String address = ImmutableValue.getAddressName(vehicleNewList.get(i).getDistrictID());
-//
-//                obj.setVehicleName(vehicleName);
-//                obj.setVehicleSeat(vehicleSeat);
-//                //obj.setAddress(address);
-//                obj.setFrameNumber(vehicleNewList.get(i).getFrameNumber());
-//                obj.setVehiclePrice(vehicleNewList.get(i).getRentFeePerHours());
-//                obj.setImageLinkFront(vehicleNewList.get(i).getImageLinkFront());
-//
-//                ImmutableValue.searchItemNewList1.add(obj);
-//            }
-//        }
-
+        errorTab1 = (TextView)view.findViewById(R.id.errorTab1);
         listView = (ListView)view.findViewById(R.id.lvtab1);
-        adapter = new SearchAdapter(tab1.this, ImmutableValue.searchItemNewList1, getActivity());
-        listView.setAdapter(adapter);
+
+        if (activity_main_2.listMotorbike.size() == 0){
+            errorTab1.setVisibility(View.VISIBLE);
+            listView.setVisibility(View.INVISIBLE);
+        } else {
+            errorTab1.setVisibility(View.INVISIBLE);
+            listView.setVisibility(View.VISIBLE);
+            adapter = new SearchAdapter(tab1.this, activity_main_2.listMotorbike, getActivity());
+            listView.setAdapter(adapter);
+        }
     }
 }

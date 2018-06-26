@@ -50,9 +50,9 @@ public class MainItem extends AppCompatActivity {
         ///////////////////// get information /////////////////////
         SharedPreferences editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE);
         String framenumber = editor.getString("frameNumber", null);
-        List<VehicleInformation_New> vehicleInformationNewList = new ArrayList<>();
-        List<Vehicle_New> vehicleNewList = new ArrayList<>();
-        ImmutableValue importantObj = new ImmutableValue();
+//        List<VehicleInformation_New> vehicleInformationNewList = new ArrayList<>();
+//        List<Vehicle_New> vehicleNewList = new ArrayList<>();
+//        ImmutableValue importantObj = new ImmutableValue();
 
 
 //        VehicleInformation_New tempObj = new VehicleInformation_New();

@@ -80,12 +80,24 @@ public class SearchAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        //viewHolder.img_main.setImageResource(R.drawable.img_bus_huyndai_univer);
-        Picasso.get().load(obj.getImageLinkFront()).into(viewHolder.img_main);
-        viewHolder.txt_main_name.setText(obj.getVehicleName());
-        viewHolder.txt_main_seat.setText(obj.getVehicleSeat() + " chỗ");
-        viewHolder.txt_main_address.setText(obj.getAddress());
-        viewHolder.txt_main_price.setText(obj.getVehiclePrice());
+        if (obj.getImageLinkFront().trim().equals("")){
+            Picasso.get().load(R.drawable.img_default_image).into(viewHolder.img_main);
+        } else {
+            Picasso.get().load(obj.getImageLinkFront()).into(viewHolder.img_main);
+        }
+        viewHolder.txt_main_name.setText(obj.getVehicleMaker() + " " + obj.getVehicleModel());
+        viewHolder.txt_main_seat.setText(obj.getSeat() + " chỗ");
+        for (int i = 0; i < activity_main_2.listAllDistrict.size(); i++){
+            if (activity_main_2.listAllDistrict.get(i).getId() == obj.getDistrictID()){
+                viewHolder.txt_main_address.setText(activity_main_2.listAllDistrict.get(i).districtName);
+            }
+        }
+        if (obj.getVehicleType().equals("XE_MAY")){
+            viewHolder.txt_main_price.setText(obj.getRentFeePerHours());
+        } else {
+            viewHolder.txt_main_price.setText(obj.getRentFeePerSlot());
+        }
+
         viewHolder.search_layout_item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -26,12 +26,25 @@ public class Account implements Serializable {
     @Expose
     private String roleName;
 
-    public Account(String accessToken, String tokenType, String expirationDateTime, int userID, String roleName) {
+    @SerializedName("fullname")
+    @Expose
+    private String fullname;
+
+    public Account(String accessToken, String tokenType, String expirationDateTime, int userID, String roleName, String fullname) {
         this.accessToken = accessToken;
         this.tokenType = tokenType;
         this.expirationDateTime = expirationDateTime;
         this.userID = userID;
         this.roleName = roleName;
+        this.fullname = fullname;
+    }
+
+    public String getFullname() {
+        return fullname;
+    }
+
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
     }
 
     public Account() {

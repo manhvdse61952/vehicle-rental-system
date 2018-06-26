@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.manhvdse61952.vrc_android.R;
 import com.example.manhvdse61952.vrc_android.model.searchModel.SearchItemNew;
@@ -20,6 +21,7 @@ import java.util.List;
 public class tab3 extends Fragment {
     ListView listView;
     SearchAdapter adapter;
+    TextView errorTab3;
 
     @Nullable
     @Override
@@ -32,35 +34,19 @@ public class tab3 extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ////////////////// Init to list view ///////////////////
-        List<VehicleInformation_New> vehicleInformationNewList = new ArrayList<>();
-        List<Vehicle_New> vehicleNewList = new ArrayList<>();
 
-        ImmutableValue importantObj = new ImmutableValue();
-
-
-        ImmutableValue.searchItemNewList3 = new ArrayList<>();
-//        for (int i=0; i< vehicleNewList.size(); i++){
-//            VehicleInformation_New checkObj = importantObj.getVehicleInfo(vehicleNewList.get(i).getVehicleInformationID(), vehicleInformationNewList);
-//            if (checkObj.getVehicleType().equals("XE_DU_LICH")){
-//                SearchItemNew obj = new SearchItemNew();
-//                String vehicleName = checkObj.getVehicleMaker() + " " + checkObj.getVehicleModel();
-//                int vehicleSeat = checkObj.getSeat();
-//                //String address = ImmutableValue.getAddressName(vehicleNewList.get(i).getDistrictID());
-//
-//                obj.setVehicleName(vehicleName);
-//                obj.setVehicleSeat(vehicleSeat);
-//                //obj.setAddress(address);
-//                obj.setFrameNumber(vehicleNewList.get(i).getFrameNumber());
-//                obj.setVehiclePrice(vehicleNewList.get(i).getRentFeePerSlot());
-//                obj.setImageLinkFront(vehicleNewList.get(i).getImageLinkFront());
-//
-//                ImmutableValue.searchItemNewList3.add(obj);
-//            }
-//        }
-
+        errorTab3 = (TextView)view.findViewById(R.id.errorTab3);
         listView = (ListView)view.findViewById(R.id.lvtab3);
-        adapter = new SearchAdapter(tab3.this, ImmutableValue.searchItemNewList3, getActivity());
-        listView.setAdapter(adapter);
+
+        if (activity_main_2.listTravelCar.size() == 0){
+            errorTab3.setVisibility(View.VISIBLE);
+            listView.setVisibility(View.INVISIBLE);
+        } else {
+            errorTab3.setVisibility(View.INVISIBLE);
+            listView.setVisibility(View.VISIBLE);
+            adapter = new SearchAdapter(tab3.this, activity_main_2.listTravelCar, getActivity());
+            listView.setAdapter(adapter);
+        }
 
     }
 }

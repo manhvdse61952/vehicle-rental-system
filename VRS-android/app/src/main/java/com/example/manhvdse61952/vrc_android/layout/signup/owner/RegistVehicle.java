@@ -387,6 +387,20 @@ public class RegistVehicle extends AppCompatActivity {
 
     //Send value to policy intent
     public void nextAction(){
+        int isGasoline = 0, isManual = 0;
+        String tranmission = spnTranmission.getSelectedItem().toString();
+        String engineType = spnEngine.getSelectedItem().toString();
+        if (tranmission.trim().equals("SỐ SÀN")){
+            isManual = 1;
+        } else {
+            isManual = 0;
+        }
+        if (engineType.trim().equals("XĂNG")){
+            isGasoline = 1;
+        } else {
+            isGasoline = 0;
+        }
+
         Boolean checkPlateNumber = validObj.validFrameNumber(edtPlate.getText().toString().trim(), edtPlate);
         Boolean checkFrameNumber = validObj.validFrameNumber(edtFrame.getText().toString().trim(), edtFrame);
         Boolean checkPricePerHours = validObj.validPrice(edtPriceHour.getText().toString().trim(), edtPriceHour);
@@ -410,6 +424,8 @@ public class RegistVehicle extends AppCompatActivity {
             editor.putString("plateNumber", edtPlate.getText().toString().trim());
             editor.putInt("requireHouseHold", required_household_registration);
             editor.putInt("requireIdCard", required_id_card);
+            editor.putInt("isGasoline", isGasoline);
+            editor.putInt("isManual", isManual);
             editor.putString("picture_path", picturePath3);
             editor.putString("img_vehicle_1", picturePath1);
             editor.putString("img_vehicle_2", picturePath2);

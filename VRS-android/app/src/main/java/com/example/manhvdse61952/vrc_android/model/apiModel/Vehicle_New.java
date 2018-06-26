@@ -15,8 +15,10 @@ public class Vehicle_New implements Serializable {
     private int requireHouseHold;
     private int requireIdCard;
     private int districtID;
+    private int isGasoline;
+    private int isManual;
 
-    public Vehicle_New(String frameNumber, int ownerID, int vehicleInformationID, String description, float rentFeePerSlot, float rentFeePerDay, float rentFeePerHours, float depositFee, String plateNumber, int requireHouseHold, int requireIdCard, int districtID) {
+    public Vehicle_New(String frameNumber, int ownerID, int vehicleInformationID, String description, float rentFeePerSlot, float rentFeePerDay, float rentFeePerHours, float depositFee, String plateNumber, int requireHouseHold, int requireIdCard, int districtID, int isGasoline, int isManual) {
         this.frameNumber = frameNumber;
         this.ownerID = ownerID;
         this.vehicleInformationID = vehicleInformationID;
@@ -29,10 +31,28 @@ public class Vehicle_New implements Serializable {
         this.requireHouseHold = requireHouseHold;
         this.requireIdCard = requireIdCard;
         this.districtID = districtID;
+        this.isGasoline = isGasoline;
+        this.isManual = isManual;
     }
 
     public Vehicle_New(){
 
+    }
+
+    public int getIsGasoline() {
+        return isGasoline;
+    }
+
+    public void setIsGasoline(int isGasoline) {
+        this.isGasoline = isGasoline;
+    }
+
+    public int getIsManual() {
+        return isManual;
+    }
+
+    public void setIsManual(int isManual) {
+        this.isManual = isManual;
     }
 
     public String getDescription() {

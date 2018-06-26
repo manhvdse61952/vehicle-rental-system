@@ -156,7 +156,8 @@ public class SignupOwnerPolicy extends AppCompatActivity {
         String plateNumber = editor.getString("plateNumber", null);
         int requireHouseHold = editor.getInt("requireHouseHold", 0);
         int requireIdCard = editor.getInt("requireIdCard", 0);
-
+        int isGasoline = editor.getInt("isGasoline", 1);
+        int isManual = editor.getInt("isManual", 1);
 
         String imagePath = editor.getString("picture_path", null);
         String imageVehicle1 = editor.getString("img_vehicle_1", null);
@@ -166,7 +167,7 @@ public class SignupOwnerPolicy extends AppCompatActivity {
         ObjectMapper objectMapper = new ObjectMapper();
         Vehicle_New vehicleObj = new Vehicle_New(frameNumber, Integer.valueOf(userID), vehicleInformationID, description, Float.valueOf(rentFeePerSlot),
                 Float.valueOf(rentFeePerDay), Float.valueOf(rentFeePerHours), Float.valueOf(depositFee), plateNumber,
-                requireHouseHold, requireIdCard, districtID);
+                requireHouseHold, requireIdCard, districtID, isGasoline, isManual);
 
         try {
             String json = objectMapper.writeValueAsString(vehicleObj);

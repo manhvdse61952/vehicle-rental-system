@@ -21,6 +21,7 @@ import com.example.manhvdse61952.vrc_android.layout.signup.customer.SignupUserIn
 import com.example.manhvdse61952.vrc_android.model.apiModel.Account;
 import com.example.manhvdse61952.vrc_android.model.apiModel.City;
 import com.example.manhvdse61952.vrc_android.model.apiModel.Login;
+import com.example.manhvdse61952.vrc_android.model.searchModel.SearchItemNew;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -37,7 +38,8 @@ import retrofit2.Retrofit;
 
 public class RetrofitCallAPI {
     public static List<City> lisCityTest = new ArrayList<>();
-    public static List<String> vehicleYear = new ArrayList<>();
+
+//    public static List<String> vehicleYear = new ArrayList<>();
 
     /// Check login////
     public void checkLogin(final String username, String password, final Context ctx, final ProgressDialog progressDialog) {
@@ -59,6 +61,7 @@ public class RetrofitCallAPI {
                     editor.putInt("userID", accObj.getUserID());
                     editor.putString("accessToken", accObj.getAccessToken());
                     editor.putString("roleName", accObj.getRoleName());
+                    editor.putString("fullName", accObj.getFullname());
                     editor.apply();
                     Intent it = new Intent(ctx, activity_main_2.class);
                     ctx.startActivity(it);
@@ -216,29 +219,29 @@ public class RetrofitCallAPI {
     }
 
     /// get all vehicle year by maker and model ///
-    public List<String> getAllYear(String maker, String model) {
-        vehicleYear = new ArrayList<>();
-        Retrofit test = RetrofitConnect.getClient();
-        final VehicleAPI testAPI = test.create(VehicleAPI.class);
-        Call<List<String>> responseBodyCall = testAPI.getVehicleYear(maker, model);
-
-        responseBodyCall.enqueue(new Callback<List<String>>() {
-            @Override
-            public void onResponse(Call<List<String>> call, Response<List<String>> response) {
-                if (response.body() != null) {
-                    for (int i = 0; i < response.body().size(); i++) {
-                        vehicleYear.add(response.body().get(i).toString());
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<String>> call, Throwable t) {
-
-            }
-        });
-        return vehicleYear;
-    }
+//    public List<String> getAllYear(String maker, String model) {
+//        vehicleYear = new ArrayList<>();
+//        Retrofit test = RetrofitConnect.getClient();
+//        final VehicleAPI testAPI = test.create(VehicleAPI.class);
+//        Call<List<String>> responseBodyCall = testAPI.getVehicleYear(maker, model);
+//
+//        responseBodyCall.enqueue(new Callback<List<String>>() {
+//            @Override
+//            public void onResponse(Call<List<String>> call, Response<List<String>> response) {
+//                if (response.body() != null) {
+//                    for (int i = 0; i < response.body().size(); i++) {
+//                        vehicleYear.add(response.body().get(i).toString());
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<List<String>> call, Throwable t) {
+//
+//            }
+//        });
+//        return vehicleYear;
+//    }
 
     /// Signup customer account
     public void SignupAccount(String imagePath, String receiveValue, final Context ctx, final ProgressDialog progressDialog) {

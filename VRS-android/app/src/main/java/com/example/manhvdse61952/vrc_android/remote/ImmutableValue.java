@@ -300,7 +300,7 @@ public class ImmutableValue {
                     //execute string temp to get CMND
                     String[] arrayResult = strTemp.split("-");
                     for (int i = 0; i < arrayResult.length; i++) {
-                        if (arrayResult[i].length() >= 9) {
+                        if (arrayResult[i].length() >= 7) {
                             getCmndFromImage = arrayResult[i];
                             break;
                         }

@@ -3,56 +3,89 @@ package com.example.manhvdse61952.vrc_android.model.searchModel;
 import java.io.Serializable;
 
 public class SearchItemNew implements Serializable {
-    private String vehicleName;
-    private int vehicleSeat;
-    private String address;
-    private String vehiclePrice;
-    private String imageLinkFront;
+    private int seat;
     private String frameNumber;
+    private int districtID;
+    private String rentFeePerHours;
+    private String vehicleMaker;
+    private String currentStatus;
+    private String vehicleModel;
+    private String imageLinkFront;
+    private int discountValue;
+    private String rentFeePerSlot;
+    private String vehicleType;
 
-    public SearchItemNew(String vehicleName, int vehicleSeat, String address, String vehiclePrice, String imageLinkFront, String frameNumber) {
-        this.vehicleName = vehicleName;
-        this.vehicleSeat = vehicleSeat;
-        this.address = address;
-        this.vehiclePrice = vehiclePrice;
+    public SearchItemNew(int seat, String frameNumber, int districtID, String rentFeePerHours, String vehicleMaker, String currentStatus, String vehicleModel, String imageLinkFront, int discountValue, String rentFeePerSlot, String vehicleType) {
+        this.seat = seat;
+        this.frameNumber = frameNumber;
+        this.districtID = districtID;
+        this.rentFeePerHours = rentFeePerHours;
+        this.vehicleMaker = vehicleMaker;
+        this.currentStatus = currentStatus;
+        this.vehicleModel = vehicleModel;
         this.imageLinkFront = imageLinkFront;
+        this.discountValue = discountValue;
+        this.rentFeePerSlot = rentFeePerSlot;
+        this.vehicleType = vehicleType;
+    }
+
+    public SearchItemNew() {
+    }
+
+    public int getSeat() {
+        return seat;
+    }
+
+    public void setSeat(int seat) {
+        this.seat = seat;
+    }
+
+    public String getFrameNumber() {
+        return frameNumber;
+    }
+
+    public void setFrameNumber(String frameNumber) {
         this.frameNumber = frameNumber;
     }
 
-    public SearchItemNew(){
-
+    public int getDistrictID() {
+        return districtID;
     }
 
-    public String getVehicleName() {
-        return vehicleName;
+    public void setDistrictID(int districtID) {
+        this.districtID = districtID;
     }
 
-    public void setVehicleName(String vehicleName) {
-        this.vehicleName = vehicleName;
+    public String getRentFeePerHours() {
+        return rentFeePerHours;
     }
 
-    public int getVehicleSeat() {
-        return vehicleSeat;
+    public void setRentFeePerHours(String rentFeePerHours) {
+        this.rentFeePerHours = rentFeePerHours;
     }
 
-    public void setVehicleSeat(int vehicleSeat) {
-        this.vehicleSeat = vehicleSeat;
+    public String getVehicleMaker() {
+        return vehicleMaker;
     }
 
-    public String getAddress() {
-        return address;
+    public void setVehicleMaker(String vehicleMaker) {
+        this.vehicleMaker = vehicleMaker;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public String getCurrentStatus() {
+        return currentStatus;
     }
 
-    public String getVehiclePrice() {
-        return vehiclePrice;
+    public void setCurrentStatus(String currentStatus) {
+        this.currentStatus = currentStatus;
     }
 
-    public void setVehiclePrice(String vehiclePrice) {
-        this.vehiclePrice = vehiclePrice;
+    public String getVehicleModel() {
+        return vehicleModel;
+    }
+
+    public void setVehicleModel(String vehicleModel) {
+        this.vehicleModel = vehicleModel;
     }
 
     public String getImageLinkFront() {
@@ -63,11 +96,27 @@ public class SearchItemNew implements Serializable {
         this.imageLinkFront = imageLinkFront;
     }
 
-    public String getFrameNumber() {
-        return frameNumber;
+    public int getDiscountValue() {
+        return discountValue;
     }
 
-    public void setFrameNumber(String frameNumber) {
-        this.frameNumber = frameNumber;
+    public void setDiscountValue(int discountValue) {
+        this.discountValue = discountValue;
+    }
+
+    public String getRentFeePerSlot() {
+        return rentFeePerSlot;
+    }
+
+    public void setRentFeePerSlot(String rentFeePerSlot) {
+        this.rentFeePerSlot = rentFeePerSlot;
+    }
+
+    public String getVehicleType() {
+        return vehicleType;
+    }
+
+    public void setVehicleType(String vehicleType) {
+        this.vehicleType = vehicleType;
     }
 }

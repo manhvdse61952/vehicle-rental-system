@@ -145,11 +145,11 @@ public class SignupUserInfoActivity extends AppCompatActivity {
                 if (resultCode == RESULT_OK) {
                     String filename = cameraObj.showImageGallery(data, imgShowCMND, SignupUserInfoActivity.this);
                     String getCMND = cameraObj.getCmndFromImage(filename, SignupUserInfoActivity.this);
-                    if (getCMND.length() >= 9){
+                    if (getCMND.length() >= 7){
                         edtSignupCNMD.setText(getCMND + "");
                     } else {
                         final AlertDialog.Builder builder = new AlertDialog.Builder(SignupUserInfoActivity.this);
-                        builder.setMessage("Ảnh cần hiển thị rõ số CMND, vui lòng chụp lại");
+                        builder.setMessage("Đã xảy ra lỗi. hãy tự điền CMND");
                         edtSignupCNMD.setText("");
                         AlertDialog alertDialog = builder.create();
                         alertDialog.show();
@@ -161,11 +161,11 @@ public class SignupUserInfoActivity extends AppCompatActivity {
                 if (resultCode == RESULT_OK) {
                     String filename = cameraObj.showImageCamera(imgShowCMND, SignupUserInfoActivity.this);
                     String getCMND = cameraObj.getCmndFromImage(filename, SignupUserInfoActivity.this);
-                    if (getCMND.length() >= 9){
+                    if (getCMND.length() >= 7){
                         edtSignupCNMD.setText(getCMND + "");
                     } else {
                         final AlertDialog.Builder builder = new AlertDialog.Builder(SignupUserInfoActivity.this);
-                        builder.setMessage("Ảnh cần hiển thị rõ số CMND, vui lòng chụp lại");
+                        builder.setMessage("Đã xảy ra lỗi. hãy tự điền CMND");
                         edtSignupCNMD.setText("");
                         AlertDialog alertDialog = builder.create();
                         alertDialog.show();

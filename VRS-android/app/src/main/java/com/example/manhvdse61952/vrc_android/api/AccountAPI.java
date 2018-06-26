@@ -36,4 +36,6 @@ public interface AccountAPI {
     @POST("api/auth/signupwithimage")
     Call<ResponseBody> signup(@Part("data") RequestBody data, @Part MultipartBody.Part file);
 
+
+
 }
