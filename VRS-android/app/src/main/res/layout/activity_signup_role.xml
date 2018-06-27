@@ -12,6 +12,12 @@
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chọn loại người dùng"
+            android:textSize="18sp"
+            android:textColor="@color/primary_text"/>
     </android.support.v7.widget.Toolbar>
     <LinearLayout
         android:layout_width="match_parent"

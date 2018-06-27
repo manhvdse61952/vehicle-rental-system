@@ -84,6 +84,8 @@ public class LoginActivity extends AppCompatActivity {
         //Clear shared preferences
         SharedPreferences settings = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE);
         settings.edit().clear().commit();
+        SharedPreferences settings_2 = getSharedPreferences(ImmutableValue.IN_APP_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
+        settings_2.edit().clear().commit();
 
         //Declare id
         username_txt = (TextInputLayout) findViewById(R.id.username_txt);

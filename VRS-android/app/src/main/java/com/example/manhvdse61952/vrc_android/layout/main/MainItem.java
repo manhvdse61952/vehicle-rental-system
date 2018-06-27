@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,8 +34,11 @@ public class MainItem extends AppCompatActivity {
     Button btnOrderRent;
     MainItemModel mainObj = new MainItemModel();
 
-    TextView item_price_unit, item_price_slot, item_price_day, item_seat, item_year, item_plateNumber, item_ownerName, item_engine, item_tranmission;
+    TextView item_price_unit, item_price_slot, item_price_day, item_seat, item_year,
+            item_plateNumber, item_ownerName, item_engine, item_tranmission, txt_hours, txt_day_start,
+            txt_hours_2, txt_day_end;
     CheckBox cbx1, cbx2;
+    LinearLayout ln_pickTime;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,13 +57,31 @@ public class MainItem extends AppCompatActivity {
         item_tranmission = (TextView) findViewById(R.id.item_tranmission);
         cbx1 = (CheckBox) findViewById(R.id.cbx1);
         cbx2 = (CheckBox) findViewById(R.id.cbx2);
+        ln_pickTime = (LinearLayout)findViewById(R.id.ln_pickTime);
+        txt_hours = (TextView)findViewById(R.id.txt_hours);
+        txt_day_start = (TextView)findViewById(R.id.txt_day_start);
+        txt_hours_2 = (TextView)findViewById(R.id.txt_hours_2);
+        txt_day_end = (TextView)findViewById(R.id.txt_day_end);
 
         vpg = (ViewPager) findViewById(R.id.vpg);
 
+        SharedPreferences editor = getSharedPreferences(ImmutableValue.IN_APP_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
+        String frameNumber = editor.getString("ID", "aaaaaa");
+        final String vehicleType = editor.getString("type", "XE_MAY");
+        final String vehicleSeat = editor.getString("seat", "0");
+        String startHour = editor.getString("startHour", "--");
+        String endHour = editor.getString("endHour", "--");
+        String startMinute = editor.getString("startMinute", "--");
+        String endMinute = editor.getString("endMinute", "--");
+        String startDate = editor.getString("startDate", "--/--/----");
+        String endDate = editor.getString("endDate", "--/--/----");
 
-        String frameNumber = getIntent().getStringExtra("ID");
-        final String vehicleType = getIntent().getStringExtra("type");
-        final String vehicleSeat = getIntent().getStringExtra("seat");
+        //Show start date and end date
+        txt_hours.setText(startHour + " : " + startMinute);
+        txt_day_start.setText(startDate);
+        txt_hours_2.setText(endHour + " : " + endMinute);
+        txt_day_end.setText(endDate);
+
 
         Retrofit test = RetrofitConnect.getClient();
         final VehicleAPI testAPI = test.create(VehicleAPI.class);
@@ -83,7 +105,7 @@ public class MainItem extends AppCompatActivity {
                         item_price_unit.setText("Đơn giá / giờ");
                         NumberFormat nf = new DecimalFormat("#.####");
                         String price = ImmutableValue.convertPrice(nf.format(mainObj.getRentFeePerHour()));
-                        item_price_slot.setText(price + "vnđ");
+                        item_price_slot.setText(price + " vnđ");
                         item_engine.setText("Xăng");
                         if (mainObj.getScooter() == true) {
                             item_tranmission.setText("Xe tay ga");
@@ -94,7 +116,7 @@ public class MainItem extends AppCompatActivity {
                         item_price_unit.setText("Đơn giá / buổi");
                         NumberFormat nf = new DecimalFormat("#.####");
                         String price = ImmutableValue.convertPrice(nf.format(mainObj.getRentFeePerSlot()));
-                        item_price_slot.setText(price + "vnđ");
+                        item_price_slot.setText(price + " vnđ");
                         if (mainObj.getGasoline() == true) {
                             item_engine.setText("Xăng");
                         } else {
@@ -109,7 +131,7 @@ public class MainItem extends AppCompatActivity {
 
                     NumberFormat nf = new DecimalFormat("#.####");
                     String price = ImmutableValue.convertPrice(nf.format(mainObj.getRentFeePerDay()));
-                    item_price_day.setText(price + "vnđ");
+                    item_price_day.setText(price + " vnđ");
                     item_seat.setText(vehicleSeat);
                     item_year.setText(mainObj.getModelYear() + "");
                     item_plateNumber.setText(mainObj.getPlateNumber());
@@ -124,6 +146,14 @@ public class MainItem extends AppCompatActivity {
                     } else {
                         cbx2.setChecked(false);
                     }
+
+                    ln_pickTime.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent it = new Intent(MainItem.this, CalendarCustom.class);
+                            startActivity(it);
+                        }
+                    });
                 }
             }
 
@@ -146,6 +176,8 @@ public class MainItem extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        SharedPreferences settings = getSharedPreferences(ImmutableValue.IN_APP_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
+        settings.edit().clear().commit();
         super.onBackPressed();
     }
 }

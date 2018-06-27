@@ -104,7 +104,7 @@
             android:label="@string/title_activity_maps" />
 
         <activity android:name=".layout.signup.owner.RegistVehicle" android:screenOrientation="portrait"></activity>
-
+        <activity android:name=".layout.main.CalendarCustom" android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

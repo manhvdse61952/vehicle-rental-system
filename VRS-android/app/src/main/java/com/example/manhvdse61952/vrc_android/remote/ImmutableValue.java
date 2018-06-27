@@ -72,6 +72,7 @@ public class ImmutableValue {
     public static final int CAMERA_SELECT_IMAGE_CODE_3 = 3;
 
     public static final String SHARED_PREFERENCES_CODE = "VRS_GLOBAL_VALUE";
+    public static final String IN_APP_SHARED_PREFERENCES_CODE = "VRS_LOCAL_VALUE";
 
     public static List<String> listVehicleMaker;
     public static List<String> listVehicleModelTwo = new ArrayList<>();

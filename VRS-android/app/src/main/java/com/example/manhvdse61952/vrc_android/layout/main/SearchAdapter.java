@@ -110,15 +110,19 @@ public class SearchAdapter extends BaseAdapter {
         viewHolder.search_layout_item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SharedPreferences.Editor editor = context.getSharedPreferences(ImmutableValue.IN_APP_SHARED_PREFERENCES_CODE, context.MODE_PRIVATE).edit();
+                editor.putString("ID", obj.getFrameNumber());
+                editor.putString("seat", obj.getSeat() + "");
+                editor.putString("type", obj.getVehicleType());
+                editor.apply();
+
                 Intent it = new Intent(context, MainItem.class);
-                it.putExtra("ID", obj.getFrameNumber());
-                it.putExtra("seat", obj.getSeat() + "");
-                it.putExtra("type", obj.getVehicleType());
+//                it.putExtra("ID", obj.getFrameNumber());
+//                it.putExtra("seat", obj.getSeat() + "");
+//                it.putExtra("type", obj.getVehicleType());
                 context.startActivity(it);
             }
         });
-
-
         return convertView;
     }
 }
