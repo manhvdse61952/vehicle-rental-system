@@ -10,14 +10,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.manhvdse61952.vrc_android.R;
-import com.example.manhvdse61952.vrc_android.model.searchModel.SearchItemNew;
-import com.example.manhvdse61952.vrc_android.model.apiModel.VehicleInformation_New;
-import com.example.manhvdse61952.vrc_android.model.apiModel.Vehicle_New;
-import com.example.manhvdse61952.vrc_android.remote.ImmutableValue;
-import com.example.manhvdse61952.vrc_android.remote.RetrofitCallAPI;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class tab1 extends Fragment {
     ListView listView;

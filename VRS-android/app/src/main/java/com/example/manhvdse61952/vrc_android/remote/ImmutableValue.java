@@ -12,9 +12,11 @@ import android.graphics.drawable.BitmapDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.Settings;
@@ -27,6 +29,7 @@ import android.widget.Toast;
 
 import com.example.manhvdse61952.vrc_android.R;
 import com.example.manhvdse61952.vrc_android.layout.signup.customer.SignupUserInfoActivity;
+import com.example.manhvdse61952.vrc_android.model.searchModel.MainItemModel;
 import com.example.manhvdse61952.vrc_android.model.searchModel.SearchItemNew;
 import com.example.manhvdse61952.vrc_android.model.apiModel.VehicleInformation_New;
 import com.example.manhvdse61952.vrc_android.model.apiModel.Vehicle_New;
@@ -73,14 +76,6 @@ public class ImmutableValue {
     public static List<String> listVehicleMaker;
     public static List<String> listVehicleModelTwo = new ArrayList<>();
     public static List<String> listVehicleModelThree = new ArrayList<>();
-
-    ////////////////////// EXECUTE DATA //////////////////////
-
-    public static List<SearchItemNew> searchItemNewList1;
-    public static List<SearchItemNew> searchItemNewList2;
-    public static List<SearchItemNew> searchItemNewList3;
-
-    ////////////////////////////////////////////////////////////
 
     /////////////////// GPS - location variable ////////////////
     LocationManager locationManager;
@@ -191,18 +186,49 @@ public class ImmutableValue {
     }
 
     public void getLocation(Context ctx, Activity atv) {
+        LocationManager locationManager = (LocationManager)ctx.getSystemService(Context.LOCATION_SERVICE);
+        Location location;
+        LocationListener locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+
+            }
+        };
+
         if (ActivityCompat.checkSelfPermission(ctx, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(ctx, Manifest.permission.ACCESS_COARSE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(atv, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, ImmutableValue.REQUEST_LOCATION);
         } else {
-            Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+            location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
             if (location != null) {
                 longtitudeCurrent = location.getLongitude();
                 latitudeCurrent = location.getLatitude();
                 getStringAddress(longtitudeCurrent, latitudeCurrent, ctx);
             } else {
-                Toast.makeText(ctx, "Unable to get your location!", Toast.LENGTH_SHORT).show();
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+                location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+//                if (location == null){
+//                    Toast.makeText(ctx, "Unable to get your location!", Toast.LENGTH_SHORT).show();
+//                }
             }
         }
     }
@@ -312,6 +338,33 @@ public class ImmutableValue {
         }
 
         return getCmndFromImage;
+    }
+
+    public static String convertPrice(String defaultPrice){
+        //String[] cutDoubleValue = defaultPrice.split(".");
+        //String afterCutValue = cutDoubleValue[0];
+
+        List<String> convertPriceList = new ArrayList<>();
+        String reverse = new StringBuffer(defaultPrice).reverse().toString();
+        String convertedPrice = "";
+        if(reverse.length() > 3){
+            for(int i=0;i <= reverse.length(); i+=3){
+                convertPriceList.add(reverse.substring(i, Math.min(reverse.length(), i+3)));
+            }
+            convertedPrice = convertPriceList.get(0);
+            for (int j = 1; j < convertPriceList.size(); j++){
+                convertedPrice += "." + convertPriceList.get(j);
+            }
+            convertedPrice = new StringBuffer(convertedPrice).reverse().toString();
+            String check = convertedPrice.substring(0,1);
+            if (check.equals(".")){
+                convertedPrice = convertedPrice.substring(1);
+            }
+        }
+        else {
+            convertedPrice = defaultPrice;
+        }
+        return convertedPrice;
     }
 
 }

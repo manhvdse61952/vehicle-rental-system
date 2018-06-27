@@ -11,16 +11,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.manhvdse61952.vrc_android.R;
-import com.example.manhvdse61952.vrc_android.model.apiModel.VehicleInformation_New;
-import com.example.manhvdse61952.vrc_android.model.apiModel.Vehicle_New;
 import com.example.manhvdse61952.vrc_android.remote.ImmutableValue;
 import com.squareup.picasso.Picasso;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class Slider extends PagerAdapter {
-
 
     private LayoutInflater inflater;
     private Context ctx;
@@ -36,46 +29,34 @@ public class Slider extends PagerAdapter {
 
     @Override
     public boolean isViewFromObject(View view, Object object) {
-        return (view == (RelativeLayout)object);
+        return (view == (RelativeLayout) object);
     }
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-
-        SharedPreferences editor = ctx.getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, ctx.MODE_PRIVATE);
-        String framenumber = editor.getString("frameNumber", null);
-        ////////// Get Image and vehicle name ///////////
-        List<VehicleInformation_New> vehicleInformationNewList = new ArrayList<>();
-        List<Vehicle_New> vehicleNewList = new ArrayList<>();
-        ImmutableValue importantObj = new ImmutableValue();
-
-        /////// Object ////
-        VehicleInformation_New tempObj = new VehicleInformation_New();
-        String imageLinkFront = "", imageLinkBack = "";
-
-//        for (int i = 0; i < vehicleNewList.size();i++){
-//            if (framenumber.equalsIgnoreCase(vehicleNewList.get(i).getFrameNumber())){
-//                imageLinkFront = vehicleNewList.get(i).getImageLinkFront();
-//                imageLinkBack = vehicleNewList.get(i).getImageLinkBack();
-//                tempObj = importantObj.getVehicleInfo(vehicleNewList.get(i).getVehicleInformationID(), vehicleInformationNewList);
-//            }
-//        }
-
-
-
-
-        inflater = (LayoutInflater)ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        inflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = inflater.inflate(R.layout.activity_main_item_slider, container, false);
-        ImageView img = (ImageView)v.findViewById(R.id.sliderImgItem);
-        TextView txtTitle = (TextView)v.findViewById(R.id.txtTitle);
+        ImageView img = (ImageView) v.findViewById(R.id.sliderImgItem);
+        TextView txtTitle = (TextView) v.findViewById(R.id.txtTitle);
+        SharedPreferences editor = ctx.getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, ctx.MODE_PRIVATE);
+        String imageFront = editor.getString("imageFront", "");
+        String imageBack = editor.getString("imageBack", "");
+        String vehicleName = editor.getString("vehicleName", "");
+        if (position == 0) {
+            if (imageFront.equals("")) {
+                Picasso.get().load(R.drawable.img_default_image).into(img);
+            } else {
+                Picasso.get().load(imageFront).into(img);
+            }
 
-        if (position == 0){
-            Picasso.get().load(imageLinkFront).into(img);
-        } else if (position == 1){
-            Picasso.get().load(imageLinkBack).into(img);
+        } else if (position == 1) {
+            if (imageBack.equals("")) {
+                Picasso.get().load(R.drawable.img_default_image).into(img);
+            } else {
+                Picasso.get().load(imageBack).into(img);
+            }
         }
-
-        txtTitle.setText(tempObj.getVehicleMaker() + " " + tempObj.getVehicleModel());
+        txtTitle.setText(vehicleName);
         txtTitle.setAllCaps(true);
         container.addView(v);
         return v;

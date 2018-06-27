@@ -4,10 +4,9 @@
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="250dp"
         android:id="@+id/sliderImgItem"
-        android:scaleType="centerCrop"
-        android:src="@drawable/xe_oto"/>
+        android:scaleType="centerCrop" />
     <TextView
         android:id="@+id/textView4"
         android:layout_width="match_parent"

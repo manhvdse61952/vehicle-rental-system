@@ -10,6 +10,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.manhvdse61952.vrc_android.R;
+import com.example.manhvdse61952.vrc_android.model.searchModel.MainItemModel;
 import com.example.manhvdse61952.vrc_android.model.searchModel.SearchItemNew;
 import com.example.manhvdse61952.vrc_android.model.apiModel.VehicleInformation_New;
 import com.example.manhvdse61952.vrc_android.model.apiModel.Vehicle_New;
@@ -34,7 +35,6 @@ public class tab3 extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ////////////////// Init to list view ///////////////////
-
         errorTab3 = (TextView)view.findViewById(R.id.errorTab3);
         listView = (ListView)view.findViewById(R.id.lvtab3);
 

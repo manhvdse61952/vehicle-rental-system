@@ -26,6 +26,7 @@ import com.example.manhvdse61952.vrc_android.api.VehicleAPI;
 import com.example.manhvdse61952.vrc_android.layout.login.LoginActivity;
 import com.example.manhvdse61952.vrc_android.model.apiModel.City;
 import com.example.manhvdse61952.vrc_android.model.apiModel.District;
+import com.example.manhvdse61952.vrc_android.model.searchModel.MainItemModel;
 import com.example.manhvdse61952.vrc_android.model.searchModel.SearchItemNew;
 import com.example.manhvdse61952.vrc_android.remote.ImmutableValue;
 import com.example.manhvdse61952.vrc_android.remote.RetrofitCallAPI;
@@ -74,30 +75,22 @@ public class activity_main_2 extends AppCompatActivity
         //Get vehicle by district
         getAllDistrict();
         locationObj.checkAddressPermission(activity_main_2.this, activity_main_2.this);
-        String districtName = locationObj.district.toLowerCase().replaceAll("quận", "");
-        districtName = districtName.replaceAll("huyện", "");
-
-        int districtID = getDistrictIdByName(districtName.trim());
-        if (districtID == 0){
-            getAllVehicleByDistrictID(44);
-        } else {
-            getAllVehicleByDistrictID(districtID);
-        }
 
 
-        //////////////////////// USE FOR TABLAYOUT /////////////////
-//        viewPager = (ViewPager) findViewById(R.id.container);
-//        setupViewPager(viewPager);
-//        tabLayout = (TabLayout) findViewById(R.id.tabs);
-//        tabLayout.setupWithViewPager(viewPager);
-//        createTabIcons();
-        /////////////////////////////////////////////////////////////
+        getAllVehicleByDistrictID(44);
+        int districtID = getDistrictIdByName(locationObj.district.trim());
+//        if (districtID == 0){
+//            getAllVehicleByDistrictID(44);
+//        } else {
+//            getAllVehicleByDistrictID(districtID);
+//        }
+
         edtMainSearch = (EditText) findViewById(R.id.edtMainSearch);
         main_search = (ImageView) findViewById(R.id.main_search);
         main_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //edtMainSearch.setText(locationObj.district + ", " + locationObj.city);
+                edtMainSearch.setText(locationObj.district + ", " + locationObj.city);
             }
         });
 
@@ -139,7 +132,6 @@ public class activity_main_2 extends AppCompatActivity
         TextView txtNavFullname = (TextView)hView.findViewById(R.id.txtNavFullname);
         TextView txtNavUsername = (TextView)hView.findViewById(R.id.txtNavUsername);
         TextView txtNavRole = (TextView)hView.findViewById(R.id.txtNavRole);
-        Toast.makeText(this,editor.getString("roleName", "ROLE_USER") , Toast.LENGTH_SHORT).show();
         txtNavUsername.setText(editor.getString("usernameAfterLogin", "Empty"));
         txtNavFullname.setText(editor.getString("fullName", "Empty"));
         if (editor.getString("roleName", "ROLE_USER").equals("ROLE_USER")) {
@@ -191,12 +183,9 @@ public class activity_main_2 extends AppCompatActivity
     //////////////////////////////////// USE FOR SEARCH //////////////////////////////////
     private ArrayList<SearchAddressModel> initData() {
         ArrayList<SearchAddressModel> items = new ArrayList<>();
-        items.add(new SearchAddressModel("quan 1 ho chi minh"));
-        items.add(new SearchAddressModel("quan 2 ho chi minh"));
-        items.add(new SearchAddressModel("quan 3 ho chi minh"));
-        items.add(new SearchAddressModel("quan 4 ho chi minh"));
-        items.add(new SearchAddressModel("quan go vap ho chi minh"));
-        items.add(new SearchAddressModel("quan 5 ho chi minh"));
+        for (int i = 0; i<listAllDistrict.size();i++){
+            items.add(new SearchAddressModel(listAllDistrict.get(i).getDistrictName()));
+        }
         return items;
     }
     //////////////////////////////////////////////////////////////////////////////////////
@@ -349,15 +338,17 @@ public class activity_main_2 extends AppCompatActivity
                     tabLayout = (TabLayout) findViewById(R.id.tabs);
                     tabLayout.setupWithViewPager(viewPager);
                     createTabIcons();
-                    Log.d("list xe may: ", listMotorbike.size() + " cái");
-                    Log.d("list xe ca nhan: ", listPersonalCar.size() + " cái");
-                    Log.d("list xe du lich: ", listTravelCar.size() + " cái");
                 }
             }
 
             @Override
             public void onFailure(Call<List<SearchItemNew>> call, Throwable t) {
-                Toast.makeText(activity_main_2.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
+                viewPager = (ViewPager) findViewById(R.id.container);
+                setupViewPager(viewPager);
+                tabLayout = (TabLayout) findViewById(R.id.tabs);
+                tabLayout.setupWithViewPager(viewPager);
+                createTabIcons();
+                //Toast.makeText(activity_main_2.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -21,6 +21,7 @@ import com.example.manhvdse61952.vrc_android.layout.signup.customer.SignupUserIn
 import com.example.manhvdse61952.vrc_android.model.apiModel.Account;
 import com.example.manhvdse61952.vrc_android.model.apiModel.City;
 import com.example.manhvdse61952.vrc_android.model.apiModel.Login;
+import com.example.manhvdse61952.vrc_android.model.searchModel.MainItemModel;
 import com.example.manhvdse61952.vrc_android.model.searchModel.SearchItemNew;
 
 import java.io.File;
@@ -207,7 +208,6 @@ public class RetrofitCallAPI {
                     }
                 }
                 dialog.dismiss();
-
             }
 
             @Override

@@ -30,7 +30,7 @@ import retrofit2.Retrofit;
 public class SignupRoleActivity extends AppCompatActivity {
 
     ImageView imgCustomer, imgOwner;
-    Button btnSignupAccountBack;
+    //Button btnSignupAccountBack;
     int i = 0;
 
     ProgressDialog dialog;
@@ -48,19 +48,7 @@ public class SignupRoleActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
 
-
-
         imgCustomer = (ImageView) findViewById(R.id.customer_icon);
-        btnSignupAccountBack = (Button) findViewById(R.id.btnSignupAccountBack);
-
-        btnSignupAccountBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent it = new Intent(SignupRoleActivity.this, SignupUserInfoActivity.class);
-                startActivity(it);
-            }
-        });
-
 
         imgCustomer.setOnClickListener(new View.OnClickListener() {
             @Override

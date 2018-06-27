@@ -75,12 +75,11 @@ public class LoginActivity extends AppCompatActivity {
 
         /// get address and vehicle maker data
         if (RetrofitCallAPI.lisCityTest.size() == 0) {
-            dialog = ProgressDialog.show(LoginActivity.this, "Đang xử lý",
-                    "Vui lòng đợi ...", true);
-            RetrofitCallAPI testAPI = new RetrofitCallAPI();
-            testAPI.getAllAddress(dialog, LoginActivity.this);
+        dialog = ProgressDialog.show(LoginActivity.this, "Đang xử lý",
+                "Vui lòng đợi ...", true);
+        RetrofitCallAPI testAPI = new RetrofitCallAPI();
+        testAPI.getAllAddress(dialog, LoginActivity.this);
         }
-
 
         //Clear shared preferences
         SharedPreferences settings = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE);

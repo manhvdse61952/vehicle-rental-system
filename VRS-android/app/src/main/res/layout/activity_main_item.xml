@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFF"
     android:orientation="vertical">
 
     <LinearLayout
@@ -13,7 +14,7 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="9"
+            android:layout_weight="9.2"
             android:scrollbars="none">
 
             <LinearLayout
@@ -24,9 +25,104 @@
                 <android.support.v4.view.ViewPager
                     android:id="@+id/vpg"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp">
+                    android:layout_height="250dp">
 
                 </android.support.v4.view.ViewPager>
+                <View
+                    android:layout_width="match_parent"
+                    android:background="#ccc"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_height="0.2dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Thời gian thuê"
+                    android:textColor="@color/secondary_text"
+                    android:paddingLeft="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:textSize="18sp"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:weightSum="10"
+                    android:layout_marginBottom="5dp"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:id="@+id/ln_startTime"
+                        android:layout_width="0dp"
+                        android:layout_weight="5"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:layout_height="wrap_content">
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:id="@+id/txt_time_header"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Thời gian bắt đầu"
+                                android:textSize="14sp"
+                                android:layout_marginBottom="5dp"
+                                android:textColor="#797979"/>
+                            <ImageView
+                                android:id="@+id/img_calendar"
+                                android:layout_below="@+id/txt_time_header"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_calendar_alt"/>
+                            <TextView
+                                android:layout_below="@+id/txt_time_header"
+                                android:layout_toRightOf="@+id/img_calendar"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="15dp"
+                                android:textSize="16sp"
+                                android:textColor="@color/secondary_text"
+                                android:text="-- : --"/>
+                        </RelativeLayout>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="5"
+                        android:id="@+id/ln_endTime"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:layout_height="wrap_content">
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:id="@+id/txt_time_header_2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Thời gian kết thúc"
+                                android:layout_marginBottom="5dp"
+                                android:textSize="14sp"
+                                android:textColor="#797979"/>
+                            <ImageView
+                                android:id="@+id/img_calendar_2"
+                                android:layout_below="@+id/txt_time_header_2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_calendar_alt"/>
+                            <TextView
+                                android:layout_below="@+id/txt_time_header_2"
+                                android:layout_toRightOf="@+id/img_calendar_2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="15dp"
+                                android:textSize="16sp"
+                                android:textColor="@color/secondary_text"
+                                android:text="-- : --"/>
+                        </RelativeLayout>
+                    </LinearLayout>
+                </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:background="#ccc"
+                    android:layout_margin="10dp"
+                    android:layout_height="0.2dp"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -34,17 +130,25 @@
                     android:textColor="#000"
                     android:textAllCaps="true"
                     android:gravity="center_vertical|center_horizontal"
-                    android:background="@drawable/border_grey"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
                     android:textSize="22sp"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:background="#ccc"
+                    android:layout_margin="10dp"
+                    android:layout_height="0.2dp"/>
+                <TextView
+                    android:layout_marginBottom="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Giá thuê xe"
+                    android:textSize="18sp"
+                    android:paddingLeft="10dp"
+                    android:textColor="@color/secondary_text"/>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:orientation="horizontal"
                     android:weightSum="10"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="20dp"
+                    android:paddingLeft="30dp"
                     android:paddingRight="20dp"
                     android:layout_height="wrap_content">
                     <TextView
@@ -52,10 +156,9 @@
                         android:layout_width="0dp"
                         android:layout_weight="5"
                         android:layout_height="wrap_content"
-
-                        android:text="Đơn giá / buổi"
+                        android:text="Đơn giá / giờ"
                         android:textColor="#797979"
-                        android:textSize="19sp" />
+                        android:textSize="14sp" />
                     <TextView
                         android:id="@+id/item_price_slot"
                         android:layout_width="0dp"
@@ -64,16 +167,13 @@
                         android:text="100.000 vnđ"
                         android:textColor="#000"
                         android:textAlignment="textEnd"
-                        android:textSize="19sp"/>
+                        android:textSize="16sp"/>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:orientation="horizontal"
                     android:weightSum="10"
-                    android:background="@drawable/border_white"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="20dp"
+                    android:paddingLeft="30dp"
                     android:paddingRight="20dp"
                     android:layout_height="wrap_content">
                     <TextView
@@ -82,7 +182,7 @@
                         android:layout_height="wrap_content"
                         android:text="Đơn giá / ngày"
                         android:textColor="#797979"
-                        android:textSize="19sp" />
+                        android:textSize="14sp" />
                     <TextView
                         android:id="@+id/item_price_day"
                         android:layout_width="0dp"
@@ -91,15 +191,29 @@
                         android:text="500.000 vnđ"
                         android:textColor="#000"
                         android:textAlignment="textEnd"
-                        android:textSize="19sp"/>
+                        android:textSize="16sp"/>
                 </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:background="#ccc"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_height="0.2dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Thông số của xe"
+                    android:textColor="@color/secondary_text"
+                    android:textSize="18sp"
+                    android:layout_marginBottom="5dp"
+                    android:paddingLeft="10dp"/>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:orientation="horizontal"
                     android:weightSum="10"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="20dp"
+                    android:paddingLeft="30dp"
                     android:paddingRight="20dp"
                     android:layout_height="wrap_content">
                     <TextView
@@ -108,7 +222,7 @@
                         android:layout_height="wrap_content"
                         android:text="Số chỗ ngồi"
                         android:textColor="#797979"
-                        android:textSize="19sp" />
+                        android:textSize="14sp" />
                     <TextView
                         android:id="@+id/item_seat"
                         android:layout_width="0dp"
@@ -117,16 +231,13 @@
                         android:text="7"
                         android:textColor="#000"
                         android:textAlignment="textEnd"
-                        android:textSize="19sp"/>
+                        android:textSize="16sp"/>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:orientation="horizontal"
                     android:weightSum="10"
-                    android:background="@drawable/border_white"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="20dp"
+                    android:paddingLeft="30dp"
                     android:paddingRight="20dp"
                     android:layout_height="wrap_content">
                     <TextView
@@ -135,7 +246,7 @@
                         android:layout_height="wrap_content"
                         android:text="Năm sản xuất"
                         android:textColor="#797979"
-                        android:textSize="19sp" />
+                        android:textSize="14sp" />
                     <TextView
                         android:id="@+id/item_year"
                         android:layout_width="0dp"
@@ -144,15 +255,61 @@
                         android:text="2016"
                         android:textColor="#000"
                         android:textAlignment="textEnd"
-                        android:textSize="19sp"/>
+                        android:textSize="16sp"/>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:orientation="horizontal"
                     android:weightSum="10"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="20dp"
+                    android:paddingLeft="30dp"
+                    android:paddingRight="20dp"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="5"
+                        android:layout_height="wrap_content"
+                        android:text="Loại động cơ"
+                        android:textColor="#797979"
+                        android:textSize="14sp" />
+                    <TextView
+                        android:id="@+id/item_engine"
+                        android:layout_width="0dp"
+                        android:layout_weight="5"
+                        android:layout_height="wrap_content"
+                        android:text="Xăng"
+                        android:textColor="#000"
+                        android:textAlignment="textEnd"
+                        android:textSize="16sp"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:weightSum="10"
+                    android:paddingLeft="30dp"
+                    android:paddingRight="20dp"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="5"
+                        android:layout_height="wrap_content"
+                        android:text="Hệ chuyển động"
+                        android:textColor="#797979"
+                        android:textSize="14sp" />
+                    <TextView
+                        android:id="@+id/item_tranmission"
+                        android:layout_width="0dp"
+                        android:layout_weight="5"
+                        android:layout_height="wrap_content"
+                        android:text="Số sàn"
+                        android:textColor="#000"
+                        android:textAlignment="textEnd"
+                        android:textSize="16sp"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:weightSum="10"
+                    android:paddingLeft="30dp"
                     android:paddingRight="20dp"
                     android:layout_height="wrap_content">
                     <TextView
@@ -161,7 +318,7 @@
                         android:layout_height="wrap_content"
                         android:text="Biển số xe"
                         android:textColor="#797979"
-                        android:textSize="19sp" />
+                        android:textSize="14sp" />
                     <TextView
                         android:id="@+id/item_plateNumber"
                         android:layout_width="0dp"
@@ -170,25 +327,38 @@
                         android:text="60A1-111.11"
                         android:textColor="#000"
                         android:textAlignment="textEnd"
-                        android:textSize="19sp"/>
+                        android:textSize="16sp"/>
                 </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:background="#ccc"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_height="0.2dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Chủ xe"
+                    android:textSize="18sp"
+                    android:textColor="@color/secondary_text"
+                    android:paddingLeft="10dp"
+                    android:layout_marginBottom="5dp"/>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:orientation="horizontal"
                     android:weightSum="10"
-                    android:background="@drawable/border_white"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="20dp"
+                    android:paddingLeft="30dp"
                     android:paddingRight="20dp"
                     android:layout_height="wrap_content">
                     <TextView
                         android:layout_width="0dp"
                         android:layout_weight="5"
                         android:layout_height="wrap_content"
-                        android:text="Chủ xe"
+                        android:text="Họ và tên"
                         android:textColor="#797979"
-                        android:textSize="19sp" />
+                        android:textSize="14sp" />
                     <TextView
                         android:id="@+id/item_ownerName"
                         android:layout_width="0dp"
@@ -197,24 +367,31 @@
                         android:text="Vũ Đức Mạnh"
                         android:textColor="#000"
                         android:textAlignment="textEnd"
-                        android:textSize="19sp"/>
+                        android:textSize="16sp"/>
                 </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:background="#ccc"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_height="0.2dp"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
                     android:text="Giấy tờ kèm theo:"
                     android:paddingLeft="10dp"
+                    android:layout_marginBottom="5dp"
                     android:textColor="#000"
-                    android:textSize="19sp" />
-
+                    android:textSize="18sp" />
                 <CheckBox
                     android:id="@+id/cbx1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginLeft="20dp"
-                    android:textSize="15sp"
+                    android:layout_marginLeft="30dp"
+                    android:textSize="14sp"
+                    android:clickable="false"
                     android:text="Chứng minh nhân dân" />
 
                 <CheckBox
@@ -222,36 +399,23 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:layout_marginLeft="20dp"
-                    android:textSize="15sp"
-                    android:text="Bằng lái xe" />
-
-                <TextView
+                    android:layout_marginLeft="30dp"
+                    android:textSize="14sp"
+                    android:clickable="false"
+                    android:text="Sổ hộ khẩu" />
+                <View
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:background="#ccc"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
-                    android:text="Mô tả thêm:"
-                    android:paddingLeft="10dp"
-                    android:textColor="#000"
-                    android:textSize="19sp" />
-
-                <TextView
-                    android:id="@+id/item_description"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="20dp"
-                    android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. It has survived not"
-                    android:textColor="#000"
-                    android:textSize="15sp" />
-
+                    android:layout_marginBottom="10dp"
+                    android:layout_height="0.2dp"/>
                 <ListView
                     android:id="@+id/lvFeedback"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp">
-
                 </ListView>
             </LinearLayout>
         </ScrollView>
@@ -260,10 +424,10 @@
             android:id="@+id/btnOrderRent"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_weight="0.8"
             android:background="@color/colorPrimary"
             android:text="thuê xe"
             android:textColor="@color/primary_text"
-            android:textSize="20sp" />
+            android:textSize="22sp" />
     </LinearLayout>
 </LinearLayout>

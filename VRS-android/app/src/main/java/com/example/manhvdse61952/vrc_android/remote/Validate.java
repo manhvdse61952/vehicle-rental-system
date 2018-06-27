@@ -58,7 +58,7 @@ public class Validate {
             input.setError("Tên không được để trống");
         } else if (name.trim().matches("[a-zA-Z\\s]{3,}$") == false){
             isValid = false;
-            input.setError("Tên chỉ gồm chữ cái, khoảng trắng và từ 3 kí tự trở lên");
+            input.setError("Tên chỉ gồm chữ cái, khoảng trắng, không có dấu và từ 3 kí tự trở lên");
         } else {
             isValid = true;
         }
@@ -84,7 +84,7 @@ public class Validate {
         if (cmnd.trim().isEmpty()){
             isValid = false;
             input.setError("Số CMND không được để trống");
-        } else if(cmnd.trim().matches("[0-9]{9,11}$") == false){
+        } else if(cmnd.trim().matches("[0-9]{5,50}$") == false){
             isValid = false;
             input.setError("Sai định dạng CMND");
         } else {
@@ -110,7 +110,7 @@ public class Validate {
             input.setError("Tiền không được để trống");
         } else if (price.trim().matches("[0-9]{5,}") == false){
             isValid = false;
-            input.setError("Tiền chỉ chứa số");
+            input.setError("Tiền chỉ chứa số và từ 10.000 trở lên");
         } else {
             isValid = true;
         }

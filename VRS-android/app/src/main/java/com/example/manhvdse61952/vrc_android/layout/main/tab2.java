@@ -10,13 +10,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.manhvdse61952.vrc_android.R;
-import com.example.manhvdse61952.vrc_android.model.searchModel.SearchItemNew;
-import com.example.manhvdse61952.vrc_android.model.apiModel.VehicleInformation_New;
-import com.example.manhvdse61952.vrc_android.model.apiModel.Vehicle_New;
-import com.example.manhvdse61952.vrc_android.remote.ImmutableValue;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class tab2 extends Fragment {
     ListView listView;
@@ -35,7 +28,6 @@ public class tab2 extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         ////////////////// Init to list view ///////////////////
-
         errorTab2 = (TextView)view.findViewById(R.id.errorTab2);
         listView = (ListView)view.findViewById(R.id.lvtab2);
 

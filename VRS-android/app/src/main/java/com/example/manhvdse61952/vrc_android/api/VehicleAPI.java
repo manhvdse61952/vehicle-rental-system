@@ -2,6 +2,7 @@ package com.example.manhvdse61952.vrc_android.api;
 
 
 import com.example.manhvdse61952.vrc_android.model.apiModel.VehicleInformation_New;
+import com.example.manhvdse61952.vrc_android.model.searchModel.MainItemModel;
 import com.example.manhvdse61952.vrc_android.model.searchModel.SearchItemNew;
 
 import java.util.List;
@@ -40,6 +41,11 @@ public interface VehicleAPI {
     @Headers({"Accept: application/json"})
     @GET("/vehicle/getByDistrict/{districtID}")
     Call<List<SearchItemNew>> getVehicleByDistrict(@Path("districtID") int districtID);
+
+    @Headers({"Accept: application/json"})
+    @GET("/vehicle/getByFrameNumber/{framenumber}")
+    Call<MainItemModel> getVehicleByFrameNumber(@Path("framenumber") String framenumber);
+
 
     @Multipart
     @POST("/vehicle/create")
