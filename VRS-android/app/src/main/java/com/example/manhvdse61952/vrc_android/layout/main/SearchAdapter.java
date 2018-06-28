@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 import com.example.manhvdse61952.vrc_android.R;
 import com.example.manhvdse61952.vrc_android.api.VehicleAPI;
+import com.example.manhvdse61952.vrc_android.model.apiModel.City;
+import com.example.manhvdse61952.vrc_android.model.apiModel.District;
 import com.example.manhvdse61952.vrc_android.model.searchModel.MainItemModel;
 import com.example.manhvdse61952.vrc_android.model.searchModel.SearchItemNew;
 import com.example.manhvdse61952.vrc_android.remote.ImmutableValue;
@@ -98,13 +100,14 @@ public class SearchAdapter extends BaseAdapter {
         viewHolder.txt_main_name.setText(obj.getVehicleMaker() + " " + obj.getVehicleModel());
         viewHolder.txt_main_seat.setText(obj.getSeat() + " chỗ");
 
-        viewHolder.txt_main_address.setText(obj.getDistrictID() + "");
+        String districtName = getDistrictNameById(obj.getDistrictID());
+        viewHolder.txt_main_address.setText(districtName);
         if (obj.getVehicleType().equals("XE_MAY")) {
             String price = ImmutableValue.convertPrice(obj.getRentFeePerHours());
-            viewHolder.txt_main_price.setText(price);
+            viewHolder.txt_main_price.setText(price + " / giờ");
         } else {
             String price = ImmutableValue.convertPrice(obj.getRentFeePerSlot());
-            viewHolder.txt_main_price.setText(price);
+            viewHolder.txt_main_price.setText(price + " / ngày");
         }
 
         viewHolder.search_layout_item.setOnClickListener(new View.OnClickListener() {
@@ -117,12 +120,32 @@ public class SearchAdapter extends BaseAdapter {
                 editor.apply();
 
                 Intent it = new Intent(context, MainItem.class);
-//                it.putExtra("ID", obj.getFrameNumber());
-//                it.putExtra("seat", obj.getSeat() + "");
-//                it.putExtra("type", obj.getVehicleType());
                 context.startActivity(it);
             }
         });
         return convertView;
+    }
+
+    private String getDistrictNameById(int id){
+        List<City> listCity = RetrofitCallAPI.lisCityTest;
+        String districtName = "quận 12, HCM";
+        for (int i = 0; i< listCity.size(); i++){
+            List<District> listDistrict = listCity.get(i).getDistrict();
+            for (int j=0; j<listDistrict.size();j++){
+                if (listDistrict.get(j).getId() == id){
+                    String cityCompress = "HCM";
+                    if (listCity.get(i).getCityName().toLowerCase().equals("hà nội")){
+                        cityCompress = "HN";
+                    } else if (listCity.get(i).getCityName().toLowerCase().equals("hồ chí minh")){
+                        cityCompress = "HCM";
+                    } else if (listCity.get(i).getCityName().toLowerCase().equals("đà nẵng")){
+                        cityCompress = "Đ.Nẵng";
+                    }
+                    districtName = listDistrict.get(j).getDistrictName() + ", " + cityCompress;
+                    break;
+                }
+            }
+        }
+        return districtName;
     }
 }

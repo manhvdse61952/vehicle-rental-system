@@ -77,13 +77,13 @@ public class activity_main_2 extends AppCompatActivity
         locationObj.checkAddressPermission(activity_main_2.this, activity_main_2.this);
 
 
-        getAllVehicleByDistrictID(44);
+        //getAllVehicleByDistrictID(44);
         int districtID = getDistrictIdByName(locationObj.district.trim());
-//        if (districtID == 0){
-//            getAllVehicleByDistrictID(44);
-//        } else {
-//            getAllVehicleByDistrictID(districtID);
-//        }
+        if (districtID == 0){
+            getAllVehicleByDistrictID(44);
+        } else {
+            getAllVehicleByDistrictID(districtID);
+        }
 
         edtMainSearch = (EditText) findViewById(R.id.edtMainSearch);
         main_search = (ImageView) findViewById(R.id.main_search);
@@ -197,6 +197,8 @@ public class activity_main_2 extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+            Intent it = new Intent(activity_main_2.this, LoginActivity.class);
+            startActivity(it);
         }
     }
 

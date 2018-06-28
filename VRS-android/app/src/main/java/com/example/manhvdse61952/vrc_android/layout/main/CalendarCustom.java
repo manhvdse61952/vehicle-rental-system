@@ -18,10 +18,13 @@ import com.example.manhvdse61952.vrc_android.remote.ImmutableValue;
 import com.shawnlin.numberpicker.NumberPicker;
 import com.squareup.timessquare.CalendarPickerView;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class CalendarCustom extends AppCompatActivity {
     int startHours = 0, endHours = 0, startMinutes = 0, endMinute = 0;
@@ -40,10 +43,10 @@ public class CalendarCustom extends AppCompatActivity {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
 
-        btn_save_time = (Button)findViewById(R.id.btn_save_time);
+        btn_save_time = (Button) findViewById(R.id.btn_save_time);
 
         //Init calendar
-        final CalendarPickerView calendarPickerView = (CalendarPickerView)findViewById(R.id.calendar_view);
+        final CalendarPickerView calendarPickerView = (CalendarPickerView) findViewById(R.id.calendar_view);
         Calendar nextYear = Calendar.getInstance();
         nextYear.add(Calendar.YEAR, 1);
         Date today = new Date();
@@ -64,11 +67,11 @@ public class CalendarCustom extends AppCompatActivity {
             public void onDateSelected(Date date) {
 //                Toast.makeText(CalendarCustom.this, date.toString(), Toast.LENGTH_SHORT).show();
                 //Log.d("DateTemp", date.toString());
-                if (calendarPickerView.getSelectedDates().size() == 0){
+                if (calendarPickerView.getSelectedDates().size() == 0) {
                     Date today = new Date();
                     startDatePicker = today.toString();
                     endDatePicker = today.toString();
-                } else if (calendarPickerView.getSelectedDates().size() == 1){
+                } else if (calendarPickerView.getSelectedDates().size() == 1) {
                     startDatePicker = calendarPickerView.getSelectedDate().toString();
                     endDatePicker = calendarPickerView.getSelectedDate().toString();
                 } else {
@@ -84,10 +87,10 @@ public class CalendarCustom extends AppCompatActivity {
         });
 
         //Init time picker
-        NumberPicker time_picker_hours_start = (NumberPicker)findViewById(R.id.time_picker_hours_start);
-        NumberPicker time_picker_minutes_start = (NumberPicker)findViewById(R.id.time_picker_minutes_start);
-        NumberPicker time_picker_hours_end = (NumberPicker)findViewById(R.id.time_picker_hours_end);
-        NumberPicker time_picker_minutes_end = (NumberPicker)findViewById(R.id.time_picker_minutes_end);
+        NumberPicker time_picker_hours_start = (NumberPicker) findViewById(R.id.time_picker_hours_start);
+        NumberPicker time_picker_minutes_start = (NumberPicker) findViewById(R.id.time_picker_minutes_start);
+        NumberPicker time_picker_hours_end = (NumberPicker) findViewById(R.id.time_picker_hours_end);
+        NumberPicker time_picker_minutes_end = (NumberPicker) findViewById(R.id.time_picker_minutes_end);
 
         time_picker_hours_start.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
@@ -122,34 +125,45 @@ public class CalendarCustom extends AppCompatActivity {
             public void onClick(View v) {
                 String finalStartDate = convertDateToNormalFormat(startDatePicker);
                 String finalEndDate = convertDateToNormalFormat(endDatePicker);
+                List<Integer> listTime = calculateTime(finalStartDate, finalEndDate, startHours + ":" + startMinutes, endHours + ":" + endMinute);
+                int totalDay = listTime.get(0);
+                int totalHour = listTime.get(1);
+                int totalMinute = listTime.get(2);
+                if (totalDay < 0 || totalHour < 0 || totalMinute < 0) {
+                    Toast.makeText(CalendarCustom.this, "Thời gian không hợp lệ, vui lòng chọn lại", Toast.LENGTH_SHORT).show();
+                } else {
+                    //Save value to shared preference
+                    SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.IN_APP_SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
+                    editor.putString("startHour", startHours + "");
+                    editor.putString("endHour", endHours + "");
+                    editor.putString("startMinute", startMinutes + "");
+                    editor.putString("endMinute", endMinute + "");
+                    editor.putString("startDate", finalStartDate);
+                    editor.putString("endDate", finalEndDate);
+                    editor.putInt("totalDay", totalDay);
+                    editor.putInt("totalHour", totalHour);
+                    editor.putInt("totalMinute", totalMinute);
+                    editor.apply();
 
-                //Save value to shared preference
-                SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.IN_APP_SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
-                editor.putString("startHour", startHours + "");
-                editor.putString("endHour", endHours + "");
-                editor.putString("startMinute", startMinutes + "");
-                editor.putString("endMinute", endMinute + "");
-                editor.putString("startDate", finalStartDate);
-                editor.putString("endDate", finalEndDate);
-                editor.apply();
+                    final ProgressDialog progress = new ProgressDialog(CalendarCustom.this);
+                    progress.setTitle("Hệ thống");
+                    progress.setMessage("Đang xử lý...");
+                    progress.show();
 
-                final ProgressDialog progress = new ProgressDialog(CalendarCustom.this);
-                progress.setTitle("Hệ thống");
-                progress.setMessage("Đang xử lý...");
-                progress.show();
+                    Runnable progressRunnable = new Runnable() {
 
-                Runnable progressRunnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            progress.cancel();
+                            Intent it = new Intent(CalendarCustom.this, MainItem.class);
+                            startActivity(it);
+                        }
+                    };
 
-                    @Override
-                    public void run() {
-                        progress.cancel();
-                        Intent it = new Intent(CalendarCustom.this, MainItem.class);
-                        startActivity(it);
-                    }
-                };
+                    Handler pdCanceller = new Handler();
+                    pdCanceller.postDelayed(progressRunnable, 1000);
+                }
 
-                Handler pdCanceller = new Handler();
-                pdCanceller.postDelayed(progressRunnable, 1500);
 
             }
         });
@@ -163,10 +177,12 @@ public class CalendarCustom extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        Intent it = new Intent(CalendarCustom.this, MainItem.class);
+        startActivity(it);
         super.onBackPressed();
     }
 
-    private String convertDateToNormalFormat(String str){
+    private String convertDateToNormalFormat(String str) {
         String result = "";
         String[] temp = str.split(" ");
         String day = temp[2];
@@ -175,31 +191,65 @@ public class CalendarCustom extends AppCompatActivity {
         String month = "";
         if (monthTemp.equals("Jan")) {
             month = "01";
-        } else if (monthTemp.equals("Feb")){
+        } else if (monthTemp.equals("Feb")) {
             month = "02";
-        } else if (monthTemp.equals("Mar")){
+        } else if (monthTemp.equals("Mar")) {
             month = "03";
-        } else if (monthTemp.equals("Apr")){
+        } else if (monthTemp.equals("Apr")) {
             month = "04";
-        } else if (monthTemp.equals("May")){
+        } else if (monthTemp.equals("May")) {
             month = "05";
-        } else if (monthTemp.equals("Jun")){
+        } else if (monthTemp.equals("Jun")) {
             month = "06";
-        } else if (monthTemp.equals("Jul")){
+        } else if (monthTemp.equals("Jul")) {
             month = "07";
-        } else if (monthTemp.equals("Aug")){
+        } else if (monthTemp.equals("Aug")) {
             month = "08";
-        } else if (monthTemp.equals("Sep")){
+        } else if (monthTemp.equals("Sep")) {
             month = "09";
-        } else if (monthTemp.equals("Oct")){
+        } else if (monthTemp.equals("Oct")) {
             month = "10";
-        } else if (monthTemp.equals("Nov")){
+        } else if (monthTemp.equals("Nov")) {
             month = "11";
         } else {
             month = "12";
         }
-        result = day + "/" + month + "/" + year;
+        result = day + " / " + month + " / " + year;
         return result;
+    }
+
+    private List<Integer> calculateTime(String startDay, String endDay, String startHour, String endHour) {
+        List<Integer> listTime = new ArrayList<>();
+        startDay = startDay.replaceAll("\\s", "");
+        endDay = endDay.replaceAll("\\s", "");
+
+        String dateStart = startDay + " " + startHour;
+        String dateEnd = endDay + " " + endHour;
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        Date d1 = null, d2 = null;
+        try {
+            d1 = sdf.parse(dateStart);
+            d2 = sdf.parse(dateEnd);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        //Get time
+        long diff = d2.getTime() - d1.getTime();
+        long diffDate = TimeUnit.MILLISECONDS.toDays(diff);
+        long diffHour = diff / (60 * 60 * 1000) % 24;
+        long diffMinute = diff / (60 * 1000) % 60;
+        listTime.add((int)diffDate);
+        listTime.add((int)diffHour);
+        listTime.add((int)diffMinute);
+
+
+        Log.d("total date", diffDate + "");
+        Log.d("total hour", diffHour + "");
+        Log.d("total minute", diffMinute + "");
+
+
+        return listTime;
     }
 
 }

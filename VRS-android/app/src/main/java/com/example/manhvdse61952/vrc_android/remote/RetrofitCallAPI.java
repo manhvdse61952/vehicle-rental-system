@@ -87,12 +87,17 @@ public class RetrofitCallAPI {
         responseBodyCall.enqueue(new Callback<Boolean>() {
             @Override
             public void onResponse(Call<Boolean> call, Response<Boolean> response) {
-                if (response.body().toString().equals("true")) {
-                    progressDialog.dismiss();
-                    edt1.setError("Tài khoản đã có người sử dụng");
+                if (response.code() == 200){
+                    if (response.body().toString().equals("true")) {
+                        progressDialog.dismiss();
+                        edt1.setError("Tài khoản đã có người sử dụng");
+                    } else {
+                        checkExistedEmail(username, email, password, ctx, edt2, progressDialog);
+                    }
                 } else {
-                    checkExistedEmail(username, email, password, ctx, edt2, progressDialog);
+                    Toast.makeText(ctx, "Đã xảy ra lỗi, vui lòng thử lại", Toast.LENGTH_SHORT).show();
                 }
+
 
             }
 

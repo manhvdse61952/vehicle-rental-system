@@ -56,7 +56,7 @@ public class RegistVehicle extends AppCompatActivity {
     String maker, model, year;
     List<String> vehicleYear;
     ProgressDialog dialog;
-    EditText edtPlate, edtFrame, edtPriceHour, edtPriceDay, edtPriceSlot, edtDepositFee;
+    EditText edtPlate, edtFrame, edtPriceHour, edtPriceDay, edtDepositFee;
     TextView txtSeat, txtImageFront, txtImageBack, txtImageFrame;
     ImageView imgFront, imgBack, imgFrame, imgCreateVehicle;
     ImmutableValue cameraObj = new ImmutableValue();
@@ -108,7 +108,6 @@ public class RegistVehicle extends AppCompatActivity {
         edtFrame = (EditText)findViewById(R.id.edtFrame);
         edtPriceHour = (EditText)findViewById(R.id.edtPriceHour);
         edtPriceDay = (EditText)findViewById(R.id.edtPriceDay);
-        edtPriceSlot = (EditText)findViewById(R.id.edtPriceSlot);
         edtDepositFee = (EditText)findViewById(R.id.edtDepositFee);
         imgCreateVehicle = (ImageView)findViewById(R.id.imgCreateVehicle);
         cbxHouseHold = (CheckBox)findViewById(R.id.cbxHouseHold);
@@ -405,19 +404,18 @@ public class RegistVehicle extends AppCompatActivity {
         Boolean checkFrameNumber = validObj.validFrameNumber(edtFrame.getText().toString().trim(), edtFrame);
         Boolean checkPricePerHours = validObj.validPrice(edtPriceHour.getText().toString().trim(), edtPriceHour);
         Boolean checkPricePerDay = validObj.validPrice(edtPriceDay.getText().toString().trim(), edtPriceDay);
-        Boolean checkPricePerSlot = validObj.validPrice(edtPriceSlot.getText().toString().trim(), edtPriceSlot);
         Boolean checkDepositFee = validObj.validPrice(edtDepositFee.getText().toString().trim(), edtDepositFee);
         Boolean checkImage1 = validObj.validImageLink(picturePath1, RegistVehicle.this);
         Boolean checkImage2 = validObj.validImageLink(picturePath2, RegistVehicle.this);
         Boolean checkImage3 = validObj.validImageLink(picturePath3, RegistVehicle.this);
 
         if (checkFrameNumber && checkPlateNumber && checkPricePerHours && checkPricePerDay
-                && checkPricePerSlot && checkDepositFee && checkImage1 && checkImage2 && checkImage3){
+                && checkDepositFee && checkImage1 && checkImage2 && checkImage3){
             SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
             editor.putString("frameNumber", edtFrame.getText().toString().trim());
             editor.putInt("vehicleInformationID", vehicleInfoID);
             editor.putInt("districtID", districtID);
-            editor.putString("rentFeePerSlot", edtPriceSlot.getText().toString().trim());
+            editor.putString("rentFeePerSlot", "0");
             editor.putString("rentFeePerDay", edtPriceDay.getText().toString().trim());
             editor.putString("rentFeePerHours", edtPriceHour.getText().toString().trim());
             editor.putString("depositFee", edtDepositFee.getText().toString().trim());

@@ -173,7 +173,6 @@
                     android:paddingRight="20dp"
                     android:layout_height="wrap_content">
                     <TextView
-                        android:id="@+id/item_price_unit"
                         android:layout_width="0dp"
                         android:layout_weight="5"
                         android:layout_height="wrap_content"
@@ -401,7 +400,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Giấy tờ kèm theo:"
+                    android:text="Giấy tờ kèm theo"
                     android:paddingLeft="10dp"
                     android:layout_marginBottom="5dp"
                     android:textColor="#000"
@@ -435,6 +434,7 @@
                     android:layout_height="wrap_content"
                     android:text="Hình thức nhận xe"
                     android:textSize="18sp"
+                    android:layout_marginBottom="5dp"
                     android:textColor="@color/secondary_text"
                     android:paddingLeft="10dp"/>
                 <Switch
@@ -448,14 +448,155 @@
                     android:textSize="14sp"
                     android:text="Tự đến nhận xe" />
                 <TextView
+                    android:id="@+id/txt_order_type"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/secondary_text"
                     android:textSize="14sp"
                     android:paddingLeft="30dp"
-                    android:paddingRight="20dp"
-                    android:layout_marginTop="5dp"
+                    android:paddingRight="30dp"
+                    android:layout_marginBottom="10dp"
                     android:text="Giao xe tại chỗ: hình thức này sẽ tính thêm phí. Phí này được cộng thêm khi kết thúc hợp đồng"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:background="#ccc"
+                    android:layout_margin="10dp"
+                    android:layout_height="0.2dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/secondary_text"
+                    android:textSize="18sp"
+                    android:paddingLeft="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:text="Tiền thuê ước tính"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:weightSum="10"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="4"
+                            android:text="Số ngày thuê"
+                            android:textColor="#797979"
+                            android:textSize="14sp"
+                            android:layout_height="wrap_content" />
+                        <TextView
+                            android:id="@+id/txt_day_rent"
+                            android:layout_width="0dp"
+                            android:layout_weight="2"
+                            android:textColor="#797979"
+                            android:text="0"
+                            android:textSize="14sp"
+                            android:layout_height="wrap_content" />
+                        <TextView
+                            android:id="@+id/txt_money_day_rent"
+                            android:layout_width="0dp"
+                            android:layout_weight="4"
+                            android:textSize="16sp"
+                            android:textColor="@color/secondary_text"
+                            android:text="0"
+                            android:gravity="end"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:weightSum="10"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="4"
+                            android:text="Số giờ thuê"
+                            android:textColor="#797979"
+                            android:textSize="14sp"
+                            android:layout_height="wrap_content" />
+                        <TextView
+                            android:id="@+id/txt_hour_rent"
+                            android:layout_width="0dp"
+                            android:layout_weight="2"
+                            android:textColor="#797979"
+                            android:text="0"
+                            android:textSize="14sp"
+                            android:layout_height="wrap_content" />
+                        <TextView
+                            android:id="@+id/txt_money_hour_rent"
+                            android:layout_width="0dp"
+                            android:layout_weight="4"
+                            android:textSize="16sp"
+                            android:textColor="@color/secondary_text"
+                            android:text="0"
+                            android:gravity="end"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:weightSum="10"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="4"
+                            android:text="Số phút thuê"
+                            android:textColor="#797979"
+                            android:textSize="14sp"
+                            android:layout_height="wrap_content" />
+                        <TextView
+                            android:id="@+id/txt_minute_rent"
+                            android:layout_width="0dp"
+                            android:layout_weight="2"
+                            android:textColor="#797979"
+                            android:text="0"
+                            android:textSize="14sp"
+                            android:layout_height="wrap_content" />
+                        <TextView
+                            android:id="@+id/txt_money_minute_rent"
+                            android:layout_width="0dp"
+                            android:layout_weight="4"
+                            android:textSize="16sp"
+                            android:textColor="@color/secondary_text"
+                            android:text="0"
+                            android:gravity="end"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:weightSum="10"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="4"
+                            android:text="Tổng tiền"
+                            android:textColor="@color/secondary_text"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:layout_height="wrap_content" />
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_weight="2"
+                            android:layout_height="wrap_content"/>
+                        <TextView
+                            android:id="@+id/txt_money_total"
+                            android:layout_width="0dp"
+                            android:layout_weight="4"
+                            android:textSize="16sp"
+                            android:textColor="@color/colorAccent"
+                            android:text="0"
+                            android:textStyle="bold"
+                            android:gravity="end"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+                </LinearLayout>
             </LinearLayout>
         </ScrollView>
 

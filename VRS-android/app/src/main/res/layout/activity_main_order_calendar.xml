@@ -101,7 +101,7 @@
                 app:np_selectedTextColor="@color/colorPrimaryDark"
                 app:np_textColor="@color/secondary_text"
                 app:np_textSize="16sp"
-                app:np_value="30"
+                app:np_value="0"
                 />
             <View
                 android:layout_width="0dp"
@@ -131,7 +131,7 @@
                 app:np_selectedTextColor="@color/colorPrimaryDark"
                 app:np_textColor="@color/secondary_text"
                 app:np_textSize="16sp"
-                app:np_value="30"
+                app:np_value="0"
                 />
             <View
                 android:layout_width="0dp"

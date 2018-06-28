@@ -295,7 +295,6 @@
                 >
 
                 <ImageView
-                    android:id="@id/imageView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -341,7 +340,6 @@
                 >
 
                 <ImageView
-                    android:id="@id/imageView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -387,7 +385,6 @@
                 >
 
                 <ImageView
-                    android:id="@id/imageView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -433,7 +430,6 @@
                 android:weightSum="1">
 
                 <ImageView
-                    android:id="@id/imageView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -481,7 +477,6 @@
                 android:weightSum="1">
 
                 <ImageView
-                    android:id="@id/imageView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -526,7 +521,6 @@
                 android:weightSum="1">
 
                 <ImageView
-
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -570,7 +564,6 @@
                 android:weightSum="1">
 
                 <ImageView
-                    android:id="@+id/imageView2"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -653,57 +646,6 @@
                     android:ems="10"
                     android:gravity="end|center_vertical"
                     android:hint="Gợi ý: 1.300.000 vnđ"
-                    android:inputType="number"
-                    android:paddingRight="10dp"
-                    android:textColorHint="#666666"
-                    android:textSize="16sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="@drawable/border_input"
-                android:minHeight="45dp"
-                android:orientation="horizontal"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:weightSum="1">
-
-                <ImageView
-                    android:id="@+id/imageView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginRight="10dp"
-                    android:layout_weight="0.1"
-                    android:adjustViewBounds="true"
-                    android:maxHeight="30dp"
-                    app:srcCompat="@drawable/icon_price" />
-
-                <TextView
-                    android:id="@+id/priceSlot"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="0.3"
-                    android:fontFamily="sans-serif"
-                    android:text="Giá thuê/buổi"
-                    android:textColor="@android:color/background_dark"
-                    android:textSize="14sp"
-                    android:typeface="normal" />
-
-                <EditText
-                    android:id="@+id/edtPriceSlot"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="0.6"
-                    android:background="@android:color/transparent"
-                    android:ellipsize="end"
-                    android:ems="10"
-                    android:gravity="end|center_vertical"
-                    android:hint="Gợi ý: 700.000 vnđ"
                     android:inputType="number"
                     android:paddingRight="10dp"
                     android:textColorHint="#666666"
