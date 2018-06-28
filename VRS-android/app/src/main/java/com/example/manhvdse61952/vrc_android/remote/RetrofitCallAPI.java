@@ -18,6 +18,8 @@ import com.example.manhvdse61952.vrc_android.layout.login.LoginActivity;
 import com.example.manhvdse61952.vrc_android.layout.signup.customer.SignupAccountActivity;
 import com.example.manhvdse61952.vrc_android.layout.signup.customer.SignupRoleActivity;
 import com.example.manhvdse61952.vrc_android.layout.signup.customer.SignupUserInfoActivity;
+import com.example.manhvdse61952.vrc_android.layout.signup.owner.RegistVehicle;
+import com.example.manhvdse61952.vrc_android.layout.signup.owner.SignupOwnerPolicy;
 import com.example.manhvdse61952.vrc_android.model.apiModel.Account;
 import com.example.manhvdse61952.vrc_android.model.apiModel.City;
 import com.example.manhvdse61952.vrc_android.model.apiModel.Login;
@@ -91,6 +93,7 @@ public class RetrofitCallAPI {
                     if (response.body().toString().equals("true")) {
                         progressDialog.dismiss();
                         edt1.setError("Tài khoản đã có người sử dụng");
+                        edt1.requestFocus();
                     } else {
                         checkExistedEmail(username, email, password, ctx, edt2, progressDialog);
                     }
@@ -118,19 +121,25 @@ public class RetrofitCallAPI {
         responseBodyCall.enqueue(new Callback<Boolean>() {
             @Override
             public void onResponse(Call<Boolean> call, Response<Boolean> response) {
-                if (response.body().toString().equals("true")) {
-                    edt.setError("Email đã có người sử dụng");
-                } else {
-                    SharedPreferences.Editor editor = ctx.getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, ctx.MODE_PRIVATE).edit();
-                    editor.putString("username", username);
-                    editor.putString("password", password);
-                    editor.putString("email", email);
-                    editor.apply();
+                if (response.code() == 200){
+                    if (response.body().toString().equals("true")) {
+                        edt.setError("Email đã có người sử dụng");
+                        edt.requestFocus();
+                    } else {
+                        SharedPreferences.Editor editor = ctx.getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, ctx.MODE_PRIVATE).edit();
+                        editor.putString("username", username);
+                        editor.putString("password", password);
+                        editor.putString("email", email);
+                        editor.apply();
 
-                    Intent it = new Intent(ctx, SignupUserInfoActivity.class);
-                    ctx.startActivity(it);
+                        Intent it = new Intent(ctx, SignupUserInfoActivity.class);
+                        ctx.startActivity(it);
+                    }
+                    progressDialog.dismiss();
                 }
-                progressDialog.dismiss();
+                else {
+                    Toast.makeText(ctx, "Đã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
@@ -150,20 +159,26 @@ public class RetrofitCallAPI {
         responseBodyCall.enqueue(new Callback<Boolean>() {
             @Override
             public void onResponse(Call<Boolean> call, Response<Boolean> response) {
-                if (response.body().toString().equals("true")) {
-                    input.setError("CMND đã có người sử dụng");
-                } else {
-                    SharedPreferences.Editor editor = ctx.getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, ctx.MODE_PRIVATE).edit();
-                    editor.putString("name", name);
-                    editor.putString("phone", phone);
-                    editor.putString("cmnd", cmnd);
-                    editor.putString("paypal", "default");
-                    editor.putString("CMND_image_path", imagePath);
-                    editor.apply();
+                if (response.code() == 200){
+                    if (response.body().toString().equals("true")) {
+                        input.setError("CMND đã có người sử dụng");
+                        input.requestFocus();
+                    } else {
+                        SharedPreferences.Editor editor = ctx.getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, ctx.MODE_PRIVATE).edit();
+                        editor.putString("name", name);
+                        editor.putString("phone", phone);
+                        editor.putString("cmnd", cmnd);
+                        editor.putString("paypal", "default");
+                        editor.putString("CMND_image_path", imagePath);
+                        editor.apply();
 
-                    Intent it = new Intent(ctx, SignupRoleActivity.class);
-                    ctx.startActivity(it);
+                        Intent it = new Intent(ctx, SignupRoleActivity.class);
+                        ctx.startActivity(it);
+                    }
+                } else {
+                    Toast.makeText(ctx, "Đã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
                 }
+
                 progressDialog.dismiss();
             }
 
@@ -223,6 +238,58 @@ public class RetrofitCallAPI {
         });
     }
 
+    public void checkFrameNumber(final String frameNumber, final Context ctx,
+                                 final ProgressDialog progressDialog, final EditText edt,
+                                 final int vehicleInformationID, final int districtID, String rentFeePerSlot,
+                                 final String rentFeePerDay, final String rentFeePerHours, final String depositFee,
+                                 final String plateNumber, final int requireHouseHold, final int requireIdCard,
+                                 final int isGasoline, final int isManual, final String picture_path, final String img_vehicle_1,
+                                 final String img_vehicle_2){
+        Retrofit test = RetrofitConnect.getClient();
+        final VehicleAPI testAPI = test.create(VehicleAPI.class);
+        Call<Boolean> responseBodyCall = testAPI.checkDuplicatedFrameNumber(frameNumber);
+        responseBodyCall.enqueue(new Callback<Boolean>() {
+            @Override
+            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                if (response.code() == 200){
+                    if (response.body().toString().equals("true")) {
+                        edt.setError("Số khung đã có người sử dụng");
+                        edt.requestFocus();
+                    } else {
+                        SharedPreferences.Editor editor = ctx.getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, ctx.MODE_PRIVATE).edit();
+                        editor.putString("frameNumber", frameNumber);
+                        editor.putInt("vehicleInformationID", vehicleInformationID);
+                        editor.putInt("districtID", districtID);
+                        editor.putString("rentFeePerSlot", "0");
+                        editor.putString("rentFeePerDay", rentFeePerDay);
+                        editor.putString("rentFeePerHours", rentFeePerHours);
+                        editor.putString("depositFee", depositFee);
+                        editor.putString("plateNumber", plateNumber);
+                        editor.putInt("requireHouseHold", requireHouseHold);
+                        editor.putInt("requireIdCard", requireIdCard);
+                        editor.putInt("isGasoline", isGasoline);
+                        editor.putInt("isManual", isManual);
+                        editor.putString("picture_path", picture_path);
+                        editor.putString("img_vehicle_1", img_vehicle_1);
+                        editor.putString("img_vehicle_2", img_vehicle_2);
+                        editor.apply();
+                        Intent it = new Intent(ctx, SignupOwnerPolicy.class);
+                        ctx.startActivity(it);
+                    }
+                } else {
+                    Toast.makeText(ctx, "Đã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
+                }
+                progressDialog.dismiss();
+            }
+
+            @Override
+            public void onFailure(Call<Boolean> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(ctx, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     /// get all vehicle year by maker and model ///
 //    public List<String> getAllYear(String maker, String model) {
 //        vehicleYear = new ArrayList<>();
@@ -261,19 +328,25 @@ public class RetrofitCallAPI {
         responseBodyCall.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                progressDialog.dismiss();
-                AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
-                builder.setMessage("Chúng tôi sẽ gửi email cho bạn sau khi xác thực tài khoản thành công ! Cảm ơn bạn đã đăng ký VRS");
-                builder.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        Intent it = new Intent(ctx, LoginActivity.class);
-                        ctx.startActivity(it);
-                    }
-                });
-                AlertDialog alertDialog = builder.create();
-                alertDialog.show();
-                alertDialog.setCanceledOnTouchOutside(false);
+                if (response.code() == 200){
+                    progressDialog.dismiss();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
+                    builder.setMessage("Chúng tôi sẽ gửi email cho bạn sau khi xác thực tài khoản thành công ! Cảm ơn bạn đã đăng ký VRS");
+                    builder.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Intent it = new Intent(ctx, LoginActivity.class);
+                            ctx.startActivity(it);
+                        }
+                    });
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
+                    alertDialog.setCanceledOnTouchOutside(false);
+                } else {
+                    progressDialog.dismiss();
+                    Toast.makeText(ctx, "Đã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
+                }
+
 
             }
 
@@ -284,5 +357,6 @@ public class RetrofitCallAPI {
             }
         });
     }
+
 
 }

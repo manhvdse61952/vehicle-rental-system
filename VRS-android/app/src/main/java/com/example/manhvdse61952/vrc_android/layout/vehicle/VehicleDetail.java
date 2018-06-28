@@ -45,7 +45,8 @@ public class VehicleDetail extends AppCompatActivity {
     TextView item_price_slot, item_price_day, item_seat, item_year,
             item_plateNumber, item_ownerName, item_engine, item_tranmission, txt_hours, txt_day_start,
             txt_hours_2, txt_day_end, txt_order_type, txt_day_rent, txt_hour_rent,
-            txt_minute_rent, txt_money_day_rent, txt_money_hour_rent, txt_money_minute_rent, txt_money_total;
+            txt_minute_rent, txt_money_day_rent, txt_money_hour_rent,
+            txt_money_minute_rent, txt_money_total, item_price_deposit;
     CheckBox cbx1, cbx2;
     LinearLayout ln_pickTime;
     Switch swt_order_type;
@@ -56,13 +57,13 @@ public class VehicleDetail extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_item);
         //Declare id
-        txt_day_rent = (TextView)findViewById(R.id.txt_day_rent);
-        txt_hour_rent = (TextView)findViewById(R.id.txt_hour_rent);
-        txt_minute_rent = (TextView)findViewById(R.id.txt_minute_rent);
-        txt_money_day_rent = (TextView)findViewById(R.id.txt_money_day_rent);
-        txt_money_hour_rent = (TextView)findViewById(R.id.txt_money_hour_rent);
-        txt_money_minute_rent = (TextView)findViewById(R.id.txt_money_minute_rent);
-        txt_money_total = (TextView)findViewById(R.id.txt_money_total);
+        txt_day_rent = (TextView) findViewById(R.id.txt_day_rent);
+        txt_hour_rent = (TextView) findViewById(R.id.txt_hour_rent);
+        txt_minute_rent = (TextView) findViewById(R.id.txt_minute_rent);
+        txt_money_day_rent = (TextView) findViewById(R.id.txt_money_day_rent);
+        txt_money_hour_rent = (TextView) findViewById(R.id.txt_money_hour_rent);
+        txt_money_minute_rent = (TextView) findViewById(R.id.txt_money_minute_rent);
+        txt_money_total = (TextView) findViewById(R.id.txt_money_total);
         item_price_slot = (TextView) findViewById(R.id.item_price_slot);
         item_price_day = (TextView) findViewById(R.id.item_price_day);
         item_seat = (TextView) findViewById(R.id.item_seat);
@@ -71,15 +72,16 @@ public class VehicleDetail extends AppCompatActivity {
         item_ownerName = (TextView) findViewById(R.id.item_ownerName);
         item_engine = (TextView) findViewById(R.id.item_engine);
         item_tranmission = (TextView) findViewById(R.id.item_tranmission);
+        item_price_deposit = (TextView)findViewById(R.id.item_price_deposit);
         cbx1 = (CheckBox) findViewById(R.id.cbx1);
         cbx2 = (CheckBox) findViewById(R.id.cbx2);
-        ln_pickTime = (LinearLayout)findViewById(R.id.ln_pickTime);
-        txt_hours = (TextView)findViewById(R.id.txt_hours);
-        txt_day_start = (TextView)findViewById(R.id.txt_day_start);
-        txt_hours_2 = (TextView)findViewById(R.id.txt_hours_2);
-        txt_day_end = (TextView)findViewById(R.id.txt_day_end);
-        swt_order_type = (Switch)findViewById(R.id.swt_order_type);
-        txt_order_type = (TextView)findViewById(R.id.txt_order_type);
+        ln_pickTime = (LinearLayout) findViewById(R.id.ln_pickTime);
+        txt_hours = (TextView) findViewById(R.id.txt_hours);
+        txt_day_start = (TextView) findViewById(R.id.txt_day_start);
+        txt_hours_2 = (TextView) findViewById(R.id.txt_hours_2);
+        txt_day_end = (TextView) findViewById(R.id.txt_day_end);
+        swt_order_type = (Switch) findViewById(R.id.swt_order_type);
+        txt_order_type = (TextView) findViewById(R.id.txt_order_type);
         vpg = (ViewPager) findViewById(R.id.vpg);
 
         SharedPreferences editor = getSharedPreferences(ImmutableValue.IN_APP_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
@@ -112,107 +114,115 @@ public class VehicleDetail extends AppCompatActivity {
         responseBodyCall.enqueue(new Callback<MainItemModel>() {
             @Override
             public void onResponse(Call<MainItemModel> call, Response<MainItemModel> response) {
-                if (response.body() != null) {
-                    mainObj = new MainItemModel();
-                    mainObj = response.body();
-                    // use for init layout
-                    SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
-                    editor.putString("imageFront", mainObj.getImageLinkFront());
-                    editor.putString("imageBack", mainObj.getImageLinkBack());
-                    editor.putString("vehicleName", mainObj.getVehicleMaker() + " " + mainObj.getVehicleModel());
-                    editor.apply();
+                if (response.code() == 200) {
+                    if (response.body() != null) {
+                        mainObj = new MainItemModel();
+                        mainObj = response.body();
+                        // use for init layout
+                        SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
+                        editor.putString("imageFront", mainObj.getImageLinkFront());
+                        editor.putString("imageBack", mainObj.getImageLinkBack());
+                        editor.putString("vehicleName", mainObj.getVehicleMaker() + " " + mainObj.getVehicleModel());
+                        editor.apply();
 
-                    sld = new ImageSlider(VehicleDetail.this);
-                    vpg.setAdapter(sld);
-                    if (vehicleType.equals("XE_MAY")) {
-                        item_engine.setText("Xăng");
-                        if (mainObj.getScooter() == true) {
-                            item_tranmission.setText("Xe tay ga");
-                        } else {
-                            item_tranmission.setText("Xe số");
-                        }
-                    } else {
-                        if (mainObj.getGasoline() == true) {
+                        sld = new ImageSlider(VehicleDetail.this);
+                        vpg.setAdapter(sld);
+                        if (vehicleType.equals("XE_MAY")) {
                             item_engine.setText("Xăng");
-                        } else {
-                            item_engine.setText("Dầu");
-                        }
-                        if (mainObj.getManual() == true) {
-                            item_tranmission.setText("Số sàn");
-                        } else {
-                            item_tranmission.setText("Số tự động");
-                        }
-                    }
-
-                    NumberFormat nf = new DecimalFormat("#.####");
-                    String priceHour = ImmutableValue.convertPrice(nf.format(mainObj.getRentFeePerHour()));
-                    item_price_slot.setText(priceHour + " vnđ");
-                    String priceDay = ImmutableValue.convertPrice(nf.format(mainObj.getRentFeePerDay()));
-                    item_price_day.setText(priceDay + " vnđ");
-                    item_seat.setText(vehicleSeat);
-                    item_year.setText(mainObj.getModelYear() + "");
-                    item_plateNumber.setText(mainObj.getPlateNumber());
-                    item_ownerName.setText(mainObj.getOwnerFullName());
-                    if (mainObj.getRequireIdCard() == true) {
-                        cbx1.setChecked(true);
-                    } else {
-                        cbx1.setChecked(false);
-                    }
-                    if (mainObj.getRequireHouseHold() == true) {
-                        cbx2.setChecked(true);
-                    } else {
-                        cbx2.setChecked(false);
-                    }
-
-                    //Start pick date time intent
-                    ln_pickTime.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent it = new Intent(VehicleDetail.this, CalendarCustom.class);
-                            startActivity(it);
-                        }
-                    });
-
-                    //Use for switch
-                    scaleView(txt_order_type, 0f, 0f);
-                    swt_order_type.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                        @Override
-                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                            if (isChecked){
-                                textColorAnimated(swt_order_type, Color.parseColor("#000000"));
-                                scaleView(txt_order_type, 0f, 0f);
+                            if (mainObj.getScooter() == true) {
+                                item_tranmission.setText("Xe tay ga");
                             } else {
-                                textColorAnimated(swt_order_type, Color.parseColor("#cccccc"));
-                                scaleView(txt_order_type, 0f, 1f);
+                                item_tranmission.setText("Xe số");
+                            }
+                        } else {
+                            if (mainObj.getGasoline() == true) {
+                                item_engine.setText("Xăng");
+                            } else {
+                                item_engine.setText("Dầu");
+                            }
+                            if (mainObj.getManual() == true) {
+                                item_tranmission.setText("Số sàn");
+                            } else {
+                                item_tranmission.setText("Số tự động");
                             }
                         }
-                    });
 
-                    //Calculate money
-                    Double dayMoney = totalDay * mainObj.getRentFeePerDay();
-                    Double hourMoney = totalHour * mainObj.getRentFeePerHour();
-                    Double minuteMoney = 0.0;
-                    if (totalMinute >= 0 && totalMinute <= 7){
-                        minuteMoney = 0.0;
-                    } else if (totalMinute > 7 && totalMinute <= 22){
-                        minuteMoney = mainObj.getRentFeePerHour() / 4;
-                    } else if (totalMinute > 22 && totalMinute <= 37){
-                        minuteMoney = mainObj.getRentFeePerHour() / 2;
-                    } else if(totalMinute > 37 && totalMinute <= 50){
-                        minuteMoney = mainObj.getRentFeePerHour() / 4 * 3;
-                    } else if (totalMinute > 50 && totalMinute <= 59){
-                        minuteMoney = mainObj.getRentFeePerHour();
+                        NumberFormat nf = new DecimalFormat("#.####");
+                        String priceHour = ImmutableValue.convertPrice(nf.format(mainObj.getRentFeePerHour()));
+                        item_price_slot.setText(priceHour);
+                        String priceDay = ImmutableValue.convertPrice(nf.format(mainObj.getRentFeePerDay()));
+                        item_price_day.setText(priceDay);
+                        String deposit = ImmutableValue.convertPrice(nf.format(mainObj.getDeposit()));
+                        item_price_deposit.setText(deposit);
+
+                        item_seat.setText(vehicleSeat);
+                        item_year.setText(mainObj.getModelYear() + "");
+                        item_plateNumber.setText(mainObj.getPlateNumber());
+                        item_ownerName.setText(mainObj.getOwnerFullName());
+                        if (mainObj.getRequireIdCard() == true) {
+                            cbx1.setChecked(true);
+                        } else {
+                            cbx1.setChecked(false);
+                        }
+                        if (mainObj.getRequireHouseHold() == true) {
+                            cbx2.setChecked(true);
+                        } else {
+                            cbx2.setChecked(false);
+                        }
+
+                        //Start pick date time intent
+                        ln_pickTime.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent it = new Intent(VehicleDetail.this, CalendarCustom.class);
+                                startActivity(it);
+                            }
+                        });
+
+                        //Use for switch
+                        scaleView(txt_order_type, 0f, 0f);
+                        swt_order_type.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                            @Override
+                            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                if (isChecked) {
+                                    textColorAnimated(swt_order_type, Color.parseColor("#000000"));
+                                    scaleView(txt_order_type, 0f, 0f);
+                                } else {
+                                    textColorAnimated(swt_order_type, Color.parseColor("#cccccc"));
+                                    scaleView(txt_order_type, 0f, 1f);
+                                }
+                            }
+                        });
+
+                        //Calculate money
+                        Double dayMoney = totalDay * mainObj.getRentFeePerDay();
+                        Double hourMoney = totalHour * mainObj.getRentFeePerHour();
+                        Double minuteMoney = 0.0;
+                        if (totalMinute >= 0 && totalMinute <= 7) {
+                            minuteMoney = 0.0;
+                        } else if (totalMinute > 7 && totalMinute <= 22) {
+                            minuteMoney = mainObj.getRentFeePerHour() / 4;
+                        } else if (totalMinute > 22 && totalMinute <= 37) {
+                            minuteMoney = mainObj.getRentFeePerHour() / 2;
+                        } else if (totalMinute > 37 && totalMinute <= 50) {
+                            minuteMoney = mainObj.getRentFeePerHour() / 4 * 3;
+                        } else if (totalMinute > 50 && totalMinute <= 59) {
+                            minuteMoney = mainObj.getRentFeePerHour();
+                        }
+                        Double totalMoney = dayMoney + hourMoney + minuteMoney;
+                        String showDayMoney = ImmutableValue.convertPrice(nf.format(dayMoney));
+                        String showHourMoney = ImmutableValue.convertPrice(nf.format(hourMoney));
+                        String showMinuteMoney = ImmutableValue.convertPrice(nf.format(minuteMoney));
+                        String showTotalMoney = ImmutableValue.convertPrice(nf.format(totalMoney));
+                        txt_money_day_rent.setText(showDayMoney);
+                        txt_money_hour_rent.setText(showHourMoney);
+                        txt_money_minute_rent.setText(showMinuteMoney);
+                        txt_money_total.setText(showTotalMoney);
                     }
-                    Double totalMoney = dayMoney + hourMoney + minuteMoney;
-                    String showDayMoney = ImmutableValue.convertPrice(nf.format(dayMoney));
-                    String showHourMoney = ImmutableValue.convertPrice(nf.format(hourMoney));
-                    String showMinuteMoney = ImmutableValue.convertPrice(nf.format(minuteMoney));
-                    String showTotalMoney = ImmutableValue.convertPrice(nf.format(totalMoney));
-                    txt_money_day_rent.setText(showDayMoney);
-                    txt_money_hour_rent.setText(showHourMoney);
-                    txt_money_minute_rent.setText(showMinuteMoney);
-                    txt_money_total.setText(showTotalMoney);
+                } else {
+                    Toast.makeText(VehicleDetail.this, "Đã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
                 }
+
             }
 
             @Override
@@ -252,7 +262,7 @@ public class VehicleDetail extends AppCompatActivity {
         v.startAnimation(anim);
     }
 
-    public void textColorAnimated(Switch v, int colorValue){
+    public void textColorAnimated(Switch v, int colorValue) {
         final ObjectAnimator animator = ObjectAnimator.ofInt(v, "textColor", colorValue);
         animator.setDuration(1000);
         animator.setEvaluator(new ArgbEvaluator());

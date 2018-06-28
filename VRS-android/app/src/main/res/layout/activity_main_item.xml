@@ -38,115 +38,6 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Chọn thời gian thuê"
-                    android:textColor="@color/secondary_text"
-                    android:paddingLeft="10dp"
-                    android:layout_marginBottom="5dp"
-                    android:textSize="18sp"/>
-                <LinearLayout
-                    android:id="@+id/ln_pickTime"
-                    android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:weightSum="10"
-                    android:layout_marginBottom="5dp"
-                    android:layout_height="wrap_content">
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_weight="5"
-                        android:gravity="center_horizontal|center_vertical"
-                        android:layout_height="wrap_content">
-                        <RelativeLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
-                            <TextView
-                                android:id="@+id/txt_time_header"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Thời gian bắt đầu"
-                                android:textSize="14sp"
-                                android:layout_marginBottom="5dp"
-                                android:textColor="#797979"/>
-                            <ImageView
-                                android:id="@+id/img_calendar"
-                                android:layout_below="@+id/txt_time_header"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="15dp"
-                                android:src="@drawable/ic_calendar_alt"/>
-                            <TextView
-                                android:id="@+id/txt_hours"
-                                android:layout_below="@+id/txt_time_header"
-                                android:layout_toRightOf="@+id/img_calendar"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="15dp"
-                                android:textSize="16sp"
-                                android:textColor="@color/secondary_text"
-                                android:text="-- : --"/>
-                            <TextView
-                                android:id="@+id/txt_day_start"
-                                android:textColor="@color/secondary_text"
-                                android:layout_below="@+id/txt_hours"
-                                android:layout_width="wrap_content"
-                                android:layout_marginLeft="25dp"
-                                android:layout_marginTop="5dp"
-                                android:layout_height="wrap_content"
-                                android:text="-- / -- / ----"/>
-                        </RelativeLayout>
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_weight="5"
-                        android:gravity="center_horizontal|center_vertical"
-                        android:layout_height="wrap_content">
-                        <RelativeLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
-                            <TextView
-                                android:id="@+id/txt_time_header_2"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Thời gian kết thúc"
-                                android:layout_marginBottom="5dp"
-                                android:textSize="14sp"
-                                android:textColor="#797979"/>
-                            <ImageView
-                                android:layout_marginLeft="15dp"
-                                android:id="@+id/img_calendar_2"
-                                android:layout_below="@+id/txt_time_header_2"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:src="@drawable/ic_calendar_alt"/>
-                            <TextView
-                                android:id="@+id/txt_hours_2"
-                                android:layout_below="@+id/txt_time_header_2"
-                                android:layout_toRightOf="@+id/img_calendar_2"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="15dp"
-                                android:textSize="16sp"
-                                android:textColor="@color/secondary_text"
-                                android:text="-- : --"/>
-                            <TextView
-                                android:id="@+id/txt_day_end"
-                                android:textColor="@color/secondary_text"
-                                android:layout_below="@+id/txt_hours_2"
-                                android:layout_width="wrap_content"
-                                android:layout_marginLeft="25dp"
-                                android:layout_marginTop="5dp"
-                                android:layout_height="wrap_content"
-                                android:text="-- / -- / ----"/>
-                        </RelativeLayout>
-                    </LinearLayout>
-                </LinearLayout>
-                <View
-                    android:layout_width="match_parent"
-                    android:background="#ccc"
-                    android:layout_margin="10dp"
-                    android:layout_height="0.2dp"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:text="chi tiết xe"
                     android:textColor="#000"
                     android:textAllCaps="true"
@@ -184,7 +75,7 @@
                         android:layout_width="0dp"
                         android:layout_weight="5"
                         android:layout_height="wrap_content"
-                        android:text="100.000 vnđ"
+                        android:text="100.000"
                         android:textColor="#000"
                         android:textAlignment="textEnd"
                         android:textSize="16sp"/>
@@ -208,7 +99,31 @@
                         android:layout_width="0dp"
                         android:layout_weight="5"
                         android:layout_height="wrap_content"
-                        android:text="500.000 vnđ"
+                        android:text="500.000"
+                        android:textColor="#000"
+                        android:textAlignment="textEnd"
+                        android:textSize="16sp"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:weightSum="10"
+                    android:paddingLeft="30dp"
+                    android:paddingRight="20dp"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="5"
+                        android:layout_height="wrap_content"
+                        android:text="Tiền cọc"
+                        android:textColor="#797979"
+                        android:textSize="14sp" />
+                    <TextView
+                        android:id="@+id/item_price_deposit"
+                        android:layout_width="0dp"
+                        android:layout_weight="5"
+                        android:layout_height="wrap_content"
+                        android:text="5.000.000"
                         android:textColor="#000"
                         android:textAlignment="textEnd"
                         android:textSize="16sp"/>
@@ -216,10 +131,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:background="#ccc"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
+                    android:layout_margin="10dp"
                     android:layout_height="0.2dp"/>
                 <TextView
                     android:layout_width="match_parent"
@@ -428,7 +340,115 @@
                     android:background="#ccc"
                     android:layout_margin="10dp"
                     android:layout_height="0.2dp"/>
-
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Chọn thời gian thuê"
+                    android:textColor="@color/secondary_text"
+                    android:paddingLeft="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:textSize="18sp"/>
+                <LinearLayout
+                    android:id="@+id/ln_pickTime"
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:weightSum="10"
+                    android:layout_marginBottom="5dp"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="5"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:layout_height="wrap_content">
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:id="@+id/txt_time_header"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Thời gian bắt đầu"
+                                android:textSize="14sp"
+                                android:layout_marginBottom="5dp"
+                                android:textColor="#797979"/>
+                            <ImageView
+                                android:id="@+id/img_calendar"
+                                android:layout_below="@+id/txt_time_header"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="15dp"
+                                android:src="@drawable/ic_calendar_alt"/>
+                            <TextView
+                                android:id="@+id/txt_hours"
+                                android:layout_below="@+id/txt_time_header"
+                                android:layout_toRightOf="@+id/img_calendar"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="15dp"
+                                android:textSize="16sp"
+                                android:textColor="@color/secondary_text"
+                                android:text="-- : --"/>
+                            <TextView
+                                android:id="@+id/txt_day_start"
+                                android:textColor="@color/secondary_text"
+                                android:layout_below="@+id/txt_hours"
+                                android:layout_width="wrap_content"
+                                android:layout_marginLeft="25dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_height="wrap_content"
+                                android:text="-- / -- / ----"/>
+                        </RelativeLayout>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="5"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:layout_height="wrap_content">
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:id="@+id/txt_time_header_2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Thời gian kết thúc"
+                                android:layout_marginBottom="5dp"
+                                android:textSize="14sp"
+                                android:textColor="#797979"/>
+                            <ImageView
+                                android:layout_marginLeft="15dp"
+                                android:id="@+id/img_calendar_2"
+                                android:layout_below="@+id/txt_time_header_2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_calendar_alt"/>
+                            <TextView
+                                android:id="@+id/txt_hours_2"
+                                android:layout_below="@+id/txt_time_header_2"
+                                android:layout_toRightOf="@+id/img_calendar_2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="15dp"
+                                android:textSize="16sp"
+                                android:textColor="@color/secondary_text"
+                                android:text="-- : --"/>
+                            <TextView
+                                android:id="@+id/txt_day_end"
+                                android:textColor="@color/secondary_text"
+                                android:layout_below="@+id/txt_hours_2"
+                                android:layout_width="wrap_content"
+                                android:layout_marginLeft="25dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_height="wrap_content"
+                                android:text="-- / -- / ----"/>
+                        </RelativeLayout>
+                    </LinearLayout>
+                </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:background="#ccc"
+                    android:layout_margin="10dp"
+                    android:layout_height="0.2dp"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

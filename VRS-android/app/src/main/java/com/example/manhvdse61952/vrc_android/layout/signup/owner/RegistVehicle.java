@@ -411,26 +411,32 @@ public class RegistVehicle extends AppCompatActivity {
 
         if (checkFrameNumber && checkPlateNumber && checkPricePerHours && checkPricePerDay
                 && checkDepositFee && checkImage1 && checkImage2 && checkImage3){
-            SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
-            editor.putString("frameNumber", edtFrame.getText().toString().trim());
-            editor.putInt("vehicleInformationID", vehicleInfoID);
-            editor.putInt("districtID", districtID);
-            editor.putString("rentFeePerSlot", "0");
-            editor.putString("rentFeePerDay", edtPriceDay.getText().toString().trim());
-            editor.putString("rentFeePerHours", edtPriceHour.getText().toString().trim());
-            editor.putString("depositFee", edtDepositFee.getText().toString().trim());
-            editor.putString("plateNumber", edtPlate.getText().toString().trim());
-            editor.putInt("requireHouseHold", required_household_registration);
-            editor.putInt("requireIdCard", required_id_card);
-            editor.putInt("isGasoline", isGasoline);
-            editor.putInt("isManual", isManual);
-            editor.putString("picture_path", picturePath3);
-            editor.putString("img_vehicle_1", picturePath1);
-            editor.putString("img_vehicle_2", picturePath2);
-            editor.apply();
 
-            Intent it = new Intent(RegistVehicle.this, SignupOwnerPolicy.class);
-            startActivity(it);
+            RetrofitCallAPI testAPI = new RetrofitCallAPI();
+            ProgressDialog dialog = ProgressDialog.show(RegistVehicle.this, "Đang xử lý",
+                    "Vui lòng đợi ...", true);
+            testAPI.checkFrameNumber(edtFrame.getText().toString().trim(), RegistVehicle.this,
+                    dialog, edtFrame, vehicleInfoID, districtID, "0", edtPriceDay.getText().toString().trim(),
+                    edtPriceHour.getText().toString().trim(),edtDepositFee.getText().toString().trim(),
+                    edtPlate.getText().toString().trim(), required_household_registration, required_id_card,
+                    isGasoline, isManual, picturePath3, picturePath1, picturePath2);
+//            SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
+//            editor.putString("frameNumber", edtFrame.getText().toString().trim());
+//            editor.putInt("vehicleInformationID", vehicleInfoID);
+//            editor.putInt("districtID", districtID);
+//            editor.putString("rentFeePerSlot", "0");
+//            editor.putString("rentFeePerDay", edtPriceDay.getText().toString().trim());
+//            editor.putString("rentFeePerHours", edtPriceHour.getText().toString().trim());
+//            editor.putString("depositFee", edtDepositFee.getText().toString().trim());
+//            editor.putString("plateNumber", edtPlate.getText().toString().trim());
+//            editor.putInt("requireHouseHold", required_household_registration);
+//            editor.putInt("requireIdCard", required_id_card);
+//            editor.putInt("isGasoline", isGasoline);
+//            editor.putInt("isManual", isManual);
+//            editor.putString("picture_path", picturePath3);
+//            editor.putString("img_vehicle_1", picturePath1);
+//            editor.putString("img_vehicle_2", picturePath2);
+//            editor.apply();
         }
     }
 

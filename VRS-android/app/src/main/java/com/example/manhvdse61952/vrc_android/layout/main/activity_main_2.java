@@ -286,62 +286,72 @@ public class activity_main_2 extends AppCompatActivity
         responseBodyCall.enqueue(new Callback<List<SearchItemNew>>() {
             @Override
             public void onResponse(Call<List<SearchItemNew>> call, Response<List<SearchItemNew>> response) {
-                if (response != null){
-                    listMotorbike = new ArrayList<>();
-                    listPersonalCar = new ArrayList<>();
-                    listTravelCar = new ArrayList<>();
-                    List<SearchItemNew> listAll = response.body();
-                    for (int i = 0; i < listAll.size() ; i++){
-                        if (listAll.get(i).getVehicleType().equals("XE_MAY")){
-                            SearchItemNew searchObj = new SearchItemNew();
-                            searchObj.setSeat(listAll.get(i).getSeat());
-                            searchObj.setFrameNumber(listAll.get(i).getFrameNumber());
-                            searchObj.setDistrictID(listAll.get(i).getDistrictID());
-                            searchObj.setRentFeePerHours(listAll.get(i).getRentFeePerHours());
-                            searchObj.setVehicleMaker(listAll.get(i).getVehicleMaker());
-                            searchObj.setCurrentStatus(listAll.get(i).getCurrentStatus());
-                            searchObj.setVehicleModel(listAll.get(i).getVehicleModel());
-                            searchObj.setImageLinkFront(listAll.get(i).getImageLinkFront());
-                            searchObj.setDiscountValue(listAll.get(i).getDiscountValue());
-                            searchObj.setRentFeePerSlot(listAll.get(i).getRentFeePerSlot());
-                            searchObj.setVehicleType(listAll.get(i).getVehicleType());
-                            listMotorbike.add(searchObj);
-                        } else if (listAll.get(i).getVehicleType().equals("XE_CA_NHAN")){
-                            SearchItemNew searchObj = new SearchItemNew();
-                            searchObj.setSeat(listAll.get(i).getSeat());
-                            searchObj.setFrameNumber(listAll.get(i).getFrameNumber());
-                            searchObj.setDistrictID(listAll.get(i).getDistrictID());
-                            searchObj.setRentFeePerHours(listAll.get(i).getRentFeePerHours());
-                            searchObj.setVehicleMaker(listAll.get(i).getVehicleMaker());
-                            searchObj.setCurrentStatus(listAll.get(i).getCurrentStatus());
-                            searchObj.setVehicleModel(listAll.get(i).getVehicleModel());
-                            searchObj.setImageLinkFront(listAll.get(i).getImageLinkFront());
-                            searchObj.setDiscountValue(listAll.get(i).getDiscountValue());
-                            searchObj.setRentFeePerSlot(listAll.get(i).getRentFeePerSlot());
-                            searchObj.setVehicleType(listAll.get(i).getVehicleType());
-                            listPersonalCar.add(searchObj);
-                        } else if (listAll.get(i).getVehicleType().equals("XE_DU_LICH")){
-                            SearchItemNew searchObj = new SearchItemNew();
-                            searchObj.setSeat(listAll.get(i).getSeat());
-                            searchObj.setFrameNumber(listAll.get(i).getFrameNumber());
-                            searchObj.setDistrictID(listAll.get(i).getDistrictID());
-                            searchObj.setRentFeePerHours(listAll.get(i).getRentFeePerHours());
-                            searchObj.setVehicleMaker(listAll.get(i).getVehicleMaker());
-                            searchObj.setCurrentStatus(listAll.get(i).getCurrentStatus());
-                            searchObj.setVehicleModel(listAll.get(i).getVehicleModel());
-                            searchObj.setImageLinkFront(listAll.get(i).getImageLinkFront());
-                            searchObj.setDiscountValue(listAll.get(i).getDiscountValue());
-                            searchObj.setRentFeePerSlot(listAll.get(i).getRentFeePerSlot());
-                            searchObj.setVehicleType(listAll.get(i).getVehicleType());
-                            listTravelCar.add(searchObj);
+                if (response.code() == 200){
+                    if (response != null){
+                        listMotorbike = new ArrayList<>();
+                        listPersonalCar = new ArrayList<>();
+                        listTravelCar = new ArrayList<>();
+                        List<SearchItemNew> listAll = response.body();
+                        for (int i = 0; i < listAll.size() ; i++){
+                            if (listAll.get(i).getVehicleType().equals("XE_MAY")){
+                                SearchItemNew searchObj = new SearchItemNew();
+                                searchObj.setSeat(listAll.get(i).getSeat());
+                                searchObj.setFrameNumber(listAll.get(i).getFrameNumber());
+                                searchObj.setDistrictID(listAll.get(i).getDistrictID());
+                                searchObj.setRentFeePerHours(listAll.get(i).getRentFeePerHours());
+                                searchObj.setVehicleMaker(listAll.get(i).getVehicleMaker());
+                                searchObj.setCurrentStatus(listAll.get(i).getCurrentStatus());
+                                searchObj.setVehicleModel(listAll.get(i).getVehicleModel());
+                                searchObj.setImageLinkFront(listAll.get(i).getImageLinkFront());
+                                searchObj.setDiscountValue(listAll.get(i).getDiscountValue());
+                                searchObj.setRentFeePerDay(listAll.get(i).getRentFeePerDay());
+                                searchObj.setVehicleType(listAll.get(i).getVehicleType());
+                                listMotorbike.add(searchObj);
+                            } else if (listAll.get(i).getVehicleType().equals("XE_CA_NHAN")){
+                                SearchItemNew searchObj = new SearchItemNew();
+                                searchObj.setSeat(listAll.get(i).getSeat());
+                                searchObj.setFrameNumber(listAll.get(i).getFrameNumber());
+                                searchObj.setDistrictID(listAll.get(i).getDistrictID());
+                                searchObj.setRentFeePerHours(listAll.get(i).getRentFeePerHours());
+                                searchObj.setVehicleMaker(listAll.get(i).getVehicleMaker());
+                                searchObj.setCurrentStatus(listAll.get(i).getCurrentStatus());
+                                searchObj.setVehicleModel(listAll.get(i).getVehicleModel());
+                                searchObj.setImageLinkFront(listAll.get(i).getImageLinkFront());
+                                searchObj.setDiscountValue(listAll.get(i).getDiscountValue());
+                                searchObj.setRentFeePerDay(listAll.get(i).getRentFeePerDay());
+                                searchObj.setVehicleType(listAll.get(i).getVehicleType());
+                                listPersonalCar.add(searchObj);
+                            } else if (listAll.get(i).getVehicleType().equals("XE_DU_LICH")){
+                                SearchItemNew searchObj = new SearchItemNew();
+                                searchObj.setSeat(listAll.get(i).getSeat());
+                                searchObj.setFrameNumber(listAll.get(i).getFrameNumber());
+                                searchObj.setDistrictID(listAll.get(i).getDistrictID());
+                                searchObj.setRentFeePerHours(listAll.get(i).getRentFeePerHours());
+                                searchObj.setVehicleMaker(listAll.get(i).getVehicleMaker());
+                                searchObj.setCurrentStatus(listAll.get(i).getCurrentStatus());
+                                searchObj.setVehicleModel(listAll.get(i).getVehicleModel());
+                                searchObj.setImageLinkFront(listAll.get(i).getImageLinkFront());
+                                searchObj.setDiscountValue(listAll.get(i).getDiscountValue());
+                                searchObj.setRentFeePerDay(listAll.get(i).getRentFeePerDay());
+                                searchObj.setVehicleType(listAll.get(i).getVehicleType());
+                                listTravelCar.add(searchObj);
+                            }
                         }
+                        viewPager = (ViewPager) findViewById(R.id.container);
+                        setupViewPager(viewPager);
+                        tabLayout = (TabLayout) findViewById(R.id.tabs);
+                        tabLayout.setupWithViewPager(viewPager);
+                        createTabIcons();
                     }
+                } else {
+                    Toast.makeText(activity_main_2.this, "Đã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
                     viewPager = (ViewPager) findViewById(R.id.container);
                     setupViewPager(viewPager);
                     tabLayout = (TabLayout) findViewById(R.id.tabs);
                     tabLayout.setupWithViewPager(viewPager);
                     createTabIcons();
                 }
+
             }
 
             @Override

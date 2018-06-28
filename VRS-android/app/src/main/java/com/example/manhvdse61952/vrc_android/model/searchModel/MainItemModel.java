@@ -20,8 +20,9 @@ public class MainItemModel implements Serializable {
     private double rentFeePerHour;
     private String plateNumber;
     private Boolean isScooter;
+    private double deposit;
 
-    public MainItemModel(Boolean requireIdCard, String ownerFullName, String vehicleMaker, Boolean isManual, double rentFeePerDay, String imageLinkBack, int ownerID, int modelYear, Boolean isGasoline, int districtID, String vehicleModel, String imageLinkFront, double rentFeePerSlot, Boolean requireHouseHold, double rentFeePerHour, String plateNumber, Boolean isScooter) {
+    public MainItemModel(Boolean requireIdCard, String ownerFullName, String vehicleMaker, Boolean isManual, double rentFeePerDay, String imageLinkBack, int ownerID, int modelYear, Boolean isGasoline, int districtID, String vehicleModel, String imageLinkFront, double rentFeePerSlot, Boolean requireHouseHold, double rentFeePerHour, String plateNumber, Boolean isScooter, double deposit) {
         this.requireIdCard = requireIdCard;
         this.ownerFullName = ownerFullName;
         this.vehicleMaker = vehicleMaker;
@@ -39,9 +40,18 @@ public class MainItemModel implements Serializable {
         this.rentFeePerHour = rentFeePerHour;
         this.plateNumber = plateNumber;
         this.isScooter = isScooter;
+        this.deposit = deposit;
     }
 
     public MainItemModel() {
+    }
+
+    public double getDeposit() {
+        return deposit;
+    }
+
+    public void setDeposit(double deposit) {
+        this.deposit = deposit;
     }
 
     public String getPlateNumber() {

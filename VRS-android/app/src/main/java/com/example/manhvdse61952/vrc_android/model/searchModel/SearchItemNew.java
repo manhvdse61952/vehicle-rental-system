@@ -12,10 +12,10 @@ public class SearchItemNew implements Serializable {
     private String vehicleModel;
     private String imageLinkFront;
     private int discountValue;
-    private String rentFeePerSlot;
+    private String rentFeePerDay;
     private String vehicleType;
 
-    public SearchItemNew(int seat, String frameNumber, int districtID, String rentFeePerHours, String vehicleMaker, String currentStatus, String vehicleModel, String imageLinkFront, int discountValue, String rentFeePerSlot, String vehicleType) {
+    public SearchItemNew(int seat, String frameNumber, int districtID, String rentFeePerHours, String vehicleMaker, String currentStatus, String vehicleModel, String imageLinkFront, int discountValue, String rentFeePerDay, String vehicleType) {
         this.seat = seat;
         this.frameNumber = frameNumber;
         this.districtID = districtID;
@@ -25,7 +25,7 @@ public class SearchItemNew implements Serializable {
         this.vehicleModel = vehicleModel;
         this.imageLinkFront = imageLinkFront;
         this.discountValue = discountValue;
-        this.rentFeePerSlot = rentFeePerSlot;
+        this.rentFeePerDay = rentFeePerDay;
         this.vehicleType = vehicleType;
     }
 
@@ -104,12 +104,12 @@ public class SearchItemNew implements Serializable {
         this.discountValue = discountValue;
     }
 
-    public String getRentFeePerSlot() {
-        return rentFeePerSlot;
+    public String getRentFeePerDay() {
+        return rentFeePerDay;
     }
 
-    public void setRentFeePerSlot(String rentFeePerSlot) {
-        this.rentFeePerSlot = rentFeePerSlot;
+    public void setRentFeePerDay(String rentFeePerDay) {
+        this.rentFeePerDay = rentFeePerDay;
     }
 
     public String getVehicleType() {

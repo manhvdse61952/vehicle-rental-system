@@ -97,7 +97,7 @@ public class VehicleItem extends BaseAdapter {
             String price = ImmutableValue.convertPrice(obj.getRentFeePerHours());
             viewHolder.txt_main_price.setText(price + " / giờ");
         } else {
-            String price = ImmutableValue.convertPrice(obj.getRentFeePerSlot());
+            String price = ImmutableValue.convertPrice(obj.getRentFeePerDay());
             viewHolder.txt_main_price.setText(price + " / ngày");
         }
 

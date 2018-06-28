@@ -46,10 +46,12 @@ public interface VehicleAPI {
     @GET("/vehicle/getByFrameNumber/{framenumber}")
     Call<MainItemModel> getVehicleByFrameNumber(@Path("framenumber") String framenumber);
 
+    @Headers({"Accept: application/json"})
+    @GET("/vehicle/checkFrameNumberExisted/{frame}")
+    Call<Boolean> checkDuplicatedFrameNumber(@Path("frame") String frame);
 
     @Multipart
     @POST("/vehicle/create")
     Call<ResponseBody> createVehicle(@Part("data") RequestBody data, @Part MultipartBody.Part[] files);
-
 
 }

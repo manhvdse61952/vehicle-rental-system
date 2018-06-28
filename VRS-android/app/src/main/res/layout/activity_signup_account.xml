@@ -63,7 +63,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:hint="Mật khẩu"
-                android:inputType="text"
+                android:inputType="textPassword"
                 android:textColor="#000" />
 
         </android.support.design.widget.TextInputLayout>

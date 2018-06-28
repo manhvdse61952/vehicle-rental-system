@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#009688</color>
     <color name="colorPrimaryDark">#00796B</color>
-    <color name="colorAccent">#FF5722</color>
+    <color name="colorAccent">#009688</color>
     <color name="primary_text">#FFFFFF</color>
     <color name="secondary_text">#212121</color>
     <color name="colorLightPrimary">#B2DFDB</color>
@@ -11,4 +11,5 @@
 
     <color name="calendar_selected_day_bg">#009688</color>\
     <color name="calendar_selected_range_bg">#80CBC4</color>
+    <!--<color name="colorAccent">#FF5722</color>-->
 </resources>
