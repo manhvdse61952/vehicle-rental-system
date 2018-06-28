@@ -1,4 +1,4 @@
-package com.example.manhvdse61952.vrc_android.layout.main;
+package com.example.manhvdse61952.vrc_android.layout.vehicle;
 
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
@@ -23,7 +23,7 @@ import android.widget.Toast;
 
 import com.example.manhvdse61952.vrc_android.R;
 import com.example.manhvdse61952.vrc_android.api.VehicleAPI;
-import com.example.manhvdse61952.vrc_android.layout.order.MainOrderOne;
+import com.example.manhvdse61952.vrc_android.layout.main.activity_main_2;
 import com.example.manhvdse61952.vrc_android.model.searchModel.MainItemModel;
 import com.example.manhvdse61952.vrc_android.remote.ImmutableValue;
 import com.example.manhvdse61952.vrc_android.remote.RetrofitConnect;
@@ -36,8 +36,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class MainItem extends AppCompatActivity {
-    Slider sld;
+public class VehicleDetail extends AppCompatActivity {
+    ImageSlider sld;
     ViewPager vpg;
     Button btnOrderRent;
     MainItemModel mainObj = new MainItemModel();
@@ -122,7 +122,7 @@ public class MainItem extends AppCompatActivity {
                     editor.putString("vehicleName", mainObj.getVehicleMaker() + " " + mainObj.getVehicleModel());
                     editor.apply();
 
-                    sld = new Slider(MainItem.this);
+                    sld = new ImageSlider(VehicleDetail.this);
                     vpg.setAdapter(sld);
                     if (vehicleType.equals("XE_MAY")) {
                         item_engine.setText("Xăng");
@@ -168,7 +168,7 @@ public class MainItem extends AppCompatActivity {
                     ln_pickTime.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Intent it = new Intent(MainItem.this, CalendarCustom.class);
+                            Intent it = new Intent(VehicleDetail.this, CalendarCustom.class);
                             startActivity(it);
                         }
                     });
@@ -217,7 +217,7 @@ public class MainItem extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<MainItemModel> call, Throwable t) {
-                Toast.makeText(MainItem.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
+                Toast.makeText(VehicleDetail.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -226,7 +226,7 @@ public class MainItem extends AppCompatActivity {
         btnOrderRent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent it = new Intent(MainItem.this, MainOrderOne.class);
+//                Intent it = new Intent(VehicleDetail.this, MainOrderOne.class);
 //                startActivity(it);
             }
         });
@@ -237,7 +237,7 @@ public class MainItem extends AppCompatActivity {
         SharedPreferences settings = getSharedPreferences(ImmutableValue.IN_APP_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
         settings.edit().clear().commit();
         super.onBackPressed();
-        Intent it = new Intent(MainItem.this, activity_main_2.class);
+        Intent it = new Intent(VehicleDetail.this, activity_main_2.class);
         startActivity(it);
     }
 

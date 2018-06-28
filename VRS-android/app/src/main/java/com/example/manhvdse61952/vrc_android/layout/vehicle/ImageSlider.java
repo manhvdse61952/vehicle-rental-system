@@ -1,4 +1,4 @@
-package com.example.manhvdse61952.vrc_android.layout.main;
+package com.example.manhvdse61952.vrc_android.layout.vehicle;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -13,12 +13,12 @@ import android.widget.TextView;
 import com.example.manhvdse61952.vrc_android.R;
 import com.example.manhvdse61952.vrc_android.remote.ImmutableValue;
 import com.squareup.picasso.Picasso;
-public class Slider extends PagerAdapter {
+public class ImageSlider extends PagerAdapter {
 
     private LayoutInflater inflater;
     private Context ctx;
 
-    public Slider(Context ctx) {
+    public ImageSlider(Context ctx) {
         this.ctx = ctx;
     }
 

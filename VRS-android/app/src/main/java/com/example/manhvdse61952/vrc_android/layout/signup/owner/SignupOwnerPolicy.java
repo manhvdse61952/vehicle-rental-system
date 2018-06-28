@@ -20,7 +20,6 @@ import com.example.manhvdse61952.vrc_android.api.VehicleAPI;
 import com.example.manhvdse61952.vrc_android.layout.login.LoginActivity;
 import com.example.manhvdse61952.vrc_android.model.apiModel.Signup;
 import com.example.manhvdse61952.vrc_android.model.apiModel.Vehicle_New;
-import com.example.manhvdse61952.vrc_android.payload.VehiclePayload;
 import com.example.manhvdse61952.vrc_android.remote.ImmutableValue;
 import com.example.manhvdse61952.vrc_android.remote.RetrofitConnect;
 import com.fasterxml.jackson.core.JsonProcessingException;

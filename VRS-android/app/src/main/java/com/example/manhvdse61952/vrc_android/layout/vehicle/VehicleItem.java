@@ -1,9 +1,8 @@
-package com.example.manhvdse61952.vrc_android.layout.main;
+package com.example.manhvdse61952.vrc_android.layout.vehicle;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,41 +12,33 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.manhvdse61952.vrc_android.R;
-import com.example.manhvdse61952.vrc_android.api.VehicleAPI;
 import com.example.manhvdse61952.vrc_android.model.apiModel.City;
 import com.example.manhvdse61952.vrc_android.model.apiModel.District;
-import com.example.manhvdse61952.vrc_android.model.searchModel.MainItemModel;
 import com.example.manhvdse61952.vrc_android.model.searchModel.SearchItemNew;
 import com.example.manhvdse61952.vrc_android.remote.ImmutableValue;
 import com.example.manhvdse61952.vrc_android.remote.RetrofitCallAPI;
-import com.example.manhvdse61952.vrc_android.remote.RetrofitConnect;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-
-public class SearchAdapter extends BaseAdapter {
+public class VehicleItem extends BaseAdapter {
     private List<SearchItemNew> searchItemList;
     private static LayoutInflater inf = null;
     Context context = null;
 
-    public SearchAdapter(tab1 t, List<SearchItemNew> searchItemList, Context context) {
+    public VehicleItem(MotobikeTab t, List<SearchItemNew> searchItemList, Context context) {
         this.context = context;
         this.searchItemList = searchItemList;
         inf = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
-    public SearchAdapter(tab2 t, List<SearchItemNew> searchItemList, Context context) {
+    public VehicleItem(CarTab t, List<SearchItemNew> searchItemList, Context context) {
         this.context = context;
         this.searchItemList = searchItemList;
         inf = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
-    public SearchAdapter(tab3 t, List<SearchItemNew> searchItemList, Context context) {
+    public VehicleItem(TravelCarTab t, List<SearchItemNew> searchItemList, Context context) {
         this.context = context;
         this.searchItemList = searchItemList;
         inf = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -119,7 +110,7 @@ public class SearchAdapter extends BaseAdapter {
                 editor.putString("type", obj.getVehicleType());
                 editor.apply();
 
-                Intent it = new Intent(context, MainItem.class);
+                Intent it = new Intent(context, VehicleDetail.class);
                 context.startActivity(it);
             }
         });

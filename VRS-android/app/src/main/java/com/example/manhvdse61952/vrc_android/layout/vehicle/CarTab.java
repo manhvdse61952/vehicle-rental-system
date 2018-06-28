@@ -1,4 +1,4 @@
-package com.example.manhvdse61952.vrc_android.layout.main;
+package com.example.manhvdse61952.vrc_android.layout.vehicle;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,10 +10,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.manhvdse61952.vrc_android.R;
+import com.example.manhvdse61952.vrc_android.layout.main.activity_main_2;
 
-public class tab2 extends Fragment {
+public class CarTab extends Fragment {
     ListView listView;
-    SearchAdapter adapter;
+    VehicleItem adapter;
     TextView errorTab2;
 
     @Nullable
@@ -37,7 +38,7 @@ public class tab2 extends Fragment {
         } else {
             errorTab2.setVisibility(View.INVISIBLE);
             listView.setVisibility(View.VISIBLE);
-            adapter = new SearchAdapter(tab2.this, activity_main_2.listPersonalCar, getActivity());
+            adapter = new VehicleItem(CarTab.this, activity_main_2.listPersonalCar, getActivity());
             listView.setAdapter(adapter);
         }
     }

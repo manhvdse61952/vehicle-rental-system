@@ -52,21 +52,8 @@
             android:name=".layout.signup.owner.SignupOwnerPolicy"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".layout.main.MainItem"
+            android:name=".layout.vehicle.VehicleDetail"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".layout.order.MainOrderOne"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".layout.order.MainOrderTwo"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".layout.order.MainOrderThree"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".layout.order.MainOrderFour"
-            android:screenOrientation="portrait" />
-
         <meta-data
             android:name="com.google.android.gms.vision.DEPENDENCIES"
             android:value="ocr" />
@@ -104,7 +91,7 @@
             android:label="@string/title_activity_maps" />
 
         <activity android:name=".layout.signup.owner.RegistVehicle" android:screenOrientation="portrait"></activity>
-        <activity android:name=".layout.main.CalendarCustom" android:screenOrientation="portrait"></activity>
+        <activity android:name=".layout.vehicle.CalendarCustom" android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

@@ -1,4 +1,4 @@
-package com.example.manhvdse61952.vrc_android.layout.main;
+package com.example.manhvdse61952.vrc_android.layout.vehicle;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,18 +10,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.manhvdse61952.vrc_android.R;
-import com.example.manhvdse61952.vrc_android.model.searchModel.MainItemModel;
-import com.example.manhvdse61952.vrc_android.model.searchModel.SearchItemNew;
-import com.example.manhvdse61952.vrc_android.model.apiModel.VehicleInformation_New;
-import com.example.manhvdse61952.vrc_android.model.apiModel.Vehicle_New;
-import com.example.manhvdse61952.vrc_android.remote.ImmutableValue;
+import com.example.manhvdse61952.vrc_android.layout.main.activity_main_2;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class tab3 extends Fragment {
+public class TravelCarTab extends Fragment {
     ListView listView;
-    SearchAdapter adapter;
+    VehicleItem adapter;
     TextView errorTab3;
 
     @Nullable
@@ -44,7 +37,7 @@ public class tab3 extends Fragment {
         } else {
             errorTab3.setVisibility(View.INVISIBLE);
             listView.setVisibility(View.VISIBLE);
-            adapter = new SearchAdapter(tab3.this, activity_main_2.listTravelCar, getActivity());
+            adapter = new VehicleItem(TravelCarTab.this, activity_main_2.listTravelCar, getActivity());
             listView.setAdapter(adapter);
         }
 

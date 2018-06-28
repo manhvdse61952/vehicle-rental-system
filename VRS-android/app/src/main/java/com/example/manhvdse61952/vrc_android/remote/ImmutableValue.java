@@ -227,9 +227,9 @@ public class ImmutableValue {
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
                 locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
                 location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-//                if (location == null){
-//                    Toast.makeText(ctx, "Unable to get your location!", Toast.LENGTH_SHORT).show();
-//                }
+                if (location == null){
+                    Toast.makeText(ctx, "Unable to get your location!", Toast.LENGTH_SHORT).show();
+                }
             }
         }
     }

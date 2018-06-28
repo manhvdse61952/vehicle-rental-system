@@ -1,4 +1,4 @@
-package com.example.manhvdse61952.vrc_android.layout.main;
+package com.example.manhvdse61952.vrc_android.layout.vehicle;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -155,7 +155,7 @@ public class CalendarCustom extends AppCompatActivity {
                         @Override
                         public void run() {
                             progress.cancel();
-                            Intent it = new Intent(CalendarCustom.this, MainItem.class);
+                            Intent it = new Intent(CalendarCustom.this, VehicleDetail.class);
                             startActivity(it);
                         }
                     };
@@ -177,7 +177,7 @@ public class CalendarCustom extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent it = new Intent(CalendarCustom.this, MainItem.class);
+        Intent it = new Intent(CalendarCustom.this, VehicleDetail.class);
         startActivity(it);
         super.onBackPressed();
     }

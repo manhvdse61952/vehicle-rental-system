@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -24,9 +23,11 @@ import android.widget.Toast;
 import com.example.manhvdse61952.vrc_android.R;
 import com.example.manhvdse61952.vrc_android.api.VehicleAPI;
 import com.example.manhvdse61952.vrc_android.layout.login.LoginActivity;
+import com.example.manhvdse61952.vrc_android.layout.vehicle.MotobikeTab;
+import com.example.manhvdse61952.vrc_android.layout.vehicle.CarTab;
+import com.example.manhvdse61952.vrc_android.layout.vehicle.TravelCarTab;
 import com.example.manhvdse61952.vrc_android.model.apiModel.City;
 import com.example.manhvdse61952.vrc_android.model.apiModel.District;
-import com.example.manhvdse61952.vrc_android.model.searchModel.MainItemModel;
 import com.example.manhvdse61952.vrc_android.model.searchModel.SearchItemNew;
 import com.example.manhvdse61952.vrc_android.remote.ImmutableValue;
 import com.example.manhvdse61952.vrc_android.remote.RetrofitCallAPI;
@@ -77,13 +78,13 @@ public class activity_main_2 extends AppCompatActivity
         locationObj.checkAddressPermission(activity_main_2.this, activity_main_2.this);
 
 
-        //getAllVehicleByDistrictID(44);
-        int districtID = getDistrictIdByName(locationObj.district.trim());
-        if (districtID == 0){
-            getAllVehicleByDistrictID(44);
-        } else {
-            getAllVehicleByDistrictID(districtID);
-        }
+        getAllVehicleByDistrictID(44);
+//        int districtID = getDistrictIdByName(locationObj.district.trim());
+//        if (districtID == 0){
+//            getAllVehicleByDistrictID(44);
+//        } else {
+//            getAllVehicleByDistrictID(districtID);
+//        }
 
         edtMainSearch = (EditText) findViewById(R.id.edtMainSearch);
         main_search = (ImageView) findViewById(R.id.main_search);
@@ -170,9 +171,9 @@ public class activity_main_2 extends AppCompatActivity
 
     private void setupViewPager(ViewPager viewPager) {
         secAdapter = new SectionPageAdapter(getSupportFragmentManager());
-        secAdapter.addFragment(new tab1(), "Xe máy");
-        secAdapter.addFragment(new tab2(), "Ô tô cá nhân");
-        secAdapter.addFragment(new tab3(), "Ô tô du lịch");
+        secAdapter.addFragment(new MotobikeTab(), "Xe máy");
+        secAdapter.addFragment(new CarTab(), "Ô tô cá nhân");
+        secAdapter.addFragment(new TravelCarTab(), "Ô tô du lịch");
         viewPager.setAdapter(secAdapter);
     }
 
@@ -350,7 +351,7 @@ public class activity_main_2 extends AppCompatActivity
                 tabLayout = (TabLayout) findViewById(R.id.tabs);
                 tabLayout.setupWithViewPager(viewPager);
                 createTabIcons();
-                //Toast.makeText(activity_main_2.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity_main_2.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
             }
         });
     }
