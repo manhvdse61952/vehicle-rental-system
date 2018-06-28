@@ -30,6 +30,6 @@ public class OrderDetailActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 //        super.onBackPressed();
-        Toast.makeText(this, "Hợp đồng đang có hiệu lực, không thể chọn xe khác!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Hợp đồng đang có hiệu lực, không thể quay lại!", Toast.LENGTH_SHORT).show();
     }
 }

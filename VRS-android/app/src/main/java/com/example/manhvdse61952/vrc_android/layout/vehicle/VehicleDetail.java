@@ -42,6 +42,7 @@ public class VehicleDetail extends AppCompatActivity {
     ViewPager vpg;
     Button btnOrderRent;
     MainItemModel mainObj = new MainItemModel();
+    int selectTab = 0;
 
     TextView item_price_slot, item_price_day, item_seat, item_year,
             item_plateNumber, item_ownerName, item_engine, item_tranmission, txt_hours, txt_day_start,
@@ -129,6 +130,7 @@ public class VehicleDetail extends AppCompatActivity {
                         sld = new ImageSlider(VehicleDetail.this);
                         vpg.setAdapter(sld);
                         if (vehicleType.equals("XE_MAY")) {
+                            selectTab = 0;
                             item_engine.setText("Xăng");
                             if (mainObj.getScooter() == true) {
                                 item_tranmission.setText("Xe tay ga");
@@ -136,6 +138,13 @@ public class VehicleDetail extends AppCompatActivity {
                                 item_tranmission.setText("Xe số");
                             }
                         } else {
+                            if (vehicleType.equals("XE_CA_NHAN")){
+                                selectTab = 1;
+                            } else if (vehicleType.equals("XE_DU_LICH")) {
+                                selectTab = 2;
+                            }
+
+
                             if (mainObj.getGasoline() == true) {
                                 item_engine.setText("Xăng");
                             } else {
@@ -247,7 +256,10 @@ public class VehicleDetail extends AppCompatActivity {
     public void onBackPressed() {
         SharedPreferences settings = getSharedPreferences(ImmutableValue.IN_APP_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
         settings.edit().clear().commit();
-        super.onBackPressed();
+        //super.onBackPressed();
+        SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
+        editor.putInt("tabIndex", selectTab);
+        editor.apply();
         Intent it = new Intent(VehicleDetail.this, activity_main_2.class);
         startActivity(it);
     }

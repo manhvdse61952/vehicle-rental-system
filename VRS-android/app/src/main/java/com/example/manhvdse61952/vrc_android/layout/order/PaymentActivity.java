@@ -3,6 +3,7 @@ package com.example.manhvdse61952.vrc_android.layout.order;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 
 import com.example.manhvdse61952.vrc_android.R;
 import com.example.manhvdse61952.vrc_android.layout.main.activity_main_2;
+import com.example.manhvdse61952.vrc_android.remote.ImmutableValue;
 
 public class PaymentActivity extends AppCompatActivity {
 
@@ -23,6 +25,8 @@ public class PaymentActivity extends AppCompatActivity {
         btn_pay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SharedPreferences settings = getSharedPreferences(ImmutableValue.IN_APP_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
+                settings.edit().clear().commit();
                 AlertDialog.Builder builder = new AlertDialog.Builder(PaymentActivity.this);
                 builder.setMessage("Hợp đồng hoàn tất! Bạn có thể xem lại lịch sử hợp đồng ở menu. Cảm ơn bạn đã sử dụng dịch vụ của VRS");
                 builder.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {

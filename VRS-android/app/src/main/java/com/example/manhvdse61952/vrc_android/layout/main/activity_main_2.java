@@ -79,8 +79,8 @@ public class activity_main_2 extends AppCompatActivity
 
 
         getAllVehicleByDistrictID(44);
-//        int districtID = getDistrictIdByName(locationObj.district.trim());
-//        if (districtID == 0){
+//        int districtID = getDistrictIdByName("quận bình thạnh");
+//        if (districtID == 0) {
 //            getAllVehicleByDistrictID(44);
 //        } else {
 //            getAllVehicleByDistrictID(districtID);
@@ -130,9 +130,9 @@ public class activity_main_2 extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         SharedPreferences editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE);
         View hView = navigationView.getHeaderView(0);
-        TextView txtNavFullname = (TextView)hView.findViewById(R.id.txtNavFullname);
-        TextView txtNavUsername = (TextView)hView.findViewById(R.id.txtNavUsername);
-        TextView txtNavRole = (TextView)hView.findViewById(R.id.txtNavRole);
+        TextView txtNavFullname = (TextView) hView.findViewById(R.id.txtNavFullname);
+        TextView txtNavUsername = (TextView) hView.findViewById(R.id.txtNavUsername);
+        TextView txtNavRole = (TextView) hView.findViewById(R.id.txtNavRole);
         txtNavUsername.setText(editor.getString("usernameAfterLogin", "Empty"));
         txtNavFullname.setText(editor.getString("fullName", "Empty"));
         if (editor.getString("roleName", "ROLE_USER").equals("ROLE_USER")) {
@@ -166,7 +166,6 @@ public class activity_main_2 extends AppCompatActivity
         tabThree.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_bus_green, 0, 0);
         tabThree.setTextSize(15);
         tabLayout.getTabAt(2).setCustomView(tabThree);
-
     }
 
     private void setupViewPager(ViewPager viewPager) {
@@ -184,7 +183,7 @@ public class activity_main_2 extends AppCompatActivity
     //////////////////////////////////// USE FOR SEARCH //////////////////////////////////
     private ArrayList<SearchAddressModel> initData() {
         ArrayList<SearchAddressModel> items = new ArrayList<>();
-        for (int i = 0; i<listAllDistrict.size();i++){
+        for (int i = 0; i < listAllDistrict.size(); i++) {
             items.add(new SearchAddressModel(listAllDistrict.get(i).getDistrictName()));
         }
         return items;
@@ -249,11 +248,11 @@ public class activity_main_2 extends AppCompatActivity
         return true;
     }
 
-    private void getAllDistrict(){
+    private void getAllDistrict() {
         List<City> listCity = RetrofitCallAPI.lisCityTest;
-        for (int i = 0; i< listCity.size(); i++){
+        for (int i = 0; i < listCity.size(); i++) {
             List<District> listDistrict = listCity.get(i).getDistrict();
-            for (int j=0; j<listDistrict.size();j++){
+            for (int j = 0; j < listDistrict.size(); j++) {
                 District districtObj = new District();
                 districtObj.setId(listDistrict.get(j).getId());
                 districtObj.setDistrictName(listDistrict.get(j).getDistrictName() + ", " + listCity.get(i).cityName);
@@ -262,13 +261,19 @@ public class activity_main_2 extends AppCompatActivity
         }
     }
 
-    private int getDistrictIdByName(String districtName){
+    private int getDistrictIdByName(String districtName) {
         List<City> listCity = RetrofitCallAPI.lisCityTest;
         int districtID = 0;
-        for (int i = 0; i< listCity.size(); i++){
+        for (int i = 0; i < listCity.size(); i++) {
             List<District> listDistrict = listCity.get(i).getDistrict();
-            for (int j=0; j<listDistrict.size();j++){
-                if (listDistrict.get(j).getDistrictName().toLowerCase().equals(districtName.toLowerCase())){
+            for (int j = 0; j < listDistrict.size(); j++) {
+                //String districtConvert = listDistrict.get(j).getDistrictName().toLowerCase().replaceAll("[quận|huyện]", "");
+//                if (districtConvert.equals(districtName)){
+//                    districtID = listDistrict.get(j).getId();
+//                    break;
+//                }
+
+                if (listDistrict.get(j).getDistrictName().toLowerCase().equals(districtName)) {
                     districtID = listDistrict.get(j).getId();
                     break;
                 }
@@ -278,7 +283,7 @@ public class activity_main_2 extends AppCompatActivity
     }
 
     /// Get all vehicle by districtID ///
-    public void getAllVehicleByDistrictID(int districtID){
+    public void getAllVehicleByDistrictID(int districtID) {
         Retrofit test = RetrofitConnect.getClient();
         final VehicleAPI testAPI = test.create(VehicleAPI.class);
         Call<List<SearchItemNew>> responseBodyCall = testAPI.getVehicleByDistrict(districtID);
@@ -286,14 +291,14 @@ public class activity_main_2 extends AppCompatActivity
         responseBodyCall.enqueue(new Callback<List<SearchItemNew>>() {
             @Override
             public void onResponse(Call<List<SearchItemNew>> call, Response<List<SearchItemNew>> response) {
-                if (response.code() == 200){
-                    if (response != null){
+                if (response.code() == 200) {
+                    if (response != null) {
                         listMotorbike = new ArrayList<>();
                         listPersonalCar = new ArrayList<>();
                         listTravelCar = new ArrayList<>();
                         List<SearchItemNew> listAll = response.body();
-                        for (int i = 0; i < listAll.size() ; i++){
-                            if (listAll.get(i).getVehicleType().equals("XE_MAY")){
+                        for (int i = 0; i < listAll.size(); i++) {
+                            if (listAll.get(i).getVehicleType().equals("XE_MAY")) {
                                 SearchItemNew searchObj = new SearchItemNew();
                                 searchObj.setSeat(listAll.get(i).getSeat());
                                 searchObj.setFrameNumber(listAll.get(i).getFrameNumber());
@@ -307,7 +312,7 @@ public class activity_main_2 extends AppCompatActivity
                                 searchObj.setRentFeePerDay(listAll.get(i).getRentFeePerDay());
                                 searchObj.setVehicleType(listAll.get(i).getVehicleType());
                                 listMotorbike.add(searchObj);
-                            } else if (listAll.get(i).getVehicleType().equals("XE_CA_NHAN")){
+                            } else if (listAll.get(i).getVehicleType().equals("XE_CA_NHAN")) {
                                 SearchItemNew searchObj = new SearchItemNew();
                                 searchObj.setSeat(listAll.get(i).getSeat());
                                 searchObj.setFrameNumber(listAll.get(i).getFrameNumber());
@@ -321,7 +326,7 @@ public class activity_main_2 extends AppCompatActivity
                                 searchObj.setRentFeePerDay(listAll.get(i).getRentFeePerDay());
                                 searchObj.setVehicleType(listAll.get(i).getVehicleType());
                                 listPersonalCar.add(searchObj);
-                            } else if (listAll.get(i).getVehicleType().equals("XE_DU_LICH")){
+                            } else if (listAll.get(i).getVehicleType().equals("XE_DU_LICH")) {
                                 SearchItemNew searchObj = new SearchItemNew();
                                 searchObj.setSeat(listAll.get(i).getSeat());
                                 searchObj.setFrameNumber(listAll.get(i).getFrameNumber());
@@ -342,6 +347,9 @@ public class activity_main_2 extends AppCompatActivity
                         tabLayout = (TabLayout) findViewById(R.id.tabs);
                         tabLayout.setupWithViewPager(viewPager);
                         createTabIcons();
+                        SharedPreferences editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE);
+                        int tabIndex = editor.getInt("tabIndex", 0);
+                        viewPager.setCurrentItem(tabIndex);
                     }
                 } else {
                     Toast.makeText(activity_main_2.this, "Đã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
