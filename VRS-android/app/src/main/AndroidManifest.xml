@@ -54,6 +54,7 @@
         <activity
             android:name=".layout.vehicle.VehicleDetail"
             android:screenOrientation="portrait" />
+
         <meta-data
             android:name="com.google.android.gms.vision.DEPENDENCIES"
             android:value="ocr" />
@@ -86,12 +87,18 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:screenOrientation="portrait"
             android:name=".layout.order.MapsActivity"
-            android:label="@string/title_activity_maps" />
-
-        <activity android:name=".layout.signup.owner.RegistVehicle" android:screenOrientation="portrait"></activity>
-        <activity android:name=".layout.vehicle.CalendarCustom" android:screenOrientation="portrait"></activity>
+            android:label="@string/title_activity_maps"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".layout.signup.owner.RegistVehicle"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".layout.vehicle.CalendarCustom"
+            android:screenOrientation="portrait" />
+        <activity android:name=".layout.order.OrderDetailActivity" />
+        <activity android:name=".layout.vehicle.ManageVehicleActivity" />
+        <activity android:name=".layout.order.PaymentActivity"></activity>
     </application>
 
 </manifest>
