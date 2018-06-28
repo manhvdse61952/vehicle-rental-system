@@ -103,16 +103,22 @@ public class SignupOwnerPolicy extends AppCompatActivity {
                     responseBodyCall.enqueue(new Callback<ResponseBody>() {
                         @Override
                         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                            JSONObject testObj = null;
-                            try {
-                                testObj = new JSONObject(response.body().string());
-                                SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
-                                editor.putString("user-id", testObj.get("message").toString());
-                                editor.apply();
-                                SharedPreferences editor2 = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE);
-                                createVehicle(editor2.getString("user-id", "1"));
-                            } catch (Exception e) {
-                                e.printStackTrace();
+                            if (response.code() == 200){
+                                JSONObject testObj = null;
+                                try {
+                                    testObj = new JSONObject(response.body().string());
+                                    SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
+                                    editor.putString("user-id", testObj.get("message").toString());
+                                    editor.apply();
+                                    SharedPreferences editor2 = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE);
+                                    createVehicle(editor2.getString("user-id", "1"));
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            else {
+                                dialog.dismiss();
+                                Toast.makeText(SignupOwnerPolicy.this, "Đã xảy ra lỗi, vui lòng thử lại", Toast.LENGTH_SHORT).show();
                             }
 
                         }
@@ -195,19 +201,25 @@ public class SignupOwnerPolicy extends AppCompatActivity {
             responseBodyCall.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    dialog.dismiss();
-                    AlertDialog.Builder builder = new AlertDialog.Builder(SignupOwnerPolicy.this);
-                    builder.setMessage("Chúng tôi sẽ gửi email cho bạn sau khi xác thực tài khoản thành công ! Cảm ơn bạn đã đăng ký VRS");
-                    builder.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            Intent it = new Intent(SignupOwnerPolicy.this, LoginActivity.class);
-                            startActivity(it);
-                        }
-                    });
-                    AlertDialog alertDialog = builder.create();
-                    alertDialog.show();
-                    alertDialog.setCanceledOnTouchOutside(false);
+                    if (response.code() == 200){
+                        dialog.dismiss();
+                        AlertDialog.Builder builder = new AlertDialog.Builder(SignupOwnerPolicy.this);
+                        builder.setMessage("Chúng tôi sẽ gửi email cho bạn sau khi xác thực tài khoản thành công ! Cảm ơn bạn đã đăng ký VRS");
+                        builder.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Intent it = new Intent(SignupOwnerPolicy.this, LoginActivity.class);
+                                startActivity(it);
+                            }
+                        });
+                        AlertDialog alertDialog = builder.create();
+                        alertDialog.show();
+                        alertDialog.setCanceledOnTouchOutside(false);
+                    }
+                    else {
+                        dialog.dismiss();
+                        Toast.makeText(SignupOwnerPolicy.this, "Đã xảy ra lỗi, vui lòng thử lại", Toast.LENGTH_SHORT).show();
+                    }
                 }
 
                 @Override
