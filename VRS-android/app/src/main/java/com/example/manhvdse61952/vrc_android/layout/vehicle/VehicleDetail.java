@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.example.manhvdse61952.vrc_android.R;
 import com.example.manhvdse61952.vrc_android.api.VehicleAPI;
 import com.example.manhvdse61952.vrc_android.layout.main.activity_main_2;
+import com.example.manhvdse61952.vrc_android.layout.order.OrderDetailActivity;
 import com.example.manhvdse61952.vrc_android.model.searchModel.MainItemModel;
 import com.example.manhvdse61952.vrc_android.remote.ImmutableValue;
 import com.example.manhvdse61952.vrc_android.remote.RetrofitConnect;
@@ -236,8 +237,8 @@ public class VehicleDetail extends AppCompatActivity {
         btnOrderRent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent it = new Intent(VehicleDetail.this, MainOrderOne.class);
-//                startActivity(it);
+                Intent it = new Intent(VehicleDetail.this, OrderDetailActivity.class);
+                startActivity(it);
             }
         });
     }
