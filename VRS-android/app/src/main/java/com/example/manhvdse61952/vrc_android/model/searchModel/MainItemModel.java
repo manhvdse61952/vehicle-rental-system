@@ -21,8 +21,10 @@ public class MainItemModel implements Serializable {
     private String plateNumber;
     private Boolean isScooter;
     private double deposit;
+    private int rentFeePerHourID;
+    private int rentFeePerDayID;
 
-    public MainItemModel(Boolean requireIdCard, String ownerFullName, String vehicleMaker, Boolean isManual, double rentFeePerDay, String imageLinkBack, int ownerID, int modelYear, Boolean isGasoline, int districtID, String vehicleModel, String imageLinkFront, double rentFeePerSlot, Boolean requireHouseHold, double rentFeePerHour, String plateNumber, Boolean isScooter, double deposit) {
+    public MainItemModel(Boolean requireIdCard, String ownerFullName, String vehicleMaker, Boolean isManual, double rentFeePerDay, String imageLinkBack, int ownerID, int modelYear, Boolean isGasoline, int districtID, String vehicleModel, String imageLinkFront, double rentFeePerSlot, Boolean requireHouseHold, double rentFeePerHour, String plateNumber, Boolean isScooter, double deposit, int rentFeePerHourID, int rentFeePerDayID) {
         this.requireIdCard = requireIdCard;
         this.ownerFullName = ownerFullName;
         this.vehicleMaker = vehicleMaker;
@@ -41,6 +43,24 @@ public class MainItemModel implements Serializable {
         this.plateNumber = plateNumber;
         this.isScooter = isScooter;
         this.deposit = deposit;
+        this.rentFeePerHourID = rentFeePerHourID;
+        this.rentFeePerDayID = rentFeePerDayID;
+    }
+
+    public int getRentFeePerHourID() {
+        return rentFeePerHourID;
+    }
+
+    public void setRentFeePerHourID(int rentFeePerHourID) {
+        this.rentFeePerHourID = rentFeePerHourID;
+    }
+
+    public int getRentFeePerDayID() {
+        return rentFeePerDayID;
+    }
+
+    public void setRentFeePerDayID(int rentFeePerDayID) {
+        this.rentFeePerDayID = rentFeePerDayID;
     }
 
     public MainItemModel() {

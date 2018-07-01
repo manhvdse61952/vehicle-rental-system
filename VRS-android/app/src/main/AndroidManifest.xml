@@ -99,6 +99,9 @@
         <activity android:name=".layout.order.OrderDetailActivity" />
         <activity android:name=".layout.vehicle.ManageVehicleActivity" />
         <activity android:name=".layout.order.PaymentActivity"></activity>
+
+        <activity android:name=".layout.order.PaypalLogin"></activity>
+        <activity android:name=".layout.order.PaymentDetail"></activity>
     </application>
 
 </manifest>

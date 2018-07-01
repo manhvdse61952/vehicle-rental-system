@@ -1,10 +1,12 @@
 package com.example.manhvdse61952.vrc_android.layout.main;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -128,7 +130,7 @@ public class activity_main_2 extends AppCompatActivity
         //Use for nav layout
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        SharedPreferences editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE);
+        SharedPreferences editor = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
         View hView = navigationView.getHeaderView(0);
         TextView txtNavFullname = (TextView) hView.findViewById(R.id.txtNavFullname);
         TextView txtNavUsername = (TextView) hView.findViewById(R.id.txtNavUsername);
@@ -196,9 +198,30 @@ public class activity_main_2 extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
-            Intent it = new Intent(activity_main_2.this, LoginActivity.class);
-            startActivity(it);
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Bạn có chắc chắn muốn đăng xuất ?").setCancelable(false)
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            SharedPreferences settings = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
+                            settings.edit().clear().commit();
+                            SharedPreferences settings_2 = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE);
+                            settings_2.edit().clear().commit();
+                            SharedPreferences settings_3 = getSharedPreferences(ImmutableValue.IN_APP_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
+                            settings_3.edit().clear().commit();
+                            Intent it = new Intent(activity_main_2.this, LoginActivity.class);
+                            startActivity(it);
+                        }
+                    })
+                    .setNegativeButton("Không", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+            dialog.setCanceledOnTouchOutside(false);
         }
     }
 
@@ -239,12 +262,33 @@ public class activity_main_2 extends AppCompatActivity
 //        }
 
         if (id == R.id.nav_logout) {
-            Intent it = new Intent(activity_main_2.this, LoginActivity.class);
-            startActivity(it);
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Bạn có chắc chắn muốn đăng xuất ?").setCancelable(false)
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            SharedPreferences settings = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
+                            settings.edit().clear().commit();
+                            SharedPreferences settings_2 = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE);
+                            settings_2.edit().clear().commit();
+                            SharedPreferences settings_3 = getSharedPreferences(ImmutableValue.IN_APP_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
+                            settings_3.edit().clear().commit();
+                            Intent it = new Intent(activity_main_2.this, LoginActivity.class);
+                            startActivity(it);
+                            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                            drawer.closeDrawer(GravityCompat.START);
+                        }
+                    })
+                    .setNegativeButton("Không", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+            dialog.setCanceledOnTouchOutside(false);
         }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
@@ -347,7 +391,7 @@ public class activity_main_2 extends AppCompatActivity
                         tabLayout = (TabLayout) findViewById(R.id.tabs);
                         tabLayout.setupWithViewPager(viewPager);
                         createTabIcons();
-                        SharedPreferences editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE);
+                        SharedPreferences editor = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
                         int tabIndex = editor.getInt("tabIndex", 0);
                         viewPager.setCurrentItem(tabIndex);
                     }

@@ -38,7 +38,7 @@ public class ImageSlider extends PagerAdapter {
         View v = inflater.inflate(R.layout.activity_main_item_slider, container, false);
         ImageView img = (ImageView) v.findViewById(R.id.sliderImgItem);
         TextView txtTitle = (TextView) v.findViewById(R.id.txtTitle);
-        SharedPreferences editor = ctx.getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, ctx.MODE_PRIVATE);
+        SharedPreferences editor = ctx.getSharedPreferences(ImmutableValue.IN_APP_SHARED_PREFERENCES_CODE, ctx.MODE_PRIVATE);
         String imageFront = editor.getString("imageFront", "");
         String imageBack = editor.getString("imageBack", "");
         String vehicleName = editor.getString("vehicleName", "");

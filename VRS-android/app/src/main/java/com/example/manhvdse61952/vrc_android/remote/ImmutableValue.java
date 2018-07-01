@@ -56,7 +56,6 @@ import java.util.Locale;
 import id.zelory.compressor.Compressor;
 
 public class ImmutableValue {
-    public static final String MESSAGE_CODE = "VRS10";
 
     public static String picturePath = "";
     ///////////////////// camera variable /////////////////////
@@ -71,8 +70,11 @@ public class ImmutableValue {
     public static final int CAMERA_SELECT_IMAGE_CODE_2 = 2;
     public static final int CAMERA_SELECT_IMAGE_CODE_3 = 3;
 
+    /////////////////////////// main layout /////////////////
+
     public static final String SHARED_PREFERENCES_CODE = "VRS_GLOBAL_VALUE";
     public static final String IN_APP_SHARED_PREFERENCES_CODE = "VRS_LOCAL_VALUE";
+    public static final String MAIN_SHARED_PREFERENCES_CODE = "VRS_MAIN_VALUE";
 
     public static List<String> listVehicleMaker;
     public static List<String> listVehicleModelTwo = new ArrayList<>();
@@ -83,7 +85,9 @@ public class ImmutableValue {
     public static double longtitudeCurrent = 0, latitudeCurrent = 0;
     public static String address = "", city = "", country = "", district = "", knownName = "";
     public static final int REQUEST_LOCATION = 50;
-    ////////////////////////////////////////////////////////////
+    ////////////////////////// Paypal ///////////////////
+    public static final int PAYPAL_REQUEST_CODE = 301;
+
 
     ///////////////////////////////////// USE FOR CAMERA //////////////////////////////////////
     //check camera permission
@@ -228,7 +232,7 @@ public class ImmutableValue {
                 locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
                 location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                 if (location == null){
-                    Toast.makeText(ctx, "Unable to get your location!", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(ctx, "Unable to get your location!", Toast.LENGTH_SHORT).show();
                 }
             }
         }
@@ -240,8 +244,8 @@ public class ImmutableValue {
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        getLocation(ctx, atv);
                         ctx.startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                        getLocation(ctx, atv);
                     }
                 })
                 .setNegativeButton("Tắt ứng dụng", new DialogInterface.OnClickListener() {

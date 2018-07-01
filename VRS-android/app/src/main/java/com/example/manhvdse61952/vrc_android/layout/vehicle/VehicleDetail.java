@@ -25,6 +25,7 @@ import com.example.manhvdse61952.vrc_android.R;
 import com.example.manhvdse61952.vrc_android.api.VehicleAPI;
 import com.example.manhvdse61952.vrc_android.layout.main.activity_main_2;
 import com.example.manhvdse61952.vrc_android.layout.order.OrderDetailActivity;
+import com.example.manhvdse61952.vrc_android.layout.order.PaypalLogin;
 import com.example.manhvdse61952.vrc_android.model.searchModel.MainItemModel;
 import com.example.manhvdse61952.vrc_android.remote.ImmutableValue;
 import com.example.manhvdse61952.vrc_android.remote.RetrofitConnect;
@@ -43,6 +44,7 @@ public class VehicleDetail extends AppCompatActivity {
     Button btnOrderRent;
     MainItemModel mainObj = new MainItemModel();
     int selectTab = 0;
+    Double totalMoney = 0.0;
 
     TextView item_price_slot, item_price_day, item_seat, item_year,
             item_plateNumber, item_ownerName, item_engine, item_tranmission, txt_hours, txt_day_start,
@@ -107,7 +109,6 @@ public class VehicleDetail extends AppCompatActivity {
         txt_day_end.setText(endDate);
         txt_day_rent.setText(totalDay + "");
         txt_hour_rent.setText(totalHour + "");
-        txt_minute_rent.setText(totalMinute + "");
 
 
         Retrofit test = RetrofitConnect.getClient();
@@ -121,7 +122,7 @@ public class VehicleDetail extends AppCompatActivity {
                         mainObj = new MainItemModel();
                         mainObj = response.body();
                         // use for init layout
-                        SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
+                        SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.IN_APP_SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
                         editor.putString("imageFront", mainObj.getImageLinkFront());
                         editor.putString("imageBack", mainObj.getImageLinkBack());
                         editor.putString("vehicleName", mainObj.getVehicleMaker() + " " + mainObj.getVehicleModel());
@@ -210,16 +211,23 @@ public class VehicleDetail extends AppCompatActivity {
                         Double minuteMoney = 0.0;
                         if (totalMinute >= 0 && totalMinute <= 7) {
                             minuteMoney = 0.0;
+                            txt_minute_rent.setText("~ 0");
                         } else if (totalMinute > 7 && totalMinute <= 22) {
                             minuteMoney = mainObj.getRentFeePerHour() / 4;
+                            txt_minute_rent.setText("~ 15");
                         } else if (totalMinute > 22 && totalMinute <= 37) {
                             minuteMoney = mainObj.getRentFeePerHour() / 2;
+                            txt_minute_rent.setText("~ 30");
                         } else if (totalMinute > 37 && totalMinute <= 50) {
                             minuteMoney = mainObj.getRentFeePerHour() / 4 * 3;
+                            txt_minute_rent.setText("~ 45");
                         } else if (totalMinute > 50 && totalMinute <= 59) {
                             minuteMoney = mainObj.getRentFeePerHour();
+                            txt_minute_rent.setText("~ 55");
                         }
-                        Double totalMoney = dayMoney + hourMoney + minuteMoney;
+                        totalMoney = 0.0;
+                        //totalMoney = dayMoney + hourMoney + minuteMoney;
+                        totalMoney = 100.0;
                         String showDayMoney = ImmutableValue.convertPrice(nf.format(dayMoney));
                         String showHourMoney = ImmutableValue.convertPrice(nf.format(hourMoney));
                         String showMinuteMoney = ImmutableValue.convertPrice(nf.format(minuteMoney));
@@ -246,7 +254,9 @@ public class VehicleDetail extends AppCompatActivity {
         btnOrderRent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent it = new Intent(VehicleDetail.this, OrderDetailActivity.class);
+                SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.IN_APP_SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
+                editor.putString("totalMoney", Double.toString(totalMoney));
+                Intent it = new Intent(VehicleDetail.this, PaypalLogin.class);
                 startActivity(it);
             }
         });
@@ -256,8 +266,7 @@ public class VehicleDetail extends AppCompatActivity {
     public void onBackPressed() {
         SharedPreferences settings = getSharedPreferences(ImmutableValue.IN_APP_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
         settings.edit().clear().commit();
-        //super.onBackPressed();
-        SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
+        SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
         editor.putInt("tabIndex", selectTab);
         editor.apply();
         Intent it = new Intent(VehicleDetail.this, activity_main_2.class);

@@ -17,35 +17,19 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.manhvdse61952.vrc_android.R;
-import com.example.manhvdse61952.vrc_android.api.VehicleAPI;
 import com.example.manhvdse61952.vrc_android.layout.main.activity_main_2;
 import com.example.manhvdse61952.vrc_android.layout.signup.customer.SignupAccountActivity;
-import com.example.manhvdse61952.vrc_android.layout.signup.customer.SignupRoleActivity;
-import com.example.manhvdse61952.vrc_android.layout.signup.customer.SignupUserInfoActivity;
-import com.example.manhvdse61952.vrc_android.layout.signup.owner.RegistVehicle;
-import com.example.manhvdse61952.vrc_android.layout.signup.owner.SignupOwnerOne;
-import com.example.manhvdse61952.vrc_android.layout.signup.owner.SignupOwnerPolicy;
-import com.example.manhvdse61952.vrc_android.model.apiModel.City;
-import com.example.manhvdse61952.vrc_android.model.apiModel.Login;
+import com.example.manhvdse61952.vrc_android.layout.vehicle.VehicleDetail;
 import com.example.manhvdse61952.vrc_android.remote.ImmutableValue;
 import com.example.manhvdse61952.vrc_android.remote.RetrofitCallAPI;
-import com.example.manhvdse61952.vrc_android.remote.RetrofitConnect;
 import com.example.manhvdse61952.vrc_android.remote.Validate;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -81,11 +65,6 @@ public class LoginActivity extends AppCompatActivity {
         testAPI.getAllAddress(dialog, LoginActivity.this);
         }
 
-        //Clear shared preferences
-        SharedPreferences settings = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE);
-        settings.edit().clear().commit();
-        SharedPreferences settings_2 = getSharedPreferences(ImmutableValue.IN_APP_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
-        settings_2.edit().clear().commit();
 
         //Declare id
         username_txt = (TextInputLayout) findViewById(R.id.username_txt);
@@ -97,6 +76,21 @@ public class LoginActivity extends AppCompatActivity {
         //Check location of user
         locationObj = new ImmutableValue();
         locationObj.checkAddressPermission(LoginActivity.this, LoginActivity.this);
+
+
+
+        //Accept user go to main layout without login
+        SharedPreferences editor = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
+        SharedPreferences editor2 = getSharedPreferences(ImmutableValue.IN_APP_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
+        int usernameID = editor.getInt("userID", 0);
+        String vehicleID = editor2.getString("ID", "Empty");
+        if (usernameID != 0 && !vehicleID.equals("Empty")){
+            Intent it = new Intent(LoginActivity.this, VehicleDetail.class);
+            startActivity(it);
+        } else if (usernameID != 0 && vehicleID.equals("Empty")){
+            Intent it = new Intent(LoginActivity.this, activity_main_2.class);
+            startActivity(it);
+        }
 
         //Login button
         btnLogin.setOnClickListener(new View.OnClickListener() {
@@ -156,44 +150,11 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-//    private void getVehicleModelPartOne() {
-//        if (ImmutableValue.listVehicleMaker.size() != 0) {
-//            if (i >= ImmutableValue.listVehicleMaker.size() / 3) {
-//                dialog.dismiss();
-//                Intent it = new Intent(LoginActivity.this, SignupAccountActivity.class);
-//                startActivity(it);
-//                return;
-//            }
-//
-//            i++;
-//            Retrofit test = RetrofitConnect.getClient();
-//            final VehicleAPI testAPI = test.create(VehicleAPI.class);
-//            Call<List<String>> responseBodyCall = testAPI.getVehicleModel(ImmutableValue.listVehicleMaker.get(i).toString());
-//
-//            responseBodyCall.enqueue(new Callback<List<String>>() {
-//                @Override
-//                public void onResponse(Call<List<String>> call, Response<List<String>> response) {
-//                    if (response.body() != null) {
-//                        for (int j = 0; j < response.body().size(); j++) {
-//                            ImmutableValue.listVehicleModelOne.add(ImmutableValue.listVehicleMaker.get(i).toString() +
-//                                    " " + response.body().get(j).toString());
-//                        }
-//                    }
-//                    getVehicleModelPartOne();
-//                }
-//
-//                @Override
-//                public void onFailure(Call<List<String>> call, Throwable t) {
-//                    dialog.dismiss();
-//                    Toast.makeText(LoginActivity.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
-//                }
-//            });
-//        } else {
-//            dialog = ProgressDialog.show(LoginActivity.this, "Hệ thống",
-//                    "Vui lòng đợi ...", true);
-//            ImmutableValue.listVehicleModelOne = new ArrayList<>();
-//            getVehicleModelPartOne();
-//        }
-//
-//    }
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
 }

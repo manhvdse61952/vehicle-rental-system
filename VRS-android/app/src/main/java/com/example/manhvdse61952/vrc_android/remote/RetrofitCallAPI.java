@@ -59,13 +59,17 @@ public class RetrofitCallAPI {
                 } else {
                     Account accObj = new Account();
                     accObj = response.body();
-                    SharedPreferences.Editor editor = ctx.getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, ctx.MODE_PRIVATE).edit();
+                    SharedPreferences.Editor editor = ctx.getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, ctx.MODE_PRIVATE).edit();
                     editor.putString("usernameAfterLogin", username);
                     editor.putInt("userID", accObj.getUserID());
                     editor.putString("accessToken", accObj.getAccessToken());
                     editor.putString("roleName", accObj.getRoleName());
                     editor.putString("fullName", accObj.getFullname());
                     editor.apply();
+
+                    SharedPreferences.Editor tempEditor = ctx.getSharedPreferences(ImmutableValue.IN_APP_SHARED_PREFERENCES_CODE, ctx.MODE_PRIVATE).edit();
+                    tempEditor.putString("ID", "Empty");
+                    tempEditor.apply();
                     Intent it = new Intent(ctx, activity_main_2.class);
                     ctx.startActivity(it);
                 }
@@ -290,30 +294,6 @@ public class RetrofitCallAPI {
         });
     }
 
-    /// get all vehicle year by maker and model ///
-//    public List<String> getAllYear(String maker, String model) {
-//        vehicleYear = new ArrayList<>();
-//        Retrofit test = RetrofitConnect.getClient();
-//        final VehicleAPI testAPI = test.create(VehicleAPI.class);
-//        Call<List<String>> responseBodyCall = testAPI.getVehicleYear(maker, model);
-//
-//        responseBodyCall.enqueue(new Callback<List<String>>() {
-//            @Override
-//            public void onResponse(Call<List<String>> call, Response<List<String>> response) {
-//                if (response.body() != null) {
-//                    for (int i = 0; i < response.body().size(); i++) {
-//                        vehicleYear.add(response.body().get(i).toString());
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<List<String>> call, Throwable t) {
-//
-//            }
-//        });
-//        return vehicleYear;
-//    }
 
     /// Signup customer account
     public void SignupAccount(String imagePath, String receiveValue, final Context ctx, final ProgressDialog progressDialog) {
