@@ -101,7 +101,7 @@
         <activity android:name=".layout.order.PaymentActivity"></activity>
 
         <activity android:name=".layout.order.PaypalLogin"></activity>
-        <activity android:name=".layout.order.PaymentDetail"></activity>
+        <activity android:name=".layout.order.PayPalDetail"></activity>
     </application>
 
 </manifest>

@@ -22,9 +22,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.manhvdse61952.vrc_android.R;
+import com.example.manhvdse61952.vrc_android.api.ContractAPI;
 import com.example.manhvdse61952.vrc_android.api.VehicleAPI;
 import com.example.manhvdse61952.vrc_android.layout.main.activity_main_2;
-import com.example.manhvdse61952.vrc_android.layout.order.OrderDetailActivity;
 import com.example.manhvdse61952.vrc_android.layout.order.PaypalLogin;
 import com.example.manhvdse61952.vrc_android.model.searchModel.MainItemModel;
 import com.example.manhvdse61952.vrc_android.remote.ImmutableValue;
@@ -43,14 +43,14 @@ public class VehicleDetail extends AppCompatActivity {
     ViewPager vpg;
     Button btnOrderRent;
     MainItemModel mainObj = new MainItemModel();
-    int selectTab = 0;
-    Double totalMoney = 0.0;
+    int selectTab = 0, rentFeePerHourID = 0, rentFeePerDayID = 0, totalHour = 0;
+    Double totalMoney = 0.0, rentFeeMoney = 0.0, usdConvert = 0.0;
 
     TextView item_price_slot, item_price_day, item_seat, item_year,
             item_plateNumber, item_ownerName, item_engine, item_tranmission, txt_hours, txt_day_start,
             txt_hours_2, txt_day_end, txt_order_type, txt_day_rent, txt_hour_rent,
-            txt_minute_rent, txt_money_day_rent, txt_money_hour_rent,
-            txt_money_minute_rent, txt_money_total, item_price_deposit;
+            txt_money_day_rent, txt_money_hour_rent, txt_money_total, item_price_deposit,
+            txt_usd_convert, txt_money_deposit;
     CheckBox cbx1, cbx2;
     LinearLayout ln_pickTime;
     Switch swt_order_type;
@@ -63,10 +63,8 @@ public class VehicleDetail extends AppCompatActivity {
         //Declare id
         txt_day_rent = (TextView) findViewById(R.id.txt_day_rent);
         txt_hour_rent = (TextView) findViewById(R.id.txt_hour_rent);
-        txt_minute_rent = (TextView) findViewById(R.id.txt_minute_rent);
         txt_money_day_rent = (TextView) findViewById(R.id.txt_money_day_rent);
         txt_money_hour_rent = (TextView) findViewById(R.id.txt_money_hour_rent);
-        txt_money_minute_rent = (TextView) findViewById(R.id.txt_money_minute_rent);
         txt_money_total = (TextView) findViewById(R.id.txt_money_total);
         item_price_slot = (TextView) findViewById(R.id.item_price_slot);
         item_price_day = (TextView) findViewById(R.id.item_price_day);
@@ -86,6 +84,8 @@ public class VehicleDetail extends AppCompatActivity {
         txt_day_end = (TextView) findViewById(R.id.txt_day_end);
         swt_order_type = (Switch) findViewById(R.id.swt_order_type);
         txt_order_type = (TextView) findViewById(R.id.txt_order_type);
+        txt_usd_convert = (TextView)findViewById(R.id.txt_usd_convert);
+        txt_money_deposit = (TextView)findViewById(R.id.txt_money_deposit);
         vpg = (ViewPager) findViewById(R.id.vpg);
 
         SharedPreferences editor = getSharedPreferences(ImmutableValue.IN_APP_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
@@ -99,7 +99,7 @@ public class VehicleDetail extends AppCompatActivity {
         String startDate = editor.getString("startDate", "--/--/----");
         String endDate = editor.getString("endDate", "--/--/----");
         final int totalDay = editor.getInt("totalDay", 0);
-        final int totalHour = editor.getInt("totalHour", 0);
+        totalHour = editor.getInt("totalHour", 0);
         final int totalMinute = editor.getInt("totalMinute", 0);
 
         //Show start date and end date + price
@@ -165,6 +165,7 @@ public class VehicleDetail extends AppCompatActivity {
                         item_price_day.setText(priceDay);
                         String deposit = ImmutableValue.convertPrice(nf.format(mainObj.getDeposit()));
                         item_price_deposit.setText(deposit);
+                        txt_money_deposit.setText(deposit);
 
                         item_seat.setText(vehicleSeat);
                         item_year.setText(mainObj.getModelYear() + "");
@@ -206,36 +207,46 @@ public class VehicleDetail extends AppCompatActivity {
                         });
 
                         //Calculate money
-                        Double dayMoney = totalDay * mainObj.getRentFeePerDay();
-                        Double hourMoney = totalHour * mainObj.getRentFeePerHour();
-                        Double minuteMoney = 0.0;
-                        if (totalMinute >= 0 && totalMinute <= 7) {
-                            minuteMoney = 0.0;
-                            txt_minute_rent.setText("~ 0");
-                        } else if (totalMinute > 7 && totalMinute <= 22) {
-                            minuteMoney = mainObj.getRentFeePerHour() / 4;
-                            txt_minute_rent.setText("~ 15");
-                        } else if (totalMinute > 22 && totalMinute <= 37) {
-                            minuteMoney = mainObj.getRentFeePerHour() / 2;
-                            txt_minute_rent.setText("~ 30");
-                        } else if (totalMinute > 37 && totalMinute <= 50) {
-                            minuteMoney = mainObj.getRentFeePerHour() / 4 * 3;
-                            txt_minute_rent.setText("~ 45");
-                        } else if (totalMinute > 50 && totalMinute <= 59) {
-                            minuteMoney = mainObj.getRentFeePerHour();
-                            txt_minute_rent.setText("~ 55");
+                        totalHour = 0;
+                        if (totalMinute > 30 && totalMinute <= 59) {
+                            totalHour = totalHour + 1;
                         }
-                        totalMoney = 0.0;
-                        //totalMoney = dayMoney + hourMoney + minuteMoney;
-                        totalMoney = 100.0;
-                        String showDayMoney = ImmutableValue.convertPrice(nf.format(dayMoney));
-                        String showHourMoney = ImmutableValue.convertPrice(nf.format(hourMoney));
-                        String showMinuteMoney = ImmutableValue.convertPrice(nf.format(minuteMoney));
-                        String showTotalMoney = ImmutableValue.convertPrice(nf.format(totalMoney));
-                        txt_money_day_rent.setText(showDayMoney);
-                        txt_money_hour_rent.setText(showHourMoney);
-                        txt_money_minute_rent.setText(showMinuteMoney);
-                        txt_money_total.setText(showTotalMoney);
+                        totalMoney = totalDay * mainObj.getRentFeePerDay() + totalHour * mainObj.getRentFeePerHour()
+                                + mainObj.getDeposit();
+
+                        if (totalDay ==  0 && totalHour == 0){
+                            txt_day_rent.setText("0");
+                        } else {
+                            Retrofit test = RetrofitConnect.getClient();
+                            final ContractAPI testAPI = test.create(ContractAPI.class);
+                            Call<Double> responseBodyCall = testAPI.convertUSD(totalMoney.intValue());
+                            responseBodyCall.enqueue(new Callback<Double>() {
+                                @Override
+                                public void onResponse(Call<Double> call, Response<Double> response) {
+                                    if (response.code() == 200){
+                                        usdConvert = response.body();
+                                        rentFeeMoney = totalDay * mainObj.getRentFeePerDay() + totalHour * mainObj.getRentFeePerHour() ;
+                                        rentFeePerDayID = mainObj.getRentFeePerDayID();
+                                        rentFeePerHourID = mainObj.getRentFeePerHourID();
+                                        NumberFormat nf = new DecimalFormat("#.####");
+                                        String showDayMoney = ImmutableValue.convertPrice(nf.format(totalDay * mainObj.getRentFeePerDay()));
+                                        String showHourMoney = ImmutableValue.convertPrice(nf.format(totalHour * mainObj.getRentFeePerHour()));
+                                        String showTotalMoney = ImmutableValue.convertPrice(nf.format(totalMoney));
+                                        txt_money_day_rent.setText(showDayMoney);
+                                        txt_money_hour_rent.setText(showHourMoney);
+                                        txt_money_total.setText(showTotalMoney);
+                                        txt_usd_convert.setText(usdConvert + "");
+                                    } else {
+                                        Toast.makeText(VehicleDetail.this, "Đã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<Double> call, Throwable t) {
+                                    Toast.makeText(VehicleDetail.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
                     }
                 } else {
                     Toast.makeText(VehicleDetail.this, "Đã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
@@ -255,7 +266,11 @@ public class VehicleDetail extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.IN_APP_SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
-                editor.putString("totalMoney", Double.toString(totalMoney));
+                editor.putString("totalMoney", Double.toString(usdConvert));
+                editor.putString("rentFeeMoney", Double.toString(rentFeeMoney));
+                editor.putInt("rentFeePerDayID", rentFeePerDayID);
+                editor.putInt("rentFeePerHourID", rentFeePerHourID);
+                editor.apply();
                 Intent it = new Intent(VehicleDetail.this, PaypalLogin.class);
                 startActivity(it);
             }

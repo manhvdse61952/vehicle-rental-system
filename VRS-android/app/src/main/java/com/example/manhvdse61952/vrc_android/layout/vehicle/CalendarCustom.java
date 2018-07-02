@@ -235,6 +235,11 @@ public class CalendarCustom extends AppCompatActivity {
         }
 
         //Get time
+        SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.IN_APP_SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
+        editor.putLong("startDayLong", d1.getTime());
+        editor.putLong("endDayLong", d2.getTime());
+
+        editor.apply();
         long diff = d2.getTime() - d1.getTime();
         long diffDate = TimeUnit.MILLISECONDS.toDays(diff);
         long diffHour = diff / (60 * 60 * 1000) % 24;

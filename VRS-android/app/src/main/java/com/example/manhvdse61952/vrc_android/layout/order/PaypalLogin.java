@@ -43,8 +43,9 @@ public class PaypalLogin extends AppCompatActivity {
 
     private void processPayment() {
         SharedPreferences editor = getSharedPreferences(ImmutableValue.IN_APP_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
-        totalMoney = editor.getString("totalMoney", "100.0");
-        PayPalPayment payPalPayment = new PayPalPayment(new BigDecimal(String.valueOf(totalMoney)), "USD",
+        totalMoney = editor.getString("totalMoney", "100.00");
+        double totalMoneyParse = Double.parseDouble(totalMoney);
+        PayPalPayment payPalPayment = new PayPalPayment(new BigDecimal(totalMoneyParse), "USD",
                 "Thanh toán hợp đồng", PayPalPayment.PAYMENT_INTENT_SALE);
         Intent it = new Intent(PaypalLogin.this, PaymentActivity.class);
         it.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
@@ -66,7 +67,7 @@ public class PaypalLogin extends AppCompatActivity {
                 if (confirmation != null) {
                     try {
                         String details = confirmation.toJSONObject().toString(4);
-                        startActivity(new Intent(PaypalLogin.this, PaymentDetail.class)
+                        startActivity(new Intent(PaypalLogin.this, PayPalDetail.class)
                                 .putExtra("PaymentDetails", details)
                                 .putExtra("PaymentAmount", totalMoney));
                     } catch (JSONException e) {

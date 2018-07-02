@@ -523,7 +523,7 @@
                             android:layout_width="0dp"
                             android:layout_weight="4"
                             android:textSize="16sp"
-                            android:textColor="@color/secondary_text"
+                            android:textColor="#797979"
                             android:text="0"
                             android:gravity="end"
                             android:layout_height="wrap_content" />
@@ -553,7 +553,7 @@
                             android:layout_width="0dp"
                             android:layout_weight="4"
                             android:textSize="16sp"
-                            android:textColor="@color/secondary_text"
+                            android:textColor="#797979"
                             android:text="0"
                             android:gravity="end"
                             android:layout_height="wrap_content" />
@@ -566,28 +566,26 @@
                         <TextView
                             android:layout_width="0dp"
                             android:layout_weight="4"
-                            android:text="Số phút thuê"
+                            android:text="Tiền cọc"
                             android:textColor="#797979"
                             android:textSize="14sp"
                             android:layout_height="wrap_content" />
-                        <TextView
-                            android:id="@+id/txt_minute_rent"
+                        <View
                             android:layout_width="0dp"
                             android:layout_weight="2"
-                            android:textColor="#797979"
-                            android:text="0"
-                            android:textSize="14sp"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"/>
                         <TextView
-                            android:id="@+id/txt_money_minute_rent"
+                            android:id="@+id/txt_money_deposit"
                             android:layout_width="0dp"
                             android:layout_weight="4"
                             android:textSize="16sp"
-                            android:textColor="@color/secondary_text"
+                            android:textColor="#797979"
                             android:text="0"
                             android:gravity="end"
                             android:layout_height="wrap_content" />
                     </LinearLayout>
+
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:orientation="horizontal"
@@ -610,7 +608,37 @@
                             android:layout_width="0dp"
                             android:layout_weight="4"
                             android:textSize="16sp"
-                            android:textColor="@color/colorAccent"
+                            android:textColor="@color/secondary_text"
+                            android:text="0"
+                            android:textStyle="bold"
+                            android:gravity="end"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:weightSum="10"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="4"
+                            android:text="Quy đổi sang USD"
+                            android:textColor="@color/secondary_text"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:layout_height="wrap_content" />
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_weight="2"
+                            android:layout_height="wrap_content"/>
+                        <TextView
+                            android:id="@+id/txt_usd_convert"
+                            android:layout_width="0dp"
+                            android:layout_weight="4"
+                            android:textSize="16sp"
+                            android:textColor="#FF0000"
                             android:text="0"
                             android:textStyle="bold"
                             android:gravity="end"
