@@ -25,7 +25,7 @@ import com.example.manhvdse61952.vrc_android.R;
 import com.example.manhvdse61952.vrc_android.api.ContractAPI;
 import com.example.manhvdse61952.vrc_android.api.VehicleAPI;
 import com.example.manhvdse61952.vrc_android.layout.main.activity_main_2;
-import com.example.manhvdse61952.vrc_android.layout.order.PaypalLogin;
+import com.example.manhvdse61952.vrc_android.layout.order.PaypalExecute;
 import com.example.manhvdse61952.vrc_android.model.searchModel.MainItemModel;
 import com.example.manhvdse61952.vrc_android.remote.ImmutableValue;
 import com.example.manhvdse61952.vrc_android.remote.RetrofitConnect;
@@ -283,7 +283,7 @@ public class VehicleDetail extends AppCompatActivity {
                 editor.putInt("rentFeePerHourID", rentFeePerHourID);
                 editor.putInt("receiveType", receiveType);
                 editor.apply();
-                Intent it = new Intent(VehicleDetail.this, PaypalLogin.class);
+                Intent it = new Intent(VehicleDetail.this, PaypalExecute.class);
                 startActivity(it);
             }
         });

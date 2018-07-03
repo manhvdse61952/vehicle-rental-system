@@ -15,7 +15,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Thanh toán qua paypal"
+            android:text="Chi tiết hợp đồng"
             android:textColor="@color/primary_text"
             android:textSize="18sp" />
     </android.support.v7.widget.Toolbar>

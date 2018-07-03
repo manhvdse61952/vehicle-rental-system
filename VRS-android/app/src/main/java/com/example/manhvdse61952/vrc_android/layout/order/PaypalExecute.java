@@ -32,7 +32,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class PaypalLogin extends AppCompatActivity {
+public class PaypalExecute extends AppCompatActivity {
 
     String totalMoney = "";
 
@@ -47,7 +47,7 @@ public class PaypalLogin extends AppCompatActivity {
 
         //Activity for result
         processPayment();
-        Intent it = new Intent(PaypalLogin.this, PayPalService.class);
+        Intent it = new Intent(PaypalExecute.this, PayPalService.class);
         it.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
         startService(it);
     }
@@ -58,7 +58,7 @@ public class PaypalLogin extends AppCompatActivity {
         double totalMoneyParse = Double.parseDouble(totalMoney);
         PayPalPayment payPalPayment = new PayPalPayment(new BigDecimal(totalMoneyParse), "USD",
                 "Thanh toán hợp đồng", PayPalPayment.PAYMENT_INTENT_SALE);
-        Intent it = new Intent(PaypalLogin.this, PaymentActivity.class);
+        Intent it = new Intent(PaypalExecute.this, PaymentActivity.class);
         it.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
         it.putExtra(PaymentActivity.EXTRA_PAYMENT, payPalPayment);
         startActivityForResult(it, ImmutableValue.PAYPAL_REQUEST_CODE);
@@ -66,7 +66,7 @@ public class PaypalLogin extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        stopService(new Intent(PaypalLogin.this, PayPalService.class));
+        stopService(new Intent(PaypalExecute.this, PayPalService.class));
         super.onDestroy();
     }
 
@@ -112,28 +112,28 @@ public class PaypalLogin extends AppCompatActivity {
                                         SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.IN_APP_SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
                                         editor.putString("contractID", response.body().toString().trim());
                                         editor.apply();
-                                        Intent it = new Intent(PaypalLogin.this, ContractDetail.class);
+                                        Intent it = new Intent(PaypalExecute.this, ContractDetail.class);
                                         it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                         startActivity(it);
                                     } else {
-                                        Toast.makeText(PaypalLogin.this, "Đã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(PaypalExecute.this, "Đã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
                                     }
 
                                 }
 
                                 @Override
                                 public void onFailure(Call<String> call, Throwable t) {
-                                    Toast.makeText(PaypalLogin.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(PaypalExecute.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
                                 }
                             });
                         } else {
                             Toast.makeText(this, "Thanh toán thất bại!", Toast.LENGTH_SHORT).show();
-                            Intent it = new Intent(PaypalLogin.this, VehicleDetail.class);
+                            Intent it = new Intent(PaypalExecute.this, VehicleDetail.class);
                             startActivity(it);
                         }
 
 
-//                        startActivity(new Intent(PaypalLogin.this, PayPalDetail.class)
+//                        startActivity(new Intent(PaypalExecute.this, PayPalDetail.class)
 //                                .putExtra("PaymentDetails", details)
 //                                .putExtra("PaymentAmount", totalMoney));
                     } catch (JSONException e) {
@@ -141,11 +141,11 @@ public class PaypalLogin extends AppCompatActivity {
                     }
                 }
             } else if (resultCode == Activity.RESULT_CANCELED) {
-                Intent it = new Intent(PaypalLogin.this, VehicleDetail.class);
+                Intent it = new Intent(PaypalExecute.this, VehicleDetail.class);
                 startActivity(it);
                 Toast.makeText(this, "Hủy yêu cầu", Toast.LENGTH_SHORT).show();
             } else if (resultCode == PaymentActivity.RESULT_CANCELED) {
-                Intent it = new Intent(PaypalLogin.this, VehicleDetail.class);
+                Intent it = new Intent(PaypalExecute.this, VehicleDetail.class);
                 startActivity(it);
                 Toast.makeText(this, "Kiểm tra lại tài khoản paypal", Toast.LENGTH_SHORT).show();
             }
@@ -154,7 +154,7 @@ public class PaypalLogin extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent it = new Intent(PaypalLogin.this, VehicleDetail.class);
+        Intent it = new Intent(PaypalExecute.this, VehicleDetail.class);
         startActivity(it);
     }
 }

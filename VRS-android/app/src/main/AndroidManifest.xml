@@ -96,12 +96,11 @@
         <activity
             android:name=".layout.vehicle.CalendarCustom"
             android:screenOrientation="portrait" />
-        <activity android:name=".layout.order.OrderDetailActivity" />
+        <activity android:name=".layout.contract.ContractDetail" />
         <activity android:name=".layout.vehicle.ManageVehicleActivity" />
-        <activity android:name=".layout.order.ContractDetailActivity"></activity>
+        <activity android:name=".layout.contract.ContractCompleted"></activity>
 
-        <activity android:name=".layout.order.PaypalLogin"></activity>
-        <activity android:name=".layout.order.PayPalDetail"></activity>
+        <activity android:name=".layout.order.PaypalExecute"></activity>
     </application>
 
 </manifest>

@@ -161,7 +161,7 @@ public class CalendarCustom extends AppCompatActivity {
                     };
 
                     Handler pdCanceller = new Handler();
-                    pdCanceller.postDelayed(progressRunnable, 1000);
+                    pdCanceller.postDelayed(progressRunnable, 2000);
                 }
 
 

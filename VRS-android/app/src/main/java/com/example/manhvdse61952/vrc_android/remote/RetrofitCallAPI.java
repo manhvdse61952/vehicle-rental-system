@@ -69,7 +69,7 @@ public class RetrofitCallAPI {
 
                     SharedPreferences.Editor tempEditor = ctx.getSharedPreferences(ImmutableValue.IN_APP_SHARED_PREFERENCES_CODE, ctx.MODE_PRIVATE).edit();
                     tempEditor.putString("ID", "Empty");
-                    tempEditor.putString("paypalStatus", "fail");
+                    tempEditor.putString("contractID", "Empty");
                     tempEditor.apply();
                     Intent it = new Intent(ctx, activity_main_2.class);
                     ctx.startActivity(it);

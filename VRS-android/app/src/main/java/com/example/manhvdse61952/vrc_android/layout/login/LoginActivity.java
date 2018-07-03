@@ -1,23 +1,13 @@
 package com.example.manhvdse61952.vrc_android.layout.login;
 
-import android.Manifest;
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationManager;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,7 +15,7 @@ import android.widget.TextView;
 
 import com.example.manhvdse61952.vrc_android.R;
 import com.example.manhvdse61952.vrc_android.layout.main.activity_main_2;
-import com.example.manhvdse61952.vrc_android.layout.order.PayPalDetail;
+import com.example.manhvdse61952.vrc_android.layout.contract.ContractDetail;
 import com.example.manhvdse61952.vrc_android.layout.signup.customer.SignupAccountActivity;
 import com.example.manhvdse61952.vrc_android.layout.vehicle.VehicleDetail;
 import com.example.manhvdse61952.vrc_android.remote.ImmutableValue;
@@ -85,16 +75,19 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences editor2 = getSharedPreferences(ImmutableValue.IN_APP_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
         int usernameID = editor.getInt("userID", 0);
         String vehicleID = editor2.getString("ID", "Empty");
-        String paypalStatus = editor2.getString("paypalStatus", "fail");
-        if (usernameID != 0 && !vehicleID.equals("Empty") && !paypalStatus.equals("fail")){
-            Intent it = new Intent(LoginActivity.this, PayPalDetail.class);
+        String contractStatus = editor2.getString("contractID", "Empty");
+        if (usernameID != 0 && !contractStatus.equals("Empty")){
+            Intent it = new Intent(LoginActivity.this, ContractDetail.class);
+            it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(it);
-        } else if(usernameID != 0 && !vehicleID.equals("Empty") && paypalStatus.equals("fail")){
+        } else if(usernameID != 0 && !vehicleID.equals("Empty")){
             Intent it = new Intent(LoginActivity.this, VehicleDetail.class);
+            it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(it);
         }
-        else if (usernameID != 0 && vehicleID.equals("Empty") && paypalStatus.equals("fail")){
+        else if (usernameID != 0 && vehicleID.equals("Empty")){
             Intent it = new Intent(LoginActivity.this, activity_main_2.class);
+            it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(it);
         }
 

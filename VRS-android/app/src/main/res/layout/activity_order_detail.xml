@@ -20,19 +20,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Chi tiết hợp đồng"
-            android:textColor="@android:color/white" />
+            android:textSize="18sp"
+            android:textColor="@color/primary_text" />
     </android.support.v7.widget.Toolbar>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="10dp"
         android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:paddingTop="10dp"
             android:paddingLeft="20dp"
             android:paddingRight="20dp">
             <LinearLayout
@@ -122,7 +123,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="15dp"
-                        android:text="#326589632" />
+                        android:text="Empty" />
             </LinearLayout>
 
             <LinearLayout
@@ -320,29 +321,6 @@
                         android:layout_weight="0.5"
                         android:gravity="right"
                         android:text="01223335556" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="5dp"
-                    android:orientation="horizontal"
-                    android:paddingLeft="10dp"
-                    android:weightSum="1">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.5"
-                        android:text="Địa chỉ" />
-
-                    <TextView
-                        android:id="@+id/txt_contract_customer_address"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.5"
-                        android:gravity="right"
-                        android:text="24 Quang Trung, Quận 12, HCMC" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -568,11 +546,11 @@
                     android:layout_width="0dp"
                     android:layout_weight="4"
                     android:layout_height="wrap_content"
-                    android:text="HỦY HĐ"
+                    android:text="hủy hđ"
                     android:textSize="16sp"
                     android:layout_marginBottom="10dp"
                     android:layout_marginRight="10dp"
-                    android:background="@drawable/border_shadow"
+                    android:background="@drawable/border_white"
                     android:textColor="@color/secondary_text"
                     />
                 <Button
@@ -582,7 +560,7 @@
                     android:layout_height="wrap_content"
                     android:background="@color/colorPrimary"
                     android:textColor="@color/primary_text"
-                    android:text="đã thuê xong"
+                    android:text="trả xe"
                     android:layout_marginBottom="10dp"/>
             </LinearLayout>
             <Button

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.manhvdse61952.vrc_android.R;
 import com.example.manhvdse61952.vrc_android.api.VehicleAPI;
@@ -33,10 +34,6 @@ public class ManageVehicleActivity extends AppCompatActivity {
         setContentView(R.layout.activity_manage_vehicle);
         mRecyclerView = findViewById(R.id.recycler_vehicle_manage_view);
         loadJSON();
-        mRcvAdapter = new ManageVehicleAdapter(vehicleList);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-        mRecyclerView.setLayoutManager(layoutManager);
-        mRecyclerView.setAdapter(mRcvAdapter);
 
     }
     private void loadJSON(){
@@ -48,11 +45,20 @@ public class ManageVehicleActivity extends AppCompatActivity {
         call.enqueue(new Callback<List<Vehicle_New>>() {
             @Override
             public void onResponse(Call<List<Vehicle_New>> call, Response<List<Vehicle_New>> response) {
-                vehicleList = response.body();
+                if (response.code() == 200){
+                    vehicleList = response.body();
+                    mRcvAdapter = new ManageVehicleAdapter(vehicleList);
+                    LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+                    mRecyclerView.setLayoutManager(layoutManager);
+                    mRecyclerView.setAdapter(mRcvAdapter);
+                } else {
+                    Toast.makeText(ManageVehicleActivity.this, "Đã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
             public void onFailure(Call<List<Vehicle_New>> call, Throwable t) {
+                Toast.makeText(ManageVehicleActivity.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
                 Log.d("ManageVehicleActivity",t.getMessage());
             }
         });

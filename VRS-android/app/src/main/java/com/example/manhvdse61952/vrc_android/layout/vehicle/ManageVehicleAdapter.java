@@ -28,7 +28,7 @@ public class ManageVehicleAdapter extends RecyclerView.Adapter<ManageVehicleAdap
 
     @Override
     public void onBindViewHolder(ManageVehicleAdapter.RecyclerViewHolder holder, int position) {
-        holder.txtframeNumber.setText(vehicleList.get(position).getFrameNumber());
+        holder.txt_vehicle_name.setText(vehicleList.get(position).getFrameNumber());
 //        holder.txtStatus.setText(vehicleList.get(position).get);
 //        holder.imageManageVehicle.setImageURI(vehicleList.get(position).);
     }
@@ -39,13 +39,13 @@ public class ManageVehicleAdapter extends RecyclerView.Adapter<ManageVehicleAdap
     }
 
     public class RecyclerViewHolder extends RecyclerView.ViewHolder {
-        TextView txtframeNumber;
-        TextView txtStatus;
+        TextView txt_vehicle_name;
+        TextView txt_vehicle_status;
         ImageView imageManageVehicle;
         public RecyclerViewHolder(View itemView) {
             super(itemView);
-            txtframeNumber = itemView.findViewById(R.id.vehicle_frame_number);
-            txtStatus = itemView.findViewById(R.id.vehicle_status);
+            txt_vehicle_name = itemView.findViewById(R.id.txt_vehicle_name);
+            txt_vehicle_status = itemView.findViewById(R.id.txt_vehicle_status);
             imageManageVehicle = itemView.findViewById(R.id.manage_vehicle_image);
         }
     }
