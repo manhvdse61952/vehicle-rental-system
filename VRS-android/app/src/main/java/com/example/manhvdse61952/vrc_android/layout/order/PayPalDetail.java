@@ -1,10 +1,12 @@
 package com.example.manhvdse61952.vrc_android.layout.order;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -28,7 +30,6 @@ public class PayPalDetail extends AppCompatActivity {
     TextView txt_paypal_id, txt_paypal_money, txt_paypal_status;
     Button btn_paypal_next;
     String paypalOrderID = "";
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,12 +41,24 @@ public class PayPalDetail extends AppCompatActivity {
         btn_paypal_next = (Button) findViewById(R.id.btn_paypal_next);
 
         Intent it = getIntent();
-        try {
-            JSONObject jsonObject = new JSONObject(it.getStringExtra("PaymentDetails"));
-            showDetail(jsonObject.getJSONObject("response"), it.getStringExtra("PaymentAmount"));
-        } catch (JSONException e) {
-            e.printStackTrace();
+
+        String paypalStatus = "";
+        SharedPreferences editor = getSharedPreferences(ImmutableValue.IN_APP_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
+        paypalStatus = editor.getString("paypalStatus", "fail");
+        if (paypalStatus.equals("fail")) {
+            try {
+                JSONObject jsonObject = new JSONObject(it.getStringExtra("PaymentDetails"));
+                showDetail(jsonObject.getJSONObject("response"), it.getStringExtra("PaymentAmount"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } else {
+            paypalOrderID = editor.getString("paypalID", "empty");
+            txt_paypal_id.setText(paypalOrderID);
+            txt_paypal_money.setText(editor.getString("paypalMount", "0.0"));
+            txt_paypal_status.setText("Thành công");
         }
+
 
         btn_paypal_next.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,28 +78,27 @@ public class PayPalDetail extends AppCompatActivity {
                 obj.setHours(editor2.getInt("totalHour", 0));
                 obj.setDays(editor2.getInt("totalDay", 0));
                 obj.setRentFee(Float.valueOf(editor2.getString("rentFeeMoney", "0.0f")));
+                obj.setReceiveType(editor2.getInt("receiveType", 0));
 
                 Retrofit retrofit = RetrofitConnect.getClient();
                 final ContractAPI contractAPI = retrofit.create(ContractAPI.class);
-                Call<ContractCreate> responseBodyCall = contractAPI.createContract(obj);
-                responseBodyCall.enqueue(new Callback<ContractCreate>() {
+                Call<String> responseBodyCall = contractAPI.createContract(obj);
+                responseBodyCall.enqueue(new Callback<String>() {
                     @Override
-                    public void onResponse(Call<ContractCreate> call, Response<ContractCreate> response) {
-                            if (response.code() == 200){
-                                SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.IN_APP_SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
-                                editor.putString("contractID", response.body().toString().trim());
-                                Intent it = new Intent(PayPalDetail.this, OrderDetailActivity.class);
-                                startActivity(it);
-                            } else {
-                                Toast.makeText(PayPalDetail.this, "Đã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
-                            }
-
-
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        if (response.code() == 200) {
+                            SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.IN_APP_SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
+                            editor.putString("contractID", response.body().toString().trim());
+                            Intent it = new Intent(PayPalDetail.this, OrderDetailActivity.class);
+                            startActivity(it);
+                        } else {
+                            Toast.makeText(PayPalDetail.this, "Đã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
+                        }
 
                     }
 
                     @Override
-                    public void onFailure(Call<ContractCreate> call, Throwable t) {
+                    public void onFailure(Call<String> call, Throwable t) {
                         Toast.makeText(PayPalDetail.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -101,6 +113,11 @@ public class PayPalDetail extends AppCompatActivity {
             String status = jsonObject.getString("state");
             if (status.equals("approved")) {
                 txt_paypal_status.setText("Thành công");
+                SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.IN_APP_SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
+                editor.putString("paypalStatus", "success");
+                editor.putString("paypalID", paypalOrderID);
+                editor.putString("paypalMount", totalMoney);
+                editor.apply();
             }
             txt_paypal_money.setText(totalMoney);
         } catch (JSONException e) {

@@ -43,7 +43,7 @@ public class VehicleDetail extends AppCompatActivity {
     ViewPager vpg;
     Button btnOrderRent;
     MainItemModel mainObj = new MainItemModel();
-    int selectTab = 0, rentFeePerHourID = 0, rentFeePerDayID = 0, totalHour = 0;
+    int selectTab = 0, rentFeePerHourID = 0, rentFeePerDayID = 0, totalHour = 0, receiveType = 0;
     Double totalMoney = 0.0, rentFeeMoney = 0.0, usdConvert = 0.0;
 
     TextView item_price_slot, item_price_day, item_seat, item_year,
@@ -122,7 +122,7 @@ public class VehicleDetail extends AppCompatActivity {
                         mainObj = new MainItemModel();
                         mainObj = response.body();
                         // use for init layout
-                        SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.IN_APP_SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
+                        final SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.IN_APP_SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
                         editor.putString("imageFront", mainObj.getImageLinkFront());
                         editor.putString("imageBack", mainObj.getImageLinkBack());
                         editor.putString("vehicleName", mainObj.getVehicleMaker() + " " + mainObj.getVehicleModel());
@@ -164,13 +164,18 @@ public class VehicleDetail extends AppCompatActivity {
                         String priceDay = ImmutableValue.convertPrice(nf.format(mainObj.getRentFeePerDay()));
                         item_price_day.setText(priceDay);
                         String deposit = ImmutableValue.convertPrice(nf.format(mainObj.getDeposit()));
+                        editor.putString("depositFeeConvert", deposit);
                         item_price_deposit.setText(deposit);
                         txt_money_deposit.setText(deposit);
 
                         item_seat.setText(vehicleSeat);
                         item_year.setText(mainObj.getModelYear() + "");
+                        editor.putInt("vehicleYear", mainObj.getModelYear());
                         item_plateNumber.setText(mainObj.getPlateNumber());
                         item_ownerName.setText(mainObj.getOwnerFullName());
+                        editor.putString("ownerName", mainObj.getOwnerFullName());
+                        editor.apply();
+
                         if (mainObj.getRequireIdCard() == true) {
                             cbx1.setChecked(true);
                         } else {
@@ -197,9 +202,11 @@ public class VehicleDetail extends AppCompatActivity {
                             @Override
                             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                                 if (isChecked) {
+                                    receiveType = 0;
                                     textColorAnimated(swt_order_type, Color.parseColor("#000000"));
                                     scaleView(txt_order_type, 0f, 0f);
                                 } else {
+                                    receiveType = 1;
                                     textColorAnimated(swt_order_type, Color.parseColor("#cccccc"));
                                     scaleView(txt_order_type, 0f, 1f);
                                 }
@@ -232,6 +239,10 @@ public class VehicleDetail extends AppCompatActivity {
                                         String showDayMoney = ImmutableValue.convertPrice(nf.format(totalDay * mainObj.getRentFeePerDay()));
                                         String showHourMoney = ImmutableValue.convertPrice(nf.format(totalHour * mainObj.getRentFeePerHour()));
                                         String showTotalMoney = ImmutableValue.convertPrice(nf.format(totalMoney));
+                                        String rentFeeConvert = ImmutableValue.convertPrice(nf.format(rentFeeMoney));
+                                        editor.putString("rentFeeConvert", rentFeeConvert);
+                                        editor.putString("totalFeeConvert", showTotalMoney);
+                                        editor.apply();
                                         txt_money_day_rent.setText(showDayMoney);
                                         txt_money_hour_rent.setText(showHourMoney);
                                         txt_money_total.setText(showTotalMoney);
@@ -270,6 +281,7 @@ public class VehicleDetail extends AppCompatActivity {
                 editor.putString("rentFeeMoney", Double.toString(rentFeeMoney));
                 editor.putInt("rentFeePerDayID", rentFeePerDayID);
                 editor.putInt("rentFeePerHourID", rentFeePerHourID);
+                editor.putInt("receiveType", receiveType);
                 editor.apply();
                 Intent it = new Intent(VehicleDetail.this, PaypalLogin.class);
                 startActivity(it);

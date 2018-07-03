@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.example.manhvdse61952.vrc_android.R;
+import com.example.manhvdse61952.vrc_android.layout.vehicle.VehicleDetail;
 import com.example.manhvdse61952.vrc_android.remote.ImmutableValue;
 import com.example.manhvdse61952.vrc_android.remote.PaypalConfig;
 import com.paypal.android.sdk.payments.PayPalConfiguration;
@@ -75,10 +76,20 @@ public class PaypalLogin extends AppCompatActivity {
                     }
                 }
             } else if (resultCode == Activity.RESULT_CANCELED) {
+                Intent it = new Intent(PaypalLogin.this, VehicleDetail.class);
+                startActivity(it);
                 Toast.makeText(this, "Hủy yêu cầu", Toast.LENGTH_SHORT).show();
             } else if (resultCode == PaymentActivity.RESULT_CANCELED) {
+                Intent it = new Intent(PaypalLogin.this, VehicleDetail.class);
+                startActivity(it);
                 Toast.makeText(this, "Kiểm tra lại tài khoản paypal", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent it = new Intent(PaypalLogin.this, VehicleDetail.class);
+        startActivity(it);
     }
 }

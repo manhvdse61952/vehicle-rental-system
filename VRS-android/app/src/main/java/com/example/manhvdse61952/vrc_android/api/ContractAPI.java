@@ -18,7 +18,7 @@ import retrofit2.http.Query;
 public interface ContractAPI {
     @Headers({"Accept: application/json"})
     @POST("/contract/create")
-    Call<ContractCreate> createContract(@Body  ContractCreate data);
+    Call<String> createContract(@Body ContractCreate data);
 
     @Headers({"Accept: application/json"})
     @GET("/contract/conversionVNDToUSD")

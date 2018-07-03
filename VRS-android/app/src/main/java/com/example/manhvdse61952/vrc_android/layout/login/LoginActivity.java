@@ -25,6 +25,7 @@ import android.widget.TextView;
 
 import com.example.manhvdse61952.vrc_android.R;
 import com.example.manhvdse61952.vrc_android.layout.main.activity_main_2;
+import com.example.manhvdse61952.vrc_android.layout.order.PayPalDetail;
 import com.example.manhvdse61952.vrc_android.layout.signup.customer.SignupAccountActivity;
 import com.example.manhvdse61952.vrc_android.layout.vehicle.VehicleDetail;
 import com.example.manhvdse61952.vrc_android.remote.ImmutableValue;
@@ -84,10 +85,15 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences editor2 = getSharedPreferences(ImmutableValue.IN_APP_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
         int usernameID = editor.getInt("userID", 0);
         String vehicleID = editor2.getString("ID", "Empty");
-        if (usernameID != 0 && !vehicleID.equals("Empty")){
+        String paypalStatus = editor2.getString("paypalStatus", "fail");
+        if (usernameID != 0 && !vehicleID.equals("Empty") && !paypalStatus.equals("fail")){
+            Intent it = new Intent(LoginActivity.this, PayPalDetail.class);
+            startActivity(it);
+        } else if(usernameID != 0 && !vehicleID.equals("Empty") && paypalStatus.equals("fail")){
             Intent it = new Intent(LoginActivity.this, VehicleDetail.class);
             startActivity(it);
-        } else if (usernameID != 0 && vehicleID.equals("Empty")){
+        }
+        else if (usernameID != 0 && vehicleID.equals("Empty") && paypalStatus.equals("fail")){
             Intent it = new Intent(LoginActivity.this, activity_main_2.class);
             startActivity(it);
         }

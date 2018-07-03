@@ -14,7 +14,7 @@ import com.example.manhvdse61952.vrc_android.R;
 import com.example.manhvdse61952.vrc_android.layout.main.activity_main_2;
 import com.example.manhvdse61952.vrc_android.remote.ImmutableValue;
 
-public class PaymentActivity extends AppCompatActivity {
+public class ContractDetailActivity extends AppCompatActivity {
 
     Button btn_pay;
     @Override
@@ -27,12 +27,12 @@ public class PaymentActivity extends AppCompatActivity {
             public void onClick(View v) {
                 SharedPreferences settings = getSharedPreferences(ImmutableValue.IN_APP_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
                 settings.edit().clear().commit();
-                AlertDialog.Builder builder = new AlertDialog.Builder(PaymentActivity.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(ContractDetailActivity.this);
                 builder.setMessage("Hợp đồng hoàn tất! Bạn có thể xem lại lịch sử hợp đồng ở menu. Cảm ơn bạn đã sử dụng dịch vụ của VRS");
                 builder.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        Intent it = new Intent(PaymentActivity.this, activity_main_2.class);
+                        Intent it = new Intent(ContractDetailActivity.this, activity_main_2.class);
                         startActivity(it);
                     }
                 });
