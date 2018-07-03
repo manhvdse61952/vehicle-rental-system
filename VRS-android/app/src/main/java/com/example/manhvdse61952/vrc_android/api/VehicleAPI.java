@@ -2,6 +2,7 @@ package com.example.manhvdse61952.vrc_android.api;
 
 
 import com.example.manhvdse61952.vrc_android.model.apiModel.VehicleInformation_New;
+import com.example.manhvdse61952.vrc_android.model.apiModel.Vehicle_New;
 import com.example.manhvdse61952.vrc_android.model.searchModel.MainItemModel;
 import com.example.manhvdse61952.vrc_android.model.searchModel.SearchItemNew;
 
@@ -53,5 +54,9 @@ public interface VehicleAPI {
     @Multipart
     @POST("/vehicle/create")
     Call<ResponseBody> createVehicle(@Part("data") RequestBody data, @Part MultipartBody.Part[] files);
+
+    @Headers({"Accept: application/json"})
+    @GET("/vehicle/getVehicleByOwner/{ownerID}")
+    Call<List<Vehicle_New>> getVehicleListByOwner(@Path("ownerID") int ownerID);
 
 }
