@@ -21,10 +21,11 @@ import com.example.manhvdse61952.vrc_android.layout.vehicle.VehicleDetail;
 import com.example.manhvdse61952.vrc_android.remote.ImmutableValue;
 import com.example.manhvdse61952.vrc_android.remote.RetrofitCallAPI;
 import com.example.manhvdse61952.vrc_android.remote.Validate;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class LoginActivity extends AppCompatActivity {
 
-
+    private final String TOPIC = "JavaSampleApproach";
     TextView txtSignUp;
     Button btnLogin;
 
@@ -129,6 +130,7 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
+        FirebaseMessaging.getInstance().subscribeToTopic(TOPIC);
 
     }
 
