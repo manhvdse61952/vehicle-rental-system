@@ -47,6 +47,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -371,6 +372,12 @@ public class ImmutableValue {
             convertedPrice = defaultPrice;
         }
         return convertedPrice;
+    }
+
+    public static String convertTime(long time){
+        Date date = new Date(time);
+        Format format = new SimpleDateFormat("HH : mm, dd/MM/yyyy");
+        return format.format(date);
     }
 
 }

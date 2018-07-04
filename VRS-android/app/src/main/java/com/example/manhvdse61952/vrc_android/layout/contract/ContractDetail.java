@@ -20,6 +20,10 @@ import com.example.manhvdse61952.vrc_android.model.apiModel.ContractItem;
 import com.example.manhvdse61952.vrc_android.remote.ImmutableValue;
 import com.example.manhvdse61952.vrc_android.remote.RetrofitConnect;
 
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -29,7 +33,8 @@ public class ContractDetail extends AppCompatActivity {
     Button btn_contract_give_car, btn_contract_back_to_menu;
     TextView txt_contract_start_time, txt_contract_end_time, txt_contract_id, txt_contract_owner_name, txt_contract_vehicle_name,
             txt_contract_vehicle_year, txt_contract_vehicle_seat, txt_contract_customer_name,
-            txt_contract_receive_type, txt_contract_rent_time, txt_contract_rent_fee, txt_contract_deposit_fee, txt_contract_total_fee;
+            txt_contract_receive_type, txt_contract_rent_time, txt_contract_rent_fee, txt_contract_deposit_fee,
+            txt_contract_total_fee, txt_contract_customer_cmnd, txt_contract_customer_phone, txt_contract_owner_phone;
     ImmutableValue locationObj = new ImmutableValue();
     ProgressDialog dialog;
 
@@ -55,7 +60,9 @@ public class ContractDetail extends AppCompatActivity {
         txt_contract_rent_fee = (TextView) findViewById(R.id.txt_contract_rent_fee);
         txt_contract_deposit_fee = (TextView) findViewById(R.id.txt_contract_deposit_fee);
         txt_contract_total_fee = (TextView) findViewById(R.id.txt_contract_total_fee);
-
+        txt_contract_customer_cmnd = (TextView)findViewById(R.id.txt_contract_customer_cmnd);
+        txt_contract_customer_phone = (TextView)findViewById(R.id.txt_contract_customer_phone);
+        txt_contract_owner_phone = (TextView)findViewById(R.id.txt_contract_owner_phone);
         //Init layout
         //SharedPreferences editor1 = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
         SharedPreferences editor2 = getSharedPreferences(ImmutableValue.IN_APP_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
@@ -71,21 +78,28 @@ public class ContractDetail extends AppCompatActivity {
                     ContractItem obj = new ContractItem();
                     obj = response.body();
                     txt_contract_id.setText(contractID);
-                    txt_contract_start_time.setText(obj.getStartTime() + "");
-                    txt_contract_end_time.setText(obj.getEndTime() + "");
+                    txt_contract_start_time.setText(ImmutableValue.convertTime(obj.getStartTime()));
+                    txt_contract_end_time.setText(ImmutableValue.convertTime(obj.getEndTime()));
                     txt_contract_owner_name.setText(obj.getOwnerName());
+                    txt_contract_owner_phone.setText(obj.getOwnerPhone());
                     txt_contract_vehicle_name.setText(obj.getVehicleMaker() + " " + obj.getVehicleModel());
                     txt_contract_vehicle_year.setText(obj.getVehicleYear() + "");
                     txt_contract_vehicle_seat.setText(obj.getVehicleSeat() + "");
                     txt_contract_customer_name.setText(obj.getCustomerName());
+                    txt_contract_customer_cmnd.setText(obj.getCustomerCMND());
+                    txt_contract_customer_phone.setText(obj.getCustomerPhone());
                     if (obj.getReceiveType() == 0) {
                         txt_contract_receive_type.setText("Tự đến lấy xe");
                     } else {
                         txt_contract_receive_type.setText("Giao xe tại chỗ");
                     }
                     txt_contract_rent_time.setText(obj.getRentDay() + " ngày " + obj.getRentHour() + " tiếng");
-                    txt_contract_deposit_fee.setText(obj.getDepositFee() + "");
-                    txt_contract_total_fee.setText(obj.getTotalFee() + "");
+                    txt_contract_deposit_fee.setText(ImmutableValue.convertPrice(obj.getDepositFee()));
+                    txt_contract_total_fee.setText(ImmutableValue.convertPrice(obj.getTotalFee()));
+                    int depositFee = Integer.parseInt(obj.getDepositFee());
+                    int totalFee = Integer.parseInt(obj.getTotalFee());
+                    int rentFee = totalFee - depositFee;
+                    txt_contract_rent_fee.setText(ImmutableValue.convertPrice(String.valueOf(rentFee)));
                 } else {
                     Toast.makeText(ContractDetail.this, "Đã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
                 }
@@ -98,29 +112,6 @@ public class ContractDetail extends AppCompatActivity {
                 Toast.makeText(ContractDetail.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
             }
         });
-
-
-//        txt_contract_start_time.setText(editor2.getString("startHour", "00") + "h" + editor2.getString("startMinute", "00") +
-//        ", " + editor2.getString("startDate", "--/--/----"));
-//        txt_contract_end_time.setText(editor2.getString("endHour", "00") + "h" + editor2.getString("endMinute", "00") +
-//                editor2.getString("endDate", "--/--/----"));
-//        txt_contract_owner_name.setText(editor2.getString("ownerName", "example owner A"));
-//        txt_contract_vehicle_name.setText(editor2.getString("vehicleName", "example vehicle A"));
-//        txt_contract_vehicle_year.setText(editor2.getInt("vehicleYear", 2000) + "");
-//        txt_contract_vehicle_seat.setText(editor2.getString("seat", "0"));
-//        txt_contract_customer_name.setText(editor1.getString("fullName", "example customer A"));
-//        locationObj.checkAddressPermission(ContractDetail.this, ContractDetail.this);
-//        txt_contract_customer_address.setText(locationObj.address + "");
-//        if (editor2.getInt("receiveType", 0) == 0){
-//            txt_contract_receive_type.setText("Tự đến lấy xe");
-//        } else {
-//            txt_contract_receive_type.setText("Giao xe tại chỗ");
-//        }
-//        txt_contract_rent_time.setText(editor2.getInt("totalDay", 0) + " ngày " + editor2.getInt("totalHour", 0) + " tiếng");
-//        txt_contract_rent_fee.setText(editor2.getString("rentFeeConvert", "0"));
-//        txt_contract_deposit_fee.setText(editor2.getString("depositFeeConvert", "0"));
-//        txt_contract_total_fee.setText(editor2.getString("totalFeeConvert", "0"));
-
 
         btn_contract_give_car.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -171,4 +162,5 @@ public class ContractDetail extends AppCompatActivity {
         dialog.show();
         dialog.setCanceledOnTouchOutside(false);
     }
+
 }

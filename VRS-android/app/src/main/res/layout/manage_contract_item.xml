@@ -2,8 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_margin="10dp"
-    android:padding="10dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:padding="20dp"
+    android:id="@+id/ln_manage_contract"
     android:background="@drawable/border_shadow"
     android:layout_height="wrap_content">
     <LinearLayout
@@ -35,6 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="20dp"
+        android:layout_marginTop="5dp"
         android:orientation="horizontal"
         android:weightSum="10">
         <TextView
@@ -42,7 +46,7 @@
             android:layout_weight="5"
             android:text="Thời gian bắt đầu"
             android:textSize="14sp"
-            android:textColor="@color/secondary_text"
+            android:textColor="#797979"
             android:layout_height="match_parent" />
         <TextView
             android:id="@+id/txt_manage_contract_start_time"
@@ -65,7 +69,7 @@
             android:layout_weight="5"
             android:text="Thời gian kết thúc"
             android:textSize="14sp"
-            android:textColor="@color/secondary_text"
+            android:textColor="#797979"
             android:layout_height="match_parent" />
         <TextView
             android:id="@+id/txt_manage_contract_end_time"
@@ -88,7 +92,7 @@
             android:layout_weight="5"
             android:text="Chi phí thuê xe"
             android:textSize="14sp"
-            android:textColor="@color/secondary_text"
+            android:textColor="#797979"
             android:layout_height="match_parent" />
         <TextView
             android:id="@+id/txt_manage_contract_rent_fee"
@@ -110,8 +114,9 @@
             android:layout_width="0dp"
             android:layout_weight="5"
             android:text="Tổng tiền"
+            android:textStyle="bold"
             android:textSize="14sp"
-            android:textColor="@color/secondary_text"
+            android:textColor="#797979"
             android:layout_height="match_parent" />
         <TextView
             android:id="@+id/txt_manage_contract_total_fee"

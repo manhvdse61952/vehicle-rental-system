@@ -24,7 +24,9 @@ import android.widget.Toast;
 
 import com.example.manhvdse61952.vrc_android.R;
 import com.example.manhvdse61952.vrc_android.api.VehicleAPI;
+import com.example.manhvdse61952.vrc_android.layout.contract.ManageContractActivity;
 import com.example.manhvdse61952.vrc_android.layout.login.LoginActivity;
+import com.example.manhvdse61952.vrc_android.layout.vehicle.ManageVehicleActivity;
 import com.example.manhvdse61952.vrc_android.layout.vehicle.MotobikeTab;
 import com.example.manhvdse61952.vrc_android.layout.vehicle.CarTab;
 import com.example.manhvdse61952.vrc_android.layout.vehicle.TravelCarTab;
@@ -210,6 +212,7 @@ public class activity_main_2 extends AppCompatActivity
                             SharedPreferences settings_3 = getSharedPreferences(ImmutableValue.IN_APP_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
                             settings_3.edit().clear().commit();
                             Intent it = new Intent(activity_main_2.this, LoginActivity.class);
+                            it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(it);
                         }
                     })
@@ -247,10 +250,13 @@ public class activity_main_2 extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-//        if (id == R.id.nav_camera) {
-//            // Handle the camera action
-//        } else if (id == R.id.nav_gallery) {
-//
+        if (id == R.id.nav_check_contract) {
+            Intent it = new Intent(activity_main_2.this, ManageContractActivity.class);
+            startActivity(it);
+        } else if (id == R.id.nav_manage_vehicle) {
+            Intent it = new Intent(activity_main_2.this, ManageVehicleActivity.class);
+            startActivity(it);
+
 //        } else if (id == R.id.nav_slideshow) {
 //
 //        } else if (id == R.id.nav_manage) {
@@ -258,10 +264,8 @@ public class activity_main_2 extends AppCompatActivity
 //        } else if (id == R.id.nav_share) {
 //
 //        } else if (id == R.id.nav_send) {
-//
-//        }
 
-        if (id == R.id.nav_logout) {
+        } else if (id == R.id.nav_logout) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage("Bạn có chắc chắn muốn đăng xuất ?").setCancelable(false)
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -274,6 +278,7 @@ public class activity_main_2 extends AppCompatActivity
                             SharedPreferences settings_3 = getSharedPreferences(ImmutableValue.IN_APP_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
                             settings_3.edit().clear().commit();
                             Intent it = new Intent(activity_main_2.this, LoginActivity.class);
+                            it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(it);
                             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
                             drawer.closeDrawer(GravityCompat.START);

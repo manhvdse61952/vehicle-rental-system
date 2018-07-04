@@ -8,13 +8,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.manhvdse61952.vrc_android.R;
-import com.example.manhvdse61952.vrc_android.model.apiModel.Vehicle_New;
+import com.example.manhvdse61952.vrc_android.model.searchModel.SearchItemNew;
+import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ManageVehicleAdapter extends RecyclerView.Adapter<ManageVehicleAdapter.RecyclerViewHolder> {
-    private List<Vehicle_New> vehicleList = new ArrayList<>();
+    private List<SearchItemNew> vehicleList;
     @Override
     public ManageVehicleAdapter.RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
@@ -22,15 +22,13 @@ public class ManageVehicleAdapter extends RecyclerView.Adapter<ManageVehicleAdap
         return new RecyclerViewHolder(view);
     }
 
-    public ManageVehicleAdapter(List<Vehicle_New> vehicleList) {
+    public ManageVehicleAdapter(List<SearchItemNew> vehicleList) {
         this.vehicleList = vehicleList;
     }
 
     @Override
     public void onBindViewHolder(ManageVehicleAdapter.RecyclerViewHolder holder, int position) {
         holder.txt_vehicle_name.setText(vehicleList.get(position).getFrameNumber());
-//        holder.txtStatus.setText(vehicleList.get(position).get);
-//        holder.imageManageVehicle.setImageURI(vehicleList.get(position).);
     }
 
     @Override
@@ -39,8 +37,7 @@ public class ManageVehicleAdapter extends RecyclerView.Adapter<ManageVehicleAdap
     }
 
     public class RecyclerViewHolder extends RecyclerView.ViewHolder {
-        TextView txt_vehicle_name;
-        TextView txt_vehicle_status;
+        TextView txt_vehicle_name, txt_vehicle_status;
         ImageView imageManageVehicle;
         public RecyclerViewHolder(View itemView) {
             super(itemView);

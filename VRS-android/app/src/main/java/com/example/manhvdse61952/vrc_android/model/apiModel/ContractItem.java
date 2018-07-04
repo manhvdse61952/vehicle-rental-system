@@ -19,8 +19,11 @@ public class ContractItem implements Serializable {
     private String depositFee;
     private String totalFee;
     private long serverTime;
+    private String ownerPhone;
+    private String customerCMND;
+    private String customerPhone;
 
-    public ContractItem(String contractID, String contractStatus, long startTime, long endTime, String ownerName, String vehicleMaker, String vehicleModel, String vehicleYear, String vehicleSeat, String customerName, int receiveType, int rentDay, int rentHour, String depositFee, String totalFee, long serverTime) {
+    public ContractItem(String contractID, String contractStatus, long startTime, long endTime, String ownerName, String vehicleMaker, String vehicleModel, String vehicleYear, String vehicleSeat, String customerName, int receiveType, int rentDay, int rentHour, String depositFee, String totalFee, long serverTime, String ownerPhone, String customerCMND, String customerPhone) {
         ContractID = contractID;
         this.contractStatus = contractStatus;
         this.startTime = startTime;
@@ -37,9 +40,36 @@ public class ContractItem implements Serializable {
         this.depositFee = depositFee;
         this.totalFee = totalFee;
         this.serverTime = serverTime;
+        this.ownerPhone = ownerPhone;
+        this.customerCMND = customerCMND;
+        this.customerPhone = customerPhone;
     }
 
     public ContractItem() {
+    }
+
+    public String getOwnerPhone() {
+        return ownerPhone;
+    }
+
+    public void setOwnerPhone(String ownerPhone) {
+        this.ownerPhone = ownerPhone;
+    }
+
+    public String getCustomerCMND() {
+        return customerCMND;
+    }
+
+    public void setCustomerCMND(String customerCMND) {
+        this.customerCMND = customerCMND;
+    }
+
+    public String getCustomerPhone() {
+        return customerPhone;
+    }
+
+    public void setCustomerPhone(String customerPhone) {
+        this.customerPhone = customerPhone;
     }
 
     public String getContractID() {

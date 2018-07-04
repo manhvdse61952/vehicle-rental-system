@@ -29,10 +29,14 @@ public interface ContractAPI {
     Call<Double> convertUSD(@Query("money") int money);
 
     @Headers({"Accept: application/json"})
-    @GET("/contract/{contractID}")
+    @GET("/contract/getContractByID/{contractID}")
     Call<ContractItem> findContractByID(@Path("contractID") String contractID);
 
     @Headers({"Accept: application/json"})
-    @GET("/contract/{ownerID}")
-    Call<List<ContractItem>> findContractByUserID(@Path("ownerID") int ownerID);
+    @GET("/contract/getListContractByOwnerID/{ownerID}")
+    Call<List<ContractItem>> findContractByOwnerID(@Path("ownerID") int ownerID);
+
+    @Headers({"Accept: application/json"})
+    @GET("/contract/getListContractByCustomerID/{customerID}")
+    Call<List<ContractItem>> findContractByCustomerID(@Path("customerID") int customerID);
 }

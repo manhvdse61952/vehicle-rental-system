@@ -1,6 +1,7 @@
 package com.example.manhvdse61952.vrc_android.layout.order;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -35,7 +36,7 @@ import retrofit2.Retrofit;
 public class PaypalExecute extends AppCompatActivity {
 
     String totalMoney = "";
-
+    ProgressDialog dialog;
     private static PayPalConfiguration config = new PayPalConfiguration()
             .environment(PayPalConfiguration.ENVIRONMENT_SANDBOX)
             .clientId(PaypalConfig.PAYPAL_CLIENT_ID);
@@ -80,7 +81,9 @@ public class PaypalExecute extends AppCompatActivity {
                         String details = confirmation.toJSONObject().toString(4);
                         JSONObject jsonObject = new JSONObject(details);
                         JSONObject jsonItem = jsonObject.getJSONObject("response");
-                        if (jsonItem.getString("state").equals("approved")){
+                        if (jsonItem.getString("state").equals("approved")) {
+                            dialog = ProgressDialog.show(PaypalExecute.this, "Đang xử lý",
+                                    "Vui lòng đợi ...", true);
                             ContractCreate obj = new ContractCreate();
                             SharedPreferences editor1 = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
                             SharedPreferences editor2 = getSharedPreferences(ImmutableValue.IN_APP_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
@@ -118,11 +121,13 @@ public class PaypalExecute extends AppCompatActivity {
                                     } else {
                                         Toast.makeText(PaypalExecute.this, "Đã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
                                     }
+                                    dialog.dismiss();
 
                                 }
 
                                 @Override
                                 public void onFailure(Call<String> call, Throwable t) {
+                                    dialog.dismiss();
                                     Toast.makeText(PaypalExecute.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
                                 }
                             });

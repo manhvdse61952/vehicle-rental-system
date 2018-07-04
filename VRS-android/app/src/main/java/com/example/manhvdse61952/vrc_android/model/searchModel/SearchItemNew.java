@@ -1,18 +1,43 @@
 package com.example.manhvdse61952.vrc_android.model.searchModel;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 public class SearchItemNew implements Serializable {
+    @SerializedName("seat")
+    @Expose
     private int seat;
+    @SerializedName("frameNumber")
+    @Expose
     private String frameNumber;
+    @SerializedName("districtID")
+    @Expose
     private int districtID;
+    @SerializedName("rentFeePerHours")
+    @Expose
     private String rentFeePerHours;
+    @SerializedName("vehicleMaker")
+    @Expose
     private String vehicleMaker;
+    @SerializedName("currentStatus")
+    @Expose
     private String currentStatus;
+    @SerializedName("vehicleModel")
+    @Expose
     private String vehicleModel;
+    @SerializedName("imageLinkFront")
+    @Expose
     private String imageLinkFront;
+    @SerializedName("discountValue")
+    @Expose
     private int discountValue;
+    @SerializedName("rentFeePerDay")
+    @Expose
     private String rentFeePerDay;
+    @SerializedName("vehicleType")
+    @Expose
     private String vehicleType;
 
     public SearchItemNew(int seat, String frameNumber, int districtID, String rentFeePerHours, String vehicleMaker, String currentStatus, String vehicleModel, String imageLinkFront, int discountValue, String rentFeePerDay, String vehicleType) {
