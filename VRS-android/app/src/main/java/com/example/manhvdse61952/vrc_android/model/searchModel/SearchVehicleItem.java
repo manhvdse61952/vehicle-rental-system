@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class SearchItemNew implements Serializable {
+public class SearchVehicleItem implements Serializable {
     @SerializedName("seat")
     @Expose
     private int seat;
@@ -40,7 +40,7 @@ public class SearchItemNew implements Serializable {
     @Expose
     private String vehicleType;
 
-    public SearchItemNew(int seat, String frameNumber, int districtID, String rentFeePerHours, String vehicleMaker, String currentStatus, String vehicleModel, String imageLinkFront, int discountValue, String rentFeePerDay, String vehicleType) {
+    public SearchVehicleItem(int seat, String frameNumber, int districtID, String rentFeePerHours, String vehicleMaker, String currentStatus, String vehicleModel, String imageLinkFront, int discountValue, String rentFeePerDay, String vehicleType) {
         this.seat = seat;
         this.frameNumber = frameNumber;
         this.districtID = districtID;
@@ -54,7 +54,7 @@ public class SearchItemNew implements Serializable {
         this.vehicleType = vehicleType;
     }
 
-    public SearchItemNew() {
+    public SearchVehicleItem() {
     }
 
     public int getSeat() {

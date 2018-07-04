@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -15,16 +14,12 @@ import com.example.manhvdse61952.vrc_android.api.VehicleAPI;
 import com.example.manhvdse61952.vrc_android.layout.main.activity_main_2;
 import com.example.manhvdse61952.vrc_android.api.AccountAPI;
 import com.example.manhvdse61952.vrc_android.layout.login.LoginActivity;
-import com.example.manhvdse61952.vrc_android.layout.signup.customer.SignupAccountActivity;
 import com.example.manhvdse61952.vrc_android.layout.signup.customer.SignupRoleActivity;
 import com.example.manhvdse61952.vrc_android.layout.signup.customer.SignupUserInfoActivity;
-import com.example.manhvdse61952.vrc_android.layout.signup.owner.RegistVehicle;
 import com.example.manhvdse61952.vrc_android.layout.signup.owner.SignupOwnerPolicy;
 import com.example.manhvdse61952.vrc_android.model.apiModel.Account;
 import com.example.manhvdse61952.vrc_android.model.apiModel.City;
 import com.example.manhvdse61952.vrc_android.model.apiModel.Login;
-import com.example.manhvdse61952.vrc_android.model.searchModel.MainItemModel;
-import com.example.manhvdse61952.vrc_android.model.searchModel.SearchItemNew;
 
 import java.io.File;
 import java.util.ArrayList;

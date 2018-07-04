@@ -2,7 +2,7 @@ package com.example.manhvdse61952.vrc_android.model.searchModel;
 
 import java.io.Serializable;
 
-public class MainItemModel implements Serializable {
+public class DetailVehicleItem implements Serializable {
     private Boolean requireIdCard;
     private String ownerFullName;
     private String vehicleMaker;
@@ -24,7 +24,7 @@ public class MainItemModel implements Serializable {
     private int rentFeePerHourID;
     private int rentFeePerDayID;
 
-    public MainItemModel(Boolean requireIdCard, String ownerFullName, String vehicleMaker, Boolean isManual, double rentFeePerDay, String imageLinkBack, int ownerID, int modelYear, Boolean isGasoline, int districtID, String vehicleModel, String imageLinkFront, double rentFeePerSlot, Boolean requireHouseHold, double rentFeePerHour, String plateNumber, Boolean isScooter, double deposit, int rentFeePerHourID, int rentFeePerDayID) {
+    public DetailVehicleItem(Boolean requireIdCard, String ownerFullName, String vehicleMaker, Boolean isManual, double rentFeePerDay, String imageLinkBack, int ownerID, int modelYear, Boolean isGasoline, int districtID, String vehicleModel, String imageLinkFront, double rentFeePerSlot, Boolean requireHouseHold, double rentFeePerHour, String plateNumber, Boolean isScooter, double deposit, int rentFeePerHourID, int rentFeePerDayID) {
         this.requireIdCard = requireIdCard;
         this.ownerFullName = ownerFullName;
         this.vehicleMaker = vehicleMaker;
@@ -63,7 +63,7 @@ public class MainItemModel implements Serializable {
         this.rentFeePerDayID = rentFeePerDayID;
     }
 
-    public MainItemModel() {
+    public DetailVehicleItem() {
     }
 
     public double getDeposit() {

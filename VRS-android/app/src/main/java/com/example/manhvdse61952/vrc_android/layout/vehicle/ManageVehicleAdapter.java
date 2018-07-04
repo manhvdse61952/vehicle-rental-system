@@ -8,13 +8,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.manhvdse61952.vrc_android.R;
-import com.example.manhvdse61952.vrc_android.model.searchModel.SearchItemNew;
-import com.squareup.picasso.Picasso;
+import com.example.manhvdse61952.vrc_android.model.searchModel.SearchVehicleItem;
 
 import java.util.List;
 
 public class ManageVehicleAdapter extends RecyclerView.Adapter<ManageVehicleAdapter.RecyclerViewHolder> {
-    private List<SearchItemNew> vehicleList;
+    private List<SearchVehicleItem> vehicleList;
     @Override
     public ManageVehicleAdapter.RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
@@ -22,7 +21,7 @@ public class ManageVehicleAdapter extends RecyclerView.Adapter<ManageVehicleAdap
         return new RecyclerViewHolder(view);
     }
 
-    public ManageVehicleAdapter(List<SearchItemNew> vehicleList) {
+    public ManageVehicleAdapter(List<SearchVehicleItem> vehicleList) {
         this.vehicleList = vehicleList;
     }
 

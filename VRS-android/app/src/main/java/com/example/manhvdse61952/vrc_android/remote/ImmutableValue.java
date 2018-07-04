@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -27,26 +26,15 @@ import android.util.SparseArray;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.example.manhvdse61952.vrc_android.R;
-import com.example.manhvdse61952.vrc_android.layout.signup.customer.SignupUserInfoActivity;
-import com.example.manhvdse61952.vrc_android.model.searchModel.MainItemModel;
-import com.example.manhvdse61952.vrc_android.model.searchModel.SearchItemNew;
-import com.example.manhvdse61952.vrc_android.model.apiModel.VehicleInformation_New;
-import com.example.manhvdse61952.vrc_android.model.apiModel.Vehicle_New;
 import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.text.TextBlock;
 import com.google.android.gms.vision.text.TextRecognizer;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -70,6 +58,8 @@ public class ImmutableValue {
     public static final int CAMERA_SELECT_IMAGE_CODE_1 = 1;
     public static final int CAMERA_SELECT_IMAGE_CODE_2 = 2;
     public static final int CAMERA_SELECT_IMAGE_CODE_3 = 3;
+
+    public static final int NOTIFY_REQUEST_CODE = 401;
 
     /////////////////////////// main layout /////////////////
 

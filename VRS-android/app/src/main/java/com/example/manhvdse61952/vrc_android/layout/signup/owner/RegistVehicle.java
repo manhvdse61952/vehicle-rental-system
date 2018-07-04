@@ -27,7 +27,7 @@ import com.example.manhvdse61952.vrc_android.api.VehicleAPI;
 import com.example.manhvdse61952.vrc_android.layout.main.SearchAddressModel;
 import com.example.manhvdse61952.vrc_android.model.apiModel.City;
 import com.example.manhvdse61952.vrc_android.model.apiModel.District;
-import com.example.manhvdse61952.vrc_android.model.apiModel.VehicleInformation_New;
+import com.example.manhvdse61952.vrc_android.model.apiModel.VehicleInformation;
 import com.example.manhvdse61952.vrc_android.remote.ImmutableValue;
 import com.example.manhvdse61952.vrc_android.remote.RetrofitCallAPI;
 import com.example.manhvdse61952.vrc_android.remote.RetrofitConnect;
@@ -47,7 +47,7 @@ import retrofit2.Retrofit;
 
 public class RegistVehicle extends AppCompatActivity {
 
-    VehicleInformation_New vehicleInfoObj;
+    VehicleInformation vehicleInfoObj;
     String vehicleType;
     TextView txtCarModel;
     Spinner spnEngine, spnTranmission, spnYear, spnCity, spnDistrict;
@@ -326,14 +326,14 @@ public class RegistVehicle extends AppCompatActivity {
     //Init seat data - get vehicleInfor
     public void getVehicleInfo(final String getMaker, final String getModel, final String getYear) {
         vehicleInfoID = 0;
-        vehicleInfoObj = new VehicleInformation_New();
+        vehicleInfoObj = new VehicleInformation();
         Retrofit test = RetrofitConnect.getClient();
         final VehicleAPI testAPI = test.create(VehicleAPI.class);
-        Call<VehicleInformation_New> responseBodyCall = testAPI.getVehicleInfo(getMaker, getModel, getYear);
+        Call<VehicleInformation> responseBodyCall = testAPI.getVehicleInfo(getMaker, getModel, getYear);
 
-        responseBodyCall.enqueue(new Callback<VehicleInformation_New>() {
+        responseBodyCall.enqueue(new Callback<VehicleInformation>() {
             @Override
-            public void onResponse(Call<VehicleInformation_New> call, Response<VehicleInformation_New> response) {
+            public void onResponse(Call<VehicleInformation> call, Response<VehicleInformation> response) {
                 if (response.body() != null) {
                     vehicleType = "";
                     vehicleInfoObj = response.body();
@@ -352,7 +352,7 @@ public class RegistVehicle extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<VehicleInformation_New> call, Throwable t) {
+            public void onFailure(Call<VehicleInformation> call, Throwable t) {
 
             }
         });

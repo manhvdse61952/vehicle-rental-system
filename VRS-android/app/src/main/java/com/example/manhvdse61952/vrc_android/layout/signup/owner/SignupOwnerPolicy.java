@@ -11,7 +11,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.manhvdse61952.vrc_android.R;
@@ -19,7 +18,7 @@ import com.example.manhvdse61952.vrc_android.api.AccountAPI;
 import com.example.manhvdse61952.vrc_android.api.VehicleAPI;
 import com.example.manhvdse61952.vrc_android.layout.login.LoginActivity;
 import com.example.manhvdse61952.vrc_android.model.apiModel.Signup;
-import com.example.manhvdse61952.vrc_android.model.apiModel.Vehicle_New;
+import com.example.manhvdse61952.vrc_android.model.apiModel.Vehicle;
 import com.example.manhvdse61952.vrc_android.remote.ImmutableValue;
 import com.example.manhvdse61952.vrc_android.remote.RetrofitConnect;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -170,7 +169,7 @@ public class SignupOwnerPolicy extends AppCompatActivity {
 
 
         ObjectMapper objectMapper = new ObjectMapper();
-        Vehicle_New vehicleObj = new Vehicle_New(frameNumber, Integer.valueOf(userID), vehicleInformationID, description, Float.valueOf(rentFeePerSlot),
+        Vehicle vehicleObj = new Vehicle(frameNumber, Integer.valueOf(userID), vehicleInformationID, description, Float.valueOf(rentFeePerSlot),
                 Float.valueOf(rentFeePerDay), Float.valueOf(rentFeePerHours), Float.valueOf(depositFee), plateNumber,
                 requireHouseHold, requireIdCard, districtID, isGasoline, isManual);
 

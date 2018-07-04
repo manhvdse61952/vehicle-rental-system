@@ -26,7 +26,7 @@ import com.example.manhvdse61952.vrc_android.api.ContractAPI;
 import com.example.manhvdse61952.vrc_android.api.VehicleAPI;
 import com.example.manhvdse61952.vrc_android.layout.main.activity_main_2;
 import com.example.manhvdse61952.vrc_android.layout.order.PaypalExecute;
-import com.example.manhvdse61952.vrc_android.model.searchModel.MainItemModel;
+import com.example.manhvdse61952.vrc_android.model.searchModel.DetailVehicleItem;
 import com.example.manhvdse61952.vrc_android.remote.ImmutableValue;
 import com.example.manhvdse61952.vrc_android.remote.RetrofitConnect;
 
@@ -42,7 +42,7 @@ public class VehicleDetail extends AppCompatActivity {
     ImageSlider sld;
     ViewPager vpg;
     Button btnOrderRent;
-    MainItemModel mainObj = new MainItemModel();
+    DetailVehicleItem mainObj = new DetailVehicleItem();
     int selectTab = 0, rentFeePerHourID = 0, rentFeePerDayID = 0, totalHour = 0, receiveType = 0;
     Double totalMoney = 0.0, rentFeeMoney = 0.0, usdConvert = 0.0;
 
@@ -113,13 +113,13 @@ public class VehicleDetail extends AppCompatActivity {
 
         Retrofit test = RetrofitConnect.getClient();
         final VehicleAPI testAPI = test.create(VehicleAPI.class);
-        Call<MainItemModel> responseBodyCall = testAPI.getVehicleByFrameNumber(frameNumber);
-        responseBodyCall.enqueue(new Callback<MainItemModel>() {
+        Call<DetailVehicleItem> responseBodyCall = testAPI.getVehicleByFrameNumber(frameNumber);
+        responseBodyCall.enqueue(new Callback<DetailVehicleItem>() {
             @Override
-            public void onResponse(Call<MainItemModel> call, Response<MainItemModel> response) {
+            public void onResponse(Call<DetailVehicleItem> call, Response<DetailVehicleItem> response) {
                 if (response.code() == 200) {
                     if (response.body() != null) {
-                        mainObj = new MainItemModel();
+                        mainObj = new DetailVehicleItem();
                         mainObj = response.body();
                         // use for init layout
                         final SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.IN_APP_SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
@@ -266,7 +266,7 @@ public class VehicleDetail extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<MainItemModel> call, Throwable t) {
+            public void onFailure(Call<DetailVehicleItem> call, Throwable t) {
                 Toast.makeText(VehicleDetail.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
             }
         });

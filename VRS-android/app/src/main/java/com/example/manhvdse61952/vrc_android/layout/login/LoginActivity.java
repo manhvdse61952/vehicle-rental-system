@@ -71,7 +71,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-        //Accept user go to main layout without login
+        //Accept user go to specific layout without login
         SharedPreferences editor = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
         SharedPreferences editor2 = getSharedPreferences(ImmutableValue.IN_APP_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
         int usernameID = editor.getInt("userID", 0);

@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.example.manhvdse61952.vrc_android.R;
 import com.example.manhvdse61952.vrc_android.model.apiModel.City;
 import com.example.manhvdse61952.vrc_android.model.apiModel.District;
-import com.example.manhvdse61952.vrc_android.model.searchModel.SearchItemNew;
+import com.example.manhvdse61952.vrc_android.model.searchModel.SearchVehicleItem;
 import com.example.manhvdse61952.vrc_android.remote.ImmutableValue;
 import com.example.manhvdse61952.vrc_android.remote.RetrofitCallAPI;
 import com.squareup.picasso.Picasso;
@@ -22,23 +22,23 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 public class VehicleItem extends BaseAdapter {
-    private List<SearchItemNew> searchItemList;
+    private List<SearchVehicleItem> searchItemList;
     private static LayoutInflater inf = null;
     Context context = null;
 
-    public VehicleItem(MotobikeTab t, List<SearchItemNew> searchItemList, Context context) {
+    public VehicleItem(MotobikeTab t, List<SearchVehicleItem> searchItemList, Context context) {
         this.context = context;
         this.searchItemList = searchItemList;
         inf = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
-    public VehicleItem(CarTab t, List<SearchItemNew> searchItemList, Context context) {
+    public VehicleItem(CarTab t, List<SearchVehicleItem> searchItemList, Context context) {
         this.context = context;
         this.searchItemList = searchItemList;
         inf = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
-    public VehicleItem(TravelCarTab t, List<SearchItemNew> searchItemList, Context context) {
+    public VehicleItem(TravelCarTab t, List<SearchVehicleItem> searchItemList, Context context) {
         this.context = context;
         this.searchItemList = searchItemList;
         inf = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -68,7 +68,7 @@ public class VehicleItem extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         final ViewHolder viewHolder;
-        final SearchItemNew obj = searchItemList.get(position);
+        final SearchVehicleItem obj = searchItemList.get(position);
         if (convertView == null) {
             viewHolder = new ViewHolder();
             convertView = inf.inflate(R.layout.custom_search_item, null);

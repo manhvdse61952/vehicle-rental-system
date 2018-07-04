@@ -1,9 +1,9 @@
 package com.example.manhvdse61952.vrc_android.api;
 
 
-import com.example.manhvdse61952.vrc_android.model.apiModel.VehicleInformation_New;
-import com.example.manhvdse61952.vrc_android.model.searchModel.MainItemModel;
-import com.example.manhvdse61952.vrc_android.model.searchModel.SearchItemNew;
+import com.example.manhvdse61952.vrc_android.model.apiModel.VehicleInformation;
+import com.example.manhvdse61952.vrc_android.model.searchModel.DetailVehicleItem;
+import com.example.manhvdse61952.vrc_android.model.searchModel.SearchVehicleItem;
 
 import java.util.List;
 
@@ -34,17 +34,17 @@ public interface VehicleAPI {
 
     @Headers({"Accept: application/json"})
     @GET("/vehicleinformation/getVehicleInfo/{maker}/{model}/{year}")
-    Call<VehicleInformation_New> getVehicleInfo(@Path("maker") String vehiclemaker,
-                                                @Path("model") String model,
-                                                @Path("year") String year);
+    Call<VehicleInformation> getVehicleInfo(@Path("maker") String vehiclemaker,
+                                            @Path("model") String model,
+                                            @Path("year") String year);
 
     @Headers({"Accept: application/json"})
     @GET("/vehicle/getByDistrict/{districtID}")
-    Call<List<SearchItemNew>> getVehicleByDistrict(@Path("districtID") int districtID);
+    Call<List<SearchVehicleItem>> getVehicleByDistrict(@Path("districtID") int districtID);
 
     @Headers({"Accept: application/json"})
     @GET("/vehicle/getByFrameNumber/{framenumber}")
-    Call<MainItemModel> getVehicleByFrameNumber(@Path("framenumber") String framenumber);
+    Call<DetailVehicleItem> getVehicleByFrameNumber(@Path("framenumber") String framenumber);
 
     @Headers({"Accept: application/json"})
     @GET("/vehicle/checkFrameNumberExisted/{frame}")
@@ -52,7 +52,7 @@ public interface VehicleAPI {
 
     @Headers({"Accept: application/json"})
     @GET("/vehicle/getVehicleByOwner/{ownerID}")
-    Call<List<SearchItemNew>> getVehicleByOwnerID(@Path("ownerID") int ownerID);
+    Call<List<SearchVehicleItem>> getVehicleByOwnerID(@Path("ownerID") int ownerID);
 
     @Multipart
     @POST("/vehicle/create")

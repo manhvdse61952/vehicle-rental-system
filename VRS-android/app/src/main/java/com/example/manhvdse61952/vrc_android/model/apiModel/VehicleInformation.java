@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class VehicleInformation_New implements Serializable {
+public class VehicleInformation implements Serializable {
     @SerializedName("id")
     @Expose
     private int id;
@@ -29,7 +29,7 @@ public class VehicleInformation_New implements Serializable {
     private Boolean scooter;
 
 
-    public VehicleInformation_New(int id, String vehicleMaker, int seat, int modelYear, String vehicleModel, String vehicleType) {
+    public VehicleInformation(int id, String vehicleMaker, int seat, int modelYear, String vehicleModel, String vehicleType) {
         this.id = id;
         this.vehicleMaker = vehicleMaker;
         this.seat = seat;
@@ -47,7 +47,7 @@ public class VehicleInformation_New implements Serializable {
         this.scooter = scooter;
     }
 
-    public VehicleInformation_New() {
+    public VehicleInformation() {
     }
 
     public int getId() {

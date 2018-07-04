@@ -2,7 +2,7 @@ package com.example.manhvdse61952.vrc_android.model.apiModel;
 
 import java.io.Serializable;
 
-public class Vehicle_New implements Serializable {
+public class Vehicle implements Serializable {
     private String frameNumber;
     private int ownerID;
     private int vehicleInformationID;
@@ -18,7 +18,7 @@ public class Vehicle_New implements Serializable {
     private int isGasoline;
     private int isManual;
 
-    public Vehicle_New(String frameNumber, int ownerID, int vehicleInformationID, String description, float rentFeePerSlot, float rentFeePerDay, float rentFeePerHours, float depositFee, String plateNumber, int requireHouseHold, int requireIdCard, int districtID, int isGasoline, int isManual) {
+    public Vehicle(String frameNumber, int ownerID, int vehicleInformationID, String description, float rentFeePerSlot, float rentFeePerDay, float rentFeePerHours, float depositFee, String plateNumber, int requireHouseHold, int requireIdCard, int districtID, int isGasoline, int isManual) {
         this.frameNumber = frameNumber;
         this.ownerID = ownerID;
         this.vehicleInformationID = vehicleInformationID;
@@ -35,7 +35,7 @@ public class Vehicle_New implements Serializable {
         this.isManual = isManual;
     }
 
-    public Vehicle_New(){
+    public Vehicle(){
 
     }
 
