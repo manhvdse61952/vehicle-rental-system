@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.manhvdse61952.vrc_android.R;
-import com.example.manhvdse61952.vrc_android.layout.main.activity_main_2;
+import com.example.manhvdse61952.vrc_android.layout.main.MainActivity;
 import com.example.manhvdse61952.vrc_android.remote.ImmutableValue;
 
 public class ContractCompleted extends AppCompatActivity {
@@ -32,7 +32,7 @@ public class ContractCompleted extends AppCompatActivity {
                 builder.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        Intent it = new Intent(ContractCompleted.this, activity_main_2.class);
+                        Intent it = new Intent(ContractCompleted.this, MainActivity.class);
                         startActivity(it);
                     }
                 });

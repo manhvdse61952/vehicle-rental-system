@@ -15,14 +15,10 @@ import android.widget.Toast;
 
 import com.example.manhvdse61952.vrc_android.R;
 import com.example.manhvdse61952.vrc_android.api.ContractAPI;
-import com.example.manhvdse61952.vrc_android.layout.main.activity_main_2;
+import com.example.manhvdse61952.vrc_android.layout.main.MainActivity;
 import com.example.manhvdse61952.vrc_android.model.apiModel.ContractItem;
 import com.example.manhvdse61952.vrc_android.remote.ImmutableValue;
 import com.example.manhvdse61952.vrc_android.remote.RetrofitConnect;
-
-import java.text.Format;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -131,7 +127,7 @@ public class ContractDetail extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int which) {
                                 SharedPreferences settings = getSharedPreferences(ImmutableValue.IN_APP_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
                                 settings.edit().clear().commit();
-                                Intent it = new Intent(ContractDetail.this, activity_main_2.class);
+                                Intent it = new Intent(ContractDetail.this, MainActivity.class);
                                 it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(it);
                             }
@@ -153,7 +149,7 @@ public class ContractDetail extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         SharedPreferences settings = getSharedPreferences(ImmutableValue.IN_APP_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
                         settings.edit().clear().commit();
-                        Intent it = new Intent(ContractDetail.this, activity_main_2.class);
+                        Intent it = new Intent(ContractDetail.this, MainActivity.class);
                         it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(it);
                     }

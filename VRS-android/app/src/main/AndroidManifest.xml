@@ -53,7 +53,7 @@
         </provider>
 
         <activity
-            android:name=".layout.main.activity_main_2"
+            android:name=".layout.main.MainActivity"
             android:label="@string/title_activity_main_2"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden" />
@@ -66,6 +66,7 @@
         <activity android:name=".layout.contract.ManageContractActivity" android:screenOrientation="portrait"></activity>
         <activity android:name=".layout.contract.ContractCompleted" android:screenOrientation="portrait"></activity>
         <activity android:name=".layout.order.PaypalExecute" android:screenOrientation="portrait"></activity>
+        <activity android:name=".layout.main.SearchAddressActivity" android:screenOrientation="portrait"></activity>
         <service android:name=".util.MyFCMClass">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

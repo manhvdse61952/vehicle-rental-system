@@ -24,7 +24,7 @@ import android.widget.Toast;
 import com.example.manhvdse61952.vrc_android.R;
 import com.example.manhvdse61952.vrc_android.api.ContractAPI;
 import com.example.manhvdse61952.vrc_android.api.VehicleAPI;
-import com.example.manhvdse61952.vrc_android.layout.main.activity_main_2;
+import com.example.manhvdse61952.vrc_android.layout.main.MainActivity;
 import com.example.manhvdse61952.vrc_android.layout.order.PaypalExecute;
 import com.example.manhvdse61952.vrc_android.model.searchModel.DetailVehicleItem;
 import com.example.manhvdse61952.vrc_android.remote.ImmutableValue;
@@ -296,7 +296,7 @@ public class VehicleDetail extends AppCompatActivity {
         SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
         editor.putInt("tabIndex", selectTab);
         editor.apply();
-        Intent it = new Intent(VehicleDetail.this, activity_main_2.class);
+        Intent it = new Intent(VehicleDetail.this, MainActivity.class);
         startActivity(it);
     }
 

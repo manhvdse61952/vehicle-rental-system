@@ -10,7 +10,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.manhvdse61952.vrc_android.R;
-import com.example.manhvdse61952.vrc_android.layout.main.activity_main_2;
+import com.example.manhvdse61952.vrc_android.layout.main.MainActivity;
 
 public class TravelCarTab extends Fragment {
     ListView listView;
@@ -31,13 +31,13 @@ public class TravelCarTab extends Fragment {
         errorTab3 = (TextView)view.findViewById(R.id.errorTab3);
         listView = (ListView)view.findViewById(R.id.lvtab3);
 
-        if (activity_main_2.listTravelCar.size() == 0){
+        if (MainActivity.listTravelCar.size() == 0){
             errorTab3.setVisibility(View.VISIBLE);
             listView.setVisibility(View.INVISIBLE);
         } else {
             errorTab3.setVisibility(View.INVISIBLE);
             listView.setVisibility(View.VISIBLE);
-            adapter = new VehicleItem(TravelCarTab.this, activity_main_2.listTravelCar, getActivity());
+            adapter = new VehicleItem(TravelCarTab.this, MainActivity.listTravelCar, getActivity());
             listView.setAdapter(adapter);
         }
 

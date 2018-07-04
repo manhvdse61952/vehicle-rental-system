@@ -49,13 +49,12 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class activity_main_2 extends AppCompatActivity
+public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     ImageView main_search, main_extra_search;
-    EditText edtMainSearch;
-
     ImmutableValue locationObj = new ImmutableValue();
+    TextView txt_main_search_address;
 
     ///////////////// USE FOR SEARCH ADAPTER ////////
     public static List<SearchVehicleItem> listMotorbike = new ArrayList<>();
@@ -76,11 +75,12 @@ public class activity_main_2 extends AppCompatActivity
         setContentView(R.layout.activity_main_2);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        txt_main_search_address = (TextView)findViewById(R.id.txt_main_search_address);
 
         //Get vehicle by district
         getAllDistrict();
-        locationObj.checkAddressPermission(activity_main_2.this, activity_main_2.this);
-
+        locationObj.checkAddressPermission(MainActivity.this, MainActivity.this);
+        txt_main_search_address.setText(ImmutableValue.address + "");
 
         getAllVehicleByDistrictID(44);
 //        int districtID = getDistrictIdByName("quận bình thạnh");
@@ -90,12 +90,12 @@ public class activity_main_2 extends AppCompatActivity
 //            getAllVehicleByDistrictID(districtID);
 //        }
 
-        edtMainSearch = (EditText) findViewById(R.id.edtMainSearch);
         main_search = (ImageView) findViewById(R.id.main_search);
         main_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                edtMainSearch.setText(locationObj.district + ", " + locationObj.city);
+                Intent it = new Intent(MainActivity.this, SearchAddressActivity.class);
+                startActivity(it);
             }
         });
 
@@ -104,16 +104,16 @@ public class activity_main_2 extends AppCompatActivity
         main_extra_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent it = new Intent(activity_main_2.this, MapsActivity.class);
+//                Intent it = new Intent(MainActivity.this, MapsActivity.class);
 //                startActivity(it);
 
                 /////////////////// USE FOR TEST SEARCH //////////////////////
-                new SimpleSearchDialogCompat(activity_main_2.this, "", "Nhập đia điểm cần kiếm xe", null, initData(), new SearchResultListener<Searchable>() {
+                new SimpleSearchDialogCompat(MainActivity.this, "", "Nhập đia điểm cần kiếm xe", null, initData(), new SearchResultListener<Searchable>() {
                     @Override
                     public void onSelected(BaseSearchDialogCompat baseSearchDialogCompat, Searchable searchable, int i) {
-                        Toast.makeText(activity_main_2.this, "" + searchable.getTitle(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "" + searchable.getTitle(), Toast.LENGTH_SHORT).show();
                         if (!searchable.getTitle().equals("")) {
-                            edtMainSearch.setText("" + searchable.getTitle());
+
                         }
                         baseSearchDialogCompat.dismiss();
                     }
@@ -211,7 +211,7 @@ public class activity_main_2 extends AppCompatActivity
                             settings_2.edit().clear().commit();
                             SharedPreferences settings_3 = getSharedPreferences(ImmutableValue.IN_APP_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
                             settings_3.edit().clear().commit();
-                            Intent it = new Intent(activity_main_2.this, LoginActivity.class);
+                            Intent it = new Intent(MainActivity.this, LoginActivity.class);
                             it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(it);
                         }
@@ -251,10 +251,10 @@ public class activity_main_2 extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_check_contract) {
-            Intent it = new Intent(activity_main_2.this, ManageContractActivity.class);
+            Intent it = new Intent(MainActivity.this, ManageContractActivity.class);
             startActivity(it);
         } else if (id == R.id.nav_manage_vehicle) {
-            Intent it = new Intent(activity_main_2.this, ManageVehicleActivity.class);
+            Intent it = new Intent(MainActivity.this, ManageVehicleActivity.class);
             startActivity(it);
 
 //        } else if (id == R.id.nav_slideshow) {
@@ -277,7 +277,7 @@ public class activity_main_2 extends AppCompatActivity
                             settings_2.edit().clear().commit();
                             SharedPreferences settings_3 = getSharedPreferences(ImmutableValue.IN_APP_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
                             settings_3.edit().clear().commit();
-                            Intent it = new Intent(activity_main_2.this, LoginActivity.class);
+                            Intent it = new Intent(MainActivity.this, LoginActivity.class);
                             it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(it);
                             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -401,7 +401,7 @@ public class activity_main_2 extends AppCompatActivity
                         viewPager.setCurrentItem(tabIndex);
                     }
                 } else {
-                    Toast.makeText(activity_main_2.this, "Đã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Đã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
                     viewPager = (ViewPager) findViewById(R.id.container);
                     setupViewPager(viewPager);
                     tabLayout = (TabLayout) findViewById(R.id.tabs);
@@ -418,7 +418,7 @@ public class activity_main_2 extends AppCompatActivity
                 tabLayout = (TabLayout) findViewById(R.id.tabs);
                 tabLayout.setupWithViewPager(viewPager);
                 createTabIcons();
-                Toast.makeText(activity_main_2.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
             }
         });
     }

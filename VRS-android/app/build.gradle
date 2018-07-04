@@ -4,7 +4,7 @@ android {
     compileSdkVersion 26
     defaultConfig {
         applicationId "com.example.manhvdse61952.vrc_android"
-        minSdkVersion 17
+        minSdkVersion 19
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -46,6 +46,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:16.0.1'
     implementation 'com.google.firebase:firebase-messaging:17.1.0'
     implementation 'com.android.support:multidex:1.0.3'
+    implementation "com.google.android.gms:play-services-places:15.0.1"
 }
 apply plugin: 'com.google.gms.google-services'
 

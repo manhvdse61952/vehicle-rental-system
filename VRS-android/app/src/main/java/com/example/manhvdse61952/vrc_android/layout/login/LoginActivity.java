@@ -14,7 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.manhvdse61952.vrc_android.R;
-import com.example.manhvdse61952.vrc_android.layout.main.activity_main_2;
+import com.example.manhvdse61952.vrc_android.layout.main.MainActivity;
 import com.example.manhvdse61952.vrc_android.layout.contract.ContractDetail;
 import com.example.manhvdse61952.vrc_android.layout.signup.customer.SignupAccountActivity;
 import com.example.manhvdse61952.vrc_android.layout.vehicle.VehicleDetail;
@@ -87,7 +87,7 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(it);
         }
         else if (usernameID != 0 && vehicleID.equals("Empty")){
-            Intent it = new Intent(LoginActivity.this, activity_main_2.class);
+            Intent it = new Intent(LoginActivity.this, MainActivity.class);
             it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(it);
         }

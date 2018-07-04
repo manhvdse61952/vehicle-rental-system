@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 import com.example.manhvdse61952.vrc_android.api.AddressAPI;
 import com.example.manhvdse61952.vrc_android.api.VehicleAPI;
-import com.example.manhvdse61952.vrc_android.layout.main.activity_main_2;
+import com.example.manhvdse61952.vrc_android.layout.main.MainActivity;
 import com.example.manhvdse61952.vrc_android.api.AccountAPI;
 import com.example.manhvdse61952.vrc_android.layout.login.LoginActivity;
 import com.example.manhvdse61952.vrc_android.layout.signup.customer.SignupRoleActivity;
@@ -66,7 +66,7 @@ public class RetrofitCallAPI {
                     tempEditor.putString("ID", "Empty");
                     tempEditor.putString("contractID", "Empty");
                     tempEditor.apply();
-                    Intent it = new Intent(ctx, activity_main_2.class);
+                    Intent it = new Intent(ctx, MainActivity.class);
                     ctx.startActivity(it);
                 }
                 progressDialog.dismiss();
