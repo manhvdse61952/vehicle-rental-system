@@ -6,52 +6,24 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 public class ContractCreate implements Serializable {
-    @SerializedName("vehicleID")
-    @Expose
     private String vehicleID;
-    @SerializedName("userID")
-    @Expose
     private int userID;
-    @SerializedName("paypalOrderID")
-    @Expose
     private String paypalOrderID;
-    @SerializedName("paypalOwnerID")
-    @Expose
-    private String paypalOwnerID;
-    @SerializedName("rentFeePerHourID")
-    @Expose
+    private String paypalUserID;
     private int rentFeePerHourID;
-    @SerializedName("rentFeePerDayID")
-    @Expose
     private int rentFeePerDayID;
-
-    @SerializedName("startTime")
-    @Expose
     private long startTime;
-
-    @SerializedName("endTime")
-    @Expose
     private long endTime;
-
-    @SerializedName("rentFee")
-    @Expose
     private float rentFee;
-
-    @SerializedName("hours")
-    @Expose
     private int hours;
-    @SerializedName("days")
-    @Expose
     private int days;
-    @SerializedName("receiveType")
-    @Expose
     private int receiveType;
 
-    public ContractCreate(String vehicleID, int userID, String paypalOrderID, String paypalOwnerID, int rentFeePerHourID, int rentFeePerDayID, long startTime, long endTime, float rentFee, int hours, int days, int receiveType) {
+    public ContractCreate(String vehicleID, int userID, String paypalOrderID, String paypalUserID, int rentFeePerHourID, int rentFeePerDayID, long startTime, long endTime, float rentFee, int hours, int days, int receiveType) {
         this.vehicleID = vehicleID;
         this.userID = userID;
         this.paypalOrderID = paypalOrderID;
-        this.paypalOwnerID = paypalOwnerID;
+        this.paypalUserID = paypalUserID;
         this.rentFeePerHourID = rentFeePerHourID;
         this.rentFeePerDayID = rentFeePerDayID;
         this.startTime = startTime;
@@ -63,14 +35,6 @@ public class ContractCreate implements Serializable {
     }
 
     public ContractCreate() {
-    }
-
-    public int getReceiveType() {
-        return receiveType;
-    }
-
-    public void setReceiveType(int receiveType) {
-        this.receiveType = receiveType;
     }
 
     public String getVehicleID() {
@@ -97,12 +61,12 @@ public class ContractCreate implements Serializable {
         this.paypalOrderID = paypalOrderID;
     }
 
-    public String getPaypalOwnerID() {
-        return paypalOwnerID;
+    public String getPaypalUserID() {
+        return paypalUserID;
     }
 
-    public void setPaypalOwnerID(String paypalOwnerID) {
-        this.paypalOwnerID = paypalOwnerID;
+    public void setPaypalUserID(String paypalUserID) {
+        this.paypalUserID = paypalUserID;
     }
 
     public int getRentFeePerHourID() {
@@ -159,5 +123,13 @@ public class ContractCreate implements Serializable {
 
     public void setDays(int days) {
         this.days = days;
+    }
+
+    public int getReceiveType() {
+        return receiveType;
+    }
+
+    public void setReceiveType(int receiveType) {
+        this.receiveType = receiveType;
     }
 }

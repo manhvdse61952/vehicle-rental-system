@@ -96,7 +96,14 @@ public class MainActivity extends AppCompatActivity
             public void onPlaceSelected(Place place) {
                 ImmutableValue.getStringAddress(place.getLatLng().longitude, place.getLatLng().latitude, MainActivity.this);
                 txt_main_search_place.setText(place.getName());
-                String addressFull = ImmutableValue.addressCurrent.replaceAll(", Vietnam", "");
+                String addressFull = "";
+                if (!ImmutableValue.addressCurrent.trim().equals("")){
+                    String[] arrayAddressTemp = ImmutableValue.addressCurrent.split(",");
+                    addressFull = arrayAddressTemp[0];
+                    for (int i = 1; i < arrayAddressTemp.length - 1;i++){
+                        addressFull = addressFull + ", " + arrayAddressTemp[i].trim();
+                    }
+                }
                 txt_main_search_address.setText(addressFull);
             }
 

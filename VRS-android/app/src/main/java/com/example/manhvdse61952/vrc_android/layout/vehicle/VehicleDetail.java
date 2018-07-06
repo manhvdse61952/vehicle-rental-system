@@ -2,6 +2,7 @@ package com.example.manhvdse61952.vrc_android.layout.vehicle;
 
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
@@ -54,6 +56,7 @@ public class VehicleDetail extends AppCompatActivity {
     CheckBox cbx1, cbx2;
     LinearLayout ln_pickTime;
     Switch swt_order_type;
+    ProgressDialog dialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -90,6 +93,7 @@ public class VehicleDetail extends AppCompatActivity {
 
         SharedPreferences editor = getSharedPreferences(ImmutableValue.IN_APP_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
         String frameNumber = editor.getString("ID", "aaaaaa");
+        Log.d("FrameNumber", frameNumber);
         final String vehicleType = editor.getString("type", "XE_MAY");
         final String vehicleSeat = editor.getString("seat", "0");
         String startHour = editor.getString("startHour", "--");
@@ -108,8 +112,10 @@ public class VehicleDetail extends AppCompatActivity {
         txt_hours_2.setText(endHour + " : " + endMinute);
         txt_day_end.setText(endDate);
         txt_day_rent.setText(totalDay + "");
+        if (totalMinute > 20 && totalMinute <= 59) {
+            totalHour = totalHour + 1;
+        }
         txt_hour_rent.setText(totalHour + "");
-
 
         Retrofit test = RetrofitConnect.getClient();
         final VehicleAPI testAPI = test.create(VehicleAPI.class);
@@ -213,17 +219,15 @@ public class VehicleDetail extends AppCompatActivity {
                             }
                         });
 
-                        //Calculate money
-                        totalHour = 0;
-                        if (totalMinute > 30 && totalMinute <= 59) {
-                            totalHour = totalHour + 1;
-                        }
                         totalMoney = totalDay * mainObj.getRentFeePerDay() + totalHour * mainObj.getRentFeePerHour()
                                 + mainObj.getDeposit();
 
                         if (totalDay ==  0 && totalHour == 0){
                             txt_day_rent.setText("0");
+                            txt_hour_rent.setText("0");
                         } else {
+                            dialog = ProgressDialog.show(VehicleDetail.this, "Đang xử lý",
+                                    "Vui lòng đợi ...", true);
                             Retrofit test = RetrofitConnect.getClient();
                             final ContractAPI testAPI = test.create(ContractAPI.class);
                             Call<Double> responseBodyCall = testAPI.convertUSD(totalMoney.intValue());
@@ -250,10 +254,12 @@ public class VehicleDetail extends AppCompatActivity {
                                     } else {
                                         Toast.makeText(VehicleDetail.this, "Đã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
                                     }
+                                    dialog.dismiss();
                                 }
 
                                 @Override
                                 public void onFailure(Call<Double> call, Throwable t) {
+                                    dialog.dismiss();
                                     Toast.makeText(VehicleDetail.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
                                 }
                             });
@@ -276,7 +282,7 @@ public class VehicleDetail extends AppCompatActivity {
         btnOrderRent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (txt_day_rent.getText().toString().equals("0") && txt_hour_rent.getText().toString().equals("0")){
+                if (txt_day_rent.getText().toString().equals("0") && txt_hour_rent.getText().toString().equals("0") && txt_usd_convert.getText().toString().equals("0")){
                     Toast.makeText(VehicleDetail.this, "Vui lòng chọn ngày giờ thuê xe", Toast.LENGTH_SHORT).show();
                 } else {
                     SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.IN_APP_SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();

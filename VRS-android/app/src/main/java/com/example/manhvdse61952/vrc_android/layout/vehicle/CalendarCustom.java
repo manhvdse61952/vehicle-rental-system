@@ -15,7 +15,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.manhvdse61952.vrc_android.R;
+import com.example.manhvdse61952.vrc_android.api.ContractAPI;
+import com.example.manhvdse61952.vrc_android.api.TimeAPI;
+import com.example.manhvdse61952.vrc_android.model.apiModel.ContractItem;
+import com.example.manhvdse61952.vrc_android.model.apiModel.RentTime;
 import com.example.manhvdse61952.vrc_android.remote.ImmutableValue;
+import com.example.manhvdse61952.vrc_android.remote.RetrofitConnect;
 import com.shawnlin.numberpicker.NumberPicker;
 import com.squareup.timessquare.CalendarPickerView;
 
@@ -28,14 +33,21 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+
 public class CalendarCustom extends AppCompatActivity {
     int startHours = 0, endHours = 0, startMinutes = 0, endMinute = 0;
     Button btn_save_time;
     String startDatePicker = "", endDatePicker = "";
+    public static List<RentTime> listRentTimeTotal = new ArrayList<>();
     public static List<Date> listRentDay = new ArrayList<>();
     public static List<String> listRentHour = new ArrayList<>(); //Format: HH:dd:MM:yyyy
     CalendarPickerView calendarPickerView;
     Boolean isHourOK = true;
+    ProgressDialog dialog;
     TextView txt_hour_view_0, txt_hour_view_1, txt_hour_view_2, txt_hour_view_3, txt_hour_view_4, txt_hour_view_5,
             txt_hour_view_6, txt_hour_view_7, txt_hour_view_8, txt_hour_view_9, txt_hour_view_10, txt_hour_view_11,
             txt_hour_view_12, txt_hour_view_13, txt_hour_view_14, txt_hour_view_15, txt_hour_view_16, txt_hour_view_17,
@@ -79,118 +91,30 @@ public class CalendarCustom extends AppCompatActivity {
         txt_hour_view_21 = (TextView) findViewById(R.id.txt_hour_view_21);
         txt_hour_view_22 = (TextView) findViewById(R.id.txt_hour_view_22);
         txt_hour_view_23 = (TextView) findViewById(R.id.txt_hour_view_23);
-
-        //Init calendar
         calendarPickerView = (CalendarPickerView) findViewById(R.id.calendar_view);
+        //Init calendar
         Calendar nextYear = Calendar.getInstance();
         nextYear.add(Calendar.YEAR, 1);
         Date today = new Date();
-
-        //Temp 1
-        String startDate = "22:00:00:08:07:2018";
-        String endDate = "15:00:00:12:07:2018";
-        getListBusyDay(startDate, endDate);
-        //Temp 2
-        String startDate2 = "03:00:00:14:07:2018";
-        String endDate2 = "22:00:00:14:07:2018";
-        getListBusyDay(startDate2, endDate2);
-        //Temp 3
-        String startDate3 = "02:00:00:20:07:2018";
-        String endDate3 = "15:00:00:25:07:2018";
-        getListBusyDay(startDate3, endDate3);
-
-
         //add year to calendar from today
         calendarPickerView.init(today, nextYear.getTime()).inMode(CalendarPickerView.SelectionMode.RANGE);
-        if (listRentDay.size() > 0) {
-            calendarPickerView.highlightDates(listRentDay);
-        }
-        calendarPickerView.setOnDateSelectedListener(new CalendarPickerView.OnDateSelectedListener() {
-            @Override
-            public void onDateSelected(Date date) {
-                //Change color of hour in selected day
-                isHourOK = true;
-                changeColorGreenForAllHour();
-                String startDateParse = convertDateToNormalFormatVersionTwo(calendarPickerView.getSelectedDate().toString());
-                ////////////////////////////
-                for (int k = 0;k<listRentDay.size();k++){
-                    String parseListRentDay = convertDateToNormalFormatVersionTwo(listRentDay.get(k).toString());
-                    if (parseListRentDay.equals(startDateParse)){
-                        changeColorRedForAllHour();
-                        isHourOK = false;
-                        break;
-                    }
-                }
-                ////////////////////////////
-                for (int i = 0; i < listRentHour.size(); i++) {
-                    String[] temp = listRentHour.get(i).split(":");
-                    String startDateInBusy = temp[1] + ":" + temp[2] + ":" + temp[3];
-                    String hourInBusy = temp[0];
-                    if (startDateParse.equals(startDateInBusy)){
-                        int pos = Integer.parseInt(hourInBusy);
-                        changeColorHour(pos);
-                    }
-                }
 
-                //Set date value to execute
-                if (calendarPickerView.getSelectedDates().size() == 0) {
-                    Date today = new Date();
-                    startDatePicker = today.toString();
-                    endDatePicker = today.toString();
-                } else if (calendarPickerView.getSelectedDates().size() == 1) {
-                    startDatePicker = calendarPickerView.getSelectedDate().toString();
-                    endDatePicker = calendarPickerView.getSelectedDate().toString();
-                } else {
-                    startDatePicker = calendarPickerView.getSelectedDates().get(0).toString();
-                    endDatePicker = calendarPickerView.getSelectedDates().get(calendarPickerView.getSelectedDates().size() - 1).toString();
-                }
-            }
 
-            @Override
-            public void onDateUnselected(Date date) {
-            }
-        });
+//        //Temp 1
+//        String startDate = "22:00:00:08:07:2018";
+//        String endDate = "15:00:00:12:07:2018";
+//        getListBusyDay(startDate, endDate);
+//        //Temp 2
+//        String startDate2 = "03:00:00:14:07:2018";
+//        String endDate2 = "22:00:00:14:07:2018";
+//        getListBusyDay(startDate2, endDate2);
+//        //Temp 3
+//        String startDate3 = "02:00:00:20:07:2018";
+//        String endDate3 = "15:00:00:25:07:2018";
+//        getListBusyDay(startDate3, endDate3);
 
-        //Init time picker
-        NumberPicker time_picker_hours_start = (NumberPicker) findViewById(R.id.time_picker_hours_start);
-        NumberPicker time_picker_minutes_start = (NumberPicker) findViewById(R.id.time_picker_minutes_start);
-        NumberPicker time_picker_hours_end = (NumberPicker) findViewById(R.id.time_picker_hours_end);
-        NumberPicker time_picker_minutes_end = (NumberPicker) findViewById(R.id.time_picker_minutes_end);
-
-        time_picker_hours_start.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-            @Override
-            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                startHours = newVal;
-            }
-        });
-
-        time_picker_minutes_start.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-            @Override
-            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                startMinutes = newVal;
-            }
-        });
-
-        time_picker_hours_end.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-            @Override
-            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                endHours = newVal;
-            }
-        });
-
-        time_picker_minutes_end.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-            @Override
-            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                endMinute = newVal;
-            }
-        });
-
-        btn_save_time.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveTime();
-            }
-        });
+        //Call first API
+        getVehicleBusyTime();
     }
 
     @Override
@@ -438,6 +362,12 @@ public class CalendarCustom extends AppCompatActivity {
         return format.format(date);
     }
 
+    public static String convertLongToFullDate(long value) {
+        Date date = new Date(value);
+        Format format = new SimpleDateFormat("HH:mm:ss:dd:MM:yyyy");
+        return format.format(date);
+    }
+
     private void saveTime() {
         String finalStartDate = convertDateToNormalFormat(startDatePicker);
         String finalEndDate = convertDateToNormalFormat(endDatePicker);
@@ -459,30 +389,59 @@ public class CalendarCustom extends AppCompatActivity {
                 isHourOK = true;
                 date1 = sdf.parse(startDateParse);
                 date2 = sdf.parse(endDateParse);
-                if (date1.compareTo(date2) == 0) {
-                    for (int i = startHours; i <= endHours; i++) {
-                        listHourTemp.add(i + ":" + startDateParse);
+                if (totalDay == 0) {
+                    if (date1.compareTo(date2) == 0) {
+                        for (int i = startHours; i <= endHours; i++) {
+                            listHourTemp.add(i + ":" + startDateParse);
+                        }
+                    } else {
+                        for (int i = startHours; i <= 23; i++) {
+                            listHourTemp.add(i + ":" + startDateParse);
+                        }
+                        for (int j = 0; j <= endHours; j++) {
+                            listHourTemp.add(j + ":" + endDateParse);
+                        }
+                        for (int i = 0; i < listRentHour.size(); i++) {
+                            for (int j = 0; j < listHourTemp.size(); j++) {
+                                if (listHourTemp.get(j).equals(listRentHour.get(i))) {
+                                    isHourOK = false;
+                                    break;
+                                }
+                            }
+                        }
                     }
                 } else {
+                    long currentStartTime = date1.getTime();
+                    for (int i = 0; i < totalDay; i++) {
+                        currentStartTime = currentStartTime + 86400000;
+                        String nextday = convertLongToDate(currentStartTime);
+                        for (int j = 0; j < listRentDay.size(); j++) {
+                            String busyDay = convertDateToNormalFormatVersionTwo(listRentDay.get(j).toString());
+                            if (nextday.equals(busyDay)) {
+                                isHourOK = false;
+                                break;
+                            }
+                        }
+                    }
                     for (int i = startHours; i <= 23; i++) {
                         listHourTemp.add(i + ":" + startDateParse);
                     }
                     for (int j = 0; j <= endHours; j++) {
                         listHourTemp.add(j + ":" + endDateParse);
                     }
+                    for (int i = 0; i < listRentHour.size(); i++) {
+                        for (int j = 0; j < listHourTemp.size(); j++) {
+                            if (listHourTemp.get(j).equals(listRentHour.get(i))) {
+                                isHourOK = false;
+                                break;
+                            }
+                        }
+                    }
                 }
             } catch (ParseException e) {
                 e.printStackTrace();
             }
 
-            for (int i = 0; i < listRentHour.size(); i++) {
-                for (int j = 0; j < listHourTemp.size(); j++) {
-                    if (listHourTemp.get(j).equals(listRentHour.get(i))) {
-                        isHourOK = false;
-                        break;
-                    }
-                }
-            }
 
             if (isHourOK == false) {
                 Toast.makeText(this, "Thời gian này đã có người thuê! Vui lòng chọn lại", Toast.LENGTH_SHORT).show();
@@ -596,7 +555,7 @@ public class CalendarCustom extends AppCompatActivity {
         }
     }
 
-    private void changeColorGreenForAllHour(){
+    private void changeColorGreenForAllHour() {
         txt_hour_view_0.setBackgroundResource(R.drawable.border_green);
         txt_hour_view_1.setBackgroundResource(R.drawable.border_green);
         txt_hour_view_2.setBackgroundResource(R.drawable.border_green);
@@ -623,7 +582,7 @@ public class CalendarCustom extends AppCompatActivity {
         txt_hour_view_23.setBackgroundResource(R.drawable.border_green);
     }
 
-    private void changeColorRedForAllHour(){
+    private void changeColorRedForAllHour() {
         txt_hour_view_0.setBackgroundResource(R.drawable.border_red);
         txt_hour_view_1.setBackgroundResource(R.drawable.border_red);
         txt_hour_view_2.setBackgroundResource(R.drawable.border_red);
@@ -648,6 +607,201 @@ public class CalendarCustom extends AppCompatActivity {
         txt_hour_view_21.setBackgroundResource(R.drawable.border_red);
         txt_hour_view_22.setBackgroundResource(R.drawable.border_red);
         txt_hour_view_23.setBackgroundResource(R.drawable.border_red);
+    }
+
+    private void getVehicleBusyTime() {
+        dialog = ProgressDialog.show(CalendarCustom.this, "Đang xử lý",
+                "Vui lòng đợi ...", true);
+        SharedPreferences editor = getSharedPreferences(ImmutableValue.IN_APP_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
+        String frameNumber = editor.getString("ID", "aaaaaa");
+        Retrofit retrofit = RetrofitConnect.getClient();
+        TimeAPI timeAPI = retrofit.create(TimeAPI.class);
+        Call<List<RentTime>> responseBodyCall = timeAPI.getBusyTimeByVehicleID(frameNumber);
+        responseBodyCall.enqueue(new Callback<List<RentTime>>() {
+            @Override
+            public void onResponse(Call<List<RentTime>> call, Response<List<RentTime>> response) {
+                if (response.code() == 200 && response.body() != null) {
+                    listRentTimeTotal = response.body();
+                    getUserBusyTime();
+                } else if (response.code() == 204) {
+                    getUserBusyTime();
+                } else {
+                    dialog.dismiss();
+                    Toast.makeText(CalendarCustom.this, "Đã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<RentTime>> call, Throwable t) {
+                dialog.dismiss();
+                Toast.makeText(CalendarCustom.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void getUserBusyTime() {
+        SharedPreferences editor = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
+        int userID = editor.getInt("userID", 0);
+        String roleName = editor.getString("roleName", "ROLE_USER");
+        Retrofit retrofit = RetrofitConnect.getClient();
+        ContractAPI contractAPI = retrofit.create(ContractAPI.class);
+        Call<List<ContractItem>> responseBodyCall;
+        if (roleName.equals("ROLE_USER")) {
+            responseBodyCall = contractAPI.findContractByCustomerID(userID);
+        } else {
+            responseBodyCall = contractAPI.findContractByOwnerID(userID);
+        }
+        responseBodyCall.enqueue(new Callback<List<ContractItem>>() {
+            @Override
+            public void onResponse(Call<List<ContractItem>> call, Response<List<ContractItem>> response) {
+                if (response.code() == 200) {
+                    if (response.body() != null) {
+                        List<ContractItem> contractItemList = new ArrayList<>();
+                        contractItemList = response.body();
+                        for (int i = 0; i < contractItemList.size(); i++) {
+                            RentTime timeObj = new RentTime();
+                            timeObj.setStartTime(contractItemList.get(i).getStartTime());
+                            timeObj.setEndTime(contractItemList.get(i).getEndTime());
+                            listRentTimeTotal.add(timeObj);
+                        }
+                    }
+                    getServerTime();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<ContractItem>> call, Throwable t) {
+                dialog.dismiss();
+                Toast.makeText(CalendarCustom.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    private void getServerTime() {
+
+        Retrofit retrofit = RetrofitConnect.getClient();
+        TimeAPI timeAPI = retrofit.create(TimeAPI.class);
+        Call<Long> responseBodyCall = timeAPI.getServerTime();
+        responseBodyCall.enqueue(new Callback<Long>() {
+            @Override
+            public void onResponse(Call<Long> call, Response<Long> response) {
+                if (response.code() == 200) {
+
+                    //Init time picker
+                    NumberPicker time_picker_hours_start = (NumberPicker) findViewById(R.id.time_picker_hours_start);
+                    NumberPicker time_picker_minutes_start = (NumberPicker) findViewById(R.id.time_picker_minutes_start);
+                    NumberPicker time_picker_hours_end = (NumberPicker) findViewById(R.id.time_picker_hours_end);
+                    NumberPicker time_picker_minutes_end = (NumberPicker) findViewById(R.id.time_picker_minutes_end);
+
+                    time_picker_hours_start.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+                        @Override
+                        public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                            startHours = newVal;
+                        }
+                    });
+
+                    time_picker_minutes_start.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+                        @Override
+                        public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                            startMinutes = newVal;
+                        }
+                    });
+
+                    time_picker_hours_end.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+                        @Override
+                        public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                            endHours = newVal;
+                        }
+                    });
+
+                    time_picker_minutes_end.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+                        @Override
+                        public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                            endMinute = newVal;
+                        }
+                    });
+                    String currentServerTime = convertLongToFullDate(response.body());
+                    String[] currentServerTimeTemp = currentServerTime.split(":");
+                    int currentServerHour = Integer.parseInt(currentServerTimeTemp[0]);
+                    if (currentServerHour > 0) {
+                        for (int i = 0; i <= currentServerHour; i++) {
+                            listRentHour.add(i + ":" + currentServerTimeTemp[3] + ":" + currentServerTimeTemp[4] + ":" + currentServerTimeTemp[5]);
+                        }
+                    } else {
+                        listRentHour.add(currentServerHour + ":" + currentServerTimeTemp[3] + ":" + currentServerTimeTemp[4] + ":" + currentServerTimeTemp[5]);
+                    }
+                    for (int i = 0; i < listRentTimeTotal.size(); i++) {
+                        RentTime rentObj = listRentTimeTotal.get(i);
+                        String startTime = convertLongToFullDate(rentObj.getStartTime());
+                        String endTime = convertLongToFullDate(rentObj.getEndTime());
+                        getListBusyDay(startTime, endTime);
+                    }
+                    if (listRentDay.size() > 0) {
+                        calendarPickerView.highlightDates(listRentDay);
+                    }
+                    calendarPickerView.setOnDateSelectedListener(new CalendarPickerView.OnDateSelectedListener() {
+                        @Override
+                        public void onDateSelected(Date date) {
+                            //Set date value to execute
+                            if (calendarPickerView.getSelectedDates().size() == 0) {
+                                Date today = new Date();
+                                startDatePicker = today.toString();
+                                endDatePicker = today.toString();
+                            } else if (calendarPickerView.getSelectedDates().size() == 1) {
+                                startDatePicker = calendarPickerView.getSelectedDate().toString();
+                                endDatePicker = calendarPickerView.getSelectedDate().toString();
+                            } else {
+                                startDatePicker = calendarPickerView.getSelectedDates().get(0).toString();
+                                endDatePicker = calendarPickerView.getSelectedDates().get(calendarPickerView.getSelectedDates().size() - 1).toString();
+                            }
+
+                            //Change color of all hour in busy day and check if user selected busy day
+                            isHourOK = true;
+                            changeColorGreenForAllHour();
+                            String startDateParse = convertDateToNormalFormatVersionTwo(endDatePicker);
+                            for (int k = 0; k < listRentDay.size(); k++) {
+                                String parseListRentDay = convertDateToNormalFormatVersionTwo(listRentDay.get(k).toString());
+                                if (parseListRentDay.equals(startDateParse)) {
+                                    changeColorRedForAllHour();
+                                    isHourOK = false;
+                                    break;
+                                }
+                            }
+                            //Change to red color of hour
+                            for (int i = 0; i < listRentHour.size(); i++) {
+                                String[] temp = listRentHour.get(i).split(":");
+                                String startDateInBusy = temp[1] + ":" + temp[2] + ":" + temp[3];
+                                String hourInBusy = temp[0];
+                                if (startDateParse.equals(startDateInBusy)) {
+                                    int pos = Integer.parseInt(hourInBusy);
+                                    changeColorHour(pos);
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onDateUnselected(Date date) {
+                        }
+                    });
+                    btn_save_time.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            saveTime();
+                        }
+                    });
+                } else {
+                    Toast.makeText(CalendarCustom.this, "Đã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
+                }
+                dialog.dismiss();
+            }
+
+            @Override
+            public void onFailure(Call<Long> call, Throwable t) {
+                dialog.dismiss();
+                Toast.makeText(CalendarCustom.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 }

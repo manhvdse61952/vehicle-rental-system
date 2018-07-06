@@ -91,7 +91,7 @@ public class PaypalExecute extends AppCompatActivity {
                             obj.setVehicleID(editor2.getString("ID", "aaaaaa"));
                             obj.setUserID(editor1.getInt("userID", 0));
                             obj.setPaypalOrderID(jsonItem.getString("id"));
-                            obj.setPaypalOwnerID("");
+                            obj.setPaypalUserID("");
                             obj.setRentFeePerHourID(editor2.getInt("rentFeePerHourID", 0));
                             obj.setRentFeePerDayID(editor2.getInt("rentFeePerDayID", 0));
                             obj.setStartTime(editor2.getLong("startDayLong", 0));
