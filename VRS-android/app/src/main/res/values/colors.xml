@@ -9,7 +9,8 @@
     <color name="colorDivider">#BDBDBD</color>
     <color name="colorBorder">#EEEEEE</color>
 
-    <color name="calendar_selected_day_bg">#009688</color>\
+    <color name="calendar_selected_day_bg">#009688</color>
     <color name="calendar_selected_range_bg">#80CBC4</color>
+    <color name="calendar_highlighted_day_bg">#D1D1D1</color>
     <!--<color name="colorAccent">#FF5722</color>-->
 </resources>

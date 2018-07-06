@@ -276,15 +276,19 @@ public class VehicleDetail extends AppCompatActivity {
         btnOrderRent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.IN_APP_SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
-                editor.putString("totalMoney", Double.toString(usdConvert));
-                editor.putString("rentFeeMoney", Double.toString(rentFeeMoney));
-                editor.putInt("rentFeePerDayID", rentFeePerDayID);
-                editor.putInt("rentFeePerHourID", rentFeePerHourID);
-                editor.putInt("receiveType", receiveType);
-                editor.apply();
-                Intent it = new Intent(VehicleDetail.this, PaypalExecute.class);
-                startActivity(it);
+                if (txt_day_rent.getText().toString().equals("0") && txt_hour_rent.getText().toString().equals("0")){
+                    Toast.makeText(VehicleDetail.this, "Vui lòng chọn ngày giờ thuê xe", Toast.LENGTH_SHORT).show();
+                } else {
+                    SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.IN_APP_SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
+                    editor.putString("totalMoney", Double.toString(usdConvert));
+                    editor.putString("rentFeeMoney", Double.toString(rentFeeMoney));
+                    editor.putInt("rentFeePerDayID", rentFeePerDayID);
+                    editor.putInt("rentFeePerHourID", rentFeePerHourID);
+                    editor.putInt("receiveType", receiveType);
+                    editor.apply();
+                    Intent it = new Intent(VehicleDetail.this, PaypalExecute.class);
+                    startActivity(it);
+                }
             }
         });
     }

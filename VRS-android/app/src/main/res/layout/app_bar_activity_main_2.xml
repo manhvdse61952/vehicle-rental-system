@@ -10,66 +10,98 @@
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:theme="@style/AppTheme.AppBarOverlay">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
             android:gravity="center_vertical"
+            android:orientation="horizontal"
             android:weightSum="10">
+
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="?attr/actionBarSize"
+                android:layout_weight="1"
                 android:background="?attr/colorPrimary"
                 app:popupTheme="@style/AppTheme.PopupOverlay" />
-            <!--<EditText-->
-                <!--android:id="@+id/edtMainSearch"-->
-                <!--android:layout_width="0dp"-->
-                <!--android:layout_weight="7"-->
-                <!--android:hint="Nhập tên xe hoặc địa điểm"-->
-                <!--android:textSize="16sp"-->
-                <!--android:textColor="@color/primary_text"-->
-                <!--android:layout_height="wrap_content" />-->
             <ImageView
+                android:id="@+id/img_current_address"
                 android:layout_width="0dp"
-                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:src="@drawable/ic_map_marker_alt"
-                android:tint="@color/primary_text"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:id="@+id/txt_main_search_address"
+                android:tint="@color/primary_text" />
+
+            <LinearLayout
                 android:layout_width="0dp"
-                android:layout_weight="6"
-                android:textColor="@color/primary_text"
-                android:text="Địa chỉ"
+                android:layout_height="match_parent"
+                android:layout_weight="5.7"
+                android:weightSum="10"
                 android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:layout_height="wrap_content" />
+                android:paddingRight="5dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txt_main_search_place"
+                    android:layout_width="match_parent"
+                    android:text="Vị trí của bạn"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:gravity="bottom"
+                    android:textColor="@color/primary_text"
+                    android:layout_height="0dp"
+                    android:layout_weight="3.5"/>
+                <TextView
+                    android:id="@+id/txt_main_search_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="6.5"
+                    android:gravity="start"
+                    android:maxLength="65"
+                    android:text="Địa chỉ"
+                    android:textSize="12sp"
+                    android:textColor="@color/primary_text" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.8">
+
+                <fragment
+                    android:id="@+id/place_autocomplete_fragment"
+                    android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"
+                    android:background="@color/colorPrimary"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_search"
+                    android:tint="@color/primary_text" />
+            </RelativeLayout>
+
             <View
                 android:layout_width="2dp"
-                android:background="@color/primary_text"
-                android:layout_height="30dp">
+                android:layout_height="30dp"
+                android:layout_marginLeft="10dp"
+                android:background="@color/primary_text">
 
             </View>
-            <ImageView
-                android:id="@+id/main_search"
-                android:layout_width="0dp"
-                android:layout_weight="1.2"
-                android:layout_height="20dp"
-                android:tint="@color/primary_text"
-                android:src="@drawable/ic_search"/>
+
             <ImageView
                 android:id="@+id/main_extra_search"
                 android:layout_width="0dp"
-                android:layout_weight="1.2"
-                android:layout_height="25dp"
-                android:tint="@color/primary_text"
+                android:layout_height="35dp"
                 android:layout_marginRight="5dp"
-                android:src="@drawable/ic_search_plus"/>
+                android:layout_weight="1.4"
+                android:src="@drawable/ic_search_plus"
+                android:tint="@color/primary_text" />
         </LinearLayout>
-
-
 
 
     </android.support.design.widget.AppBarLayout>

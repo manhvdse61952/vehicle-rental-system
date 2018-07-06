@@ -42,7 +42,7 @@
                     android:textColor="#000"
                     android:textAllCaps="true"
                     android:gravity="center_vertical|center_horizontal"
-                    android:textSize="22sp"/>
+                    android:textSize="18sp"/>
                 <View
                     android:layout_width="match_parent"
                     android:background="#ccc"
@@ -656,6 +656,6 @@
             android:background="@color/colorPrimary"
             android:text="thuê xe"
             android:textColor="@color/primary_text"
-            android:textSize="22sp" />
+            android:textSize="18sp" />
     </LinearLayout>
 </LinearLayout>

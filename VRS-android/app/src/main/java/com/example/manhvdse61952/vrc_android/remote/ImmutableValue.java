@@ -74,7 +74,7 @@ public class ImmutableValue {
     /////////////////// GPS - location variable ////////////////
     LocationManager locationManager;
     public static double longtitudeCurrent = 0, latitudeCurrent = 0;
-    public static String address = "", city = "", country = "", district = "", knownName = "";
+    public static String addressCurrent = "", cityCurrent = "", countryCurrent = "", districtCurrent = "";
     public static final int REQUEST_LOCATION = 50;
     ////////////////////////// Paypal ///////////////////
     public static final int PAYPAL_REQUEST_CODE = 301;
@@ -254,25 +254,24 @@ public class ImmutableValue {
         alertDialog.setCanceledOnTouchOutside(false);
     }
 
-    public void getStringAddress(double longitude, double latitude, Context ctx) {
+    public static void getStringAddress(double longitude, double latitude, Context ctx) {
         Geocoder geocoder;
         List<Address> addresses;
         geocoder = new Geocoder(ctx, Locale.getDefault());
 
         try {
-            address = "";
+            addressCurrent = "";
             addresses = geocoder.getFromLocation(latitude, longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
-            address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
-            String state = addresses.get(0).getLocality();
-            city = addresses.get(0).getAdminArea();
-            country = addresses.get(0).getCountryName();
-            String postalCode = addresses.get(0).getPostalCode();
-            district = addresses.get(0).getSubAdminArea();
+            String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+            String city = addresses.get(0).getAdminArea();
+            String country = addresses.get(0).getCountryName();
+            String district = addresses.get(0).getSubAdminArea();
+
+            addressCurrent = address;
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     public static String removeAccentCharacter(String str) {

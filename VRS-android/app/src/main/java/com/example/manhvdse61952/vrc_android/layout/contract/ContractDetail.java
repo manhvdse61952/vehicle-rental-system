@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -37,7 +38,16 @@ public class ContractDetail extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_order_detail);
+        setContentView(R.layout.activity_contract_detail);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar2);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
+
+
         dialog = ProgressDialog.show(ContractDetail.this, "Đang xử lý",
                 "Vui lòng đợi ...", true);
         //Declare id
@@ -59,8 +69,10 @@ public class ContractDetail extends AppCompatActivity {
         txt_contract_customer_cmnd = (TextView)findViewById(R.id.txt_contract_customer_cmnd);
         txt_contract_customer_phone = (TextView)findViewById(R.id.txt_contract_customer_phone);
         txt_contract_owner_phone = (TextView)findViewById(R.id.txt_contract_owner_phone);
+
+
+        btn_contract_give_car.setBackgroundResource(R.drawable.border_green);
         //Init layout
-        //SharedPreferences editor1 = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
         SharedPreferences editor2 = getSharedPreferences(ImmutableValue.IN_APP_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
         final String contractID = editor2.getString("contractID", "Empty");
         Log.d("Checkcontract", contractID);
@@ -112,8 +124,28 @@ public class ContractDetail extends AppCompatActivity {
         btn_contract_give_car.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent it = new Intent(ContractDetail.this, ContractCompleted.class);
-                startActivity(it);
+                SharedPreferences editor2 = getSharedPreferences(ImmutableValue.IN_APP_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
+                final String contractID = editor2.getString("contractID", "Empty");
+                Retrofit retrofit = RetrofitConnect.getClient();
+                final ContractAPI contractAPI = retrofit.create(ContractAPI.class);
+                Call<String> responseBodyCall = contractAPI.finishContract(contractID);
+                responseBodyCall.enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        if (response.code() == 200){
+                            Intent it = new Intent(ContractDetail.this, ContractCompleted.class);
+                            startActivity(it);
+                        } else {
+                            Toast.makeText(ContractDetail.this, "Đã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+                        Toast.makeText(ContractDetail.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
             }
         });
 
@@ -157,6 +189,12 @@ public class ContractDetail extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
         dialog.setCanceledOnTouchOutside(false);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
 }

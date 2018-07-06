@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -36,6 +37,10 @@ import com.example.manhvdse61952.vrc_android.model.searchModel.SearchVehicleItem
 import com.example.manhvdse61952.vrc_android.remote.ImmutableValue;
 import com.example.manhvdse61952.vrc_android.remote.RetrofitCallAPI;
 import com.example.manhvdse61952.vrc_android.remote.RetrofitConnect;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,9 +57,10 @@ import retrofit2.Retrofit;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    ImageView main_search, main_extra_search;
+    ImageView img_current_address, main_extra_search;
+    TextView txt_main_search_place, txt_main_search_address;
     ImmutableValue locationObj = new ImmutableValue();
-    TextView txt_main_search_address;
+    //TextView txt_main_search_address;
 
     ///////////////// USE FOR SEARCH ADAPTER ////////
     public static List<SearchVehicleItem> listMotorbike = new ArrayList<>();
@@ -75,12 +81,35 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main_2);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        img_current_address = (ImageView)findViewById(R.id.img_current_address);
+        txt_main_search_place = (TextView)findViewById(R.id.txt_main_search_place);
         txt_main_search_address = (TextView)findViewById(R.id.txt_main_search_address);
+
+
+
+        //Place Autocomplete
+        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+                getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                ImmutableValue.getStringAddress(place.getLatLng().longitude, place.getLatLng().latitude, MainActivity.this);
+                txt_main_search_place.setText(place.getName());
+                String addressFull = ImmutableValue.addressCurrent.replaceAll(", Vietnam", "");
+                txt_main_search_address.setText(addressFull);
+            }
+
+            @Override
+            public void onError(Status status) {
+                Log.i("VRSPlace", "An error occurred: " + status);
+            }
+        });
 
         //Get vehicle by district
         getAllDistrict();
         locationObj.checkAddressPermission(MainActivity.this, MainActivity.this);
-        txt_main_search_address.setText(ImmutableValue.address + "");
+        txt_main_search_address.setText(ImmutableValue.addressCurrent + "");
 
         getAllVehicleByDistrictID(44);
 //        int districtID = getDistrictIdByName("quận bình thạnh");
@@ -90,15 +119,15 @@ public class MainActivity extends AppCompatActivity
 //            getAllVehicleByDistrictID(districtID);
 //        }
 
-        main_search = (ImageView) findViewById(R.id.main_search);
-        main_search.setOnClickListener(new View.OnClickListener() {
+        img_current_address.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent it = new Intent(MainActivity.this, SearchAddressActivity.class);
-                startActivity(it);
+                locationObj.checkAddressPermission(MainActivity.this, MainActivity.this);
+                String addressFull = ImmutableValue.addressCurrent.replaceAll("Vietnam", "");
+                txt_main_search_address.setText(addressFull);
+                txt_main_search_place.setText("Vị trí hiện tại");
             }
         });
-
 
         main_extra_search = (ImageView) findViewById(R.id.main_extra_search);
         main_extra_search.setOnClickListener(new View.OnClickListener() {
@@ -108,16 +137,16 @@ public class MainActivity extends AppCompatActivity
 //                startActivity(it);
 
                 /////////////////// USE FOR TEST SEARCH //////////////////////
-                new SimpleSearchDialogCompat(MainActivity.this, "", "Nhập đia điểm cần kiếm xe", null, initData(), new SearchResultListener<Searchable>() {
-                    @Override
-                    public void onSelected(BaseSearchDialogCompat baseSearchDialogCompat, Searchable searchable, int i) {
-                        Toast.makeText(MainActivity.this, "" + searchable.getTitle(), Toast.LENGTH_SHORT).show();
-                        if (!searchable.getTitle().equals("")) {
-
-                        }
-                        baseSearchDialogCompat.dismiss();
-                    }
-                }).show();
+//                new SimpleSearchDialogCompat(MainActivity.this, "", "Nhập đia điểm cần kiếm xe", null, initData(), new SearchResultListener<Searchable>() {
+//                    @Override
+//                    public void onSelected(BaseSearchDialogCompat baseSearchDialogCompat, Searchable searchable, int i) {
+//                        Toast.makeText(MainActivity.this, "" + searchable.getTitle(), Toast.LENGTH_SHORT).show();
+//                        if (!searchable.getTitle().equals("")) {
+//
+//                        }
+//                        baseSearchDialogCompat.dismiss();
+//                    }
+//                }).show();
             }
         });
 
@@ -185,13 +214,13 @@ public class MainActivity extends AppCompatActivity
 
 
     //////////////////////////////////// USE FOR SEARCH //////////////////////////////////
-    private ArrayList<SearchAddressModel> initData() {
-        ArrayList<SearchAddressModel> items = new ArrayList<>();
-        for (int i = 0; i < listAllDistrict.size(); i++) {
-            items.add(new SearchAddressModel(listAllDistrict.get(i).getDistrictName()));
-        }
-        return items;
-    }
+//    private ArrayList<SearchAddressModel> initData() {
+//        ArrayList<SearchAddressModel> items = new ArrayList<>();
+//        for (int i = 0; i < listAllDistrict.size(); i++) {
+//            items.add(new SearchAddressModel(listAllDistrict.get(i).getDistrictName()));
+//        }
+//        return items;
+//    }
     //////////////////////////////////////////////////////////////////////////////////////
 
     @Override
@@ -200,31 +229,10 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("Bạn có chắc chắn muốn đăng xuất ?").setCancelable(false)
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            SharedPreferences settings = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
-                            settings.edit().clear().commit();
-                            SharedPreferences settings_2 = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE);
-                            settings_2.edit().clear().commit();
-                            SharedPreferences settings_3 = getSharedPreferences(ImmutableValue.IN_APP_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
-                            settings_3.edit().clear().commit();
-                            Intent it = new Intent(MainActivity.this, LoginActivity.class);
-                            it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(it);
-                        }
-                    })
-                    .setNegativeButton("Không", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.cancel();
-                        }
-                    });
-            AlertDialog dialog = builder.create();
-            dialog.show();
-            dialog.setCanceledOnTouchOutside(false);
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
         }
     }
 

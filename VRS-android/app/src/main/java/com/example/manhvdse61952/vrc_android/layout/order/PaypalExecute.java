@@ -137,10 +137,6 @@ public class PaypalExecute extends AppCompatActivity {
                             startActivity(it);
                         }
 
-
-//                        startActivity(new Intent(PaypalExecute.this, PayPalDetail.class)
-//                                .putExtra("PaymentDetails", details)
-//                                .putExtra("PaymentAmount", totalMoney));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

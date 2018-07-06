@@ -39,4 +39,8 @@ public interface ContractAPI {
     @Headers({"Accept: application/json"})
     @GET("/contract/getListContractByCustomerID/{customerID}")
     Call<List<ContractItem>> findContractByCustomerID(@Path("customerID") int customerID);
+
+    @Headers({"Accept: application/json"})
+    @POST("/contract/finish")
+    Call<String> finishContract(@Body String contractID);
 }
