@@ -21,32 +21,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-
-                <android.support.v4.view.ViewPager
-                    android:id="@+id/vpg"
-                    android:layout_width="match_parent"
-                    android:layout_height="250dp">
-
-                </android.support.v4.view.ViewPager>
-                <View
-                    android:layout_width="match_parent"
-                    android:background="#ccc"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_height="0.2dp"/>
+                    <android.support.v4.view.ViewPager
+                        android:id="@+id/vpg"
+                        android:layout_width="match_parent"
+                        android:layout_height="250dp">
+                    </android.support.v4.view.ViewPager>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="chi tiết xe"
-                    android:textColor="#000"
-                    android:textAllCaps="true"
+                    android:text="Chi tiết xe"
+                    android:textColor="@color/primary_text"
+                    android:textAllCaps="false"
+                    android:background="@color/colorPrimaryDark"
                     android:gravity="center_vertical|center_horizontal"
-                    android:textSize="18sp"/>
+                    android:textSize="20sp"/>
                 <View
                     android:layout_width="match_parent"
                     android:background="#ccc"
-                    android:layout_margin="10dp"
+                    android:layout_marginBottom="10dp"
                     android:layout_height="0.2dp"/>
                 <TextView
                     android:layout_marginBottom="5dp"
@@ -341,6 +333,7 @@
                     android:layout_margin="10dp"
                     android:layout_height="0.2dp"/>
                 <TextView
+                    android:id="@+id/txt_pickTime"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Chọn thời gian thuê"

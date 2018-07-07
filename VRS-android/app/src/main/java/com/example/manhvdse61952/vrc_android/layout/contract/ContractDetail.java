@@ -132,11 +132,12 @@ public class ContractDetail extends AppCompatActivity {
                 responseBodyCall.enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
+                        Log.d("ResponseCode", response.code() + "");
                         if (response.code() == 200){
                             Intent it = new Intent(ContractDetail.this, ContractCompleted.class);
                             startActivity(it);
                         } else {
-                            Toast.makeText(ContractDetail.this, "Đã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ContractDetail.this, "", Toast.LENGTH_SHORT).show();
                         }
                     }
 

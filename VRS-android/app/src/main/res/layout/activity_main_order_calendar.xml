@@ -24,28 +24,40 @@
         android:orientation="vertical"
         android:weightSum="10"
         android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.5">
+                <RadioButton
+                    android:id="@+id/rd_oneDay"
+                    android:layout_width="wrap_content"
+                    android:text="Chọn một ngày"
+                    android:checked="true"
+                    android:layout_marginLeft="20dp"
+                    android:layout_height="match_parent" />
+                <RadioButton
+                    android:id="@+id/rd_multipleDay"
+                    android:layout_width="wrap_content"
+                    android:checked="false"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="20dp"
+                    android:text="Chọn nhiều ngày liên tiếp"
+                    android:layout_height="match_parent" />
+        </RelativeLayout>
         <com.squareup.timessquare.CalendarPickerView
             android:id="@+id/calendar_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="5.5"
+            android:layout_weight="5"
             android:scrollbarStyle="outsideOverlay"
             android:clipToPadding="false"
             android:background="#FFFFFF" />
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#ccc"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:orientation="vertical"
             android:weightSum="10"
+            android:layout_marginTop="10dp"
             android:layout_weight="1">
             <LinearLayout
                 android:layout_width="match_parent"

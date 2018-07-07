@@ -1,5 +1,6 @@
 package com.example.manhvdse61952.vrc_android.util;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -50,6 +51,7 @@ public class MyFCMClass extends FirebaseMessagingService {
                     .setContentText(messageBody)
                     .setAutoCancel(true)
                     .setSound(defaultSoundUri)
+                    .setPriority(Notification.PRIORITY_MAX)
                     .setContentIntent(pendingIntent);
             notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
         } else {

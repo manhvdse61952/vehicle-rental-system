@@ -50,8 +50,10 @@ public class ManageContractActivity extends AppCompatActivity {
         SharedPreferences editor = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
         if (editor.getString("roleName", "ROLE_USER").equals("ROLE_USER")) {
             loadDataForCustomer();
-        } else {
+        } else if (editor.getString("roleName", "ROLE_USER").equals("ROLE_OWNER")) {
             loadDataForOwner();
+        } else {
+            loadDataForCustomer();
         }
     }
 

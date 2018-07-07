@@ -49,7 +49,8 @@
             android:textColor="@color/primary_text"
             android:gravity="center_horizontal|center_vertical"
             android:layout_marginRight="10dp"
-            android:background="@drawable/border"/>
+            android:background="@drawable/border_red"
+            />
     </LinearLayout>
-
+    <!--android:background="@drawable/border"-->
 </LinearLayout>

@@ -23,8 +23,8 @@
                 android:layout_width="0dp"
                 android:layout_height="?attr/actionBarSize"
                 android:layout_weight="1"
-                android:background="?attr/colorPrimary"
                 app:popupTheme="@style/AppTheme.PopupOverlay" />
+
             <ImageView
                 android:id="@+id/img_current_address"
                 android:layout_width="0dp"
@@ -37,21 +37,22 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="5.7"
-                android:weightSum="10"
+                android:orientation="vertical"
                 android:paddingLeft="10dp"
                 android:paddingRight="5dp"
-                android:orientation="vertical">
+                android:weightSum="10">
 
                 <TextView
                     android:id="@+id/txt_main_search_place"
                     android:layout_width="match_parent"
-                    android:text="Vị trí của bạn"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    android:gravity="bottom"
-                    android:textColor="@color/primary_text"
                     android:layout_height="0dp"
-                    android:layout_weight="3.5"/>
+                    android:layout_weight="3.5"
+                    android:gravity="bottom"
+                    android:text="Vị trí của bạn"
+                    android:textColor="@color/primary_text"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
                 <TextView
                     android:id="@+id/txt_main_search_address"
                     android:layout_width="match_parent"
@@ -60,8 +61,8 @@
                     android:gravity="start"
                     android:maxLength="65"
                     android:text="Địa chỉ"
-                    android:textSize="12sp"
-                    android:textColor="@color/primary_text" />
+                    android:textColor="@color/primary_text"
+                    android:textSize="12sp" />
             </LinearLayout>
 
             <RelativeLayout
@@ -77,7 +78,7 @@
 
                 <ImageView
                     android:layout_width="match_parent"
-                    android:layout_height="25dp"
+                    android:layout_height="30dp"
                     android:background="@color/colorPrimary"
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"

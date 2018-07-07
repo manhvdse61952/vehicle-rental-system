@@ -52,7 +52,7 @@ public class VehicleDetail extends AppCompatActivity {
             item_plateNumber, item_ownerName, item_engine, item_tranmission, txt_hours, txt_day_start,
             txt_hours_2, txt_day_end, txt_order_type, txt_day_rent, txt_hour_rent,
             txt_money_day_rent, txt_money_hour_rent, txt_money_total, item_price_deposit,
-            txt_usd_convert, txt_money_deposit;
+            txt_usd_convert, txt_money_deposit, txt_pickTime;
     CheckBox cbx1, cbx2;
     LinearLayout ln_pickTime;
     Switch swt_order_type;
@@ -90,6 +90,7 @@ public class VehicleDetail extends AppCompatActivity {
         txt_usd_convert = (TextView)findViewById(R.id.txt_usd_convert);
         txt_money_deposit = (TextView)findViewById(R.id.txt_money_deposit);
         vpg = (ViewPager) findViewById(R.id.vpg);
+        txt_pickTime = (TextView)findViewById(R.id.txt_pickTime);
 
         SharedPreferences editor = getSharedPreferences(ImmutableValue.IN_APP_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
         String frameNumber = editor.getString("ID", "aaaaaa");
@@ -284,7 +285,10 @@ public class VehicleDetail extends AppCompatActivity {
             public void onClick(View view) {
                 if (txt_day_rent.getText().toString().equals("0") && txt_hour_rent.getText().toString().equals("0") && txt_usd_convert.getText().toString().equals("0")){
                     Toast.makeText(VehicleDetail.this, "Vui lòng chọn ngày giờ thuê xe", Toast.LENGTH_SHORT).show();
+                    txt_pickTime.setFocusable(true);
+                    txt_pickTime.setTextColor(Color.RED);
                 } else {
+                    txt_pickTime.setTextColor(Color.parseColor("#212121"));
                     SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.IN_APP_SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
                     editor.putString("totalMoney", Double.toString(usdConvert));
                     editor.putString("rentFeeMoney", Double.toString(rentFeeMoney));
