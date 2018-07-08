@@ -6,7 +6,6 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -34,14 +33,32 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".layout.signup.customer.SignupUserInfoActivity" android:screenOrientation="portrait" />
-        <activity android:name=".layout.signup.customer.SignupAccountActivity" android:screenOrientation="portrait" />
-        <activity android:name=".layout.signup.customer.SignupRoleActivity" android:screenOrientation="portrait" />
-        <activity android:name=".layout.signup.customer.SignupPolicyActivity" android:screenOrientation="portrait" />
-        <activity android:name=".layout.signup.owner.SignupOwnerOne" android:screenOrientation="portrait" />
-        <activity android:name=".layout.signup.owner.SignupOwnerPolicy" android:screenOrientation="portrait" />
-        <activity android:name=".layout.vehicle.VehicleDetail" android:screenOrientation="portrait" />
-        <meta-data android:name="com.google.android.gms.vision.DEPENDENCIES" android:value="ocr" />
+        <activity
+            android:name=".layout.signup.customer.SignupUserInfoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".layout.signup.customer.SignupAccountActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".layout.signup.customer.SignupRoleActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".layout.signup.customer.SignupPolicyActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".layout.signup.owner.SignupOwnerOne"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".layout.signup.owner.SignupOwnerPolicy"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".layout.vehicle.VehicleDetail"
+            android:screenOrientation="portrait" />
+
+        <meta-data
+            android:name="com.google.android.gms.vision.DEPENDENCIES"
+            android:value="ocr" />
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="${applicationId}.provider"
@@ -74,7 +91,7 @@
             </intent-filter>
         </service>
 
-
+        <activity android:name=".layout.signup.customer.SignUpActivity"></activity>
     </application>
 
 </manifest>
