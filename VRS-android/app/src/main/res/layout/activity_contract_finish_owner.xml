@@ -45,93 +45,32 @@
                 android:orientation="vertical"
                 android:padding="20dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Hợp đồng số"
-                    android:textColor="@color/secondary_text"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="5dp"
                     android:orientation="horizontal"
-                    android:paddingLeft="10dp"
-                    android:weightSum="1">
+                    android:weightSum="10">
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="0" />
-
-                </LinearLayout>
-
-
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/border_shadow"
-                android:orientation="vertical"
-                android:padding="20dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Phụ phí"
-                    android:textColor="@color/secondary_text"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="5dp"
-                    android:orientation="horizontal"
-                    android:paddingLeft="10dp"
-                    android:weightSum="1">
+                        android:layout_weight="5"
+                        android:text="Hợp đồng số"
+                        android:textColor="@color/secondary_text"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/txt_contract_complete_number"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.5"
-                        android:text="Quá giờ" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.5"
-                        android:gravity="right"
-                        android:text="0 ngày 0 giờ" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="5dp"
-                    android:orientation="horizontal"
-                    android:paddingLeft="10dp"
-                    android:weightSum="1">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.5"
-                        android:text="Phí" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.5"
-                        android:gravity="right"
-                        android:text="0" />
+                        android:layout_weight="5"
+                        android:gravity="end"
+                        android:text="0"
+                        android:textColor="@color/secondary_text" />
                 </LinearLayout>
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -163,6 +102,7 @@
                         android:text="Thời gian bắt đầu" />
 
                     <TextView
+                        android:id="@+id/txt_contract_complete_startTime"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.5"
@@ -186,6 +126,7 @@
                         android:text="Thời gian kết thúc" />
 
                     <TextView
+                        android:id="@+id/txt_contract_complete_endTime"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.5"
@@ -208,6 +149,7 @@
                         android:text="Thời hạn" />
 
                     <TextView
+                        android:id="@+id/txt_contract_complete_rentTime"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.5"
@@ -230,12 +172,13 @@
                         android:text="Tiền thuê xe" />
 
                     <TextView
+                        android:id="@+id/txt_contract_complete_rentFee"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.5"
                         android:gravity="right"
-                        android:textColor="@color/secondary_text"
-                        android:text="0" />
+                        android:text="0"
+                        android:textColor="@color/secondary_text" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -253,14 +196,16 @@
                         android:text="Giá cọc" />
 
                     <TextView
+                        android:id="@+id/txt_contract_complete_deposit"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.5"
                         android:gravity="right"
-                        android:textColor="@color/secondary_text"
-                        android:text="0" />
+                        android:text="0"
+                        android:textColor="@color/secondary_text" />
                 </LinearLayout>
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -272,7 +217,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Giảm giá/chiết khấu"
+                    android:text="Phụ phí"
                     android:textColor="@color/secondary_text"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -280,7 +225,31 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="15dp"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10dp"
+                    android:weightSum="1">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.6"
+                        android:text="T.G kết thúc thực tế" />
+
+                    <TextView
+                        android:id="@+id/txt_contract_complete_endRealTime"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.4"
+                        android:gravity="right"
+                        android:textColor="@color/secondary_text"
+                        android:text="0 ngày 0 giờ" />
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="12dp"
                     android:orientation="horizontal"
                     android:paddingLeft="10dp"
                     android:weightSum="1">
@@ -289,14 +258,16 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.5"
-                        android:text="Mã giảm giá" />
+                        android:text="Quá giờ" />
 
                     <TextView
+                        android:id="@+id/txt_contract_complete_overTime"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.5"
                         android:gravity="right"
-                        android:text="Điền mã" />
+                        android:textColor="@color/secondary_text"
+                        android:text="0 ngày 0 giờ" />
 
                 </LinearLayout>
 
@@ -312,16 +283,68 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.5"
-                        android:text="Chiết khấu" />
+                        android:text="Phí quá giờ" />
+
+                    <EditText
+                        android:id="@+id/edt_contract_complete_overTime"
+                        android:padding="5dp"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:gravity="right"
+                        android:inputType="number"
+                        android:text="0" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10dp"
+                    android:weightSum="1">
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.5"
+                        android:text="Phí nội thất" />
+
+                    <EditText
+                        android:id="@+id/edt_contract_complete_inside"
+                        android:padding="5dp"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
                         android:gravity="right"
-                        android:text="0%" />
+                        android:inputType="number"
+                        android:text="0" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10dp"
+                    android:weightSum="1">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:text="Phí ngoại thất" />
+
+                    <EditText
+                        android:id="@+id/edt_contract_complete_outside"
+                        android:padding="5dp"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:gravity="right"
+                        android:inputType="number"
+                        android:text="0" />
                 </LinearLayout>
             </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -341,6 +364,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/txt_contract_complete_total"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="6"
@@ -351,36 +375,17 @@
                     android:textStyle="bold" />
 
             </LinearLayout>
-
-            <LinearLayout
+            <Button
+                android:id="@+id/btn_pay"
                 android:layout_width="match_parent"
-                android:orientation="horizontal"
-                android:weightSum="10"
-                android:layout_height="wrap_content">
-                <Button
-                    android:id="@+id/btn_complain"
-                    android:layout_width="0dp"
-                    android:layout_weight="3.5"
-                    android:text="khiếu nại"
-                    android:textSize="16sp"
-                    android:textColor="@color/primary_text"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/border_red"
-                    android:layout_height="wrap_content" />
-                <Button
-                    android:id="@+id/btn_pay"
-                    android:layout_width="0dp"
-                    android:layout_weight="6.5"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10sp"
-                    android:background="@drawable/border_green"
-                    android:text="đồng ý"
-                    android:textColor="@color/primary_text"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10sp"
+                android:background="@drawable/border_green"
+                android:text="Gửi xác nhận cho người thuê"
+                android:textColor="@color/primary_text"
+                android:textAllCaps="false"
+                android:textSize="16sp"
+                android:textStyle="bold" />
         </LinearLayout>
-
     </ScrollView>
 </LinearLayout>

@@ -66,6 +66,8 @@
         <activity android:name=".layout.contract.ManageContractActivity" android:screenOrientation="portrait"></activity>
         <activity android:name=".layout.contract.ContractCompleted" android:screenOrientation="portrait"></activity>
         <activity android:name=".layout.order.PaypalExecute" android:screenOrientation="portrait"></activity>
+        <activity android:name=".layout.contract.ContractFinishCustomer" android:screenOrientation="portrait"></activity>
+        <activity android:name=".layout.contract.ContractFinishOwner" android:screenOrientation="portrait"></activity>
         <service android:name=".util.MyFCMClass">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

@@ -12,6 +12,8 @@ import android.support.v4.app.NotificationCompat;
 
 import com.example.manhvdse61952.vrc_android.R;
 import com.example.manhvdse61952.vrc_android.layout.contract.ContractDetail;
+import com.example.manhvdse61952.vrc_android.layout.contract.ContractFinishOwner;
+import com.example.manhvdse61952.vrc_android.layout.main.MainActivity;
 import com.example.manhvdse61952.vrc_android.remote.ImmutableValue;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -34,7 +36,7 @@ public class MyFCMClass extends FirebaseMessagingService {
         }
     }
 
-    private void sendNotification(String messageBody, String title, String contractID) {
+    private void sendNotification(String messageBody, String title, String contractID, String screen) {
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -42,7 +44,16 @@ public class MyFCMClass extends FirebaseMessagingService {
             SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.IN_APP_SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
             editor.putString("contractID", contractID);
             editor.apply();
-            Intent it = new Intent(this, ContractDetail.class);
+            Intent it = null;
+            if (screen.equals("FINISH")){
+                it = new Intent(this, ContractFinishOwner.class);
+            } else if (screen.equals("COMPLETE")){
+                it = new Intent(this, ContractDetail.class);
+            } else if (screen.equals("DETAIL")){
+                it = new Intent(this, ContractDetail.class);
+            }
+
+
             it.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             PendingIntent pendingIntent = PendingIntent.getActivity(this, ImmutableValue.NOTIFY_REQUEST_CODE, it, PendingIntent.FLAG_ONE_SHOT);
             NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
@@ -68,14 +79,15 @@ public class MyFCMClass extends FirebaseMessagingService {
     }
 
     private void executeData(String body, String title) {
-        String[] temp = body.split("[**VRScode**]");
+        String[] temp = body.split("-");
         int userIdFromMessage = Integer.parseInt(temp[0]);
         SharedPreferences sharedPreferences = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
         int userIdFromApp = sharedPreferences.getInt("userID", 0);
         if (userIdFromMessage == userIdFromApp) {
             String contractID = temp[1];
-            String notificationBody = temp[2];
-            sendNotification(notificationBody, title, contractID);
+            String screen = temp[2];
+            String notificationBody = temp[3];
+            sendNotification(notificationBody, title, contractID, screen);
         }
     }
 }

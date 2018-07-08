@@ -20,7 +20,7 @@ public class ContractCompleted extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_contract_finish);
+        setContentView(R.layout.activity_contract_finish_customer);
         btn_pay = (Button)findViewById(R.id.btn_pay);
         btn_pay.setOnClickListener(new View.OnClickListener() {
             @Override

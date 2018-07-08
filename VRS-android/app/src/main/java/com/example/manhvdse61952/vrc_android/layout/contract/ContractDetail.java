@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.example.manhvdse61952.vrc_android.R;
 import com.example.manhvdse61952.vrc_android.api.ContractAPI;
 import com.example.manhvdse61952.vrc_android.layout.main.MainActivity;
+import com.example.manhvdse61952.vrc_android.model.apiModel.ContractFinish;
 import com.example.manhvdse61952.vrc_android.model.apiModel.ContractItem;
 import com.example.manhvdse61952.vrc_android.remote.ImmutableValue;
 import com.example.manhvdse61952.vrc_android.remote.RetrofitConnect;
@@ -33,6 +34,7 @@ public class ContractDetail extends AppCompatActivity {
             txt_contract_receive_type, txt_contract_rent_time, txt_contract_rent_fee, txt_contract_deposit_fee,
             txt_contract_total_fee, txt_contract_customer_cmnd, txt_contract_customer_phone, txt_contract_owner_phone;
     ImmutableValue locationObj = new ImmutableValue();
+    long returnTime = 0;
     ProgressDialog dialog;
 
     @Override
@@ -88,6 +90,7 @@ public class ContractDetail extends AppCompatActivity {
                     txt_contract_id.setText(contractID);
                     txt_contract_start_time.setText(ImmutableValue.convertTime(obj.getStartTime()));
                     txt_contract_end_time.setText(ImmutableValue.convertTime(obj.getEndTime()));
+                    returnTime = obj.getEndTime();
                     txt_contract_owner_name.setText(obj.getOwnerName());
                     txt_contract_owner_phone.setText(obj.getOwnerPhone());
                     txt_contract_vehicle_name.setText(obj.getVehicleMaker() + " " + obj.getVehicleModel());
@@ -128,25 +131,65 @@ public class ContractDetail extends AppCompatActivity {
                 final String contractID = editor2.getString("contractID", "Empty");
                 Retrofit retrofit = RetrofitConnect.getClient();
                 final ContractAPI contractAPI = retrofit.create(ContractAPI.class);
-                Call<String> responseBodyCall = contractAPI.finishContract(contractID);
-                responseBodyCall.enqueue(new Callback<String>() {
+                Call<ContractFinish> responseBodyCall = contractAPI.finishContract(contractID, returnTime);
+                responseBodyCall.enqueue(new Callback<ContractFinish>() {
                     @Override
-                    public void onResponse(Call<String> call, Response<String> response) {
-                        Log.d("ResponseCode", response.code() + "");
+                    public void onResponse(Call<ContractFinish> call, Response<ContractFinish> response) {
                         if (response.code() == 200){
-                            Intent it = new Intent(ContractDetail.this, ContractCompleted.class);
-                            startActivity(it);
-                        } else {
-                            Toast.makeText(ContractDetail.this, "", Toast.LENGTH_SHORT).show();
+                            if (response.body() != null){
+                                ContractFinish obj = response.body();
+//                                SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.IN_APP_SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
+//                                editor.putInt("customerID", obj.getCustomerID());
+//                                editor.putInt("ownerID", obj.getOwnerID());
+//                                editor.putString("contractStatus", obj.getContractStatus());
+//                                editor.putLong("endRealTime", obj.getEndRealTime());
+//                                editor.putString("depositFee", obj.getDepositFee());
+//                                editor.putString("rentFee", obj.getRentFee());
+//                                editor.putString("deliveryType", obj.getDeliveryType());
+//                                editor.putLong("startTime", obj.getStartTime());
+//                                editor.putLong("endTime", obj.getEndTime());
+//                                editor.putLong("createAt", obj.getCreateAt());
+//                                editor.putString("ownerPhone", obj.getOwnerPhone());
+//                                editor.putString("ownerName", obj.getOwnerName());
+//                                editor.apply();
+
+                                SharedPreferences editor3 = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
+                                int userID = editor3.getInt("userID", 0);
+//                                if (userID == obj.getCustomerID()){
+//                                    Intent it = new Intent(ContractDetail.this, ContractFinishCustomer.class);
+//                                    startActivity(it);
+//                                } else {
+//                                    Intent it = new Intent(ContractDetail.this, ContractFinishOwner.class);
+//                                    startActivity(it);
+//                                }
+                                if (userID == obj.getCustomerID()){
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(ContractDetail.this);
+                                    builder.setMessage("Trả xe thành công! Bạn hãy đợi chủ xe xác nhận để hoàn thành hợp đồng và nhận lại tiền cọc").setCancelable(false)
+                                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    Intent it = new Intent(ContractDetail.this, MainActivity.class);
+                                                    startActivity(it);
+                                                }
+                                            });
+                                    AlertDialog dialog = builder.create();
+                                    dialog.show();
+                                    dialog.setCanceledOnTouchOutside(false);
+
+                                }
+                            }
+
+                        }
+                        else {
+                            Toast.makeText(ContractDetail.this, "Đã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<String> call, Throwable t) {
+                    public void onFailure(Call<ContractFinish> call, Throwable t) {
                         Toast.makeText(ContractDetail.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
                     }
                 });
-
             }
         });
 
