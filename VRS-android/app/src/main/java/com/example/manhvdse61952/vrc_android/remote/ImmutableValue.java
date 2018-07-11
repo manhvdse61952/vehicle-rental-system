@@ -47,6 +47,7 @@ import id.zelory.compressor.Compressor;
 public class ImmutableValue {
 
     public static String picturePath = "";
+    public static File picture1 = null, picture2 = null, picture3 = null;
     ///////////////////// camera variable /////////////////////
     public static final int CAMERA_REQUEST_CODE = 101;
     public static final int CAMERA_OPEN_CODE = 0;
@@ -66,10 +67,6 @@ public class ImmutableValue {
     public static final String SHARED_PREFERENCES_CODE = "VRS_GLOBAL_VALUE";
     public static final String IN_APP_SHARED_PREFERENCES_CODE = "VRS_LOCAL_VALUE";
     public static final String MAIN_SHARED_PREFERENCES_CODE = "VRS_MAIN_VALUE";
-
-    public static List<String> listVehicleMaker;
-    public static List<String> listVehicleModelTwo = new ArrayList<>();
-    public static List<String> listVehicleModelThree = new ArrayList<>();
 
     /////////////////// GPS - location variable ////////////////
     LocationManager locationManager;
@@ -157,11 +154,11 @@ public class ImmutableValue {
     //Show picture in camera
     public String showImageCamera(ImageView imgShow, Context ctx) {
         File imgFile = new File(ImmutableValue.picturePath);
-        Picasso.get().load(imgFile).into(imgShow);
-        if (imgFile.exists()) {
+            if (imgFile.exists()) {
             File compressor = null;
             try {
                 compressor = new Compressor(ctx).setQuality(75).compressToFile(imgFile);
+                Picasso.get().load(compressor).into(imgShow);
                 picturePath = compressor.getAbsolutePath();
             } catch (IOException e) {
                 e.printStackTrace();

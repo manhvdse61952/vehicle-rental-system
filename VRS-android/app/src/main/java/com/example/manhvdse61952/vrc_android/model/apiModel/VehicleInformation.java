@@ -6,26 +6,12 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 public class VehicleInformation implements Serializable {
-    @SerializedName("id")
-    @Expose
     private int id;
-    @SerializedName("vehicleMaker")
-    @Expose
     private String vehicleMaker;
-    @SerializedName("seat")
-    @Expose
     private int seat;
-    @SerializedName("modelYear")
-    @Expose
     private int modelYear;
-    @SerializedName("vehicleModel")
-    @Expose
     private String vehicleModel;
-    @SerializedName("vehicleType")
-    @Expose
     private String vehicleType;
-    @SerializedName("scooter")
-    @Expose
     private Boolean scooter;
 
 
@@ -39,15 +25,15 @@ public class VehicleInformation implements Serializable {
         this.scooter = scooter;
     }
 
+    public VehicleInformation() {
+    }
+
     public Boolean getScooter() {
         return scooter;
     }
 
     public void setScooter(Boolean scooter) {
         this.scooter = scooter;
-    }
-
-    public VehicleInformation() {
     }
 
     public int getId() {

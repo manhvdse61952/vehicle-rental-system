@@ -19,13 +19,17 @@ import retrofit2.http.Part;
 import retrofit2.http.Path;
 
 public interface VehicleAPI {
-    @Headers({"Accept: application/json"})
-    @GET("/vehicleinformation/getVehicleMakerList/")
-    Call<List<String>> getVehicleMarker();
+//    @Headers({"Accept: application/json"})
+//    @GET("/vehicleinformation/getVehicleMakerList/")
+//    Call<List<String>> getVehicleMarker();
+//
+//    @Headers({"Accept: application/json"})
+//    @GET("/vehicleinformation/getVehicleModelsByMaker/{vehiclemaker}")
+//    Call<List<String>> getVehicleModel(@Path("vehiclemaker") String vehiclemaker);
 
     @Headers({"Accept: application/json"})
-    @GET("/vehicleinformation/getVehicleModelsByMaker/{vehiclemaker}")
-    Call<List<String>> getVehicleModel(@Path("vehiclemaker") String vehiclemaker);
+    @GET("/vehicleinformation/getAll")
+    Call<List<VehicleInformation>> getAllVehicleInfo();
 
     @Headers({"Accept: application/json"})
     @GET("/vehicleinformation/getVehiclesYear/{maker}/{model}")

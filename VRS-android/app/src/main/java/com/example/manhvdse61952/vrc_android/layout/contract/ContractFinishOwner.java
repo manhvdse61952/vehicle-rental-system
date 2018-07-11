@@ -64,7 +64,7 @@ public class ContractFinishOwner extends AppCompatActivity {
                             Intent it = new Intent(ContractFinishOwner.this, MainActivity.class);
                             startActivity(it);
                         } else {
-                            Toast.makeText(ContractFinishOwner.this, "�?ã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ContractFinishOwner.this, "Đã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
                         }
                     }
 

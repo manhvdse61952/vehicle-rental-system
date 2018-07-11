@@ -1,5 +1,6 @@
 package com.example.manhvdse61952.vrc_android.layout.vehicle;
 
+import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 
 import com.example.manhvdse61952.vrc_android.R;
 import com.example.manhvdse61952.vrc_android.api.VehicleAPI;
+import com.example.manhvdse61952.vrc_android.layout.signup.owner.SearchVehicleInfoActivity;
 import com.example.manhvdse61952.vrc_android.model.searchModel.SearchVehicleItem;
 import com.example.manhvdse61952.vrc_android.remote.ImmutableValue;
 import com.example.manhvdse61952.vrc_android.remote.RetrofitConnect;
@@ -29,6 +31,7 @@ public class ManageVehicleActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     ManageVehicleAdapter manageVehicleAdapter;
     TextView txt_manage_vehicle_empty;
+    ProgressDialog dialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,6 +66,8 @@ public class ManageVehicleActivity extends AppCompatActivity {
     }
 
     private void loadData(){
+        dialog = ProgressDialog.show(ManageVehicleActivity.this, "Hệ thống",
+                "Đang xác thực ...", true);
         SharedPreferences editor = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE,MODE_PRIVATE);
         int ownerID = editor.getInt("userID",0);
         Retrofit retrofit = RetrofitConnect.getClient();
@@ -83,10 +88,12 @@ public class ManageVehicleActivity extends AppCompatActivity {
                     }
 
                 }
+                dialog.dismiss();
             }
 
             @Override
             public void onFailure(Call<List<SearchVehicleItem>> call, Throwable t) {
+                dialog.dismiss();
                 Toast.makeText(ManageVehicleActivity.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
             }
         });

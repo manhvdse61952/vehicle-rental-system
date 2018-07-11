@@ -2,7 +2,9 @@ package com.example.manhvdse61952.vrc_android.layout.contract;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -29,6 +31,7 @@ public class ManageContractActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     ManageContractAdapter manageContractAdapter;
     TextView txt_manage_contract_error;
+    SwipeRefreshLayout swipeLayout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,8 +44,32 @@ public class ManageContractActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
+
+        //Reload page
+        swipeLayout = findViewById(R.id.swipeLayout);
+        swipeLayout.setColorScheme(android.R.color.holo_blue_dark, android.R.color.holo_blue_light, android.R.color.holo_green_light, android.R.color.holo_green_dark);
+        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeLayout.setRefreshing(true);
+                (new Handler()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        swipeLayout.setRefreshing(false);
+                        SharedPreferences editor = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
+                        if (editor.getString("roleName", "ROLE_USER").equals("ROLE_USER")) {
+                            loadDataForCustomer();
+                        } else if (editor.getString("roleName", "ROLE_USER").equals("ROLE_OWNER")) {
+                            loadDataForOwner();
+                        } else {
+                            loadDataForCustomer();
+                        }
+                    }
+                }, 1000);
+            }
+        });
+
         txt_manage_contract_error = (TextView) findViewById(R.id.txt_manage_contract_error);
-        txt_manage_contract_error.setEnabled(false);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_contract_manage_view);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);

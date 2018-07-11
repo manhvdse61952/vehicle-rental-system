@@ -2,7 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chọn loại xe"
+            android:textSize="18sp"
+            android:textColor="@color/primary_text"/>
+    </android.support.v7.widget.Toolbar>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -81,17 +94,6 @@
             app:flexWrap="wrap"
             android:layout_alignParentBottom="true"
             app:justifyContent="space_around">
-
-            <Button
-                android:id="@+id/btnSignupAccountBack"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:background="@drawable/btn_next"
-                android:textAllCaps="false"
-                android:text="Quay lại"
-                android:textColor="@color/primary_text"
-                android:textSize="16sp"
-                app:layout_flexBasisPercent="@fraction/signup_btn" />
         </com.google.android.flexbox.FlexboxLayout>
 
     </RelativeLayout>

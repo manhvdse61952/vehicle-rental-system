@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -20,19 +21,24 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class SignupPolicyActivity extends AppCompatActivity {
 
-    Button btnSignupAccountAccept, btnSignupAccountBack;
+    Button btnSignupAccountAccept;
     CheckBox cbxSignupPolicy;
-
     ProgressDialog dialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup_policy);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar2);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
 
         //Declare id
         btnSignupAccountAccept = (Button)findViewById(R.id.btnSignupAccountAccept);
-        btnSignupAccountBack = (Button)findViewById(R.id.btnSignupAccountBack);
         cbxSignupPolicy = (CheckBox)findViewById(R.id.cbxSignupPolicy);
 
         //Checkbox
@@ -81,15 +87,6 @@ public class SignupPolicyActivity extends AppCompatActivity {
             }
         });
 
-        btnSignupAccountBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent it = new Intent(SignupPolicyActivity.this, SignupRoleActivity.class);
-                startActivity(it);
-            }
-        });
-
-
     }
 
     @Override
@@ -97,5 +94,11 @@ public class SignupPolicyActivity extends AppCompatActivity {
         super.onBackPressed();
         Intent it = new Intent(SignupPolicyActivity.this, SignupRoleActivity.class);
         startActivity(it);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }

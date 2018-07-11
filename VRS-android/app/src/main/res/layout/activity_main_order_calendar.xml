@@ -27,7 +27,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.5">
+            android:layout_weight="1">
                 <RadioButton
                     android:id="@+id/rd_oneDay"
                     android:layout_width="wrap_content"
@@ -48,7 +48,9 @@
             android:id="@+id/calendar_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="5"
+            android:layout_weight="4.8"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:scrollbarStyle="outsideOverlay"
             android:clipToPadding="false"
             android:background="#FFFFFF" />
@@ -57,7 +59,9 @@
             android:layout_height="0dp"
             android:orientation="vertical"
             android:weightSum="10"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:layout_weight="1">
             <LinearLayout
                 android:layout_width="match_parent"
@@ -363,7 +367,7 @@
                 app:np_min="0"
                 app:np_selectedTextColor="@color/colorPrimaryDark"
                 app:np_textColor="@color/secondary_text"
-                app:np_textSize="16sp"
+                app:np_textSize="14sp"
                 />
             <com.shawnlin.numberpicker.NumberPicker
                 android:id="@+id/time_picker_minutes_start"
@@ -376,7 +380,7 @@
                 android:layout_marginLeft="10dp"
                 app:np_selectedTextColor="@color/colorPrimaryDark"
                 app:np_textColor="@color/secondary_text"
-                app:np_textSize="16sp"
+                app:np_textSize="14sp"
                 app:np_value="0"
                 />
             <View
@@ -393,7 +397,7 @@
                 app:np_min="0"
                 app:np_selectedTextColor="@color/colorPrimaryDark"
                 app:np_textColor="@color/secondary_text"
-                app:np_textSize="16sp"
+                app:np_textSize="14sp"
                 />
             <com.shawnlin.numberpicker.NumberPicker
                 android:id="@+id/time_picker_minutes_end"
@@ -406,7 +410,7 @@
                 android:layout_marginLeft="10dp"
                 app:np_selectedTextColor="@color/colorPrimaryDark"
                 app:np_textColor="@color/secondary_text"
-                app:np_textSize="16sp"
+                app:np_textSize="14sp"
                 app:np_value="0"
                 />
             <View
@@ -419,7 +423,7 @@
             android:id="@+id/btn_save_time"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_weight="0.7"
             android:background="@color/colorPrimary"
             android:text="Lưu thời gian"
             android:textColor="@color/primary_text"/>

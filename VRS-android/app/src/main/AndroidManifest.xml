@@ -91,7 +91,8 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".layout.signup.customer.SignUpActivity"></activity>
+        <activity android:name=".layout.signup.customer.SignUpActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".layout.signup.owner.SearchVehicleInfoActivity" android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

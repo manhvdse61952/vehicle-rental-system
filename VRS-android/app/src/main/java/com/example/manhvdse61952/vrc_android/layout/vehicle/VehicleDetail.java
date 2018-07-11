@@ -45,7 +45,7 @@ public class VehicleDetail extends AppCompatActivity {
     ViewPager vpg;
     Button btnOrderRent;
     DetailVehicleItem mainObj = new DetailVehicleItem();
-    int selectTab = 0, rentFeePerHourID = 0, rentFeePerDayID = 0, totalHour = 0, receiveType = 0;
+    int selectTab = 0, rentFeePerHourID = 0, rentFeePerDayID = 0, totalHour = 0, receiveType = 0, totalDay = 0;
     Double totalMoney = 0.0, rentFeeMoney = 0.0, usdConvert = 0.0;
 
     TextView item_price_slot, item_price_day, item_seat, item_year,
@@ -103,7 +103,7 @@ public class VehicleDetail extends AppCompatActivity {
         String endMinute = editor.getString("endMinute", "--");
         String startDate = editor.getString("startDate", "--/--/----");
         String endDate = editor.getString("endDate", "--/--/----");
-        final int totalDay = editor.getInt("totalDay", 0);
+        totalDay = editor.getInt("totalDay", 0);
         totalHour = editor.getInt("totalHour", 0);
         final int totalMinute = editor.getInt("totalMinute", 0);
 
@@ -117,6 +117,10 @@ public class VehicleDetail extends AppCompatActivity {
             totalHour = totalHour + 1;
         }
         txt_hour_rent.setText(totalHour + "");
+        if (totalHour == 23){
+            totalHour = 0;
+            totalDay = totalDay + 1;
+        }
 
         Retrofit test = RetrofitConnect.getClient();
         final VehicleAPI testAPI = test.create(VehicleAPI.class);

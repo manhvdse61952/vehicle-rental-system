@@ -17,6 +17,8 @@ import com.example.manhvdse61952.vrc_android.R;
 import com.example.manhvdse61952.vrc_android.layout.main.MainActivity;
 import com.example.manhvdse61952.vrc_android.layout.contract.ContractDetail;
 import com.example.manhvdse61952.vrc_android.layout.signup.customer.SignupAccountActivity;
+import com.example.manhvdse61952.vrc_android.layout.signup.customer.SignupRoleActivity;
+import com.example.manhvdse61952.vrc_android.layout.signup.owner.SearchVehicleInfoActivity;
 import com.example.manhvdse61952.vrc_android.layout.vehicle.VehicleDetail;
 import com.example.manhvdse61952.vrc_android.remote.ImmutableValue;
 import com.example.manhvdse61952.vrc_android.remote.RetrofitCallAPI;
@@ -44,12 +46,10 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //setTheme(R.style.splashScreenTheme);
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        /// get address and vehicle maker data
+        /// get address data
         if (RetrofitCallAPI.lisCityTest.size() == 0) {
         dialog = ProgressDialog.show(LoginActivity.this, "Đang xử lý",
                 "Vui lòng đợi ...", true);
@@ -96,9 +96,16 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //Check address if empty
+                if (RetrofitCallAPI.lisCityTest.size() == 0) {
+                    dialog = ProgressDialog.show(LoginActivity.this, "Đang xử lý",
+                            "Vui lòng đợi ...", true);
+                    RetrofitCallAPI testAPI = new RetrofitCallAPI();
+                    testAPI.getAllAddress(dialog, LoginActivity.this);
+                }
+                //Check login
                 username = edtUsername.getText().toString().trim();
                 password = edtPassword.getText().toString().trim();
-
                 validObj = new Validate();
                 locationObj.checkAddressPermission(LoginActivity.this, LoginActivity.this);
                 Boolean checkUsername = validObj.validUsername(username, edtUsername);
@@ -118,7 +125,18 @@ public class LoginActivity extends AppCompatActivity {
         txtSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (RetrofitCallAPI.lisCityTest.size() != 0 && ImmutableValue.listVehicleMaker.size() != 0) {
+                if (RetrofitCallAPI.lisCityTest.size() != 0) {
+                    SharedPreferences settings_2 = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE);
+                    settings_2.edit().clear().commit();
+                    SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
+                    editor.putString("username", "");
+                    editor.putString("password", "");
+                    editor.putString("email", "");
+                    editor.putString("name", "");
+                    editor.putString("phone", "");
+                    editor.putString("cmnd", "");
+                    editor.putString("CMND_image_path", "");
+                    editor.apply();
                     Intent it = new Intent(LoginActivity.this, SignupAccountActivity.class);
                     startActivity(it);
                 } else {

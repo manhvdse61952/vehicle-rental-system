@@ -65,6 +65,15 @@ public class Validate {
         return isValid;
     }
 
+    public Boolean validVehicleName(String name, Context ctx){
+        Boolean isValid = true;
+        if (name.trim().isEmpty()){
+            isValid = false;
+            Toast.makeText(ctx, "Vui lòng chọn tên xe", Toast.LENGTH_SHORT).show();
+        }
+        return isValid;
+    }
+
     public Boolean validPhone(String phone, EditText input){
         Boolean isValid = true;
         if (phone.trim().isEmpty()){

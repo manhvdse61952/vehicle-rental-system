@@ -37,8 +37,6 @@ import retrofit2.Retrofit;
 public class RetrofitCallAPI {
     public static List<City> lisCityTest = new ArrayList<>();
 
-//    public static List<String> vehicleYear = new ArrayList<>();
-
     /// Check login////
     public void checkLogin(final String username, String password, final Context ctx, final ProgressDialog progressDialog) {
         Retrofit test = RetrofitConnect.getClient();
@@ -200,39 +198,17 @@ public class RetrofitCallAPI {
         responseBodyCall.enqueue(new Callback<List<City>>() {
             @Override
             public void onResponse(Call<List<City>> call, Response<List<City>> response) {
-                lisCityTest = response.body();
-                getAllVehicleMaker(ctx, progressDialog);
+                if (response.code() == 200){
+                    lisCityTest = response.body();
+                } else {
+                    Toast.makeText(ctx, "Đã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
+                }
+                progressDialog.dismiss();
             }
 
             @Override
             public void onFailure(Call<List<City>> call, Throwable t) {
                 progressDialog.dismiss();
-                Toast.makeText(ctx, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    /// Get all vehicle maker  ///
-    public void getAllVehicleMaker(final Context ctx, final ProgressDialog dialog) {
-        ImmutableValue.listVehicleMaker = new ArrayList<>();
-        Retrofit test = RetrofitConnect.getClient();
-        final VehicleAPI testAPI = test.create(VehicleAPI.class);
-        Call<List<String>> responseBodyCall = testAPI.getVehicleMarker();
-
-        responseBodyCall.enqueue(new Callback<List<String>>() {
-            @Override
-            public void onResponse(Call<List<String>> call, Response<List<String>> response) {
-                if (response.body() != null) {
-                    for (int i = 0; i < response.body().size(); i++) {
-                        ImmutableValue.listVehicleMaker.add(response.body().get(i).toString());
-                    }
-                }
-                dialog.dismiss();
-            }
-
-            @Override
-            public void onFailure(Call<List<String>> call, Throwable t) {
-                dialog.dismiss();
                 Toast.makeText(ctx, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
             }
         });

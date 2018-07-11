@@ -30,11 +30,6 @@ import retrofit2.Retrofit;
 public class SignupRoleActivity extends AppCompatActivity {
 
     ImageView imgCustomer, imgOwner;
-    //Button btnSignupAccountBack;
-    int i = 0;
-
-    ProgressDialog dialog;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,20 +61,31 @@ public class SignupRoleActivity extends AppCompatActivity {
         imgOwner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (ImmutableValue.listVehicleModelTwo.size() == 0){
-                    dialog = ProgressDialog.show(SignupRoleActivity.this, "Hệ thống",
-                            "Vui lòng đợi ...", true);
+                SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
+                editor.putString("rolename", "ROLE_OWNER");
+                editor.apply();
 
-                    ImmutableValue.listVehicleModelTwo = new ArrayList<>();
-                    getVehicleModelPartTwo();
-                } else {
-                    SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
-                    editor.putString("rolename", "ROLE_OWNER");
-                    editor.apply();
-                    Intent it = new Intent(SignupRoleActivity.this, SignupOwnerOne.class);
-                    startActivity(it);
-                }
-
+                SharedPreferences.Editor editor2 = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
+                editor2.putString("vehicleMaker", "Empty");
+                editor2.putString("vehicleModel", "Empty");
+                editor2.putString("img_vehicle_1", "");
+                editor2.putString("img_vehicle_2", "");
+                editor2.putString("picture_path", "");
+                editor2.putInt("yearPosition", -1);
+                editor2.putString("frameNumber", "");
+                editor2.putString("plateNumber", "");
+                editor2.putInt("cityPosition", -1);
+                editor2.putInt("districtPosition", -1);
+                editor2.putString("rentFeePerHours", "");
+                editor2.putString("rentFeePerDay", "");
+                editor2.putString("depositFee", "");
+                editor2.putInt("isGasoline", -1);
+                editor2.putInt("isManual", -1);
+                editor2.putInt("requireHouseHold", 0);
+                editor2.putInt("requireIdCard", 0);
+                editor2.apply();
+                Intent it = new Intent(SignupRoleActivity.this, SignupOwnerOne.class);
+                startActivity(it);
             }
         });
 
@@ -99,40 +105,4 @@ public class SignupRoleActivity extends AppCompatActivity {
         return true;
     }
 
-
-    /////////////////////////////////////////////////////////
-    private void getVehicleModelPartTwo() {
-        if (i >= ImmutableValue.listVehicleMaker.size() / 2) {
-            dialog.dismiss();
-            SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
-            editor.putString("rolename", "ROLE_OWNER");
-            editor.apply();
-            Intent it = new Intent(SignupRoleActivity.this, SignupOwnerOne.class);
-            startActivity(it);
-            return;
-        }
-
-        i++;
-        Retrofit test = RetrofitConnect.getClient();
-        final VehicleAPI testAPI = test.create(VehicleAPI.class);
-        Call<List<String>> responseBodyCall = testAPI.getVehicleModel(ImmutableValue.listVehicleMaker.get(i).toString());
-
-        responseBodyCall.enqueue(new Callback<List<String>>() {
-            @Override
-            public void onResponse(Call<List<String>> call, Response<List<String>> response) {
-                if (response.body() != null) {
-                    for (int j = 0; j < response.body().size(); j++) {
-                        ImmutableValue.listVehicleModelTwo.add(ImmutableValue.listVehicleMaker.get(i).toString() +
-                                " " + response.body().get(j).toString());
-                    }
-                }
-                getVehicleModelPartTwo();
-            }
-
-            @Override
-            public void onFailure(Call<List<String>> call, Throwable t) {
-                Toast.makeText(SignupRoleActivity.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
 }

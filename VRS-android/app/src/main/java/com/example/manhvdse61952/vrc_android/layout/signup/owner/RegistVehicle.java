@@ -11,9 +11,12 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -32,14 +35,17 @@ import com.example.manhvdse61952.vrc_android.remote.ImmutableValue;
 import com.example.manhvdse61952.vrc_android.remote.RetrofitCallAPI;
 import com.example.manhvdse61952.vrc_android.remote.RetrofitConnect;
 import com.example.manhvdse61952.vrc_android.remote.Validate;
+import com.squareup.picasso.Picasso;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
-import ir.mirrajabi.searchdialog.SimpleSearchDialogCompat;
-import ir.mirrajabi.searchdialog.core.BaseSearchDialogCompat;
-import ir.mirrajabi.searchdialog.core.SearchResultListener;
-import ir.mirrajabi.searchdialog.core.Searchable;
+import id.zelory.compressor.Compressor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -48,7 +54,7 @@ import retrofit2.Retrofit;
 public class RegistVehicle extends AppCompatActivity {
 
     VehicleInformation vehicleInfoObj;
-    String vehicleType;
+    String vehicleType, vehicleTypeGeneral;
     TextView txtCarModel;
     Spinner spnEngine, spnTranmission, spnYear, spnCity, spnDistrict;
     List<String> listEngineType = new ArrayList<>();
@@ -63,10 +69,11 @@ public class RegistVehicle extends AppCompatActivity {
     RelativeLayout btnImageFront, btnImageBack, btnImageFrame;
     Validate validObj = new Validate();
     CheckBox cbxHouseHold, cbxIdCard;
+    Button btnCreateVehicle;
 
     //Value to save in shared preferences
     int required_household_registration = 0, required_id_card = 0;
-    String picturePath1 = "", picturePath2 = "", picturePath3 = "";
+    String picturePath1 = "", picturePath2 = "", picturePath3 = "", vehicleName = "";
     int cityPosition = 0, districtID, vehicleInfoID;
 
     @Override
@@ -112,6 +119,7 @@ public class RegistVehicle extends AppCompatActivity {
         imgCreateVehicle = (ImageView)findViewById(R.id.imgCreateVehicle);
         cbxHouseHold = (CheckBox)findViewById(R.id.cbxHouseHold);
         cbxIdCard = (CheckBox)findViewById(R.id.cbxIdCard);
+        btnCreateVehicle = (Button)findViewById(R.id.btnCreateVehicle);
 
         // Init toolbar, engine spinner and tranmission spinner ///
         initToolbarAndSpinner();
@@ -120,20 +128,62 @@ public class RegistVehicle extends AppCompatActivity {
         txtCarModel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                initSearchCarModel();
+                SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
+                editor.putString("frameNumber", edtFrame.getText().toString());
+                editor.putString("plateNumber", edtPlate.getText().toString());
+                editor.putString("rentFeePerHours", edtPriceHour.getText().toString());
+                editor.putString("rentFeePerDay", edtPriceDay.getText().toString());
+                editor.putString("depositFee", edtDepositFee.getText().toString());
+                editor.apply();
+                Intent it = new Intent(RegistVehicle.this, SearchVehicleInfoActivity.class);
+                startActivity(it);
             }
         });
 
         //Init district and city spinner
         initDistrictAndCity();
 
-        //Init seat text view by year spinner
+        //Convert price in real time
+        edtPriceHour.addTextChangedListener(convertPriceRealTime(edtPriceHour));
+        edtPriceDay.addTextChangedListener(convertPriceRealTime(edtPriceDay));
+        edtDepositFee.addTextChangedListener(convertPriceRealTime(edtDepositFee));
+
+        //Save value when user select in spinner
         spnYear.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 year = "";
                 year = spnYear.getSelectedItem().toString();
+                SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
+                editor.putInt("yearPosition", position);
+                editor.apply();
                 getVehicleInfo(maker, model, year);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        spnEngine.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
+                editor.putInt("isGasoline", position);
+                editor.apply();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        spnTranmission.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
+                editor.putInt("isManual", position);
+                editor.apply();
             }
 
             @Override
@@ -169,17 +219,27 @@ public class RegistVehicle extends AppCompatActivity {
         initCheckbox();
 
         // Accept button
-        imgCreateVehicle.setOnClickListener(new View.OnClickListener() {
+        btnCreateVehicle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 nextAction();
             }
         });
+
+        //Revert value when user change the layout
+        revertValue();
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
+        editor.putString("frameNumber", edtFrame.getText().toString());
+        editor.putString("plateNumber", edtPlate.getText().toString());
+        editor.putString("rentFeePerHours", edtPriceHour.getText().toString());
+        editor.putString("rentFeePerDay", edtPriceDay.getText().toString());
+        editor.putString("depositFee", edtDepositFee.getText().toString());
+        editor.apply();
         Intent it = new Intent(RegistVehicle.this, SignupOwnerOne.class);
         startActivity(it);
     }
@@ -190,6 +250,7 @@ public class RegistVehicle extends AppCompatActivity {
         TextView toolbar_title = (TextView) findViewById(R.id.toolbar_title);
         SharedPreferences editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE);
         vehicleType = editor.getString("vehicleType", "XE_CA_NHAN");
+        vehicleTypeGeneral = vehicleType;
         if (vehicleType.equals("XE_MAY")) {
             toolbar_title.setText("Đăng ký xe máy");
             listEngineType.add("XĂNG");
@@ -199,6 +260,7 @@ public class RegistVehicle extends AppCompatActivity {
             listTranmissionType.add("XE TAY GA");
             ArrayAdapter<String> tranmissionAdapter = new ArrayAdapter<>(RegistVehicle.this, android.R.layout.simple_spinner_dropdown_item, listTranmissionType);
             spnTranmission.setAdapter(tranmissionAdapter);
+
         } else {
             listEngineType.add("XĂNG");
             listEngineType.add("DẦU");
@@ -214,105 +276,102 @@ public class RegistVehicle extends AppCompatActivity {
                 toolbar_title.setText("Đăng ký xe du lịch");
             }
         }
-    }
 
-    //Init data to car model edit text
-    private ArrayList<SearchAddressModel> initData() {
-        ArrayList<SearchAddressModel> items = new ArrayList<>();
-        if (ImmutableValue.listVehicleModelTwo.size() > 0) {
-            for (int j = 0; j < ImmutableValue.listVehicleModelTwo.size(); j++) {
-                items.add(new SearchAddressModel(ImmutableValue.listVehicleModelTwo.get(j).trim()));
-            }
+        if (editor.getInt("isGasoline", -1) != -1 && (vehicleType.equals("XE_CA_NHAN")||vehicleType.equals("XE_DU_LICH"))){
+            spnEngine.setSelection(editor.getInt("isGasoline", -1));
         }
-        if (ImmutableValue.listVehicleModelThree.size() > 0) {
-            for (int k = 0; k < ImmutableValue.listVehicleModelThree.size(); k++) {
-                items.add(new SearchAddressModel(ImmutableValue.listVehicleModelThree.get(k).trim()));
-            }
+        if (editor.getInt("isManual", -1) != -1 && (vehicleType.equals("XE_CA_NHAN")||vehicleType.equals("XE_DU_LICH"))){
+            spnTranmission.setSelection(editor.getInt("isManual", -1));
         }
-        return items;
-    }
-
-    //Init search data to car model edit text
-    private void initSearchCarModel() {
-        maker = "";
-        model = "";
-        new SimpleSearchDialogCompat(RegistVehicle.this, "", "Nhập đia điểm cần kiếm xe", null, initData(), new SearchResultListener<Searchable>() {
-            @Override
-            public void onSelected(BaseSearchDialogCompat baseSearchDialogCompat, Searchable searchable, int i) {
-                if (!searchable.getTitle().equals("")) {
-                    txtCarModel.setText("" + searchable.getTitle());
-                    String[] temp = searchable.getTitle().split(" ");
-                    maker = temp[0];
-                    if (temp.length > 2) {
-                        for (int j = 1; j < temp.length; j++) {
-                            model += temp[j].toString() + " ";
-                        }
-                    } else {
-                        model = temp[1];
-                    }
-                    dialog = ProgressDialog.show(RegistVehicle.this, "Đang xử lý",
-                            "Vui lòng đợi ...", true);
-                    getVehicleYear(maker, model.trim());
-                }
-                baseSearchDialogCompat.dismiss();
-            }
-        }).show();
     }
 
     //Init district and city spinner
     private void initDistrictAndCity() {
-        final List<City> listAddress = RetrofitCallAPI.lisCityTest;
-        ArrayAdapter<City> cityArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, listAddress);
-        cityArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spnCity.setAdapter(cityArrayAdapter);
-        spnCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                List<District> districts = listAddress.get(position).getDistrict();
-                cityPosition = position;
-                ArrayAdapter<District> districtAdapter = new ArrayAdapter<>(RegistVehicle.this, android.R.layout.simple_spinner_dropdown_item, districts);
-                spnDistrict.setAdapter(districtAdapter);
+        if (RetrofitCallAPI.lisCityTest.size() == 0){
+            dialog = ProgressDialog.show(RegistVehicle.this, "Đang xử lý",
+                    "Vui lòng đợi ...", true);
+            RetrofitCallAPI testAPI = new RetrofitCallAPI();
+            testAPI.getAllAddress(dialog, RegistVehicle.this);
+        } else {
+            final List<City> listAddress = RetrofitCallAPI.lisCityTest;
+            ArrayAdapter<City> cityArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, listAddress);
+            cityArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spnCity.setAdapter(cityArrayAdapter);
+            SharedPreferences editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE);
+            int citySelectPostion = editor.getInt("cityPosition", -1);
+            final int districtSelectPosition = editor.getInt("districtPosition", -1);
+            if (citySelectPostion != -1){
+                spnCity.setSelection(citySelectPostion);
             }
+            spnCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    List<District> districts = listAddress.get(position).getDistrict();
+                    cityPosition = position;
+                    ArrayAdapter<District> districtAdapter = new ArrayAdapter<>(RegistVehicle.this, android.R.layout.simple_spinner_dropdown_item, districts);
+                    spnDistrict.setAdapter(districtAdapter);
+                    if (districtSelectPosition != 1){
+                        spnDistrict.setSelection(districtSelectPosition);
+                    }
+                }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
 
-            }
-        });
-        spnDistrict.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                districtID = 0;
-                District district = listAddress.get(cityPosition).getDistrict().get(position);
-                districtID = district.getId();
-            }
+                }
+            });
+            spnDistrict.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    districtID = 0;
+                    District district = listAddress.get(cityPosition).getDistrict().get(position);
+                    districtID = district.getId();
+                    SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
+                    editor.putInt("cityPosition", cityPosition);
+                    editor.putInt("districtPosition", position);
+                    editor.apply();
+                }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
 
-            }
-        });
+                }
+            });
+        }
+
+
     }
 
     //Init year spinner
     private void getVehicleYear(final String getMaker, final String getModel) {
+        dialog = ProgressDialog.show(RegistVehicle.this, "Hệ thống",
+                "Đang xử lý ...", true);
         vehicleYear = new ArrayList<>();
         Retrofit test = RetrofitConnect.getClient();
         final VehicleAPI testAPI = test.create(VehicleAPI.class);
         Call<List<String>> responseBodyCall = testAPI.getVehicleYear(getMaker, getModel);
-
         responseBodyCall.enqueue(new Callback<List<String>>() {
             @Override
             public void onResponse(Call<List<String>> call, Response<List<String>> response) {
-                if (response.body() != null) {
-                    dialog.dismiss();
-                    for (int i = 0; i < response.body().size(); i++) {
-                        vehicleYear.add(response.body().get(i).toString());
-                    }
+                if (response.code() == 200){
+                    if (response.body() != null) {
+                        dialog.dismiss();
+                        for (int i = 0; i < response.body().size(); i++) {
+                            vehicleYear.add(response.body().get(i).toString());
+                        }
 
-                    ArrayAdapter<String> yearAdapter = new ArrayAdapter<>(RegistVehicle.this, android.R.layout.simple_spinner_dropdown_item, vehicleYear);
-                    spnYear.setAdapter(yearAdapter);
+                        ArrayAdapter<String> yearAdapter = new ArrayAdapter<>(RegistVehicle.this, android.R.layout.simple_spinner_dropdown_item, vehicleYear);
+                        spnYear.setAdapter(yearAdapter);
+                        SharedPreferences editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE);
+                        int yearPosition = editor.getInt("yearPosition", -1);
+                        if (yearPosition != -1){
+                            spnYear.setSelection(yearPosition);
+                        }
+                    }
+                } else {
+                    Toast.makeText(RegistVehicle.this, "Đã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
                 }
+                dialog.dismiss();
             }
 
             @Override
@@ -323,8 +382,10 @@ public class RegistVehicle extends AppCompatActivity {
         });
     }
 
-    //Init seat data - get vehicleInfor
+    //Init seat data - get vehicleInfo
     public void getVehicleInfo(final String getMaker, final String getModel, final String getYear) {
+        dialog = ProgressDialog.show(RegistVehicle.this, "Hệ thống",
+                "Đang xử lý ...", true);
         vehicleInfoID = 0;
         vehicleInfoObj = new VehicleInformation();
         Retrofit test = RetrofitConnect.getClient();
@@ -349,11 +410,13 @@ public class RegistVehicle extends AppCompatActivity {
                         }
                     }
                 }
+                dialog.dismiss();
             }
 
             @Override
             public void onFailure(Call<VehicleInformation> call, Throwable t) {
-
+                dialog.dismiss();
+                Toast.makeText(RegistVehicle.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -369,6 +432,9 @@ public class RegistVehicle extends AppCompatActivity {
                 else {
                     required_household_registration = 0;
                 }
+                SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
+                editor.putInt("requireHouseHold", required_household_registration);
+                editor.apply();
             }
         });
         cbxIdCard.setOnClickListener(new View.OnClickListener() {
@@ -380,6 +446,9 @@ public class RegistVehicle extends AppCompatActivity {
                 else {
                     required_id_card = 0;
                 }
+                SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
+                editor.putInt("requireIdCard", required_id_card);
+                editor.apply();
             }
         });
     }
@@ -400,43 +469,149 @@ public class RegistVehicle extends AppCompatActivity {
             isGasoline = 0;
         }
 
+        String hourPriceTemp = edtPriceHour.getText().toString().trim().replaceAll(",", "");
+        String dayPriceTemp = edtPriceDay.getText().toString().trim().replaceAll(",", "");
+        String depositPriceTemp = edtDepositFee.getText().toString().trim().replaceAll(",", "");
+
+
         Boolean checkPlateNumber = validObj.validFrameNumber(edtPlate.getText().toString().trim(), edtPlate);
         Boolean checkFrameNumber = validObj.validFrameNumber(edtFrame.getText().toString().trim(), edtFrame);
-        Boolean checkPricePerHours = validObj.validPrice(edtPriceHour.getText().toString().trim(), edtPriceHour);
-        Boolean checkPricePerDay = validObj.validPrice(edtPriceDay.getText().toString().trim(), edtPriceDay);
-        Boolean checkDepositFee = validObj.validPrice(edtDepositFee.getText().toString().trim(), edtDepositFee);
+        Boolean checkPricePerHours = validObj.validPrice(hourPriceTemp, edtPriceHour);
+        Boolean checkPricePerDay = validObj.validPrice(dayPriceTemp, edtPriceDay);
+        Boolean checkDepositFee = validObj.validPrice(depositPriceTemp, edtDepositFee);
         Boolean checkImage1 = validObj.validImageLink(picturePath1, RegistVehicle.this);
         Boolean checkImage2 = validObj.validImageLink(picturePath2, RegistVehicle.this);
         Boolean checkImage3 = validObj.validImageLink(picturePath3, RegistVehicle.this);
+        Boolean checkVehicleName = validObj.validVehicleName(vehicleName.trim(), RegistVehicle.this);
 
-        if (checkFrameNumber && checkPlateNumber && checkPricePerHours && checkPricePerDay
-                && checkDepositFee && checkImage1 && checkImage2 && checkImage3){
+        if (!vehicleType.equals(vehicleTypeGeneral)){
+            Toast.makeText(this, "Không đúng loại xe! Hãy chọn xe khác", Toast.LENGTH_SHORT).show();
+        } else {
+            if (checkFrameNumber && checkPlateNumber && checkPricePerHours && checkPricePerDay
+                    && checkDepositFee && checkImage1 && checkImage2 && checkImage3 && checkVehicleName){
+                SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
+                editor.putString("frameNumber", edtFrame.getText().toString());
+                editor.putString("plateNumber", edtPlate.getText().toString());
+                editor.putString("rentFeePerHours", edtPriceHour.getText().toString());
+                editor.putString("rentFeePerDay", edtPriceDay.getText().toString());
+                editor.putString("depositFee", edtDepositFee.getText().toString());
+                editor.apply();
 
-            RetrofitCallAPI testAPI = new RetrofitCallAPI();
-            ProgressDialog dialog = ProgressDialog.show(RegistVehicle.this, "Đang xử lý",
-                    "Vui lòng đợi ...", true);
-            testAPI.checkFrameNumber(edtFrame.getText().toString().trim(), RegistVehicle.this,
-                    dialog, edtFrame, vehicleInfoID, districtID, "0", edtPriceDay.getText().toString().trim(),
-                    edtPriceHour.getText().toString().trim(),edtDepositFee.getText().toString().trim(),
-                    edtPlate.getText().toString().trim(), required_household_registration, required_id_card,
-                    isGasoline, isManual, picturePath3, picturePath1, picturePath2);
-//            SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
-//            editor.putString("frameNumber", edtFrame.getText().toString().trim());
-//            editor.putInt("vehicleInformationID", vehicleInfoID);
-//            editor.putInt("districtID", districtID);
-//            editor.putString("rentFeePerSlot", "0");
-//            editor.putString("rentFeePerDay", edtPriceDay.getText().toString().trim());
-//            editor.putString("rentFeePerHours", edtPriceHour.getText().toString().trim());
-//            editor.putString("depositFee", edtDepositFee.getText().toString().trim());
-//            editor.putString("plateNumber", edtPlate.getText().toString().trim());
-//            editor.putInt("requireHouseHold", required_household_registration);
-//            editor.putInt("requireIdCard", required_id_card);
-//            editor.putInt("isGasoline", isGasoline);
-//            editor.putInt("isManual", isManual);
-//            editor.putString("picture_path", picturePath3);
-//            editor.putString("img_vehicle_1", picturePath1);
-//            editor.putString("img_vehicle_2", picturePath2);
-//            editor.apply();
+                RetrofitCallAPI testAPI = new RetrofitCallAPI();
+                ProgressDialog dialog = ProgressDialog.show(RegistVehicle.this, "Đang xử lý",
+                        "Vui lòng đợi ...", true);
+                testAPI.checkFrameNumber(edtFrame.getText().toString().trim(), RegistVehicle.this,
+                        dialog, edtFrame, vehicleInfoID, districtID, "0", dayPriceTemp,
+                        hourPriceTemp, depositPriceTemp, edtPlate.getText().toString().trim(),
+                        required_household_registration, required_id_card,
+                        isGasoline, isManual, picturePath3, picturePath1, picturePath2);
+
+            }
+        }
+
+    }
+
+    //Format price in real time
+    private TextWatcher convertPriceRealTime(final EditText edt) {
+        return new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                edt.removeTextChangedListener(this);
+
+                try {
+                    String originalString = s.toString();
+
+                    Long longval;
+                    if (originalString.contains(",")) {
+                        originalString = originalString.replaceAll(",", "");
+                    }
+                    longval = Long.parseLong(originalString);
+
+                    DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.US);
+                    formatter.applyPattern("#,###,###,###");
+                    String formattedString = formatter.format(longval);
+
+                    //setting text after format to EditText
+                    edt.setText(formattedString);
+                    edt.setSelection(edt.getText().length());
+                } catch (NumberFormatException nfe) {
+                    nfe.printStackTrace();
+                }
+
+                edt.addTextChangedListener(this);
+            }
+        };
+    }
+
+    private void revertValue(){
+        SharedPreferences editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE);
+        String vehicleMaker = editor.getString("vehicleMaker", "Empty");
+        String vehicleModel = editor.getString("vehicleModel", "Empty");
+        String picture1 = editor.getString("img_vehicle_1", "");
+        String picture2 = editor.getString("img_vehicle_2", "");
+        String picture3 = editor.getString("picture_path", "");
+        String frameNumber = editor.getString("frameNumber", "");
+        String plateNumber = editor.getString("plateNumber", "");
+        String rentPerHour = editor.getString("rentFeePerHours", "");
+        String rentPerDay = editor.getString("rentFeePerDay", "");
+        String deposit = editor.getString("depositFee", "");
+        int requireHouseHold = editor.getInt("requireHouseHold", 0);
+        int requireIdCard = editor.getInt("requireIdCard", 0);
+        if (requireHouseHold != 0){
+            cbxHouseHold.setChecked(true);
+        }
+        if (requireIdCard != 0){
+            cbxIdCard.setChecked(true);
+        }
+        if (vehicleMaker.equals("Empty") == false && vehicleModel.equals("Empty") == false){
+            txtCarModel.setText(vehicleMaker + " " + vehicleModel);
+            vehicleName = vehicleMaker + " " + vehicleModel;
+            getVehicleYear(vehicleMaker, vehicleModel);
+            maker = vehicleMaker;
+            model = vehicleModel;
+        }
+        if (!rentPerHour.equals("")){
+            edtPriceHour.setText(rentPerHour);
+        }
+        if (!rentPerDay.equals("")){
+            edtPriceDay.setText(rentPerDay);
+        }
+        if (!deposit.equals("")){
+            edtDepositFee.setText(deposit);
+        }
+        if (!frameNumber.equals("")){
+            edtFrame.setText(frameNumber);
+        }
+        if (!plateNumber.equals("")){
+            edtPlate.setText(plateNumber);
+        }
+        if (!picture1.equals("")){
+            picturePath1 = picture1;
+            File imgFile = new File(picture1);
+            Picasso.get().load(imgFile).into(imgFront);
+            txtImageFront.setVisibility(View.INVISIBLE);
+        }
+        if (!picture2.equals("")){
+            picturePath2 = picture2;
+            File imgFile = new File(picture2);
+            Picasso.get().load(imgFile).into(imgBack);
+            txtImageBack.setVisibility(View.INVISIBLE);
+        }
+        if (!picture3.equals("")){
+            picturePath3 = picture3;
+            File imgFile = new File(picture3);
+            Picasso.get().load(imgFile).into(imgFrame);
+            txtImageFrame.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -519,7 +694,9 @@ public class RegistVehicle extends AppCompatActivity {
                     cameraObj.showImageCamera(imgFront, RegistVehicle.this);
                     picturePath1 = ImmutableValue.picturePath;
                     txtImageFront.setVisibility(View.INVISIBLE);
-
+                    SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
+                    editor.putString("img_vehicle_1", picturePath1);
+                    editor.apply();
                 }
                 break;
             case ImmutableValue.CAMERA_VEHICLE_CODE_2:
@@ -527,7 +704,9 @@ public class RegistVehicle extends AppCompatActivity {
                     cameraObj.showImageCamera(imgBack, RegistVehicle.this);
                     picturePath2 = ImmutableValue.picturePath;
                     txtImageBack.setVisibility(View.INVISIBLE);
-
+                    SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
+                    editor.putString("img_vehicle_2", picturePath2);
+                    editor.apply();
                 }
                 break;
             case ImmutableValue.CAMERA_VEHICLE_CODE_3:
@@ -535,28 +714,36 @@ public class RegistVehicle extends AppCompatActivity {
                     cameraObj.showImageCamera(imgFrame, RegistVehicle.this);
                     picturePath3 = ImmutableValue.picturePath;
                     txtImageFrame.setVisibility(View.INVISIBLE);
-
+                    SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
+                    editor.putString("picture_path", picturePath3);
+                    editor.apply();
                 }
                 break;
             case ImmutableValue.CAMERA_SELECT_IMAGE_CODE_1:
                 if (resultCode == RESULT_OK) {
                     picturePath1 = cameraObj.showImageGallery(data, imgFront, RegistVehicle.this);
                     txtImageFront.setVisibility(View.INVISIBLE);
-
+                    SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
+                    editor.putString("img_vehicle_1", picturePath1);
+                    editor.apply();
                 }
                 break;
             case ImmutableValue.CAMERA_SELECT_IMAGE_CODE_2:
                 if (resultCode == RESULT_OK) {
                     picturePath2 = cameraObj.showImageGallery(data, imgBack, RegistVehicle.this);
                     txtImageBack.setVisibility(View.INVISIBLE);
-
+                    SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
+                    editor.putString("img_vehicle_2", picturePath2);
+                    editor.apply();
                 }
                 break;
             case ImmutableValue.CAMERA_SELECT_IMAGE_CODE_3:
                 if (resultCode == RESULT_OK) {
                     picturePath3 = cameraObj.showImageGallery(data, imgFrame, RegistVehicle.this);
                     txtImageFrame.setVisibility(View.INVISIBLE);
-
+                    SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
+                    editor.putString("picture_path", picturePath3);
+                    editor.apply();
                 }
                 break;
         }

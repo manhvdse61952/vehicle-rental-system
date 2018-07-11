@@ -59,6 +59,7 @@ public class CalendarCustom extends AppCompatActivity {
             txt_hour_view_6, txt_hour_view_7, txt_hour_view_8, txt_hour_view_9, txt_hour_view_10, txt_hour_view_11,
             txt_hour_view_12, txt_hour_view_13, txt_hour_view_14, txt_hour_view_15, txt_hour_view_16, txt_hour_view_17,
             txt_hour_view_18, txt_hour_view_19, txt_hour_view_20, txt_hour_view_21, txt_hour_view_22, txt_hour_view_23;
+    Boolean isEndDate = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -107,16 +108,14 @@ public class CalendarCustom extends AppCompatActivity {
         nextYear.add(Calendar.YEAR, 1);
         Date today = new Date();
         calendarPickerView.init(today, nextYear.getTime()).inMode(CalendarPickerView.SelectionMode.SINGLE);
-        calendarPickerView.selectDate(today);
         selectDayTemp = today;
         startDatePicker = today.toString();
         endDatePicker = today.toString();
-        rd_oneDay.setChecked(true);
 
         //Init time picker
-        NumberPicker time_picker_hours_start = (NumberPicker) findViewById(R.id.time_picker_hours_start);
+        final NumberPicker time_picker_hours_start = (NumberPicker) findViewById(R.id.time_picker_hours_start);
         NumberPicker time_picker_minutes_start = (NumberPicker) findViewById(R.id.time_picker_minutes_start);
-        NumberPicker time_picker_hours_end = (NumberPicker) findViewById(R.id.time_picker_hours_end);
+        final NumberPicker time_picker_hours_end = (NumberPicker) findViewById(R.id.time_picker_hours_end);
         NumberPicker time_picker_minutes_end = (NumberPicker) findViewById(R.id.time_picker_minutes_end);
 
         time_picker_hours_start.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
@@ -148,9 +147,9 @@ public class CalendarCustom extends AppCompatActivity {
         });
         //Call first API
         getVehicleBusyTime();
+        calendarPickerView.selectDate(today);
         //Change to red color of hour in the first time (default is select current day)
-        Date todayNew = new Date();
-        String startDateParse = convertDateToNormalFormatVersionTwo(todayNew.toString());
+        String startDateParse = convertDateToNormalFormatVersionTwo(today.toString());
         for (int i = 0; i < listRentHour.size(); i++) {
             String[] temp = listRentHour.get(i).split(":");
             String startDateInBusy = temp[1] + ":" + temp[2] + ":" + temp[3];
@@ -176,7 +175,7 @@ public class CalendarCustom extends AppCompatActivity {
                     if (listRentDay.size() > 0) {
                         calendarPickerView.highlightDates(listRentDay);
                     }
-                    if (listRentDayNotFull.size() > 0){
+                    if (listRentDayNotFull.size() > 0) {
                         calendarPickerView.highlightDates(listRentDayNotFull);
                     }
                 }
@@ -197,7 +196,7 @@ public class CalendarCustom extends AppCompatActivity {
                     if (listRentDay.size() > 0) {
                         calendarPickerView.highlightDates(listRentDay);
                     }
-                    if (listRentDayNotFull.size() > 0){
+                    if (listRentDayNotFull.size() > 0) {
                         calendarPickerView.highlightDates(listRentDayNotFull);
                     }
                 }
@@ -213,14 +212,20 @@ public class CalendarCustom extends AppCompatActivity {
                     startDatePicker = today.toString();
                     endDatePicker = today.toString();
                     selectDayTemp = today;
+                    isEndDate = false;
                 } else if (calendarPickerView.getSelectedDates().size() == 1) {
                     startDatePicker = calendarPickerView.getSelectedDate().toString();
                     endDatePicker = calendarPickerView.getSelectedDate().toString();
                     selectDayTemp = calendarPickerView.getSelectedDate();
+                    if (rd_multipleDay.isChecked()) {
+                        Toast.makeText(CalendarCustom.this, "Chọn ngày đầu tiên và ngày cuối cùng để đặt lịch", Toast.LENGTH_SHORT).show();
+                    }
+                    isEndDate = false;
                 } else {
                     startDatePicker = calendarPickerView.getSelectedDates().get(0).toString();
                     endDatePicker = calendarPickerView.getSelectedDates().get(calendarPickerView.getSelectedDates().size() - 1).toString();
                     selectDayTemp = calendarPickerView.getSelectedDates().get(0);
+                    isEndDate = true;
                 }
 
                 //Change color of all hour in busy day and check if user selected busy day
@@ -251,6 +256,250 @@ public class CalendarCustom extends AppCompatActivity {
             public void onDateUnselected(Date date) {
             }
         });
+
+
+
+        txt_hour_view_0.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isEndDate == true){
+                    time_picker_hours_end.setValue(0);
+                } else {
+                    time_picker_hours_start.setValue(0);
+                }
+            }
+        });
+        txt_hour_view_1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isEndDate == true){
+                    time_picker_hours_end.setValue(1);
+                } else {
+                    time_picker_hours_start.setValue(1);
+                }
+            }
+        });
+        txt_hour_view_2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isEndDate == true){
+                    time_picker_hours_end.setValue(2);
+                } else {
+                    time_picker_hours_start.setValue(2);
+                }
+            }
+        });
+        txt_hour_view_3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isEndDate == true){
+                    time_picker_hours_end.setValue(3);
+                } else {
+                    time_picker_hours_start.setValue(3);
+                }
+            }
+        });
+        txt_hour_view_4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isEndDate == true){
+                    time_picker_hours_end.setValue(4);
+                } else {
+                    time_picker_hours_start.setValue(4);
+                }
+            }
+        });
+        txt_hour_view_5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isEndDate == true){
+                    time_picker_hours_end.setValue(5);
+                } else {
+                    time_picker_hours_start.setValue(5);
+                }
+            }
+        });
+        txt_hour_view_6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isEndDate == true){
+                    time_picker_hours_end.setValue(6);
+                } else {
+                    time_picker_hours_start.setValue(6);
+                }
+            }
+        });
+        txt_hour_view_7.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isEndDate == true){
+                    time_picker_hours_end.setValue(7);
+                } else {
+                    time_picker_hours_start.setValue(7);
+                }
+            }
+        });
+        txt_hour_view_8.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isEndDate == true){
+                    time_picker_hours_end.setValue(8);
+                } else {
+                    time_picker_hours_start.setValue(8);
+                }
+            }
+        });
+        txt_hour_view_9.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isEndDate == true){
+                    time_picker_hours_end.setValue(9);
+                } else {
+                    time_picker_hours_start.setValue(9);
+                }
+            }
+        });
+        txt_hour_view_10.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isEndDate == true){
+                    time_picker_hours_end.setValue(10);
+                } else {
+                    time_picker_hours_start.setValue(10);
+                }
+            }
+        });
+        txt_hour_view_11.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isEndDate == true){
+                    time_picker_hours_end.setValue(11);
+                } else {
+                    time_picker_hours_start.setValue(11);
+                }
+            }
+        });
+        txt_hour_view_12.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isEndDate == true){
+                    time_picker_hours_end.setValue(12);
+                } else {
+                    time_picker_hours_start.setValue(12);
+                }
+            }
+        });
+        txt_hour_view_13.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isEndDate == true){
+                    time_picker_hours_end.setValue(13);
+                } else {
+                    time_picker_hours_start.setValue(13);
+                }
+            }
+        });
+        txt_hour_view_14.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isEndDate == true){
+                    time_picker_hours_end.setValue(14);
+                } else {
+                    time_picker_hours_start.setValue(14);
+                }
+            }
+        });
+        txt_hour_view_15.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isEndDate == true){
+                    time_picker_hours_end.setValue(15);
+                } else {
+                    time_picker_hours_start.setValue(15);
+                }
+            }
+        });
+        txt_hour_view_16.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isEndDate == true){
+                    time_picker_hours_end.setValue(16);
+                } else {
+                    time_picker_hours_start.setValue(16);
+                }
+            }
+        });
+        txt_hour_view_17.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isEndDate == true){
+                    time_picker_hours_end.setValue(17);
+                } else {
+                    time_picker_hours_start.setValue(17);
+                }
+            }
+        });
+        txt_hour_view_18.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isEndDate == true){
+                    time_picker_hours_end.setValue(18);
+                } else {
+                    time_picker_hours_start.setValue(18);
+                }
+            }
+        });
+        txt_hour_view_19.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isEndDate == true){
+                    time_picker_hours_end.setValue(19);
+                } else {
+                    time_picker_hours_start.setValue(19);
+                }
+            }
+        });
+        txt_hour_view_20.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isEndDate == true){
+                    time_picker_hours_end.setValue(20);
+                } else {
+                    time_picker_hours_start.setValue(20);
+                }
+            }
+        });
+        txt_hour_view_21.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isEndDate == true){
+                    time_picker_hours_end.setValue(21);
+                } else {
+                    time_picker_hours_start.setValue(21);
+                }
+            }
+        });
+        txt_hour_view_22.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isEndDate == true){
+                    time_picker_hours_end.setValue(22);
+                } else {
+                    time_picker_hours_start.setValue(22);
+                }
+            }
+        });
+        txt_hour_view_23.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isEndDate == true){
+                    time_picker_hours_end.setValue(23);
+                } else {
+                    time_picker_hours_start.setValue(23);
+                }
+            }
+        });
+
         btn_save_time.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -378,7 +627,7 @@ public class CalendarCustom extends AppCompatActivity {
         return listTime;
     }
 
-    public static void getListBusyDay(String startTime, String endTime) {
+    public static void getListBusyDay(String serverTime, String startTime, String endTime) {
         //Two type of convert date
         //SimpleDateFormat sdfFullTime = new SimpleDateFormat("HH:mm:ss:dd:MM:yyyy");
         SimpleDateFormat sdfSimpleTime = new SimpleDateFormat("dd:MM:yyyy");
@@ -394,11 +643,13 @@ public class CalendarCustom extends AppCompatActivity {
         //Check if start date and end date are equal without calculate hour and minutes
         Date dateStartSimple = null;
         Date dateEndSimple = null;
+        Date dateCurrentSimple = null;
         try {
             dateStartSimple = sdfSimpleTime.parse(dateStart);
             dateEndSimple = sdfSimpleTime.parse(dateEnd);
+            dateCurrentSimple = sdfSimpleTime.parse(serverTime);
             //TH1: ngay bat dau va ngay ket thuc giong nhau
-            if (dateStartSimple.compareTo(dateEndSimple) == 0) {
+            if (dateStartSimple.compareTo(dateEndSimple) == 0 && dateStartSimple.after(dateCurrentSimple)) {
                 if ((24 - hourStart >= 21) && (24 - hourEnd <= 3)) {
                     listRentDay.add(dateStartSimple);
                 }
@@ -436,23 +687,34 @@ public class CalendarCustom extends AppCompatActivity {
                 int totalDay = (int) diffDate;
                 //Ngay dau tien va ngay cuoi cung deu khong su dung duoc
                 if ((24 - hourStart >= 21) && (24 - hourEnd <= 3)) {
-                    listRentDay.add(dateStartSimple);
+                    if (dateStartSimple.after(dateCurrentSimple)){
+                        listRentDay.add(dateStartSimple);
+                    }
                     for (int i = 1; i < totalDay; i++) {
                         currentStartTime = currentStartTime + 86400000;
                         String getStringDate = convertLongToDate(currentStartTime);
                         Date getDate = sdfSimpleTime.parse(getStringDate);
-                        listRentDay.add(getDate);
+                        if (getDate.after(dateCurrentSimple)){
+                            listRentDay.add(getDate);
+                        }
                     }
-                    listRentDay.add(dateEndSimple);
+                    if (dateEndSimple.after(dateCurrentSimple)){
+                        listRentDay.add(dateEndSimple);
+                    }
                     //Ngay dau tien su dung duoc
                 } else if ((24 - hourStart < 20) && (24 - hourEnd <= 4)) {
                     for (int i = 1; i < totalDay; i++) {
                         currentStartTime = currentStartTime + 86400000;
                         String getStringDate = convertLongToDate(currentStartTime);
                         Date getDate = sdfSimpleTime.parse(getStringDate);
-                        listRentDay.add(getDate);
+                        if (getDate.after(dateCurrentSimple)){
+                            listRentDay.add(getDate);
+                        }
                     }
-                    listRentDay.add(dateEndSimple);
+                    if (dateEndSimple.after(dateCurrentSimple)){
+                        listRentDay.add(dateEndSimple);
+                    }
+
                     String currentStartTimeString = convertLongToDate(dateStartSimple.getTime());
                     listRentHour.add((hourStart - 1) + ":" + currentStartTimeString);
                     for (int i = hourStart; i <= 23; i++) {
@@ -460,12 +722,16 @@ public class CalendarCustom extends AppCompatActivity {
                     }
                     //Ngay cuoi cung su dung duoc
                 } else if ((24 - hourStart >= 20) && (24 - hourEnd > 4)) {
-                    listRentDay.add(dateStartSimple);
+                    if (dateStartSimple.after(dateCurrentSimple)){
+                        listRentDay.add(dateStartSimple);
+                    }
                     for (int i = 1; i < totalDay; i++) {
                         currentStartTime = currentStartTime + 86400000;
                         String getStringDate = convertLongToDate(currentStartTime);
                         Date getDate = sdfSimpleTime.parse(getStringDate);
-                        listRentDay.add(getDate);
+                        if (getDate.after(dateCurrentSimple)){
+                            listRentDay.add(getDate);
+                        }
                     }
                     String currentEndTimeString = convertLongToDate(dateEndSimple.getTime());
                     for (int i = 0; i <= hourEnd; i++) {
@@ -478,7 +744,9 @@ public class CalendarCustom extends AppCompatActivity {
                         currentStartTime = currentStartTime + 86400000;
                         String getStringDate = convertLongToDate(currentStartTime);
                         Date getDate = sdfSimpleTime.parse(getStringDate);
-                        listRentDay.add(getDate);
+                        if (getDate.after(dateCurrentSimple)){
+                            listRentDay.add(getDate);
+                        }
                     }
                     String currentStartTimeString = convertLongToDate(dateStartSimple.getTime());
                     listRentHour.add((hourStart - 1) + ":" + currentStartTimeString);
@@ -641,75 +909,147 @@ public class CalendarCustom extends AppCompatActivity {
     private void changeColorHour(int pos) {
         if (pos == 0) {
             txt_hour_view_0.setBackgroundResource(R.drawable.border_red);
+            txt_hour_view_0.setClickable(false);
+        } else {
+            txt_hour_view_0.setClickable(true);
         }
         if (pos == 1) {
             txt_hour_view_1.setBackgroundResource(R.drawable.border_red);
+            txt_hour_view_1.setClickable(false);
+        } else {
+            txt_hour_view_1.setClickable(true);
         }
         if (pos == 2) {
             txt_hour_view_2.setBackgroundResource(R.drawable.border_red);
+            txt_hour_view_2.setClickable(false);
+        } else {
+            txt_hour_view_2.setClickable(true);
         }
         if (pos == 3) {
             txt_hour_view_3.setBackgroundResource(R.drawable.border_red);
+            txt_hour_view_3.setClickable(false);
+        } else {
+            txt_hour_view_3.setClickable(true);
         }
         if (pos == 4) {
             txt_hour_view_4.setBackgroundResource(R.drawable.border_red);
+            txt_hour_view_4.setClickable(false);
+        } else {
+            txt_hour_view_4.setClickable(true);
         }
         if (pos == 5) {
             txt_hour_view_5.setBackgroundResource(R.drawable.border_red);
+            txt_hour_view_5.setClickable(false);
+        } else {
+            txt_hour_view_5.setClickable(true);
         }
         if (pos == 6) {
             txt_hour_view_6.setBackgroundResource(R.drawable.border_red);
+            txt_hour_view_6.setClickable(false);
+        } else {
+            txt_hour_view_6.setClickable(true);
         }
         if (pos == 7) {
             txt_hour_view_7.setBackgroundResource(R.drawable.border_red);
+            txt_hour_view_7.setClickable(false);
+        } else {
+            txt_hour_view_7.setClickable(true);
         }
         if (pos == 8) {
             txt_hour_view_8.setBackgroundResource(R.drawable.border_red);
+            txt_hour_view_8.setClickable(false);
+        } else {
+            txt_hour_view_8.setClickable(true);
         }
         if (pos == 9) {
             txt_hour_view_9.setBackgroundResource(R.drawable.border_red);
+            txt_hour_view_9.setClickable(false);
+        } else {
+            txt_hour_view_9.setClickable(true);
         }
         if (pos == 10) {
             txt_hour_view_10.setBackgroundResource(R.drawable.border_red);
+            txt_hour_view_10.setClickable(false);
+        } else {
+            txt_hour_view_10.setClickable(true);
         }
         if (pos == 11) {
             txt_hour_view_11.setBackgroundResource(R.drawable.border_red);
+            txt_hour_view_11.setClickable(false);
+        } else {
+            txt_hour_view_11.setClickable(true);
         }
         if (pos == 12) {
             txt_hour_view_12.setBackgroundResource(R.drawable.border_red);
+            txt_hour_view_12.setClickable(false);
+        } else {
+            txt_hour_view_12.setClickable(true);
         }
         if (pos == 13) {
             txt_hour_view_13.setBackgroundResource(R.drawable.border_red);
+            txt_hour_view_13.setClickable(false);
+        } else {
+            txt_hour_view_13.setClickable(true);
         }
         if (pos == 14) {
             txt_hour_view_14.setBackgroundResource(R.drawable.border_red);
+            txt_hour_view_14.setClickable(false);
+        } else {
+            txt_hour_view_14.setClickable(true);
         }
         if (pos == 15) {
             txt_hour_view_15.setBackgroundResource(R.drawable.border_red);
+            txt_hour_view_15.setClickable(false);
+        } else {
+            txt_hour_view_15.setClickable(true);
         }
         if (pos == 16) {
             txt_hour_view_16.setBackgroundResource(R.drawable.border_red);
+            txt_hour_view_16.setClickable(false);
+        } else {
+            txt_hour_view_16.setClickable(true);
         }
         if (pos == 17) {
             txt_hour_view_17.setBackgroundResource(R.drawable.border_red);
+            txt_hour_view_17.setClickable(false);
+        } else {
+            txt_hour_view_17.setClickable(true);
         }
         if (pos == 18) {
             txt_hour_view_18.setBackgroundResource(R.drawable.border_red);
+            txt_hour_view_18.setClickable(false);
+        } else {
+            txt_hour_view_18.setClickable(true);
         }
         if (pos == 19) {
             txt_hour_view_19.setBackgroundResource(R.drawable.border_red);
+            txt_hour_view_19.setClickable(false);
+        } else {
+            txt_hour_view_19.setClickable(true);
         }
         if (pos == 20) {
             txt_hour_view_20.setBackgroundResource(R.drawable.border_red);
+            txt_hour_view_20.setClickable(false);
+        } else {
+            txt_hour_view_20.setClickable(true);
         }
         if (pos == 21) {
             txt_hour_view_21.setBackgroundResource(R.drawable.border_red);
+            txt_hour_view_21.setClickable(false);
+        } else {
+            txt_hour_view_21.setClickable(true);
         }
         if (pos == 22) {
             txt_hour_view_22.setBackgroundResource(R.drawable.border_red);
+            txt_hour_view_22.setClickable(false);
+        } else {
+            txt_hour_view_22.setClickable(true);
         }
         if (pos == 23) {
             txt_hour_view_23.setBackgroundResource(R.drawable.border_red);
+            txt_hour_view_23.setClickable(false);
+        } else {
+            txt_hour_view_23.setClickable(true);
         }
     }
 
@@ -738,6 +1078,31 @@ public class CalendarCustom extends AppCompatActivity {
         txt_hour_view_21.setBackgroundResource(R.drawable.border_green);
         txt_hour_view_22.setBackgroundResource(R.drawable.border_green);
         txt_hour_view_23.setBackgroundResource(R.drawable.border_green);
+
+        txt_hour_view_0.setClickable(true);
+        txt_hour_view_1.setClickable(true);
+        txt_hour_view_2.setClickable(true);
+        txt_hour_view_3.setClickable(true);
+        txt_hour_view_4.setClickable(true);
+        txt_hour_view_5.setClickable(true);
+        txt_hour_view_6.setClickable(true);
+        txt_hour_view_7.setClickable(true);
+        txt_hour_view_8.setClickable(true);
+        txt_hour_view_9.setClickable(true);
+        txt_hour_view_10.setClickable(true);
+        txt_hour_view_11.setClickable(true);
+        txt_hour_view_12.setClickable(true);
+        txt_hour_view_13.setClickable(true);
+        txt_hour_view_14.setClickable(true);
+        txt_hour_view_15.setClickable(true);
+        txt_hour_view_16.setClickable(true);
+        txt_hour_view_17.setClickable(true);
+        txt_hour_view_18.setClickable(true);
+        txt_hour_view_19.setClickable(true);
+        txt_hour_view_20.setClickable(true);
+        txt_hour_view_21.setClickable(true);
+        txt_hour_view_22.setClickable(true);
+        txt_hour_view_23.setClickable(true);
     }
 
     private void changeColorRedForAllHour() {
@@ -765,6 +1130,31 @@ public class CalendarCustom extends AppCompatActivity {
         txt_hour_view_21.setBackgroundResource(R.drawable.border_red);
         txt_hour_view_22.setBackgroundResource(R.drawable.border_red);
         txt_hour_view_23.setBackgroundResource(R.drawable.border_red);
+
+        txt_hour_view_0.setClickable(false);
+        txt_hour_view_1.setClickable(false);
+        txt_hour_view_2.setClickable(false);
+        txt_hour_view_3.setClickable(false);
+        txt_hour_view_4.setClickable(false);
+        txt_hour_view_5.setClickable(false);
+        txt_hour_view_6.setClickable(false);
+        txt_hour_view_7.setClickable(false);
+        txt_hour_view_8.setClickable(false);
+        txt_hour_view_9.setClickable(false);
+        txt_hour_view_10.setClickable(false);
+        txt_hour_view_11.setClickable(false);
+        txt_hour_view_12.setClickable(false);
+        txt_hour_view_13.setClickable(false);
+        txt_hour_view_14.setClickable(false);
+        txt_hour_view_15.setClickable(false);
+        txt_hour_view_16.setClickable(false);
+        txt_hour_view_17.setClickable(false);
+        txt_hour_view_18.setClickable(false);
+        txt_hour_view_19.setClickable(false);
+        txt_hour_view_20.setClickable(false);
+        txt_hour_view_21.setClickable(false);
+        txt_hour_view_22.setClickable(false);
+        txt_hour_view_23.setClickable(false);
     }
 
     private void getVehicleBusyTime() {
@@ -805,7 +1195,7 @@ public class CalendarCustom extends AppCompatActivity {
         Call<List<ContractItem>> responseBodyCall = null;
         if (roleName.equals("ROLE_USER")) {
             responseBodyCall = contractAPI.findContractByCustomerID(userID);
-        } else if(roleName.equals("ROLE_OWNER")) {
+        } else if (roleName.equals("ROLE_OWNER")) {
             responseBodyCall = contractAPI.findContractByOwnerID(userID);
         } else {
             responseBodyCall = contractAPI.findContractByCustomerID(userID);
@@ -849,6 +1239,7 @@ public class CalendarCustom extends AppCompatActivity {
             public void onResponse(Call<Long> call, Response<Long> response) {
                 if (response.code() == 200) {
                     String currentServerTime = convertLongToFullDate(response.body());
+                    String currentServerDay = convertLongToDate(response.body());
                     String[] currentServerTimeTemp = currentServerTime.split(":");
                     int currentServerHour = Integer.parseInt(currentServerTimeTemp[0]);
                     if (currentServerHour > 0) {
@@ -858,17 +1249,17 @@ public class CalendarCustom extends AppCompatActivity {
                     } else {
                         listRentHour.add(currentServerHour + ":" + currentServerTimeTemp[3] + ":" + currentServerTimeTemp[4] + ":" + currentServerTimeTemp[5]);
                     }
-                    if (listRentTimeTotal.size() > 0){
+                    if (listRentTimeTotal.size() > 0) {
                         for (int i = 0; i < listRentTimeTotal.size(); i++) {
                             RentTime rentObj = listRentTimeTotal.get(i);
                             String startTime = convertLongToFullDate(rentObj.getStartTime());
                             String endTime = convertLongToFullDate(rentObj.getEndTime());
-                            getListBusyDay(startTime, endTime);
+                            getListBusyDay(currentServerDay, startTime, endTime);
                         }
                     }
-                    if (listRentHour.size() > 0){
+                    if (listRentHour.size() > 0) {
                         List<String> listStringDateTemp = new ArrayList<>();
-                        for (int i = 0; i < listRentHour.size();i++){
+                        for (int i = 0; i < listRentHour.size(); i++) {
                             String[] temp = listRentHour.get(i).split(":");
                             String dateTemp = temp[1] + ":" + temp[2] + ":" + temp[3];
                             listStringDateTemp.add(dateTemp);
@@ -878,8 +1269,21 @@ public class CalendarCustom extends AppCompatActivity {
                         listStringDateTemp.clear();
                         listStringDateTemp.addAll(listStringRemoveDuplicatedValue);
                         SimpleDateFormat sdf = new SimpleDateFormat("dd:MM:yyyy");
-                        Date dateTemp = null;
-                        for (int j = 0; j < listStringDateTemp.size();j++){
+                        Date dateTemp = null, currentDate = null;
+                        for (int i = 0; i < listStringDateTemp.size(); i++) {
+                            try {
+                                currentDate = sdf.parse(currentServerDay);
+                                dateTemp = sdf.parse(listStringDateTemp.get(i));
+                                if (currentDate.compareTo(dateTemp) > 0) {
+                                    listStringDateTemp.remove(i);
+                                }
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+
+                        for (int j = 0; j < listStringDateTemp.size(); j++) {
                             try {
                                 dateTemp = sdf.parse(listStringDateTemp.get(j));
                                 listRentDayNotFull.add(dateTemp);
@@ -889,10 +1293,11 @@ public class CalendarCustom extends AppCompatActivity {
                         }
                     }
 
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd:MM:yyyy");
                     if (listRentDay.size() > 0) {
                         calendarPickerView.highlightDates(listRentDay);
                     }
-                    if (listRentDayNotFull.size() > 0){
+                    if (listRentDayNotFull.size() > 0) {
                         calendarPickerView.highlightDates(listRentDayNotFull);
                     }
                 } else {
