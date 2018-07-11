@@ -148,18 +148,6 @@ public class CalendarCustom extends AppCompatActivity {
         //Call first API
         getVehicleBusyTime();
         calendarPickerView.selectDate(today);
-        //Change to red color of hour in the first time (default is select current day)
-        String startDateParse = convertDateToNormalFormatVersionTwo(today.toString());
-        for (int i = 0; i < listRentHour.size(); i++) {
-            String[] temp = listRentHour.get(i).split(":");
-            String startDateInBusy = temp[1] + ":" + temp[2] + ":" + temp[3];
-            String hourInBusy = temp[0];
-            if (startDateParse.equals(startDateInBusy)) {
-                int pos = Integer.parseInt(hourInBusy);
-                changeColorHour(pos);
-            }
-        }
-
 
         rd_oneDay.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -1293,12 +1281,22 @@ public class CalendarCustom extends AppCompatActivity {
                         }
                     }
 
-                    SimpleDateFormat sdf = new SimpleDateFormat("dd:MM:yyyy");
                     if (listRentDay.size() > 0) {
                         calendarPickerView.highlightDates(listRentDay);
                     }
                     if (listRentDayNotFull.size() > 0) {
                         calendarPickerView.highlightDates(listRentDayNotFull);
+                    }
+
+                    //Change to red color of hour in the first time (default is select current day)
+                    for (int i = 0; i < listRentHour.size(); i++) {
+                        String[] temp = listRentHour.get(i).split(":");
+                        String startDateInBusy = temp[1] + ":" + temp[2] + ":" + temp[3];
+                        String hourInBusy = temp[0];
+                        if (currentServerDay.equals(startDateInBusy)) {
+                            int pos = Integer.parseInt(hourInBusy);
+                            changeColorHour(pos);
+                        }
                     }
                 } else {
                     Toast.makeText(CalendarCustom.this, "Đã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
