@@ -26,7 +26,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".layout.login.LoginActivity">
+        <activity android:name=".controller.layout.login.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -34,25 +34,25 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".layout.signup.customer.SignupUserInfoActivity"
+            android:name=".controller.layout.signup.customer.SignupUserInfoActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".layout.signup.customer.SignupAccountActivity"
+            android:name=".controller.layout.signup.customer.SignupAccountActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".layout.signup.customer.SignupRoleActivity"
+            android:name=".controller.layout.signup.customer.SignupRoleActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".layout.signup.customer.SignupPolicyActivity"
+            android:name=".controller.layout.signup.customer.SignupPolicyActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".layout.signup.owner.SignupOwnerOne"
+            android:name=".controller.layout.signup.owner.SignupOwnerOne"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".layout.signup.owner.SignupOwnerPolicy"
+            android:name=".controller.layout.signup.owner.SignupOwnerPolicy"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".layout.vehicle.VehicleDetail"
+            android:name=".controller.layout.vehicle.showdetail.VehicleDetail"
             android:screenOrientation="portrait" />
 
         <meta-data
@@ -70,27 +70,27 @@
         </provider>
 
         <activity
-            android:name=".layout.main.MainActivity"
+            android:name=".controller.layout.main.MainActivity"
             android:label="@string/title_activity_main_2"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <meta-data android:name="com.google.android.geo.API_KEY" android:value="@string/google_maps_key" />
-        <activity android:name=".layout.order.MapsActivity" android:label="@string/title_activity_maps" android:screenOrientation="portrait" />
-        <activity android:name=".layout.signup.owner.RegistVehicle" android:screenOrientation="portrait" />
-        <activity android:name=".layout.vehicle.CalendarCustom" android:screenOrientation="portrait" />
-        <activity android:name=".layout.contract.ContractDetail" android:screenOrientation="portrait"/>
-        <activity android:name=".layout.vehicle.ManageVehicleActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".layout.contract.ManageContractActivity" android:screenOrientation="portrait"></activity>
-        <activity android:name=".layout.contract.ContractCompleted" android:screenOrientation="portrait"></activity>
-        <activity android:name=".layout.order.PaypalExecute" android:screenOrientation="portrait"></activity>
-        <activity android:name=".layout.contract.ContractFinishCustomer" android:screenOrientation="portrait"></activity>
-        <activity android:name=".layout.contract.ContractFinishOwner" android:screenOrientation="portrait"></activity>
-        <service android:name=".util.MyFCMClass">
+        <activity android:name=".controller.layout.order.MapsActivity" android:label="@string/title_activity_maps" android:screenOrientation="portrait" />
+        <activity android:name=".controller.layout.signup.owner.RegistVehicle" android:screenOrientation="portrait" />
+        <activity android:name=".controller.layout.vehicle.showdetail.CalendarCustom" android:screenOrientation="portrait" />
+        <activity android:name=".controller.layout.contract.ContractDetail" android:screenOrientation="portrait"/>
+        <activity android:name=".controller.layout.vehicle.manage.ManageVehicleActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".controller.layout.contract.ManageContractActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".controller.layout.order.PaypalExecute" android:screenOrientation="portrait"></activity>
+        <activity android:name=".controller.layout.contract.ContractPreFinishCustomer" android:screenOrientation="portrait"></activity>
+        <activity android:name=".controller.layout.contract.ContractPreFinishOwner" android:screenOrientation="portrait"></activity>
+        <service android:name=".controller.notify.MyFCMClass">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <activity android:name=".layout.signup.owner.SearchVehicleInfoActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".controller.layout.signup.owner.SearchVehicleInfoActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".controller.layout.contract.ContractComplainActivity" android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

@@ -1,8 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.SwipeRefreshLayout android:layout_height="match_parent"
-    android:layout_width="match_parent"
-    android:id="@+id/swipeLayout"
-    xmlns:android="http://schemas.android.com/apk/res/android">
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -24,6 +20,10 @@
             android:textColor="@android:color/white"
             />
     </android.support.v7.widget.Toolbar>
+    <android.support.v4.widget.SwipeRefreshLayout android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:id="@+id/swipeLayout"
+        xmlns:android="http://schemas.android.com/apk/res/android">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -48,5 +48,5 @@
             </android.support.v7.widget.RecyclerView>
         </RelativeLayout>
     </ScrollView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>
-</android.support.v4.widget.SwipeRefreshLayout>

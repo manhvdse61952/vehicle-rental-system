@@ -1,0 +1,102 @@
+package com.example.manhvdse61952.vrc_android.controller.layout.contract;
+
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.manhvdse61952.vrc_android.R;
+import com.example.manhvdse61952.vrc_android.controller.permission.PermissionDevice;
+import com.example.manhvdse61952.vrc_android.controller.resources.ImmutableValue;
+import com.example.manhvdse61952.vrc_android.model.api_model.ContractItem;
+
+import java.util.List;
+
+public class ManageContractAdapter extends RecyclerView.Adapter<ManageContractAdapter.RecyclerViewHolder>{
+    private List<ContractItem> contractItemList;
+    private Context ctx;
+    @Override
+    public ManageContractAdapter.RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        View view = inflater.inflate(R.layout.manage_contract_item, parent, false);
+        return new RecyclerViewHolder(view);
+    }
+
+    public ManageContractAdapter(List<ContractItem> contractItemList, Context ctx) {
+        this.contractItemList = contractItemList;
+        this.ctx = ctx;
+    }
+
+    @Override
+    public void onBindViewHolder(RecyclerViewHolder holder, int position) {
+        final ContractItem obj = contractItemList.get(position);
+        holder.txt_manage_contract_id.setText(obj.getContractID() + "");
+        holder.txt_manage_contract_status.setText(obj.getContractStatus() + "");
+        holder.txt_manage_contract_start_time.setText(PermissionDevice.convertTime(obj.getStartTime()));
+        holder.txt_manage_contract_end_time.setText(PermissionDevice.convertTime(obj.getEndTime()));
+        int depositFee = Integer.parseInt(obj.getDepositFee());
+        int totalFee = Integer.parseInt(obj.getTotalFee());
+        int rentFee = totalFee - depositFee;
+        holder.txt_manage_contract_rent_fee.setText(PermissionDevice.convertPrice(String.valueOf(rentFee)));
+        holder.txt_manage_contract_total_fee.setText(PermissionDevice.convertPrice(obj.getTotalFee()));
+        holder.ln_manage_contract.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences.Editor editor = ctx.getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, ctx.MODE_PRIVATE).edit();
+                editor.putString(ImmutableValue.MAIN_contractID, obj.getContractID());
+                editor.putString(ImmutableValue.MAIN_contractStatus, obj.getContractStatus());
+                editor.apply();
+                SharedPreferences editor2 = ctx.getSharedPreferences(ImmutableValue.HOME_SHARED_PREFERENCES_CODE, ctx.MODE_PRIVATE);
+                int userID = editor2.getInt(ImmutableValue.HOME_userID, 0);
+                String userRole = editor2.getString(ImmutableValue.HOME_role, ImmutableValue.ROLE_USER);
+                if (obj.getContractStatus().equals(ImmutableValue.CONTRACT_PENDING) && userID == obj.getOwnerID()){
+                    Intent it = new Intent(ctx, ContractPreFinishOwner.class);
+                    ctx.startActivity(it);
+                } else if (obj.getContractStatus().equals(ImmutableValue.CONTRACT_PENDING) && userRole.equals(ImmutableValue.ROLE_USER)){
+                    Toast.makeText(ctx, "Bạn vui lòng đợi chủ xe đồng ý", Toast.LENGTH_SHORT).show();
+                } else if (obj.getContractStatus().equals(ImmutableValue.CONTRACT_PRE_FINISHED) && userRole.equals(ImmutableValue.ROLE_USER)){
+                    Intent it = new Intent(ctx, ContractPreFinishCustomer.class);
+                    ctx.startActivity(it);
+                } else if (obj.getContractStatus().equals(ImmutableValue.CONTRACT_PRE_FINISHED) && userID == obj.getOwnerID()){
+                    Toast.makeText(ctx, "Bạn vui lòng đợi khách hàng xác nhận", Toast.LENGTH_SHORT).show();
+                } else if (obj.getContractStatus().equals(ImmutableValue.CONTRACT_ISSUE) && userRole.equals(ImmutableValue.ROLE_USER)){
+                    Intent it = new Intent(ctx, ContractComplainActivity.class);
+                    ctx.startActivity(it);
+                } else {
+                    Intent it = new Intent(ctx, ContractDetail.class);
+                    ctx.startActivity(it);
+                }
+
+            }
+        });
+    }
+
+    @Override
+    public int getItemCount() {
+        return contractItemList.size();
+    }
+
+
+    public class RecyclerViewHolder extends RecyclerView.ViewHolder {
+        TextView txt_manage_contract_id, txt_manage_contract_status, txt_manage_contract_start_time,
+                txt_manage_contract_end_time, txt_manage_contract_rent_fee, txt_manage_contract_total_fee;
+        LinearLayout ln_manage_contract;
+        public RecyclerViewHolder(View itemView) {
+            super(itemView);
+            ln_manage_contract = (LinearLayout)itemView.findViewById(R.id.ln_manage_contract);
+            txt_manage_contract_id = (TextView)itemView.findViewById(R.id.txt_manage_contract_id);
+            txt_manage_contract_status = (TextView)itemView.findViewById(R.id.txt_manage_contract_status);
+            txt_manage_contract_start_time = (TextView)itemView.findViewById(R.id.txt_manage_contract_start_time);
+            txt_manage_contract_end_time = (TextView)itemView.findViewById(R.id.txt_manage_contract_end_time);
+            txt_manage_contract_rent_fee = (TextView)itemView.findViewById(R.id.txt_manage_contract_rent_fee);
+            txt_manage_contract_total_fee = (TextView)itemView.findViewById(R.id.txt_manage_contract_total_fee);
+        }
+    }
+
+}

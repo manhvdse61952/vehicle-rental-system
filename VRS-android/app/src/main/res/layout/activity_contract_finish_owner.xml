@@ -233,14 +233,14 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.6"
+                        android:layout_weight="0.5"
                         android:text="T.G kết thúc thực tế" />
 
                     <TextView
                         android:id="@+id/txt_contract_complete_endRealTime"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.4"
+                        android:layout_weight="0.5"
                         android:gravity="right"
                         android:textColor="@color/secondary_text"
                         android:text="0 ngày 0 giờ" />
@@ -274,7 +274,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="10dp"
                     android:orientation="horizontal"
                     android:paddingLeft="10dp"
                     android:weightSum="1">
@@ -285,15 +285,15 @@
                         android:layout_weight="0.5"
                         android:text="Phí quá giờ" />
 
-                    <EditText
-                        android:id="@+id/edt_contract_complete_overTime"
+                    <TextView
+                        android:id="@+id/txt_contract_complete_overPrice"
                         android:padding="5dp"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.5"
                         android:gravity="right"
-                        android:inputType="number"
-                        android:text="0" />
+                        android:textSize="16sp"
+                        android:hint="0"/>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -317,7 +317,7 @@
                         android:layout_weight="0.5"
                         android:gravity="right"
                         android:inputType="number"
-                        android:text="0" />
+                        android:hint="0"/>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -341,7 +341,7 @@
                         android:layout_weight="0.5"
                         android:gravity="right"
                         android:inputType="number"
-                        android:text="0" />
+                        android:hint="0"/>
                 </LinearLayout>
             </LinearLayout>
 

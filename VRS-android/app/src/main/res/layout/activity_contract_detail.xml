@@ -506,6 +506,7 @@
                 android:padding="20dp">
 
                 <TextView
+                    android:id="@+id/txt_secret_key"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Giảm giá/chiết khấu"
@@ -566,6 +567,7 @@
                 android:layout_height="wrap_content">
 
                 <Button
+                    android:id="@+id/btn_remove_contract"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
@@ -584,15 +586,6 @@
                     android:text="trả xe"
                     android:layout_marginBottom="10dp"/>
             </LinearLayout>
-            <Button
-                android:id="@+id/btn_contract_back_to_menu"
-                android:layout_width="match_parent"
-                android:padding="10dp"
-                android:layout_marginBottom="10dp"
-                android:text="Trở về trang chủ"
-                android:background="@drawable/border_green"
-                android:textColor="@color/primary_text"
-                android:layout_height="wrap_content" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
