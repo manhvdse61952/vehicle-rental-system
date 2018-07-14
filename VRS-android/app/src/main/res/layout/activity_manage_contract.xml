@@ -20,11 +20,13 @@
             android:textColor="@android:color/white"
             />
     </android.support.v7.widget.Toolbar>
-    <android.support.v4.widget.SwipeRefreshLayout android:layout_height="match_parent"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:layout_height="match_parent"
         android:layout_width="match_parent"
         android:id="@+id/swipeLayout"
         xmlns:android="http://schemas.android.com/apk/res/android">
     <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <RelativeLayout
@@ -34,16 +36,19 @@
                 android:id="@+id/txt_manage_contract_error"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="80dp"
                 android:textColor="@color/secondary_text"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:layout_centerHorizontal="true"
                 android:text="Không có kết quả"/>
             <android.support.v7.widget.RecyclerView
+                android:paddingTop="30dp"
+                android:paddingBottom="20dp"
                 android:id="@+id/recycler_contract_manage_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:focusable="true"
                 android:scrollbars="none">
             </android.support.v7.widget.RecyclerView>
         </RelativeLayout>

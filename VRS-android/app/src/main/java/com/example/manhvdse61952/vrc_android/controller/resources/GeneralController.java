@@ -35,4 +35,16 @@ public class GeneralController {
         Format format = new SimpleDateFormat("HH : mm, dd/MM/yyyy");
         return format.format(date);
     }
+
+    public static String convertFullTime(long time){
+        Date date = new Date(time);
+        Format format = new SimpleDateFormat("HH:mm:ss, dd-MM-yyyy");
+        return format.format(date);
+    }
+
+    public static String generateChildFDB(long time){
+        Date date = new Date(time);
+        Format format = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss:SSS");
+        return format.format(date);
+    }
 }

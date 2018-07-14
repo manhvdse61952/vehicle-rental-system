@@ -46,6 +46,7 @@ public class ContractPreFinishCustomer extends AppCompatActivity {
         btn_complain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent it  = new Intent(ContractPreFinishCustomer.this, ContractComplainActivity.class);
                 startActivity(it);
             }

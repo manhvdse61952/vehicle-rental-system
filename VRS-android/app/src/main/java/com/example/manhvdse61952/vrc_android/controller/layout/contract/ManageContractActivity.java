@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +37,7 @@ public class ManageContractActivity extends AppCompatActivity {
     TextView txt_manage_contract_error;
     SwipeRefreshLayout swipeLayout;
     ProgressDialog dialog;
+    ScrollView scrollView;
 
     @Override
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
@@ -48,29 +50,32 @@ public class ManageContractActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
-
+        scrollView = (ScrollView)findViewById(R.id.scrollView);
         //Reload page
         swipeLayout = findViewById(R.id.swipeLayout);
-        swipeLayout.setColorScheme(android.R.color.holo_blue_dark, android.R.color.holo_blue_light, android.R.color.holo_green_light, android.R.color.holo_green_dark);
-        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                swipeLayout.setRefreshing(true);
-                (new Handler()).postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        swipeLayout.setRefreshing(false);
+        if (scrollView.getScrollX() == 0 && scrollView.getScrollY() == 0){
+            swipeLayout.setColorScheme(android.R.color.holo_blue_dark, android.R.color.holo_blue_light, android.R.color.holo_green_light, android.R.color.holo_green_dark);
+            swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    swipeLayout.setRefreshing(true);
+                    (new Handler()).postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            swipeLayout.setRefreshing(false);
 
-                        SharedPreferences editor = getSharedPreferences(ImmutableValue.HOME_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
-                        if (editor.getString(ImmutableValue.HOME_role, ImmutableValue.ROLE_USER).equals(ImmutableValue.ROLE_OWNER)) {
-                            loadDataForOwner();
-                        } else {
-                            loadDataForCustomer();
+                            SharedPreferences editor = getSharedPreferences(ImmutableValue.HOME_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
+                            if (editor.getString(ImmutableValue.HOME_role, ImmutableValue.ROLE_USER).equals(ImmutableValue.ROLE_OWNER)) {
+                                loadDataForOwner();
+                            } else {
+                                loadDataForCustomer();
+                            }
                         }
-                    }
-                }, 1000);
-            }
-        });
+                    }, 1000);
+                }
+            });
+
+        }
 
         txt_manage_contract_error = (TextView) findViewById(R.id.txt_manage_contract_error);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_contract_manage_view);
@@ -83,6 +88,7 @@ public class ManageContractActivity extends AppCompatActivity {
         } else {
             loadDataForCustomer();
         }
+
     }
 
     private void loadDataForOwner() {
@@ -103,6 +109,11 @@ public class ManageContractActivity extends AppCompatActivity {
                         manageContractAdapter = new ManageContractAdapter(contractItemList, ManageContractActivity.this);
                         recyclerView.setAdapter(manageContractAdapter);
                         manageContractAdapter.notifyDataSetChanged();
+                        scrollView.post(new Runnable() {
+                            public void run() {
+                                scrollView.scrollTo(0, 70);
+                            }
+                        });
                     } else {
                         txt_manage_contract_error.setEnabled(true);
                     }
@@ -141,6 +152,11 @@ public class ManageContractActivity extends AppCompatActivity {
                         manageContractAdapter = new ManageContractAdapter(contractItemList, ManageContractActivity.this);
                         recyclerView.setAdapter(manageContractAdapter);
                         manageContractAdapter.notifyDataSetChanged();
+                        scrollView.post(new Runnable() {
+                            public void run() {
+                                scrollView.scrollTo(0, 70);
+                            }
+                        });
                     } else {
                         txt_manage_contract_error.setEnabled(true);
                     }

@@ -1,28 +1,30 @@
 package com.example.manhvdse61952.vrc_android.model.api_model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class ComplainChat implements Serializable {
-    private int contractID;
+    private String contractID;
     private int senderID;
     private String chatContent;
-    private long chatTime;
+    private String chatTime;
 
-    public ComplainChat(int contractID, int senderID, String chatContent, long chatTime) {
+    public ComplainChat() {
+    }
+
+    public ComplainChat(String contractID, int senderID, String chatContent, String chatTime) {
         this.contractID = contractID;
         this.senderID = senderID;
         this.chatContent = chatContent;
         this.chatTime = chatTime;
     }
 
-    public ComplainChat() {
-    }
 
-    public int getContractID() {
+    public String getContractID() {
         return contractID;
     }
 
-    public void setContractID(int contractID) {
+    public void setContractID(String contractID) {
         this.contractID = contractID;
     }
 
@@ -42,11 +44,11 @@ public class ComplainChat implements Serializable {
         this.chatContent = chatContent;
     }
 
-    public long getChatTime() {
+    public String getChatTime() {
         return chatTime;
     }
 
-    public void setChatTime(long chatTime) {
+    public void setChatTime(String chatTime) {
         this.chatTime = chatTime;
     }
 }

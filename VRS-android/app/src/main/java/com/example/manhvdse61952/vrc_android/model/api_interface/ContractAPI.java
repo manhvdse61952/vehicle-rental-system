@@ -54,7 +54,7 @@ public interface ContractAPI {
     Call<ResponseBody> finishContract(@Path("contractID") int contractID);
 
     @Headers({"Accept: application/json"})
-    @GET("/contract/issueContract/{contractID}")
+    @POST("/contract/issueContract/{contractID}")
     Call<ResponseBody> issueContract(@Path("contractID") int contractID,
                                      @Body ComplainIssue complainIssue);
 }

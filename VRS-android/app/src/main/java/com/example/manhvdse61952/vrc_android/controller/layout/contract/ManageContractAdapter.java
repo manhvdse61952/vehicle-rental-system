@@ -66,7 +66,7 @@ public class ManageContractAdapter extends RecyclerView.Adapter<ManageContractAd
                     ctx.startActivity(it);
                 } else if (obj.getContractStatus().equals(ImmutableValue.CONTRACT_PRE_FINISHED) && userID == obj.getOwnerID()){
                     Toast.makeText(ctx, "Bạn vui lòng đợi khách hàng xác nhận", Toast.LENGTH_SHORT).show();
-                } else if (obj.getContractStatus().equals(ImmutableValue.CONTRACT_ISSUE) && userRole.equals(ImmutableValue.ROLE_USER)){
+                } else if (obj.getContractStatus().equals(ImmutableValue.CONTRACT_ISSUE)){
                     Intent it = new Intent(ctx, ContractComplainActivity.class);
                     ctx.startActivity(it);
                 } else {
