@@ -39,11 +39,13 @@ public class ImageSlider extends PagerAdapter {
         View v = inflater.inflate(R.layout.activity_main_item_slider, container, false);
         ImageView img = (ImageView) v.findViewById(R.id.sliderImgItem);
         TextView txtTitle = (TextView) v.findViewById(R.id.txtTitle);
+        TextView txtCount = (TextView)v.findViewById(R.id.txtCount);
         SharedPreferences editor = ctx.getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, ctx.MODE_PRIVATE);
         String imageFront = editor.getString(ImmutableValue.MAIN_vehicleImgFront, "");
         String imageBack = editor.getString(ImmutableValue.MAIN_vehicleImgBack, "");
         String vehicleName = editor.getString(ImmutableValue.MAIN_vehicleName, "");
         if (position == 0) {
+            txtCount.setText("1/2");
             if (imageFront.equals("")) {
                 Picasso.get().load(R.drawable.img_default_image).into(img);
             } else {
@@ -51,6 +53,7 @@ public class ImageSlider extends PagerAdapter {
             }
 
         } else if (position == 1) {
+            txtCount.setText("2/2");
             if (imageBack.equals("")) {
                 Picasso.get().load(R.drawable.img_default_image).into(img);
             } else {

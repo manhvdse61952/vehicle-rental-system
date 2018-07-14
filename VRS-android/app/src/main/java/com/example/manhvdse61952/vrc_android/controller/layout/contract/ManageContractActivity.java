@@ -1,5 +1,6 @@
 package com.example.manhvdse61952.vrc_android.controller.layout.contract;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -34,9 +35,10 @@ public class ManageContractActivity extends AppCompatActivity {
     ManageContractAdapter manageContractAdapter;
     TextView txt_manage_contract_error;
     SwipeRefreshLayout swipeLayout;
+    ProgressDialog dialog;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_contract);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar2);
@@ -58,6 +60,7 @@ public class ManageContractActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         swipeLayout.setRefreshing(false);
+
                         SharedPreferences editor = getSharedPreferences(ImmutableValue.HOME_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
                         if (editor.getString(ImmutableValue.HOME_role, ImmutableValue.ROLE_USER).equals(ImmutableValue.ROLE_OWNER)) {
                             loadDataForOwner();
@@ -83,6 +86,8 @@ public class ManageContractActivity extends AppCompatActivity {
     }
 
     private void loadDataForOwner() {
+        dialog = ProgressDialog.show(ManageContractActivity.this, "Đang xử lý",
+                "Vui lòng đợi ...", true);
         Retrofit retrofit = RetrofitConfig.getClient();
         final ContractAPI contractAPI = retrofit.create(ContractAPI.class);
         SharedPreferences sharedPreferences = getSharedPreferences(ImmutableValue.HOME_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
@@ -107,16 +112,20 @@ public class ManageContractActivity extends AppCompatActivity {
                     txt_manage_contract_error.setEnabled(true);
                     Toast.makeText(ManageContractActivity.this, "Đã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
                 }
+                dialog.dismiss();
             }
 
             @Override
             public void onFailure(Call<List<ContractItem>> call, Throwable t) {
+                dialog.dismiss();
                 Toast.makeText(ManageContractActivity.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void loadDataForCustomer() {
+        dialog = ProgressDialog.show(ManageContractActivity.this, "Đang xử lý",
+                "Vui lòng đợi ...", true);
         Retrofit retrofit = RetrofitConfig.getClient();
         final ContractAPI contractAPI = retrofit.create(ContractAPI.class);
         SharedPreferences sharedPreferences = getSharedPreferences(ImmutableValue.HOME_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
@@ -141,10 +150,12 @@ public class ManageContractActivity extends AppCompatActivity {
                     txt_manage_contract_error.setEnabled(true);
                     Toast.makeText(ManageContractActivity.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
                 }
+                dialog.dismiss();
             }
 
             @Override
             public void onFailure(Call<List<ContractItem>> call, Throwable t) {
+                dialog.dismiss();
                 Toast.makeText(ManageContractActivity.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
             }
         });

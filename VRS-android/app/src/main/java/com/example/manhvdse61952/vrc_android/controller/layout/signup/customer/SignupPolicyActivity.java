@@ -17,11 +17,9 @@ import android.widget.Toast;
 
 import com.example.manhvdse61952.vrc_android.R;
 import com.example.manhvdse61952.vrc_android.controller.layout.login.LoginActivity;
-import com.example.manhvdse61952.vrc_android.controller.permission.PermissionDevice;
 import com.example.manhvdse61952.vrc_android.controller.resources.ImmutableValue;
 import com.example.manhvdse61952.vrc_android.model.api_interface.AccountAPI;
 import com.example.manhvdse61952.vrc_android.model.api_model.Signup;
-import com.example.manhvdse61952.vrc_android.controller.layout.GeneralAPI;
 import com.example.manhvdse61952.vrc_android.remote.RetrofitConfig;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

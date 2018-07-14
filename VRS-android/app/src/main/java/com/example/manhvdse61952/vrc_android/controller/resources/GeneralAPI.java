@@ -1,4 +1,4 @@
-package com.example.manhvdse61952.vrc_android.controller.layout;
+package com.example.manhvdse61952.vrc_android.controller.resources;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;

@@ -18,6 +18,7 @@ import android.view.animation.ScaleAnimation;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -25,6 +26,7 @@ import android.widget.Toast;
 
 import com.example.manhvdse61952.vrc_android.R;
 import com.example.manhvdse61952.vrc_android.controller.permission.PermissionDevice;
+import com.example.manhvdse61952.vrc_android.controller.resources.GeneralController;
 import com.example.manhvdse61952.vrc_android.controller.resources.ImmutableValue;
 import com.example.manhvdse61952.vrc_android.model.api_interface.ContractAPI;
 import com.example.manhvdse61952.vrc_android.model.api_interface.VehicleAPI;
@@ -45,6 +47,7 @@ public class VehicleDetail extends AppCompatActivity {
     ImageSlider sld;
     ViewPager vpg;
     Button btnOrderRent;
+    ImageView btn_back;
     DetailVehicleItem mainObj = new DetailVehicleItem();
     int selectTab = 0, rentFeePerHourID = 0, rentFeePerDayID = 0, totalHour = 0, receiveType = 0, totalDay = 0;
     Double totalMoney = 0.0, rentFeeMoney = 0.0, usdConvert = 0.0;
@@ -92,6 +95,7 @@ public class VehicleDetail extends AppCompatActivity {
         txt_money_deposit = (TextView)findViewById(R.id.txt_money_deposit);
         vpg = (ViewPager) findViewById(R.id.vpg);
         txt_pickTime = (TextView)findViewById(R.id.txt_pickTime);
+        btn_back = (ImageView)findViewById(R.id.btn_back);
 
         SharedPreferences editor = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
         String frameNumber = editor.getString(ImmutableValue.MAIN_vehicleID, "aaaaaa");
@@ -170,11 +174,11 @@ public class VehicleDetail extends AppCompatActivity {
                         }
 
                         NumberFormat nf = new DecimalFormat("#.####");
-                        String priceHour = PermissionDevice.convertPrice(nf.format(mainObj.getRentFeePerHour()));
+                        String priceHour = GeneralController.convertPrice(nf.format(mainObj.getRentFeePerHour()));
                         item_price_slot.setText(priceHour);
-                        String priceDay = PermissionDevice.convertPrice(nf.format(mainObj.getRentFeePerDay()));
+                        String priceDay = GeneralController.convertPrice(nf.format(mainObj.getRentFeePerDay()));
                         item_price_day.setText(priceDay);
-                        String deposit = PermissionDevice.convertPrice(nf.format(mainObj.getDeposit()));
+                        String deposit = GeneralController.convertPrice(nf.format(mainObj.getDeposit()));
                         editor.putString("depositFeeConvert", deposit);
                         item_price_deposit.setText(deposit);
                         txt_money_deposit.setText(deposit);
@@ -245,10 +249,10 @@ public class VehicleDetail extends AppCompatActivity {
                                         rentFeePerDayID = mainObj.getRentFeePerDayID();
                                         rentFeePerHourID = mainObj.getRentFeePerHourID();
                                         NumberFormat nf = new DecimalFormat("#.####");
-                                        String showDayMoney = PermissionDevice.convertPrice(nf.format(totalDay * mainObj.getRentFeePerDay()));
-                                        String showHourMoney = PermissionDevice.convertPrice(nf.format(totalHour * mainObj.getRentFeePerHour()));
-                                        String showTotalMoney = PermissionDevice.convertPrice(nf.format(totalMoney));
-                                        String rentFeeConvert = PermissionDevice.convertPrice(nf.format(rentFeeMoney));
+                                        String showDayMoney = GeneralController.convertPrice(nf.format(totalDay * mainObj.getRentFeePerDay()));
+                                        String showHourMoney = GeneralController.convertPrice(nf.format(totalHour * mainObj.getRentFeePerHour()));
+                                        String showTotalMoney = GeneralController.convertPrice(nf.format(totalMoney));
+                                        String rentFeeConvert = GeneralController.convertPrice(nf.format(rentFeeMoney));
                                         editor.putString("rentFeeConvert", rentFeeConvert);
                                         editor.putString("totalFeeConvert", showTotalMoney);
                                         editor.apply();
@@ -303,6 +307,13 @@ public class VehicleDetail extends AppCompatActivity {
                     Intent it = new Intent(VehicleDetail.this, PaypalExecute.class);
                     startActivity(it);
                 }
+            }
+        });
+
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
             }
         });
     }

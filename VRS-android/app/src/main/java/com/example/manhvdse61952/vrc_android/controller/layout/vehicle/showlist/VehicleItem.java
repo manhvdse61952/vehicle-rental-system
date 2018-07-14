@@ -8,17 +8,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.manhvdse61952.vrc_android.R;
 import com.example.manhvdse61952.vrc_android.controller.layout.vehicle.showdetail.VehicleDetail;
-import com.example.manhvdse61952.vrc_android.controller.permission.PermissionDevice;
+import com.example.manhvdse61952.vrc_android.controller.resources.GeneralController;
 import com.example.manhvdse61952.vrc_android.controller.resources.ImmutableValue;
 import com.example.manhvdse61952.vrc_android.model.api_model.City;
 import com.example.manhvdse61952.vrc_android.model.api_model.District;
 import com.example.manhvdse61952.vrc_android.model.search_model.SearchVehicleItem;
-import com.example.manhvdse61952.vrc_android.controller.layout.GeneralAPI;
+import com.example.manhvdse61952.vrc_android.controller.resources.GeneralAPI;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -84,7 +85,7 @@ public class VehicleItem extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-
+        ProgressBar pgb = new ProgressBar(context);
         if (obj.getImageLinkFront().trim().equals("")) {
             Picasso.get().load(R.drawable.img_default_image).into(viewHolder.img_main);
         } else {
@@ -96,10 +97,10 @@ public class VehicleItem extends BaseAdapter {
         String districtName = getDistrictNameById(obj.getDistrictID());
         viewHolder.txt_main_address.setText(districtName);
         if (obj.getVehicleType().equals(ImmutableValue.XE_MAY)) {
-            String price = PermissionDevice.convertPrice(obj.getRentFeePerHours());
+            String price = GeneralController.convertPrice(obj.getRentFeePerHours());
             viewHolder.txt_main_price.setText(price + " / giờ");
         } else {
-            String price = PermissionDevice.convertPrice(obj.getRentFeePerDay());
+            String price = GeneralController.convertPrice(obj.getRentFeePerDay());
             viewHolder.txt_main_price.setText(price + " / ngày");
         }
 

@@ -35,7 +35,7 @@ import com.example.manhvdse61952.vrc_android.controller.layout.vehicle.showlist.
 import com.example.manhvdse61952.vrc_android.model.api_model.City;
 import com.example.manhvdse61952.vrc_android.model.api_model.District;
 import com.example.manhvdse61952.vrc_android.model.search_model.SearchVehicleItem;
-import com.example.manhvdse61952.vrc_android.controller.layout.GeneralAPI;
+import com.example.manhvdse61952.vrc_android.controller.resources.GeneralAPI;
 import com.example.manhvdse61952.vrc_android.remote.RetrofitConfig;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;

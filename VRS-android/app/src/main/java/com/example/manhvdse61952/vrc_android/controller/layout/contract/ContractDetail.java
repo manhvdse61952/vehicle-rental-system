@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.example.manhvdse61952.vrc_android.R;
 import com.example.manhvdse61952.vrc_android.controller.permission.PermissionDevice;
+import com.example.manhvdse61952.vrc_android.controller.resources.GeneralController;
 import com.example.manhvdse61952.vrc_android.controller.resources.ImmutableValue;
 import com.example.manhvdse61952.vrc_android.model.api_interface.ContractAPI;
 import com.example.manhvdse61952.vrc_android.controller.layout.main.MainActivity;
@@ -151,7 +152,6 @@ public class ContractDetail extends AppCompatActivity {
         SharedPreferences editor2 = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
         final int userID = editor1.getInt(ImmutableValue.HOME_userID, 0);
         final String contractID = editor2.getString(ImmutableValue.MAIN_contractID, "Empty");
-        final String contractStatus = editor2.getString(ImmutableValue.MAIN_contractStatus, ImmutableValue.CONTRACT_FINISHED);
         Retrofit retrofit = RetrofitConfig.getClient();
         final ContractAPI contractAPI = retrofit.create(ContractAPI.class);
         Call<ContractItem> responseBodyCall = contractAPI.findContractByID(contractID);
@@ -162,8 +162,8 @@ public class ContractDetail extends AppCompatActivity {
                     ContractItem obj = new ContractItem();
                     obj = response.body();
                     txt_contract_id.setText(contractID);
-                    txt_contract_start_time.setText(PermissionDevice.convertTime(obj.getStartTime()));
-                    txt_contract_end_time.setText(PermissionDevice.convertTime(obj.getEndTime()));
+                    txt_contract_start_time.setText(GeneralController.convertTime(obj.getStartTime()));
+                    txt_contract_end_time.setText(GeneralController.convertTime(obj.getEndTime()));
                     returnTime = obj.getEndTime();
                     txt_contract_owner_name.setText(obj.getOwnerName());
                     txt_contract_owner_phone.setText(obj.getOwnerPhone());
@@ -179,23 +179,26 @@ public class ContractDetail extends AppCompatActivity {
                         txt_contract_receive_type.setText("Giao xe tại chỗ");
                     }
                     txt_contract_rent_time.setText(obj.getRentDay() + " ngày " + obj.getRentHour() + " tiếng");
-                    txt_contract_deposit_fee.setText(PermissionDevice.convertPrice(obj.getDepositFee()));
-                    txt_contract_total_fee.setText(PermissionDevice.convertPrice(obj.getTotalFee()));
+                    txt_contract_deposit_fee.setText(GeneralController.convertPrice(obj.getDepositFee()));
+                    txt_contract_total_fee.setText(GeneralController.convertPrice(obj.getTotalFee()));
                     int depositFee = Integer.parseInt(obj.getDepositFee());
                     int totalFee = Integer.parseInt(obj.getTotalFee());
                     int rentFee = totalFee - depositFee;
-                    txt_contract_rent_fee.setText(PermissionDevice.convertPrice(String.valueOf(rentFee)));
+                    txt_contract_rent_fee.setText(GeneralController.convertPrice(String.valueOf(rentFee)));
                     customerID = obj.getOwnerID();
 
                     //Disable delete contract button and return car button
-                    if (userID == obj.getOwnerID()) {
+                    if (userID == obj.getOwnerID() && (obj.getContractStatus().equals(ImmutableValue.CONTRACT_INACTIVE)
+                    || obj.getContractStatus().equals(ImmutableValue.CONTRACT_ACTIVE))) {
                         btn_contract_give_car.setVisibility(View.INVISIBLE);
                         btn_remove_contract.setVisibility(View.INVISIBLE);
-                    } else if (contractStatus.equals(ImmutableValue.CONTRACT_FINISHED)) {
+                    } else if (obj.getContractStatus().equals(ImmutableValue.CONTRACT_FINISHED)) {
                         btn_contract_give_car.setVisibility(View.INVISIBLE);
                         btn_remove_contract.setVisibility(View.INVISIBLE);
+                    } else if (obj.getContractStatus().equals(ImmutableValue.CONTRACT_PENDING)){
+                        Intent it = new Intent(ContractDetail.this, ManageContractActivity.class);
+                        startActivity(it);
                     }
-
                 } else {
                     Toast.makeText(ContractDetail.this, "Đã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
                 }

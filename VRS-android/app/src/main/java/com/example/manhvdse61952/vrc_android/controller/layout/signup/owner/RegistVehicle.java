@@ -33,7 +33,7 @@ import com.example.manhvdse61952.vrc_android.model.api_interface.VehicleAPI;
 import com.example.manhvdse61952.vrc_android.model.api_model.City;
 import com.example.manhvdse61952.vrc_android.model.api_model.District;
 import com.example.manhvdse61952.vrc_android.model.api_model.VehicleInformation;
-import com.example.manhvdse61952.vrc_android.controller.layout.GeneralAPI;
+import com.example.manhvdse61952.vrc_android.controller.resources.GeneralAPI;
 import com.example.manhvdse61952.vrc_android.remote.RetrofitConfig;
 import com.example.manhvdse61952.vrc_android.controller.validate.ValidateInput;
 import com.squareup.picasso.Picasso;

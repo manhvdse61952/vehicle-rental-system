@@ -21,7 +21,7 @@ import com.example.manhvdse61952.vrc_android.controller.layout.contract.Contract
 import com.example.manhvdse61952.vrc_android.controller.layout.main.MainActivity;
 import com.example.manhvdse61952.vrc_android.controller.layout.signup.customer.SignupAccountActivity;
 import com.example.manhvdse61952.vrc_android.controller.layout.vehicle.showdetail.VehicleDetail;
-import com.example.manhvdse61952.vrc_android.controller.layout.GeneralAPI;
+import com.example.manhvdse61952.vrc_android.controller.resources.GeneralAPI;
 import com.example.manhvdse61952.vrc_android.controller.resources.ImmutableValue;
 import com.example.manhvdse61952.vrc_android.controller.validate.ValidateInput;
 import com.example.manhvdse61952.vrc_android.model.api_interface.AccountAPI;

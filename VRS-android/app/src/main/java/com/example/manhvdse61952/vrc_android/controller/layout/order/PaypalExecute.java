@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.example.manhvdse61952.vrc_android.R;
+import com.example.manhvdse61952.vrc_android.controller.layout.contract.ManageContractActivity;
 import com.example.manhvdse61952.vrc_android.controller.permission.PermissionDevice;
 import com.example.manhvdse61952.vrc_android.controller.resources.ImmutableValue;
 import com.example.manhvdse61952.vrc_android.model.api_interface.ContractAPI;
@@ -92,7 +93,7 @@ public class PaypalExecute extends AppCompatActivity {
                             SharedPreferences editor2 = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
                             //pass value to contract create object
                             obj.setUserID(editor1.getInt(ImmutableValue.HOME_userID, 0));
-                            obj.setVehicleID(editor2.getString(ImmutableValue.MAIN_contractID, "aaaaaa"));
+                            obj.setVehicleID(editor2.getString(ImmutableValue.MAIN_vehicleID, "aaaaaa"));
                             obj.setPaypalOrderID(jsonItem.getString("id"));
                             obj.setPaypalUserID("");
                             obj.setRentFeePerHourID(editor2.getInt(ImmutableValue.MAIN_rentFeePerHourID, 0));
@@ -119,7 +120,7 @@ public class PaypalExecute extends AppCompatActivity {
                                                 .setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
                                                     @Override
                                                     public void onClick(DialogInterface dialog, int which) {
-                                                        Intent it = new Intent(PaypalExecute.this, MainActivity.class);
+                                                        Intent it = new Intent(PaypalExecute.this, ManageContractActivity.class);
                                                         it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                                         startActivity(it);
                                                     }

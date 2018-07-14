@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.example.manhvdse61952.vrc_android.R;
 import com.example.manhvdse61952.vrc_android.controller.permission.PermissionDevice;
+import com.example.manhvdse61952.vrc_android.controller.resources.GeneralController;
 import com.example.manhvdse61952.vrc_android.controller.resources.ImmutableValue;
 import com.example.manhvdse61952.vrc_android.model.api_model.ContractItem;
 
@@ -38,13 +39,13 @@ public class ManageContractAdapter extends RecyclerView.Adapter<ManageContractAd
         final ContractItem obj = contractItemList.get(position);
         holder.txt_manage_contract_id.setText(obj.getContractID() + "");
         holder.txt_manage_contract_status.setText(obj.getContractStatus() + "");
-        holder.txt_manage_contract_start_time.setText(PermissionDevice.convertTime(obj.getStartTime()));
-        holder.txt_manage_contract_end_time.setText(PermissionDevice.convertTime(obj.getEndTime()));
+        holder.txt_manage_contract_start_time.setText(GeneralController.convertTime(obj.getStartTime()));
+        holder.txt_manage_contract_end_time.setText(GeneralController.convertTime(obj.getEndTime()));
         int depositFee = Integer.parseInt(obj.getDepositFee());
         int totalFee = Integer.parseInt(obj.getTotalFee());
         int rentFee = totalFee - depositFee;
-        holder.txt_manage_contract_rent_fee.setText(PermissionDevice.convertPrice(String.valueOf(rentFee)));
-        holder.txt_manage_contract_total_fee.setText(PermissionDevice.convertPrice(obj.getTotalFee()));
+        holder.txt_manage_contract_rent_fee.setText(GeneralController.convertPrice(String.valueOf(rentFee)));
+        holder.txt_manage_contract_total_fee.setText(GeneralController.convertPrice(obj.getTotalFee()));
         holder.ln_manage_contract.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
