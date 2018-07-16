@@ -107,7 +107,7 @@
                 android:layout_width="0dp"
                 android:layout_weight="5"
                 android:layout_height="wrap_content"
-                android:src="@drawable/img_customer"/>
+                android:src="@drawable/img_owner"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"

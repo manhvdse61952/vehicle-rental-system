@@ -1,5 +1,9 @@
 package com.example.manhvdse61952.vrc_android.controller.resources;
 
+import android.animation.ValueAnimator;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -17,11 +21,11 @@ public class GeneralController {
             }
             convertedPrice = convertPriceList.get(0);
             for (int j = 1; j < convertPriceList.size(); j++){
-                convertedPrice += "." + convertPriceList.get(j);
+                convertedPrice += "," + convertPriceList.get(j);
             }
             convertedPrice = new StringBuffer(convertedPrice).reverse().toString();
             String check = convertedPrice.substring(0,1);
-            if (check.equals(".")){
+            if (check.equals(",")){
                 convertedPrice = convertedPrice.substring(1);
             }
         }
@@ -46,5 +50,19 @@ public class GeneralController {
         Date date = new Date(time);
         Format format = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss:SSS");
         return format.format(date);
+    }
+
+    public void scaleView(final LinearLayout v, int value) {
+        ValueAnimator anim = ValueAnimator.ofInt(v.getMeasuredHeight(), value);
+        anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                int val = (Integer) valueAnimator.getAnimatedValue();
+                ViewGroup.LayoutParams layoutParams = v.getLayoutParams();
+                layoutParams.height = val;
+                v.setLayoutParams(layoutParams);
+            }
+        });
+        anim.start();
     }
 }

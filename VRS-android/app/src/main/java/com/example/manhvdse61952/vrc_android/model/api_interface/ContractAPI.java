@@ -57,4 +57,16 @@ public interface ContractAPI {
     @POST("/contract/issueContract/{contractID}")
     Call<ResponseBody> issueContract(@Path("contractID") int contractID,
                                      @Body ComplainIssue complainIssue);
+
+    @Headers({"Accept: application/json"})
+    @POST("/contract/issueChangeFee/{contractID}")
+    Call<ResponseBody> issueChangeFee(@Path("contractID") int contractID,
+                                      @Query("overTime") String overTime,
+                                      @Query("inside") String inside,
+                                      @Query("outside") String outside);
+
+    @Headers({"Accept: application/json"})
+    @POST("/contract/refund")
+    Call<ResponseBody> removeContract(@Query("contractID") int contractID);
+
 }

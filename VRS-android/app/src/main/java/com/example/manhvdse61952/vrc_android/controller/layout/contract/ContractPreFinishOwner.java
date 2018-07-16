@@ -1,10 +1,12 @@
 package com.example.manhvdse61952.vrc_android.controller.layout.contract;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -21,11 +23,15 @@ import com.example.manhvdse61952.vrc_android.controller.resources.GeneralControl
 import com.example.manhvdse61952.vrc_android.controller.resources.ImmutableValue;
 import com.example.manhvdse61952.vrc_android.model.api_interface.ContractAPI;
 import com.example.manhvdse61952.vrc_android.controller.layout.main.MainActivity;
+import com.example.manhvdse61952.vrc_android.model.api_model.ComplainChat;
 import com.example.manhvdse61952.vrc_android.model.api_model.ContractItem;
 import com.example.manhvdse61952.vrc_android.remote.RetrofitConfig;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.Date;
 import java.util.Locale;
 
 import okhttp3.ResponseBody;
@@ -42,7 +48,9 @@ public class ContractPreFinishOwner extends AppCompatActivity {
     Button btn_pay;
     ProgressDialog dialog;
     String contractID = "0";
-    int totalFee = 0, insideFee = 0, outsideFee = 0;
+    int totalFee = 0, insideFee = 0, outsideFee = 0, userID = 0;
+    String contractStatus = ImmutableValue.CONTRACT_PRE_FINISHED;
+    private DatabaseReference dbr;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,28 +81,27 @@ public class ContractPreFinishOwner extends AppCompatActivity {
         initLayout();
         edt_contract_complete_inside.addTextChangedListener(convertInsideFeeRealTime(edt_contract_complete_inside));
         edt_contract_complete_outside.addTextChangedListener(convertOutsideFeeRealTime(edt_contract_complete_outside));
-        edt_contract_complete_inside.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    txt_contract_complete_total.setText((totalFee + insideFee + outsideFee) + "");
-                }
-            }
-        });
-        edt_contract_complete_outside.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus){
-                    txt_contract_complete_total.setText((totalFee + insideFee + outsideFee) + "");
-                }
-            }
-        });
-
         btn_pay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String overTime = txt_contract_complete_overPrice.getText().toString();
-                sendAction(Integer.parseInt(contractID), overTime, String.valueOf(insideFee), String.valueOf(outsideFee));
+                final String overTime = txt_contract_complete_overPrice.getText().toString();
+                AlertDialog.Builder builder = new AlertDialog.Builder(ContractPreFinishOwner.this);
+                builder.setMessage("Xác nhận sửa tiền phí ?").setCancelable(false)
+                        .setPositiveButton("Có", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                sendAction(Integer.parseInt(contractID), overTime, String.valueOf(insideFee), String.valueOf(outsideFee));
+                            }
+                        })
+                        .setNegativeButton("Không", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+                dialog.setCanceledOnTouchOutside(false);
 
             }
         });
@@ -124,6 +131,8 @@ public class ContractPreFinishOwner extends AppCompatActivity {
                     }
                     if (!originalString.equals("")) {
                         insideFee = Integer.parseInt(originalString);
+                        int totalFeeTemp = totalFee + insideFee + outsideFee;
+                        txt_contract_complete_total.setText(GeneralController.convertPrice(String.valueOf(totalFeeTemp)));
                     }
                     longval = Long.parseLong(originalString);
 
@@ -167,6 +176,8 @@ public class ContractPreFinishOwner extends AppCompatActivity {
                     }
                     if (!originalString.equals("")) {
                         outsideFee = Integer.parseInt(originalString);
+                        int totalFeeTemp = totalFee + insideFee + outsideFee;
+                        txt_contract_complete_total.setText(GeneralController.convertPrice(String.valueOf(totalFeeTemp)));
                     }
                     longval = Long.parseLong(originalString);
 
@@ -186,31 +197,66 @@ public class ContractPreFinishOwner extends AppCompatActivity {
         };
     }
 
-    private void sendAction(int contractID, String overTime, String insideFee, String outsideFee) {
-        Retrofit retrofit = RetrofitConfig.getClient();
-        final ContractAPI contractAPI = retrofit.create(ContractAPI.class);
-        Call<ResponseBody> responseBodyCall = contractAPI.preFinishContract(contractID, overTime, insideFee, outsideFee);
-        responseBodyCall.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if (response.code() == 200) {
-                    Intent it = new Intent(ContractPreFinishOwner.this, MainActivity.class);
-                    startActivity(it);
-                } else {
-                    Toast.makeText(ContractPreFinishOwner.this, "Đã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
+    private void sendAction(final int contractID, String overTime, String insideFee, String outsideFee) {
+        if (!contractStatus.equals(ImmutableValue.CONTRACT_ISSUE)) {
+            Retrofit retrofit = RetrofitConfig.getClient();
+            final ContractAPI contractAPI = retrofit.create(ContractAPI.class);
+            Call<ResponseBody> responseBodyCall = contractAPI.preFinishContract(contractID, overTime, insideFee, outsideFee);
+            responseBodyCall.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    if (response.code() == 200) {
+                        Intent it = new Intent(ContractPreFinishOwner.this, MainActivity.class);
+                        startActivity(it);
+                    } else {
+                        Toast.makeText(ContractPreFinishOwner.this, "Đã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Toast.makeText(ContractPreFinishOwner.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
-            }
-        });
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Toast.makeText(ContractPreFinishOwner.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            Retrofit retrofit = RetrofitConfig.getClient();
+            final ContractAPI contractAPI = retrofit.create(ContractAPI.class);
+            Call<ResponseBody> responseBodyCall = contractAPI.issueChangeFee(contractID, overTime, insideFee, outsideFee);
+            responseBodyCall.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    if (response.code() == 200) {
+                        long dateValue = new Date().getTime();
+                        String currentTime = GeneralController.convertFullTime(dateValue);
+                        String childInFDB = GeneralController.generateChildFDB(dateValue);
+                        dbr = FirebaseDatabase.getInstance().getReference("Complain").child(String.valueOf(contractID));
+                        dbr.child(childInFDB).setValue(new ComplainChat(String.valueOf(contractID), userID,
+                                "Tổng tiền phạt thay đổi! Vui lòng vào kiểm tra", currentTime));
+                    } else {
+                        Toast.makeText(ContractPreFinishOwner.this, "Đã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Toast.makeText(ContractPreFinishOwner.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
     }
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        if (contractStatus.equals(ImmutableValue.CONTRACT_ISSUE)) {
+            Intent it = new Intent(ContractPreFinishOwner.this, ContractComplainActivity.class);
+            it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(it);
+        } else {
+            Intent it = new Intent(ContractPreFinishOwner.this, ManageContractActivity.class);
+            it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(it);
+        }
     }
 
     @Override
@@ -233,17 +279,40 @@ public class ContractPreFinishOwner extends AppCompatActivity {
                 if (response.code() == 200) {
                     if (response.body() != null) {
                         ContractItem obj = response.body();
-                        txt_contract_complete_number.setText(contractID);
-                        txt_contract_complete_startTime.setText(GeneralController.convertTime(obj.getStartTime()));
-                        txt_contract_complete_endTime.setText(GeneralController.convertTime(obj.getEndTime()));
-                        txt_contract_complete_rentTime.setText(obj.getRentDay() + " ngày " + obj.getRentHour() + " giờ");
-                        int depositFee = Integer.parseInt(obj.getDepositFee());
-                        totalFee = Integer.parseInt(obj.getTotalFee());
-                        int rentFee = totalFee - depositFee;
-                        String rentFeeConvert = String.valueOf(rentFee);
-                        txt_contract_complete_rentFee.setText(GeneralController.convertPrice(rentFeeConvert));
-                        txt_contract_complete_deposit.setText(GeneralController.convertPrice(obj.getDepositFee()));
-                        txt_contract_complete_total.setText(GeneralController.convertPrice(String.valueOf(totalFee)));
+                        if (obj.getContractStatus().equals(ImmutableValue.CONTRACT_FINISHED)) {
+                            Intent it = new Intent(ContractPreFinishOwner.this, ManageContractActivity.class);
+                            it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(it);
+                        } else {
+                            txt_contract_complete_number.setText(contractID);
+                            txt_contract_complete_startTime.setText(GeneralController.convertTime(obj.getStartTime()));
+                            txt_contract_complete_endTime.setText(GeneralController.convertTime(obj.getEndTime()));
+                            txt_contract_complete_endRealTime.setText(GeneralController.convertTime(obj.getEndRealTime()));
+                            txt_contract_complete_rentTime.setText(obj.getRentDay() + " ngày " + obj.getRentHour() + " giờ");
+                            txt_contract_complete_overPrice.setText(obj.getPenaltyOverTime() + "");
+                            int depositFee = Integer.parseInt(obj.getDepositFee());
+                            totalFee = Integer.parseInt(obj.getTotalFee());
+                            totalFee = totalFee + obj.getPenaltyOverTime();
+                            int rentFee = totalFee - depositFee;
+                            String rentFeeConvert = String.valueOf(rentFee);
+                            txt_contract_complete_rentFee.setText(GeneralController.convertPrice(rentFeeConvert));
+                            txt_contract_complete_deposit.setText(GeneralController.convertPrice(obj.getDepositFee()));
+                            txt_contract_complete_total.setText(GeneralController.convertPrice(String.valueOf(totalFee)));
+                            if (obj.getInsideFee() != 0) {
+                                insideFee = obj.getInsideFee();
+                                edt_contract_complete_inside.setText(GeneralController.convertPrice(String.valueOf(obj.getInsideFee())));
+                                int totalTemp = totalFee + obj.getInsideFee() + obj.getOutsideFee();
+                                txt_contract_complete_total.setText(GeneralController.convertPrice(String.valueOf(totalTemp)));
+                            }
+                            if (obj.getOutsideFee() != 0) {
+                                outsideFee = obj.getOutsideFee();
+                                edt_contract_complete_outside.setText(GeneralController.convertPrice(String.valueOf(obj.getOutsideFee())));
+                                int totalTemp = totalFee + obj.getInsideFee() + obj.getOutsideFee();
+                                txt_contract_complete_total.setText(GeneralController.convertPrice(String.valueOf(totalTemp)));
+                            }
+                            contractStatus = obj.getContractStatus();
+                            userID = obj.getOwnerID();
+                        }
                     } else {
                         Toast.makeText(ContractPreFinishOwner.this, "Đã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
                     }

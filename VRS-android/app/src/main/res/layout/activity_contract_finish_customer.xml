@@ -27,7 +27,6 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="10dp"
         android:scrollbars="none">
 
         <LinearLayout
@@ -35,6 +34,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingLeft="20dp"
+            android:paddingTop="10dp"
             android:paddingRight="20dp">
 
             <LinearLayout
@@ -100,6 +100,7 @@
                         android:text="Thời gian bắt đầu" />
 
                     <TextView
+                        android:id="@+id/txt_contract_complete_startTime"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.5"
@@ -123,6 +124,7 @@
                         android:text="Thời gian kết thúc" />
 
                     <TextView
+                        android:id="@+id/txt_contract_complete_endTime"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.5"
@@ -145,6 +147,7 @@
                         android:text="Thời hạn" />
 
                     <TextView
+                        android:id="@+id/txt_contract_complete_rentTime"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.5"
@@ -167,6 +170,7 @@
                         android:text="Tiền thuê xe" />
 
                     <TextView
+                        android:id="@+id/txt_contract_complete_rentFee"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.5"
@@ -190,6 +194,7 @@
                         android:text="Giá cọc" />
 
                     <TextView
+                        android:id="@+id/txt_contract_complete_deposit"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.5"
@@ -225,18 +230,40 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.6"
+                        android:layout_weight="0.5"
                         android:text="T.G kết thúc thực tế" />
 
                     <TextView
+                        android:id="@+id/txt_contract_complete_endRealTime"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.4"
+                        android:layout_weight="0.5"
                         android:gravity="right"
                         android:text="0 ngày 0 giờ" />
 
                 </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10dp"
+                    android:weightSum="1">
 
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:text="Quá giờ" />
+
+                    <TextView
+                        android:id="@+id/txt_contract_complete_overTime"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:gravity="right"
+                        android:text="0 ngày 0 giờ" />
+
+                </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -252,6 +279,7 @@
                         android:text="Phí quá giờ" />
 
                     <TextView
+                        android:id="@+id/txt_contract_complete_overPrice"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.5"
@@ -274,6 +302,7 @@
                         android:text="Phí nọi thất" />
 
                     <TextView
+                        android:id="@+id/txt_contract_insideFee"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.5"
@@ -296,6 +325,7 @@
                         android:text="Phí ngoại thất" />
 
                     <TextView
+                        android:id="@+id/txt_contract_outsideFee"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.5"
@@ -385,6 +415,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/txt_contract_complete_total"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="6"

@@ -131,11 +131,11 @@ public class LoginActivity extends AppCompatActivity {
         int usernameID = editor.getInt(ImmutableValue.HOME_userID, 0);
         String vehicleID = editor2.getString(ImmutableValue.MAIN_vehicleID, "Empty");
         String contractStatus = editor2.getString(ImmutableValue.MAIN_contractID, "Empty");
-//        if (usernameID != 0 && !contractStatus.equals("Empty")){
-//            Intent it = new Intent(LoginActivity.this, ContractDetail.class);
-//            it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//            startActivity(it);
-//        } else
+        if (usernameID != 0 && !contractStatus.equals("Empty")){
+            Intent it = new Intent(LoginActivity.this, ManageContractActivity.class);
+            it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(it);
+        } else
         if (usernameID != 0 && !vehicleID.equals("Empty")) {
             Intent it = new Intent(LoginActivity.this, VehicleDetail.class);
             it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

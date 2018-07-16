@@ -52,6 +52,8 @@ public class ManageContractAdapter extends RecyclerView.Adapter<ManageContractAd
                 SharedPreferences.Editor editor = ctx.getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, ctx.MODE_PRIVATE).edit();
                 editor.putString(ImmutableValue.MAIN_contractID, obj.getContractID());
                 editor.putString(ImmutableValue.MAIN_contractStatus, obj.getContractStatus());
+                editor.putInt(ImmutableValue.MAIN_ownerID, obj.getOwnerID());
+                editor.putInt(ImmutableValue.MAIN_customerID, obj.getCustomerID());
                 editor.apply();
                 SharedPreferences editor2 = ctx.getSharedPreferences(ImmutableValue.HOME_SHARED_PREFERENCES_CODE, ctx.MODE_PRIVATE);
                 int userID = editor2.getInt(ImmutableValue.HOME_userID, 0);

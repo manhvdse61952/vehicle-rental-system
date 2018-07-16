@@ -65,6 +65,8 @@ public class ImmutableValue {
     public static final String MAIN_SHARED_PREFERENCES_CODE = "VRS_MAIN";
     public static final String MAIN_contractID = "main_contractID";
     public static final String MAIN_contractStatus = "main_contractStatus";
+    public static final String MAIN_ownerID = "main_ownerID";
+    public static final String MAIN_customerID = "main_customerID";
     public static final String MAIN_vehicleID = "main_vehicleID";
     public static final String MAIN_vehicleSeat = "main_vehicleSeat";
     public static final String MAIN_vehicleType = "main_vehicleType";
@@ -87,4 +89,6 @@ public class ImmutableValue {
     public static final String MAIN_receiveType = "main_receiveType";
     public static final String MAIN_startDayLong = "main_startDayLong";
     public static final String MAIN_endDayLong = "main_endDayLong";
+
+    public static final String changeFeeMessageBody = "Chủ xe đã thay đổi phí. Vui lòng kiểm tra";
 }

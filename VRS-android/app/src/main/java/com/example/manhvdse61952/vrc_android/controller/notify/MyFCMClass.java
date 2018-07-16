@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 
 import com.example.manhvdse61952.vrc_android.R;
+import com.example.manhvdse61952.vrc_android.controller.layout.contract.ManageContractActivity;
 import com.example.manhvdse61952.vrc_android.controller.permission.PermissionDevice;
 import com.example.manhvdse61952.vrc_android.controller.layout.contract.ContractDetail;
 import com.example.manhvdse61952.vrc_android.controller.layout.contract.ContractPreFinishOwner;
@@ -36,25 +37,16 @@ public class MyFCMClass extends FirebaseMessagingService {
         }
     }
 
-    private void sendNotification(String messageBody, String title, String contractID, String screen) {
+    private void sendNotification(String messageBody, String title, String contractID) {
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        if (!contractID.equals("0")) {
+        if (!contractID.equals("0") && !messageBody.equals(ImmutableValue.changeFeeMessageBody)) {
             SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
             editor.putString(ImmutableValue.MAIN_contractID, contractID);
             editor.apply();
-            Intent it = null;
-            if (screen.equals("FINISH")){
-                it = new Intent(this, ContractPreFinishOwner.class);
-            } else if (screen.equals("COMPLETE")){
-                it = new Intent(this, ContractDetail.class);
-            } else if (screen.equals("DETAIL")){
-                it = new Intent(this, ContractDetail.class);
-            }
-
-
-            it.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            Intent it = new Intent(this, ManageContractActivity.class);
+            it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             PendingIntent pendingIntent = PendingIntent.getActivity(this, PermissionDevice.NOTIFY_REQUEST_CODE, it, PendingIntent.FLAG_ONE_SHOT);
             NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                     .setSmallIcon(R.drawable.ic_menu_send)
@@ -86,9 +78,9 @@ public class MyFCMClass extends FirebaseMessagingService {
         int userIdFromApp = sharedPreferences.getInt(ImmutableValue.HOME_userID, 0);
         if (userIdFromMessage == userIdFromApp) {
             String contractID = temp[1];
-            String screen = temp[2];
-            String notificationBody = temp[3];
-            sendNotification(notificationBody, title, contractID, screen);
+            String messageBody = temp[3];
+            sendNotification(messageBody, title, contractID);
         }
+
     }
 }

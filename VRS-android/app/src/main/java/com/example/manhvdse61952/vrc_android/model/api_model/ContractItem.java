@@ -25,7 +25,16 @@ public class ContractItem implements Serializable {
     private int ownerID;
     private int customerID;
 
-    public ContractItem(String contractID, String contractStatus, long startTime, long endTime, String ownerName, String vehicleMaker, String vehicleModel, String vehicleYear, String vehicleSeat, String customerName, int receiveType, int rentDay, int rentHour, String depositFee, String totalFee, long serverTime, String ownerPhone, String customerCMND, String customerPhone, int ownerID, int customerID) {
+    private int outsideFee;
+    private int insideFee;
+    private long endRealTime;
+    private String issueContent;
+    private Boolean isOwnerIssue;
+    private Boolean isInsideIssue;
+    private Boolean isOutsideIssue;
+    private int penaltyOverTime;
+
+    public ContractItem(String contractID, String contractStatus, long startTime, long endTime, String ownerName, String vehicleMaker, String vehicleModel, String vehicleYear, String vehicleSeat, String customerName, int receiveType, int rentDay, int rentHour, String depositFee, String totalFee, long serverTime, String ownerPhone, String customerCMND, String customerPhone, int ownerID, int customerID, String issueContent, int outsideFee, int insideFee, long endRealTime, Boolean isOwnerIssue, Boolean isInsideIssue, Boolean isOutsideIssue, int penaltyOverTime) {
         ContractID = contractID;
         this.contractStatus = contractStatus;
         this.startTime = startTime;
@@ -47,11 +56,83 @@ public class ContractItem implements Serializable {
         this.customerPhone = customerPhone;
         this.ownerID = ownerID;
         this.customerID = customerID;
+        this.issueContent = issueContent;
+        this.outsideFee = outsideFee;
+        this.insideFee = insideFee;
+        this.endRealTime = endRealTime;
+        this.isOwnerIssue = isOwnerIssue;
+        this.isInsideIssue = isInsideIssue;
+        this.isOutsideIssue = isOutsideIssue;
+        this.penaltyOverTime = penaltyOverTime;
     }
 
     public ContractItem() {
     }
 
+
+    public String getIssueContent() {
+        return issueContent;
+    }
+
+    public void setIssueContent(String issueContent) {
+        this.issueContent = issueContent;
+    }
+
+    public int getOutsideFee() {
+        return outsideFee;
+    }
+
+    public void setOutsideFee(int outsideFee) {
+        this.outsideFee = outsideFee;
+    }
+
+    public int getInsideFee() {
+        return insideFee;
+    }
+
+    public void setInsideFee(int insideFee) {
+        this.insideFee = insideFee;
+    }
+
+    public long getEndRealTime() {
+        return endRealTime;
+    }
+
+    public void setEndRealTime(long endRealTime) {
+        this.endRealTime = endRealTime;
+    }
+
+    public Boolean getOwnerIssue() {
+        return isOwnerIssue;
+    }
+
+    public void setOwnerIssue(Boolean ownerIssue) {
+        isOwnerIssue = ownerIssue;
+    }
+
+    public Boolean getInsideIssue() {
+        return isInsideIssue;
+    }
+
+    public void setInsideIssue(Boolean insideIssue) {
+        isInsideIssue = insideIssue;
+    }
+
+    public Boolean getOutsideIssue() {
+        return isOutsideIssue;
+    }
+
+    public void setOutsideIssue(Boolean outsideIssue) {
+        isOutsideIssue = outsideIssue;
+    }
+
+    public int getPenaltyOverTime() {
+        return penaltyOverTime;
+    }
+
+    public void setPenaltyOverTime(int penaltyOverTime) {
+        this.penaltyOverTime = penaltyOverTime;
+    }
 
     public int getOwnerID() {
         return ownerID;

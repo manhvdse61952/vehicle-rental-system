@@ -27,7 +27,6 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="10dp"
         android:scrollbars="none">
 
         <LinearLayout
@@ -35,6 +34,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingLeft="20dp"
+            android:paddingTop="10dp"
             android:paddingRight="20dp">
 
             <LinearLayout
@@ -307,17 +307,23 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.5"
+                        android:textColor="#FF0000"
+                        android:textStyle="bold|italic"
                         android:text="Phí nội thất" />
 
                     <EditText
                         android:id="@+id/edt_contract_complete_inside"
-                        android:padding="5dp"
                         android:layout_width="0dp"
+                        android:padding="5dp"
+                        android:background="@android:color/transparent"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.5"
                         android:gravity="right"
                         android:inputType="number"
-                        android:hint="0"/>
+                        android:textSize="14sp"
+                        android:textColorHint="#C7C7C7"
+                        android:textColor="@color/secondary_text"
+                        android:hint="Điền giá tiền nếu có"/>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -331,17 +337,23 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.5"
+                        android:textColor="#FF0000"
+                        android:textStyle="bold|italic"
                         android:text="Phí ngoại thất" />
 
                     <EditText
                         android:id="@+id/edt_contract_complete_outside"
-                        android:padding="5dp"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.5"
                         android:gravity="right"
+                        android:background="@android:color/transparent"
+                        android:padding="5dp"
                         android:inputType="number"
-                        android:hint="0"/>
+                        android:textSize="14sp"
+                        android:textColor="@color/secondary_text"
+                        android:textColorHint="#C7C7C7"
+                        android:hint="Điền giá tiền nếu có"/>
                 </LinearLayout>
             </LinearLayout>
 

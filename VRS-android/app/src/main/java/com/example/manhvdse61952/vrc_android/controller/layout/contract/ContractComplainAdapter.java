@@ -16,10 +16,10 @@ import com.google.firebase.database.DatabaseReference;
 
 
 public class ContractComplainAdapter extends FirebaseListAdapter<ComplainChat> {
-    private ContractComplainActivity activity;
+    private ContractComplainChat activity;
     private Context ctx;
 
-    public ContractComplainAdapter(Context ctx, ContractComplainActivity activity, Class<ComplainChat> modelClass, int modelLayout, DatabaseReference ref) {
+    public ContractComplainAdapter(Context ctx, ContractComplainChat activity, Class<ComplainChat> modelClass, int modelLayout, DatabaseReference ref) {
         super(activity, modelClass, modelLayout, ref);
         this.activity = activity;
         this.ctx = ctx;
