@@ -165,15 +165,8 @@ public class ContractComplainActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     if (response.code() == 200) {
-                        btn_open_chat.setVisibility(View.VISIBLE);
-                        btn_send_complain.setVisibility(View.INVISIBLE);
-
-                        edt_issue_content.setClickable(false);
-                        edt_issue_content.setFocusable(false);
-
-                        cbx_issue_inside.setEnabled(false);
-                        cbx_issue_outside.setEnabled(false);
-                        cbx_issue_owner.setEnabled(false);
+                        finish();
+                        startActivity(getIntent());
                     } else {
                         Toast.makeText(ContractComplainActivity.this, "Đã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
                     }

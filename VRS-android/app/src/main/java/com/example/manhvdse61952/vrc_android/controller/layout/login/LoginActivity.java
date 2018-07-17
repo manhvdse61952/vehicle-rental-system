@@ -119,8 +119,6 @@ public class LoginActivity extends AppCompatActivity {
     private void revertLayout(){
         // get address data
         if (GeneralAPI.listAddressFromDB.size() == 0) {
-            dialog = ProgressDialog.show(LoginActivity.this, "Đang xử lý",
-                    "Vui lòng đợi ...", true);
             GeneralAPI testAPI = new GeneralAPI();
             testAPI.getAllAddress(dialog, LoginActivity.this);
         }
@@ -150,8 +148,6 @@ public class LoginActivity extends AppCompatActivity {
     private void loginAction(){
         //Check address if empty
         if (GeneralAPI.listAddressFromDB.size() == 0) {
-            dialog = ProgressDialog.show(LoginActivity.this, "Đang xử lý",
-                    "Vui lòng đợi ...", true);
             GeneralAPI testAPI = new GeneralAPI();
             testAPI.getAllAddress(dialog, LoginActivity.this);
         }
@@ -185,8 +181,6 @@ public class LoginActivity extends AppCompatActivity {
             Intent it = new Intent(LoginActivity.this, SignupAccountActivity.class);
             startActivity(it);
         } else {
-            dialog = ProgressDialog.show(LoginActivity.this, "Đang xử lý",
-                    "Vui lòng đợi ...", true);
             GeneralAPI testAPI = new GeneralAPI();
             testAPI.getAllAddress(dialog, LoginActivity.this);
         }

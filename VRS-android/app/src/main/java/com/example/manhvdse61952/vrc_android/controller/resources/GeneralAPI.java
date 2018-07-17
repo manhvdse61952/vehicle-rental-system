@@ -53,12 +53,10 @@ public class GeneralAPI {
                 } else {
                     Toast.makeText(ctx, "Đã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
                 }
-                progressDialog.dismiss();
             }
 
             @Override
             public void onFailure(Call<List<City>> call, Throwable t) {
-                progressDialog.dismiss();
                 Toast.makeText(ctx, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
             }
         });
