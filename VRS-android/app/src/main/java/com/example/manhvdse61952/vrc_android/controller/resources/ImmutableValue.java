@@ -17,6 +17,7 @@ public class ImmutableValue {
     public static final String CONTRACT_PRE_FINISHED = "PRE_FINISHED";
     public static final String CONTRACT_FINISHED = "FINISHED";
     public static final String CONTRACT_ISSUE = "ISSUE";
+    public static final String CONTRACT_REFUNDED = "REFUNDED";
 
     ///// SHARED PREFERENCES CODE and value of it /////
     //Sign up information for customer

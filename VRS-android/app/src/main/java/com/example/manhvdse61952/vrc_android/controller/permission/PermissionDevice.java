@@ -64,8 +64,6 @@ public class PermissionDevice {
 
     //GPS - location code ////////////////
     LocationManager locationManager;
-    public static double longtitudeCurrent = 0, latitudeCurrent = 0;
-    public static String addressCurrent = "", cityCurrent = "", countryCurrent = "", districtCurrent = "";
     public static final int REQUEST_LOCATION = 50;
 
     // Paypal ///////////////////
@@ -171,7 +169,8 @@ public class PermissionDevice {
         }
     }
 
-    public void getLocation(Context ctx, Activity atv) {
+    public static String getLocation(Context ctx, Activity atv) {
+        String currentLocation = "";
         LocationManager locationManager = (LocationManager)ctx.getSystemService(Context.LOCATION_SERVICE);
         Location location;
         LocationListener locationListener = new LocationListener() {
@@ -205,9 +204,9 @@ public class PermissionDevice {
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
             location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
             if (location != null) {
-                longtitudeCurrent = location.getLongitude();
-                latitudeCurrent = location.getLatitude();
-                getStringAddress(longtitudeCurrent, latitudeCurrent, ctx);
+                double longtitudeCurrent = location.getLongitude();
+                double latitudeCurrent = location.getLatitude();
+                currentLocation = getStringAddress(longtitudeCurrent, latitudeCurrent, ctx);
             } else {
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
                 locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
@@ -217,6 +216,7 @@ public class PermissionDevice {
                 }
             }
         }
+        return currentLocation;
     }
 
     public void buildAlertMessageNoGps(final Context ctx, final Activity atv) {
@@ -244,24 +244,41 @@ public class PermissionDevice {
         alertDialog.setCanceledOnTouchOutside(false);
     }
 
-    public static void getStringAddress(double longitude, double latitude, Context ctx) {
+    public static String getStringAddress(double longitude, double latitude, Context ctx) {
+        String currentAddress = "";
         Geocoder geocoder;
         List<Address> addresses;
         geocoder = new Geocoder(ctx, Locale.getDefault());
 
         try {
-            addressCurrent = "";
-            addresses = geocoder.getFromLocation(latitude, longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
-            String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
-            String city = addresses.get(0).getAdminArea();
-            String country = addresses.get(0).getCountryName();
-            String district = addresses.get(0).getSubAdminArea();
-
-            addressCurrent = address;
+            addresses = geocoder.getFromLocation(latitude, longitude, 1);
+            currentAddress = addresses.get(0).getAddressLine(0);
+//            String city = addresses.get(0).getAdminArea();
+//            String country = addresses.get(0).getCountryName();
+//            String district = addresses.get(0).getSubAdminArea();
 
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return currentAddress;
+    }
+
+    public static String getStringDistrict(double longitude, double latitude, Context ctx) {
+        String currentDistrict = "";
+        Geocoder geocoder;
+        List<Address> addresses;
+        geocoder = new Geocoder(ctx, Locale.getDefault());
+
+        try {
+            addresses = geocoder.getFromLocation(latitude, longitude, 1);
+//            String city = addresses.get(0).getAdminArea();
+//            String country = addresses.get(0).getCountryName();
+            currentDistrict = addresses.get(0).getSubAdminArea();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return currentDistrict;
     }
 
     public String getCmndFromImage(String filename, Context ctx) {

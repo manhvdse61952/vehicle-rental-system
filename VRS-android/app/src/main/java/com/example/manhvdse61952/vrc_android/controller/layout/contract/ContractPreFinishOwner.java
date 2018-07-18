@@ -33,6 +33,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -43,7 +44,7 @@ import retrofit2.Retrofit;
 public class ContractPreFinishOwner extends AppCompatActivity {
     TextView txt_contract_complete_number, txt_contract_complete_overPrice, txt_contract_complete_startTime, txt_contract_complete_endTime, txt_contract_complete_rentTime,
             txt_contract_complete_rentFee, txt_contract_complete_deposit, txt_contract_complete_endRealTime,
-            txt_contract_complete_total;
+            txt_contract_complete_total, txt_contract_complete_overTime;
     EditText edt_contract_complete_inside, edt_contract_complete_outside;
     Button btn_pay;
     ProgressDialog dialog;
@@ -76,6 +77,7 @@ public class ContractPreFinishOwner extends AppCompatActivity {
         txt_contract_complete_deposit = (TextView) findViewById(R.id.txt_contract_complete_deposit);
         txt_contract_complete_endRealTime = (TextView) findViewById(R.id.txt_contract_complete_endRealTime);
         txt_contract_complete_total = (TextView) findViewById(R.id.txt_contract_complete_total);
+        txt_contract_complete_overTime = (TextView)findViewById(R.id.txt_contract_complete_overTime);
         btn_pay = (Button) findViewById(R.id.btn_pay);
 
         initLayout();
@@ -288,8 +290,23 @@ public class ContractPreFinishOwner extends AppCompatActivity {
                             txt_contract_complete_startTime.setText(GeneralController.convertTime(obj.getStartTime()));
                             txt_contract_complete_endTime.setText(GeneralController.convertTime(obj.getEndTime()));
                             txt_contract_complete_endRealTime.setText(GeneralController.convertTime(obj.getEndRealTime()));
+
+                            //Calculate overtime
+                            if (obj.getEndRealTime() > obj.getEndTime()) {
+                                long diff = obj.getEndRealTime() - obj.getEndTime();
+                                long diffDate = TimeUnit.MILLISECONDS.toDays(diff);
+                                long diffHour = diff / (60 * 60 * 1000) % 24;
+                                long diffMinute = diff / (60 * 1000) % 60;
+                                if (diffMinute > 30) {
+                                    diffHour = diffHour + 1;
+                                }
+                                long overTimeFee = (diffHour*obj.getRentFeePerHour()) + (diffDate*obj.getRentFeePerDay());
+                                txt_contract_complete_overPrice.setText(overTimeFee + "");
+                                txt_contract_complete_overTime.setText(diffDate + " ngày " + diffHour + " giờ");
+                            } else {
+                                txt_contract_complete_overPrice.setText("0");
+                            }
                             txt_contract_complete_rentTime.setText(obj.getRentDay() + " ngày " + obj.getRentHour() + " giờ");
-                            txt_contract_complete_overPrice.setText(obj.getPenaltyOverTime() + "");
                             int depositFee = Integer.parseInt(obj.getDepositFee());
                             totalFee = Integer.parseInt(obj.getTotalFee());
                             totalFee = totalFee + obj.getPenaltyOverTime();

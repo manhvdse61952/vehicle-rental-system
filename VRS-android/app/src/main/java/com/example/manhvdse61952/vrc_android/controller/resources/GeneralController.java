@@ -52,7 +52,7 @@ public class GeneralController {
         return format.format(date);
     }
 
-    public void scaleView(final LinearLayout v, int value) {
+    public static void scaleView(final LinearLayout v, int value) {
         ValueAnimator anim = ValueAnimator.ofInt(v.getMeasuredHeight(), value);
         anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
@@ -65,4 +65,5 @@ public class GeneralController {
         });
         anim.start();
     }
+
 }

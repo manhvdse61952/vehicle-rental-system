@@ -2,6 +2,7 @@ package com.example.manhvdse61952.vrc_android.model.api_interface;
 
 
 import com.example.manhvdse61952.vrc_android.model.api_model.VehicleInformation;
+import com.example.manhvdse61952.vrc_android.model.api_model.VehicleUpdate;
 import com.example.manhvdse61952.vrc_android.model.search_model.DetailVehicleItem;
 import com.example.manhvdse61952.vrc_android.model.search_model.SearchVehicleItem;
 
@@ -11,10 +12,12 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
 
@@ -62,4 +65,8 @@ public interface VehicleAPI {
     @POST("/vehicle/create")
     Call<ResponseBody> createVehicle(@Part("data") RequestBody data, @Part MultipartBody.Part[] files);
 
+    @Headers({"Accept: application/json"})
+    @PUT("/vehicle/update/{vehicleFrameNumber}")
+    Call<ResponseBody> updateVehicle(@Path("vehicleFrameNumber") String vehicleFrameNumber,
+                                     @Body VehicleUpdate vehicleUpdate);
 }

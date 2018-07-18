@@ -52,6 +52,7 @@ public class GeneralAPI {
                     listAddressFromDB = response.body();
                 } else {
                     Toast.makeText(ctx, "Đã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
+
                 }
             }
 

@@ -92,6 +92,7 @@
         <activity android:name=".controller.layout.signup.owner.SearchVehicleInfoActivity" android:screenOrientation="portrait"></activity>
         <activity android:name=".controller.layout.contract.ContractComplainActivity" android:screenOrientation="portrait"></activity>
         <activity android:name=".controller.layout.contract.ContractComplainChat" android:screenOrientation="portrait"></activity>
+        <activity android:name=".controller.layout.vehicle.manage.UpdateVehicle" android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

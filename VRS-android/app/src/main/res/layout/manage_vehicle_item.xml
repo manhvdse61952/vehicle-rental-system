@@ -5,14 +5,18 @@
     android:layout_margin="10dp"
     android:orientation="horizontal"
     android:background="@drawable/border_shadow"
+    android:id="@+id/ln_vehicle_item"
     android:weightSum="1">
 
     <ImageView
         android:id="@+id/manage_vehicle_image"
         android:layout_width="0dp"
-        android:layout_height="80dp"
+        android:layout_height="100dp"
         android:src="@drawable/img_default_image"
         android:scaleType="centerCrop"
+        android:layout_marginBottom="3dp"
+        android:layout_marginLeft="1dp"
+        android:layout_marginTop="1dp"
         android:layout_weight="0.35" />
 
     <LinearLayout
@@ -25,23 +29,38 @@
         <TextView
             android:id="@+id/txt_vehicle_name"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:background="@drawable/border_green"
             android:gravity="center_vertical"
             android:text="Test vehicle 1"
             android:paddingLeft="10dp"
-            android:textColor="@color/secondary_text"
+            android:textColor="@color/primary_text"
             android:textStyle="bold"
-            android:layout_weight="0.6" />
+            android:layout_weight="0.5" />
 
-        <TextView
-            android:text="Đang được thuê"
-            android:id="@+id/txt_vehicle_status"
-            android:gravity="center_vertical"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
-            android:layout_weight="0.4" />
-
-
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            android:weightSum="10"
+            android:layout_weight="0.5">
+            <TextView
+                android:text="Số khung"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:layout_height="match_parent" />
+            <TextView
+                android:id="@+id/txt_vehicle_frameNumber"
+                android:layout_width="0dp"
+                android:layout_weight="7"
+                android:textSize="14sp"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:textColor="@color/secondary_text"
+                android:text="XXX"
+                android:layout_height="match_parent" />
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

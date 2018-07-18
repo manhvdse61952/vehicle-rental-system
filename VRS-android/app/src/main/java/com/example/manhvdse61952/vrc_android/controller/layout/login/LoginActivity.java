@@ -133,11 +133,10 @@ public class LoginActivity extends AppCompatActivity {
             Intent it = new Intent(LoginActivity.this, ManageContractActivity.class);
             it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(it);
-        } else
-        if (usernameID != 0 && !vehicleID.equals("Empty")) {
-            Intent it = new Intent(LoginActivity.this, VehicleDetail.class);
-            it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(it);
+//        } else if (usernameID != 0 && !vehicleID.equals("Empty")) {
+//            Intent it = new Intent(LoginActivity.this, VehicleDetail.class);
+//            it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//            startActivity(it);
         } else if (usernameID != 0 && vehicleID.equals("Empty")) {
             Intent it = new Intent(LoginActivity.this, MainActivity.class);
             it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

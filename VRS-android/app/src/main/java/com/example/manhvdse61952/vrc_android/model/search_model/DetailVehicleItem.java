@@ -23,29 +23,9 @@ public class DetailVehicleItem implements Serializable {
     private double deposit;
     private int rentFeePerHourID;
     private int rentFeePerDayID;
+    private int seat;
+    private String vehicleType;
 
-    public DetailVehicleItem(Boolean requireIdCard, String ownerFullName, String vehicleMaker, Boolean isManual, double rentFeePerDay, String imageLinkBack, int ownerID, int modelYear, Boolean isGasoline, int districtID, String vehicleModel, String imageLinkFront, double rentFeePerSlot, Boolean requireHouseHold, double rentFeePerHour, String plateNumber, Boolean isScooter, double deposit, int rentFeePerHourID, int rentFeePerDayID) {
-        this.requireIdCard = requireIdCard;
-        this.ownerFullName = ownerFullName;
-        this.vehicleMaker = vehicleMaker;
-        this.isManual = isManual;
-        this.rentFeePerDay = rentFeePerDay;
-        this.imageLinkBack = imageLinkBack;
-        this.ownerID = ownerID;
-        this.modelYear = modelYear;
-        this.isGasoline = isGasoline;
-        this.districtID = districtID;
-        this.vehicleModel = vehicleModel;
-        this.imageLinkFront = imageLinkFront;
-        this.rentFeePerSlot = rentFeePerSlot;
-        this.requireHouseHold = requireHouseHold;
-        this.rentFeePerHour = rentFeePerHour;
-        this.plateNumber = plateNumber;
-        this.isScooter = isScooter;
-        this.deposit = deposit;
-        this.rentFeePerHourID = rentFeePerHourID;
-        this.rentFeePerDayID = rentFeePerDayID;
-    }
 
     public int getRentFeePerHourID() {
         return rentFeePerHourID;
@@ -53,6 +33,22 @@ public class DetailVehicleItem implements Serializable {
 
     public void setRentFeePerHourID(int rentFeePerHourID) {
         this.rentFeePerHourID = rentFeePerHourID;
+    }
+
+    public int getSeat() {
+        return seat;
+    }
+
+    public void setSeat(int seat) {
+        this.seat = seat;
+    }
+
+    public String getVehicleType() {
+        return vehicleType;
+    }
+
+    public void setVehicleType(String vehicleType) {
+        this.vehicleType = vehicleType;
     }
 
     public int getRentFeePerDayID() {

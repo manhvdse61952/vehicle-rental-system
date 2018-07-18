@@ -33,42 +33,28 @@ public class ContractItem implements Serializable {
     private Boolean isInsideIssue;
     private Boolean isOutsideIssue;
     private int penaltyOverTime;
+    private long rentFeePerDay;
+    private long rentFeePerHour;
 
-    public ContractItem(String contractID, String contractStatus, long startTime, long endTime, String ownerName, String vehicleMaker, String vehicleModel, String vehicleYear, String vehicleSeat, String customerName, int receiveType, int rentDay, int rentHour, String depositFee, String totalFee, long serverTime, String ownerPhone, String customerCMND, String customerPhone, int ownerID, int customerID, String issueContent, int outsideFee, int insideFee, long endRealTime, Boolean isOwnerIssue, Boolean isInsideIssue, Boolean isOutsideIssue, int penaltyOverTime) {
-        ContractID = contractID;
-        this.contractStatus = contractStatus;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.ownerName = ownerName;
-        this.vehicleMaker = vehicleMaker;
-        this.vehicleModel = vehicleModel;
-        this.vehicleYear = vehicleYear;
-        this.vehicleSeat = vehicleSeat;
-        this.customerName = customerName;
-        this.receiveType = receiveType;
-        this.rentDay = rentDay;
-        this.rentHour = rentHour;
-        this.depositFee = depositFee;
-        this.totalFee = totalFee;
-        this.serverTime = serverTime;
-        this.ownerPhone = ownerPhone;
-        this.customerCMND = customerCMND;
-        this.customerPhone = customerPhone;
-        this.ownerID = ownerID;
-        this.customerID = customerID;
-        this.issueContent = issueContent;
-        this.outsideFee = outsideFee;
-        this.insideFee = insideFee;
-        this.endRealTime = endRealTime;
-        this.isOwnerIssue = isOwnerIssue;
-        this.isInsideIssue = isInsideIssue;
-        this.isOutsideIssue = isOutsideIssue;
-        this.penaltyOverTime = penaltyOverTime;
-    }
 
     public ContractItem() {
     }
 
+    public long getRentFeePerDay() {
+        return rentFeePerDay;
+    }
+
+    public void setRentFeePerDay(long rentFeePerDay) {
+        this.rentFeePerDay = rentFeePerDay;
+    }
+
+    public long getRentFeePerHour() {
+        return rentFeePerHour;
+    }
+
+    public void setRentFeePerHour(long rentFeePerHour) {
+        this.rentFeePerHour = rentFeePerHour;
+    }
 
     public String getIssueContent() {
         return issueContent;

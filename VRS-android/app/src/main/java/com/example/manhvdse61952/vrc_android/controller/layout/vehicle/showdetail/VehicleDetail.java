@@ -64,38 +64,10 @@ public class VehicleDetail extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_item);
-        //Declare id
-        txt_day_rent = (TextView) findViewById(R.id.txt_day_rent);
-        txt_hour_rent = (TextView) findViewById(R.id.txt_hour_rent);
-        txt_money_day_rent = (TextView) findViewById(R.id.txt_money_day_rent);
-        txt_money_hour_rent = (TextView) findViewById(R.id.txt_money_hour_rent);
-        txt_money_total = (TextView) findViewById(R.id.txt_money_total);
-        item_price_slot = (TextView) findViewById(R.id.item_price_slot);
-        item_price_day = (TextView) findViewById(R.id.item_price_day);
-        item_seat = (TextView) findViewById(R.id.item_seat);
-        item_year = (TextView) findViewById(R.id.item_year);
-        item_plateNumber = (TextView) findViewById(R.id.item_plateNumber);
-        item_ownerName = (TextView) findViewById(R.id.item_ownerName);
-        item_engine = (TextView) findViewById(R.id.item_engine);
-        item_tranmission = (TextView) findViewById(R.id.item_tranmission);
-        item_price_deposit = (TextView)findViewById(R.id.item_price_deposit);
-        cbx1 = (CheckBox) findViewById(R.id.cbx1);
-        cbx2 = (CheckBox) findViewById(R.id.cbx2);
-        ln_pickTime = (LinearLayout) findViewById(R.id.ln_pickTime);
-        txt_hours = (TextView) findViewById(R.id.txt_hours);
-        txt_day_start = (TextView) findViewById(R.id.txt_day_start);
-        txt_hours_2 = (TextView) findViewById(R.id.txt_hours_2);
-        txt_day_end = (TextView) findViewById(R.id.txt_day_end);
-        swt_order_type = (Switch) findViewById(R.id.swt_order_type);
-        txt_order_type = (TextView) findViewById(R.id.txt_order_type);
-        txt_usd_convert = (TextView)findViewById(R.id.txt_usd_convert);
-        txt_money_deposit = (TextView)findViewById(R.id.txt_money_deposit);
-        vpg = (ViewPager) findViewById(R.id.vpg);
-        txt_pickTime = (TextView)findViewById(R.id.txt_pickTime);
-        btn_back = (ImageView)findViewById(R.id.btn_back);
+
+        declareID();
 
         SharedPreferences editor = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
         String frameNumber = editor.getString(ImmutableValue.MAIN_vehicleID, "aaaaaa");
@@ -193,13 +165,17 @@ public class VehicleDetail extends AppCompatActivity {
 
                         if (mainObj.getRequireIdCard() == true) {
                             cbx1.setChecked(true);
+                            cbx1.setEnabled(true);
                         } else {
                             cbx1.setChecked(false);
+                            cbx1.setEnabled(false);
                         }
                         if (mainObj.getRequireHouseHold() == true) {
+                            cbx2.setEnabled(true);
                             cbx2.setChecked(true);
                         } else {
                             cbx2.setChecked(false);
+                            cbx2.setEnabled(false);
                         }
 
                         //Start pick date time intent
@@ -346,5 +322,37 @@ public class VehicleDetail extends AppCompatActivity {
         animator.setEvaluator(new ArgbEvaluator());
         animator.setInterpolator(new DecelerateInterpolator(2));
         animator.start();
+    }
+
+    private void declareID(){
+        //Declare id
+        txt_day_rent = (TextView) findViewById(R.id.txt_day_rent);
+        txt_hour_rent = (TextView) findViewById(R.id.txt_hour_rent);
+        txt_money_day_rent = (TextView) findViewById(R.id.txt_money_day_rent);
+        txt_money_hour_rent = (TextView) findViewById(R.id.txt_money_hour_rent);
+        txt_money_total = (TextView) findViewById(R.id.txt_money_total);
+        item_price_slot = (TextView) findViewById(R.id.item_price_slot);
+        item_price_day = (TextView) findViewById(R.id.item_price_day);
+        item_seat = (TextView) findViewById(R.id.item_seat);
+        item_year = (TextView) findViewById(R.id.item_year);
+        item_plateNumber = (TextView) findViewById(R.id.item_plateNumber);
+        item_ownerName = (TextView) findViewById(R.id.item_ownerName);
+        item_engine = (TextView) findViewById(R.id.item_engine);
+        item_tranmission = (TextView) findViewById(R.id.item_tranmission);
+        item_price_deposit = (TextView)findViewById(R.id.item_price_deposit);
+        cbx1 = (CheckBox) findViewById(R.id.cbx1);
+        cbx2 = (CheckBox) findViewById(R.id.cbx2);
+        ln_pickTime = (LinearLayout) findViewById(R.id.ln_pickTime);
+        txt_hours = (TextView) findViewById(R.id.txt_hours);
+        txt_day_start = (TextView) findViewById(R.id.txt_day_start);
+        txt_hours_2 = (TextView) findViewById(R.id.txt_hours_2);
+        txt_day_end = (TextView) findViewById(R.id.txt_day_end);
+        swt_order_type = (Switch) findViewById(R.id.swt_order_type);
+        txt_order_type = (TextView) findViewById(R.id.txt_order_type);
+        txt_usd_convert = (TextView)findViewById(R.id.txt_usd_convert);
+        txt_money_deposit = (TextView)findViewById(R.id.txt_money_deposit);
+        vpg = (ViewPager) findViewById(R.id.vpg);
+        txt_pickTime = (TextView)findViewById(R.id.txt_pickTime);
+        btn_back = (ImageView)findViewById(R.id.btn_back);
     }
 }
