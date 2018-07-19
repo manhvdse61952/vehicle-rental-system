@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -55,7 +56,7 @@ public class UpdateVehicle extends AppCompatActivity {
     Button btn_current_address, btn_write_address, btn_update;
     CheckBox cbxHouseHold, cbxIdCard;
     ProgressDialog dialog;
-    Boolean isOpen = true, manual = false, gasoline = false;
+    Boolean isOpen = true;
     String frameNumber = "";
     float rentFeePerHour = 0, rentFeePerDay = 0, depositFee = 0;
 
@@ -89,6 +90,8 @@ public class UpdateVehicle extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        SharedPreferences settings = getSharedPreferences(ImmutableValue.SIGNUP_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
+        settings.edit().clear().commit();
         Intent it = new Intent(UpdateVehicle.this, ManageVehicleActivity.class);
         it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(it);
@@ -182,6 +185,7 @@ public class UpdateVehicle extends AppCompatActivity {
                             cbxIdCard.setChecked(false);
                         }
 
+                        edt_vehicle_description.setText(obj.getDescription() + "");
                         swt_vehicle_address.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                             @Override
                             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -193,7 +197,14 @@ public class UpdateVehicle extends AppCompatActivity {
                             }
                         });
 
-                        txt_vehicle_address.setText("");
+
+                        SharedPreferences editor = getSharedPreferences(ImmutableValue.SIGNUP_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
+                        String address = editor.getString(ImmutableValue.VEHICLE_address, "Empty");
+                        if (!address.equals("Empty")){
+                            txt_vehicle_address.setText(address);
+                        } else {
+                            txt_vehicle_address.setText(obj.getAddress() + "");
+                        }
 
                         btn_current_address.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -205,7 +216,9 @@ public class UpdateVehicle extends AppCompatActivity {
                         btn_write_address.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                showSearchPlace();
+                                Intent it = new Intent(UpdateVehicle.this, SearchAddressVehicle.class);
+                                it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(it);
                             }
                         });
 
@@ -222,8 +235,6 @@ public class UpdateVehicle extends AppCompatActivity {
 
                             }
                         });
-                        gasoline = obj.getGasoline();
-                        manual = obj.getManual();
 
                         btn_update.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -262,42 +273,28 @@ public class UpdateVehicle extends AppCompatActivity {
         });
     }
 
-    private void showSearchPlace() {
-        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
-                getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
-        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+    private void showCurrentAddress() {
+        dialog = ProgressDialog.show(UpdateVehicle.this, "Hệ thống",
+                "Đang xử lý", true);
+        (new Handler()).postDelayed(new Runnable() {
             @Override
-            public void onPlaceSelected(Place place) {
-                String currentAddressStr = PermissionDevice.getStringAddress(place.getLatLng().longitude, place.getLatLng().latitude, UpdateVehicle.this);
+            public void run() {
+                String currentAddress = PermissionDevice.getLocation(UpdateVehicle.this, UpdateVehicle.this);
                 String addressFull = "";
-                if (!currentAddressStr.trim().equals("")) {
-                    String[] arrayAddressTemp = currentAddressStr.split(",");
+                if (!currentAddress.trim().equals("")) {
+                    String[] arrayAddressTemp = currentAddress.split(",");
                     addressFull = arrayAddressTemp[0];
                     for (int i = 1; i < arrayAddressTemp.length - 2; i++) {
                         addressFull = addressFull + ", " + arrayAddressTemp[i].trim();
                     }
                 }
+                SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SIGNUP_SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
+                editor.putString(ImmutableValue.VEHICLE_address, addressFull);
+                editor.apply();
                 txt_vehicle_address.setText(addressFull);
+                dialog.dismiss();
             }
-
-            @Override
-            public void onError(Status status) {
-                Toast.makeText(UpdateVehicle.this, "Đã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void showCurrentAddress() {
-        String currentAddress = PermissionDevice.getLocation(UpdateVehicle.this, UpdateVehicle.this);
-        String addressFull = "";
-        if (!currentAddress.trim().equals("")) {
-            String[] arrayAddressTemp = currentAddress.split(",");
-            addressFull = arrayAddressTemp[0];
-            for (int i = 1; i < arrayAddressTemp.length - 2; i++) {
-                addressFull = addressFull + ", " + arrayAddressTemp[i].trim();
-            }
-        }
-        txt_vehicle_address.setText(addressFull);
+        }, 500);
     }
 
     private void updateAction() {
@@ -325,8 +322,8 @@ public class UpdateVehicle extends AppCompatActivity {
             }
             obj.setDescription(edt_vehicle_description.getText().toString() + "");
             obj.setAddress(txt_vehicle_address.getText().toString() + "");
-            obj.setGasoline(gasoline);
-            obj.setManual(manual);
+            obj.setLongitude("0");
+            obj.setLatitude("0");
 
             Retrofit test = RetrofitConfig.getClient();
             VehicleAPI vehicleAPI = test.create(VehicleAPI.class);
@@ -336,6 +333,8 @@ public class UpdateVehicle extends AppCompatActivity {
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     if (response.code() == 200) {
                         Toast.makeText(UpdateVehicle.this, "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+                        SharedPreferences settings = getSharedPreferences(ImmutableValue.SIGNUP_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
+                        settings.edit().clear().commit();
                         finish();
                         startActivity(getIntent());
                     } else {

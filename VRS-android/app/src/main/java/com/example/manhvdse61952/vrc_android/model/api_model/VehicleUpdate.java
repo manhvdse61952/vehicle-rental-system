@@ -7,25 +7,30 @@ public class VehicleUpdate implements Serializable {
     private boolean requiredHouseHold;
     private boolean requiredID;
     private String address;
-    private boolean isGasoline;
-    private boolean isManual;
     private float rentFeeByHour;
     private float rentFeeByDay;
     private String description;
+    private String longitude;
+    private String latitude;
 
-    public VehicleUpdate(float depositFee, boolean requiredHouseHold, boolean requiredID, String address, boolean isGasoline, boolean isManual, float rentFeeByHour, float rentFeeByDay, String description) {
-        this.depositFee = depositFee;
-        this.requiredHouseHold = requiredHouseHold;
-        this.requiredID = requiredID;
-        this.address = address;
-        this.isGasoline = isGasoline;
-        this.isManual = isManual;
-        this.rentFeeByHour = rentFeeByHour;
-        this.rentFeeByDay = rentFeeByDay;
-        this.description = description;
-    }
 
     public VehicleUpdate() {
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
     }
 
     public float getDepositFee() {
@@ -58,22 +63,6 @@ public class VehicleUpdate implements Serializable {
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public boolean isGasoline() {
-        return isGasoline;
-    }
-
-    public void setGasoline(boolean gasoline) {
-        isGasoline = gasoline;
-    }
-
-    public boolean isManual() {
-        return isManual;
-    }
-
-    public void setManual(boolean manual) {
-        isManual = manual;
     }
 
     public float getRentFeeByHour() {

@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -47,7 +48,7 @@ public class VehicleDetail extends AppCompatActivity {
     ImageSlider sld;
     ViewPager vpg;
     Button btnOrderRent;
-    ImageView btn_back;
+    FloatingActionButton btn_back;
     DetailVehicleItem mainObj = new DetailVehicleItem();
     int selectTab = 0, rentFeePerHourID = 0, rentFeePerDayID = 0, totalHour = 0, receiveType = 0, totalDay = 0;
     Double totalMoney = 0.0, rentFeeMoney = 0.0, usdConvert = 0.0;
@@ -56,11 +57,12 @@ public class VehicleDetail extends AppCompatActivity {
             item_plateNumber, item_ownerName, item_engine, item_tranmission, txt_hours, txt_day_start,
             txt_hours_2, txt_day_end, txt_order_type, txt_day_rent, txt_hour_rent,
             txt_money_day_rent, txt_money_hour_rent, txt_money_total, item_price_deposit,
-            txt_usd_convert, txt_money_deposit, txt_pickTime;
+            txt_usd_convert, txt_money_deposit, txt_pickTime, txt_vehicle_owner;
     CheckBox cbx1, cbx2;
     LinearLayout ln_pickTime;
     Switch swt_order_type;
     ProgressDialog dialog;
+    LinearLayout ln_hide_order_type, ln_hide_calculator;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -108,11 +110,25 @@ public class VehicleDetail extends AppCompatActivity {
                     if (response.body() != null) {
                         mainObj = new DetailVehicleItem();
                         mainObj = response.body();
+                        SharedPreferences editor2 = getSharedPreferences(ImmutableValue.HOME_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
+                        int userID = editor2.getInt(ImmutableValue.HOME_userID, 0);
+                        if (userID == mainObj.getOwnerID()){
+                            txt_vehicle_owner.setText("Đây là xe của bạn");
+                            txt_vehicle_owner.setBackgroundResource(R.drawable.border_red);
+                            txt_pickTime.setText("Xem lịch thuê của xe");
+                            btnOrderRent.setEnabled(false);
+                            btnOrderRent.setText("");
+                            btnOrderRent.setBackgroundResource(R.drawable.border_red);
+                            GeneralController.scaleView(ln_hide_order_type, 0);
+                            GeneralController.scaleView(ln_hide_calculator, 0);
+                        }
+
                         // use for init layout
                         final SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
                         editor.putString(ImmutableValue.MAIN_vehicleImgFront, mainObj.getImageLinkFront());
                         editor.putString(ImmutableValue.MAIN_vehicleImgBack, mainObj.getImageLinkBack());
                         editor.putString(ImmutableValue.MAIN_vehicleName, mainObj.getVehicleMaker() + " " + mainObj.getVehicleModel());
+                        editor.putInt(ImmutableValue.MAIN_ownerID, mainObj.getOwnerID());
                         editor.apply();
 
                         sld = new ImageSlider(VehicleDetail.this);
@@ -353,6 +369,9 @@ public class VehicleDetail extends AppCompatActivity {
         txt_money_deposit = (TextView)findViewById(R.id.txt_money_deposit);
         vpg = (ViewPager) findViewById(R.id.vpg);
         txt_pickTime = (TextView)findViewById(R.id.txt_pickTime);
-        btn_back = (ImageView)findViewById(R.id.btn_back);
+        btn_back = (FloatingActionButton)findViewById(R.id.btn_back);
+        txt_vehicle_owner = (TextView)findViewById(R.id.txt_vehicle_owner);
+        ln_hide_order_type = (LinearLayout)findViewById(R.id.ln_hide_order_type);
+        ln_hide_calculator = (LinearLayout)findViewById(R.id.ln_hide_calculator);
     }
 }

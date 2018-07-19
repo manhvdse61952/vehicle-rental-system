@@ -61,8 +61,9 @@ public class CalendarCustom extends AppCompatActivity {
     TextView txt_hour_view_0, txt_hour_view_1, txt_hour_view_2, txt_hour_view_3, txt_hour_view_4, txt_hour_view_5,
             txt_hour_view_6, txt_hour_view_7, txt_hour_view_8, txt_hour_view_9, txt_hour_view_10, txt_hour_view_11,
             txt_hour_view_12, txt_hour_view_13, txt_hour_view_14, txt_hour_view_15, txt_hour_view_16, txt_hour_view_17,
-            txt_hour_view_18, txt_hour_view_19, txt_hour_view_20, txt_hour_view_21, txt_hour_view_22, txt_hour_view_23;
-
+            txt_hour_view_18, txt_hour_view_19, txt_hour_view_20, txt_hour_view_21, txt_hour_view_22, txt_hour_view_23
+            ,txt_hide_start, txt_hide_end, txt_title;
+    NumberPicker time_picker_hours_start, time_picker_minutes_start, time_picker_hours_end, time_picker_minutes_end;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,6 +87,8 @@ public class CalendarCustom extends AppCompatActivity {
 
         //Execute selected day
         executeSelectedDay();
+
+
 
         btn_save_time.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,6 +124,9 @@ public class CalendarCustom extends AppCompatActivity {
         txt_hour_view_21 = (TextView) findViewById(R.id.txt_hour_view_21);
         txt_hour_view_22 = (TextView) findViewById(R.id.txt_hour_view_22);
         txt_hour_view_23 = (TextView) findViewById(R.id.txt_hour_view_23);
+        txt_hide_start = (TextView)findViewById(R.id.txt_hide_start);
+        txt_hide_end = (TextView)findViewById(R.id.txt_hide_end);
+        txt_title = (TextView)findViewById(R.id.txt_title);
         calendarPickerView = (CalendarPickerView) findViewById(R.id.calendar_view);
         rd_oneDay = (RadioButton) findViewById(R.id.rd_oneDay);
         rd_multipleDay = (RadioButton) findViewById(R.id.rd_multipleDay);
@@ -131,10 +137,10 @@ public class CalendarCustom extends AppCompatActivity {
         calendarPickerView.init(today, nextYear.getTime()).inMode(CalendarPickerView.SelectionMode.SINGLE);
 
 
-        final NumberPicker time_picker_hours_start = (NumberPicker) findViewById(R.id.time_picker_hours_start);
-        NumberPicker time_picker_minutes_start = (NumberPicker) findViewById(R.id.time_picker_minutes_start);
-        final NumberPicker time_picker_hours_end = (NumberPicker) findViewById(R.id.time_picker_hours_end);
-        NumberPicker time_picker_minutes_end = (NumberPicker) findViewById(R.id.time_picker_minutes_end);
+        time_picker_hours_start = (NumberPicker) findViewById(R.id.time_picker_hours_start);
+        time_picker_minutes_start = (NumberPicker) findViewById(R.id.time_picker_minutes_start);
+        time_picker_hours_end = (NumberPicker) findViewById(R.id.time_picker_hours_end);
+        time_picker_minutes_end = (NumberPicker) findViewById(R.id.time_picker_minutes_end);
 
         time_picker_hours_start.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
@@ -201,9 +207,7 @@ public class CalendarCustom extends AppCompatActivity {
                     getListRentHour(response.body(), 0);
                     getRentHoursByVehicle();
                 } else {
-                    dialog.dismiss();
-                    Toast.makeText(CalendarCustom.this, "Đã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
-                    backToPreviousScreen();
+                    getRentHoursByVehicle();
                 }
             }
 
@@ -231,15 +235,9 @@ public class CalendarCustom extends AppCompatActivity {
                             listRentHoursGetByAPI = new ArrayList<>();
                             listRentHoursGetByAPI = response.body();
                             getRentHourByUser();
-                        } else {
-                            dialog.dismiss();
-                            Toast.makeText(CalendarCustom.this, "Đã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
-                            backToPreviousScreen();
                         }
                     } else {
-                        dialog.dismiss();
-                        Toast.makeText(CalendarCustom.this, "Đã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
-                        backToPreviousScreen();
+                        getRentHourByUser();
                     }
                 }
 
@@ -259,8 +257,13 @@ public class CalendarCustom extends AppCompatActivity {
 
     private void getRentHourByUser() {
         SharedPreferences editor = getSharedPreferences(ImmutableValue.HOME_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
-        int userID = editor.getInt(ImmutableValue.HOME_userID, 0);
-        String roleName = editor.getString(ImmutableValue.HOME_role, ImmutableValue.ROLE_USER);
+        SharedPreferences editor2 = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
+        final int userID = editor.getInt(ImmutableValue.HOME_userID, 0);
+        final String roleName = editor.getString(ImmutableValue.HOME_role, ImmutableValue.ROLE_USER);
+        final int ownerIdOfVehicle = editor2.getInt(ImmutableValue.MAIN_ownerID, 0);
+        if (userID == ownerIdOfVehicle){
+            ownerViewCalendarMode();
+        }
         Retrofit retrofit = RetrofitConfig.getClient();
         ContractAPI contractAPI = retrofit.create(ContractAPI.class);
         Call<List<ContractItem>> responseBodyCall = null;
@@ -277,80 +280,33 @@ public class CalendarCustom extends AppCompatActivity {
                 if (response.code() == 200) {
                     if (response.body() != null) {
                         List<ContractItem> contractItemList = new ArrayList<>();
+                        List<ContractItem> deletedDuplicated = new ArrayList<>();
                         contractItemList = response.body();
-                        for (int i = 0; i < contractItemList.size(); i++) {
-                            RentTime timeObj = new RentTime();
-                            timeObj.setStartTime(contractItemList.get(i).getStartTime());
-                            timeObj.setEndTime(contractItemList.get(i).getEndTime());
-                            listRentHoursGetByAPI.add(timeObj);
-                        }
 
-                        for (int i = 0; i < listRentHoursGetByAPI.size(); i++) {
-                            getListRentHour(listRentHoursGetByAPI.get(i).getStartTime(),
-                                    listRentHoursGetByAPI.get(i).getEndTime());
+                        for (int i = 0; i < contractItemList.size();i++){
+                            if (roleName.equals(ImmutableValue.ROLE_OWNER)
+                            && userID != ownerIdOfVehicle){
+                                deletedDuplicated.add(contractItemList.get(i));
+                            }
                         }
-
-                        //Remove duplicated value
-                        Set<String> listStringRemoveDuplicatedValue = new HashSet<>();
-                        listStringRemoveDuplicatedValue.addAll(listRentHourString);
-                        listRentHourString.clear();
-                        listRentHourString.addAll(listStringRemoveDuplicatedValue);
-                        for (int i = 0; i < listRentHourString.size(); i++) {
-                            String[] temp = listRentHourString.get(i).split(":");
-                            int yearError = Integer.parseInt(temp[3]);
-                            if (yearError == 1970) {
-                                listRentHourString.remove(i);
+                        if (deletedDuplicated.size() > 0){
+                            for (int i = 0;i < deletedDuplicated.size();i++){
+                                contractItemList.remove(deletedDuplicated.get(i));
                             }
                         }
 
-
-                        //Get rent day
-                        List<String> listRentDay = new ArrayList<>();
-                        for (int i = 0; i < listRentHourString.size(); i++) {
-                            String[] temp = listRentHourString.get(i).split(":");
-                            String day = temp[1] + ":" + temp[2] + ":" + temp[3];
-                            listRentDay.add(day);
-                        }
-
-                        //Remove duplicated rent day
-                        Set<String> listStringRemoveDuplicatedDay = new HashSet<>();
-                        listStringRemoveDuplicatedDay.addAll(listRentDay);
-                        listRentDay.clear();
-                        listRentDay.addAll(listStringRemoveDuplicatedDay);
-
-                        //Catch exception when current day over than rent day
-                        SimpleDateFormat sdf = new SimpleDateFormat("dd:MM:yyyy");
-                        Date currentDay = null, itemInListDay = null;
-                        try {
-                            currentDay = sdf.parse(currentConvertDay);
-                            for (int i = 0; i < listRentDay.size(); i++) {
-                                itemInListDay = sdf.parse(listRentDay.get(i));
-                                if (currentDay.compareTo(itemInListDay) > 0) {
-                                    listRentDay.remove(i);
-                                }
-                            }
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-
-                        //show rent day in calendar
-                        listRentedDay = new ArrayList<>();
-                        for (int i = 0; i < listRentDay.size(); i++) {
-                            try {
-                                itemInListDay = sdf.parse(listRentDay.get(i));
-                                listRentedDay.add(itemInListDay);
-                            } catch (ParseException e) {
-                                e.printStackTrace();
+                        if (contractItemList.size() > 0){
+                            for (int i = 0; i < contractItemList.size(); i++) {
+                                RentTime timeObj = new RentTime();
+                                timeObj.setStartTime(contractItemList.get(i).getStartTime());
+                                timeObj.setEndTime(contractItemList.get(i).getEndTime());
+                                listRentHoursGetByAPI.add(timeObj);
                             }
                         }
-                        calendarPickerView.highlightDates(listRentedDay);
-
                     }
-                } else {
-                    Toast.makeText(CalendarCustom.this, "Đã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
-                    backToPreviousScreen();
                 }
                 dialog.dismiss();
+                highLightRentDay();
             }
 
             @Override
@@ -405,6 +361,73 @@ public class CalendarCustom extends AppCompatActivity {
             //Add ensurance hour
             String hourConvert = (hours + 1) + ":" + temp[1] + ":" + temp[2] + ":" + temp[3];
             listRentHourString.add(hourConvert);
+        }
+    }
+
+    private void highLightRentDay(){
+        for (int i = 0; i < listRentHoursGetByAPI.size(); i++) {
+            getListRentHour(listRentHoursGetByAPI.get(i).getStartTime(),
+                    listRentHoursGetByAPI.get(i).getEndTime());
+        }
+
+        //Remove duplicated value
+        Set<String> listStringRemoveDuplicatedValue = new HashSet<>();
+        listStringRemoveDuplicatedValue.addAll(listRentHourString);
+        listRentHourString.clear();
+        listRentHourString.addAll(listStringRemoveDuplicatedValue);
+        for (int i = 0; i < listRentHourString.size(); i++) {
+            String[] temp = listRentHourString.get(i).split(":");
+            int yearError = Integer.parseInt(temp[3]);
+            if (yearError == 1970) {
+                listRentHourString.remove(i);
+            }
+        }
+
+        //Get rent day
+        if (listRentHourString.size() > 0){
+            List<String> listRentDay = new ArrayList<>();
+            List<String> deletedOverTime = new ArrayList<>();
+            for (int i = 0; i < listRentHourString.size(); i++) {
+                String[] temp = listRentHourString.get(i).split(":");
+                String day = temp[1] + ":" + temp[2] + ":" + temp[3];
+                listRentDay.add(day);
+            }
+
+            //Remove duplicated rent day
+            Set<String> listStringRemoveDuplicatedDay = new HashSet<>();
+            listStringRemoveDuplicatedDay.addAll(listRentDay);
+            listRentDay.clear();
+            listRentDay.addAll(listStringRemoveDuplicatedDay);
+
+            //Catch exception when current day over than rent day
+            SimpleDateFormat sdf = new SimpleDateFormat("dd:MM:yyyy");
+            Date currentDay = null, itemInListDay = null;
+            try {
+                currentDay = sdf.parse(currentConvertDay);
+                for (int i = 0; i < listRentDay.size(); i++) {
+                    itemInListDay = sdf.parse(listRentDay.get(i));
+                    if (currentDay.compareTo(itemInListDay) > 0) {
+                        deletedOverTime.add(listRentDay.get(i));
+                    }
+                }
+                for (int i = 0; i < deletedOverTime.size();i++){
+                    listRentDay.remove(deletedOverTime.get(i));
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            //show rent day in calendar
+            listRentedDay = new ArrayList<>();
+            for (int i = 0; i < listRentDay.size(); i++) {
+                try {
+                    itemInListDay = sdf.parse(listRentDay.get(i));
+                    listRentedDay.add(itemInListDay);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+            calendarPickerView.highlightDates(listRentedDay);
         }
     }
 
@@ -658,6 +681,19 @@ public class CalendarCustom extends AppCompatActivity {
         }
 
         return isFree;
+    }
+
+    private void ownerViewCalendarMode(){
+        rd_oneDay.setVisibility(View.INVISIBLE);
+        rd_multipleDay.setVisibility(View.INVISIBLE);
+        time_picker_hours_end.setVisibility(View.INVISIBLE);
+        time_picker_hours_start.setVisibility(View.INVISIBLE);
+        time_picker_minutes_end.setVisibility(View.INVISIBLE);
+        time_picker_minutes_start.setVisibility(View.INVISIBLE);
+        txt_hide_start.setVisibility(View.INVISIBLE);
+        txt_hide_end.setVisibility(View.INVISIBLE);
+        btn_save_time.setVisibility(View.INVISIBLE);
+        txt_title.setText("Xem lịch thuê của xe");
     }
 
     /////////// SAVE BUTTON ///////////////

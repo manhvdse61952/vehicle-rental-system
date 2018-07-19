@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -68,7 +69,7 @@ public class LoginActivity extends AppCompatActivity {
         locationObj = new PermissionDevice();
         locationObj.checkAddressPermission(LoginActivity.this, LoginActivity.this);
 
-        revertLayout();
+        initLayout();
 
         //Login button
         btnLogin.setOnClickListener(new View.OnClickListener() {
@@ -116,7 +117,7 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void revertLayout(){
+    private void initLayout(){
         // get address data
         if (GeneralAPI.listAddressFromDB.size() == 0) {
             GeneralAPI testAPI = new GeneralAPI();

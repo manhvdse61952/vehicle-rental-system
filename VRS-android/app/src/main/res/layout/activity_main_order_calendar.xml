@@ -12,6 +12,7 @@
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme">
         <TextView
+            android:id="@+id/txt_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Chọn ngày giờ thuê xe"
@@ -327,6 +328,7 @@
             android:gravity="center_vertical"
             android:layout_weight="0.5">
             <TextView
+                android:id="@+id/txt_hide_start"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="5"
@@ -335,6 +337,7 @@
                 android:textColor="@color/secondary_text"
                 android:textSize="16sp"/>
             <TextView
+                android:id="@+id/txt_hide_end"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="5"

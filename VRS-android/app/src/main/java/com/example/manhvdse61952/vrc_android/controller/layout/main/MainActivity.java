@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.manhvdse61952.vrc_android.R;
+import com.example.manhvdse61952.vrc_android.controller.layout.account.UpdateAccount;
 import com.example.manhvdse61952.vrc_android.controller.permission.PermissionDevice;
 import com.example.manhvdse61952.vrc_android.controller.resources.ImmutableValue;
 import com.example.manhvdse61952.vrc_android.model.api_interface.VehicleAPI;
@@ -61,7 +63,6 @@ public class MainActivity extends AppCompatActivity
     DrawerLayout drawer;
     Toolbar toolbar;
     ProgressDialog dialog;
-
     ///////////////// USE FOR SEARCH ADAPTER ////////
     public static List<SearchVehicleItem> listMotorbike = new ArrayList<>();
     public static List<SearchVehicleItem> listPersonalCar = new ArrayList<>();
@@ -94,7 +95,6 @@ public class MainActivity extends AppCompatActivity
         initLayout();
 
         //Init the list of vehicle
-        getAllVehicleByDistrictID(44);
 //        int districtID = getDistrictIdByName("quận bình thạnh");
 //        if (districtID == 0) {
 //            getAllVehicleByDistrictID(44);
@@ -181,8 +181,9 @@ public class MainActivity extends AppCompatActivity
 //
 //        } else if (id == R.id.nav_share) {
 //
-//        } else if (id == R.id.nav_send) {
-
+        } else if (id == R.id.nav_manage_account) {
+            Intent it = new Intent(MainActivity.this, UpdateAccount.class);
+            startActivity(it);
         } else if (id == R.id.nav_logout) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage("Bạn có chắc chắn muốn đăng xuất ?").setCancelable(false)
@@ -396,21 +397,6 @@ public class MainActivity extends AppCompatActivity
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         main_extra_search = (ImageView) findViewById(R.id.main_extra_search);
-    }
-
-    private void initLayout(){
-        //Get current address in the first time
-        String addressCurrent = PermissionDevice.getLocation(MainActivity.this, MainActivity.this);
-        String addressFull = "";
-        if (!addressCurrent.trim().equals("")){
-            String[] arrayAddressTemp = addressCurrent.split(",");
-            addressFull = arrayAddressTemp[0];
-            for (int i = 1; i < arrayAddressTemp.length - 1;i++){
-                addressFull = addressFull + ", " + arrayAddressTemp[i].trim();
-            }
-        }
-        txt_main_search_address.setText(addressFull);
-        txt_main_search_place.setText("Vị trí hiện tại");
 
         //Toggle the actionbar
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -436,5 +422,22 @@ public class MainActivity extends AppCompatActivity
         } else {
             txtNavRole.setText("Chủ xe");
         }
+
+        //Get current address in the first time
+        String addressCurrent = PermissionDevice.getLocation(MainActivity.this, MainActivity.this);
+        String addressFull = "";
+        if (!addressCurrent.trim().equals("")){
+            String[] arrayAddressTemp = addressCurrent.split(",");
+            addressFull = arrayAddressTemp[0];
+            for (int i = 1; i < arrayAddressTemp.length - 1;i++){
+                addressFull = addressFull + ", " + arrayAddressTemp[i].trim();
+            }
+        }
+        txt_main_search_address.setText(addressFull);
+        txt_main_search_place.setText("Vị trí hiện tại");
+    }
+
+    private void initLayout(){
+        getAllVehicleByDistrictID(44);
     }
 }

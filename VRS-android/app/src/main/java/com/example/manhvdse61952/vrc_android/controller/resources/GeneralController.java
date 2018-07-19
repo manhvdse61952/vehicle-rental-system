@@ -1,8 +1,12 @@
 package com.example.manhvdse61952.vrc_android.controller.resources;
 
 import android.animation.ValueAnimator;
+import android.os.Handler;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 
 import java.text.Format;
 import java.text.SimpleDateFormat;
@@ -66,4 +70,28 @@ public class GeneralController {
         anim.start();
     }
 
+    public static void scaleViewAndScroll(final LinearLayout v, int value, final ScrollView view) {
+        ValueAnimator anim = ValueAnimator.ofInt(v.getMeasuredHeight(), value);
+        anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                int val = (Integer) valueAnimator.getAnimatedValue();
+                ViewGroup.LayoutParams layoutParams = v.getLayoutParams();
+                layoutParams.height = val;
+                v.setLayoutParams(layoutParams);
+            }
+        });
+        anim.start();
+        (new Handler()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                view.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        view.scrollTo(0, view.getBottom());
+                    }
+                });
+            }
+        }, 100);
+    }
 }

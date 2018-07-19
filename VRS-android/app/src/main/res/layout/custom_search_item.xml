@@ -55,13 +55,13 @@
         android:text="100.000.000"
         android:textColor="@color/colorPrimaryDark"
         android:background="@drawable/border_price"
-        android:paddingTop="20dp"
+        android:paddingTop="10dp"
         android:textStyle="bold"
-        android:paddingBottom="20dp"
-        android:paddingLeft="25dp"
-        android:paddingRight="25dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
         android:maxLength="20"
         android:layout_marginTop="195dp"
         android:layout_alignParentRight="true"
-        android:textSize="16sp"/>
+        android:textSize="18sp"/>
 </RelativeLayout>

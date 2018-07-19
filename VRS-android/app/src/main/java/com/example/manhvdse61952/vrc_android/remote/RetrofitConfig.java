@@ -6,7 +6,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitConfig {
 
     private static Retrofit retrofit = null;
-    static String offlineTest = "http://192.168.43.39:8080";
+    static String offlineTest = "http://192.168.110.8:8080";
     static String onlineTest = "https://vrcapi.azurewebsites.net/";
     static String onlineTest2 = "http://103.90.224.144:8080";
 

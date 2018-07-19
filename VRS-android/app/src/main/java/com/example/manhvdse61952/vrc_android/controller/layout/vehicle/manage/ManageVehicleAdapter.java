@@ -47,9 +47,10 @@ public class ManageVehicleAdapter extends RecyclerView.Adapter<ManageVehicleAdap
             public void onClick(View v) {
                 SharedPreferences.Editor editor = ctx.getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, ctx.MODE_PRIVATE).edit();
                 editor.putString(ImmutableValue.MAIN_vehicleID, vehicleList.get(position).getFrameNumber());
-                editor.putInt(ImmutableValue.MAIN_vehicleSeat, vehicleList.get(position).getSeat());
-                editor.putString(ImmutableValue.MAIN_vehicleType, vehicleList.get(position).getVehicleType());
                 editor.apply();
+                SharedPreferences.Editor editor2 = ctx.getSharedPreferences(ImmutableValue.SIGNUP_SHARED_PREFERENCES_CODE, ctx.MODE_PRIVATE).edit();
+                editor2.putString(ImmutableValue.VEHICLE_address, "Empty");
+                editor2.apply();
                 Intent it = new Intent(ctx, UpdateVehicle.class);
                 it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 ctx.startActivity(it);
