@@ -51,8 +51,6 @@ public class LoginActivity extends AppCompatActivity {
     TextInputLayout username_txt, password_txt;
     EditText edtUsername, edtPassword;
 
-    PermissionDevice locationObj;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,12 +62,6 @@ public class LoginActivity extends AppCompatActivity {
         edtPassword = (EditText) findViewById(R.id.password);
         btnLogin = (Button) findViewById(R.id.btnLogin);
         txtSignUp = (TextView) findViewById(R.id.txtSignUp);
-
-        //Check location of user
-        locationObj = new PermissionDevice();
-        locationObj.checkAddressPermission(LoginActivity.this, LoginActivity.this);
-
-        initLayout();
 
         //Login button
         btnLogin.setOnClickListener(new View.OnClickListener() {
@@ -93,23 +85,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case PermissionDevice.REQUEST_LOCATION:
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    locationObj = new PermissionDevice();
-                    locationObj.checkAddressPermission(LoginActivity.this, LoginActivity.this);
-                } else if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                    Intent intent = new Intent(Intent.ACTION_MAIN);
-                    intent.addCategory(Intent.CATEGORY_HOME);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                }
-                break;
-        }
-    }
-
-    @Override
     public void onBackPressed() {
         Intent intent = new Intent(Intent.ACTION_MAIN);
         intent.addCategory(Intent.CATEGORY_HOME);
@@ -117,45 +92,17 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void initLayout(){
-        // get address data
-        if (GeneralAPI.listAddressFromDB.size() == 0) {
-            GeneralAPI testAPI = new GeneralAPI();
-            testAPI.getAllAddress(dialog, LoginActivity.this);
-        }
-
-        //Revert layout
-        SharedPreferences editor = getSharedPreferences(ImmutableValue.HOME_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
-        SharedPreferences editor2 = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
-        int usernameID = editor.getInt(ImmutableValue.HOME_userID, 0);
-        String vehicleID = editor2.getString(ImmutableValue.MAIN_vehicleID, "Empty");
-        String contractStatus = editor2.getString(ImmutableValue.MAIN_contractID, "Empty");
-        if (usernameID != 0 && !contractStatus.equals("Empty")){
-            Intent it = new Intent(LoginActivity.this, ManageContractActivity.class);
-            it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(it);
-//        } else if (usernameID != 0 && !vehicleID.equals("Empty")) {
-//            Intent it = new Intent(LoginActivity.this, VehicleDetail.class);
-//            it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//            startActivity(it);
-        } else if (usernameID != 0 && vehicleID.equals("Empty")) {
-            Intent it = new Intent(LoginActivity.this, MainActivity.class);
-            it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(it);
-        }
-    }
-
     private void loginAction(){
         //Check address if empty
         if (GeneralAPI.listAddressFromDB.size() == 0) {
             GeneralAPI testAPI = new GeneralAPI();
-            testAPI.getAllAddress(dialog, LoginActivity.this);
+            testAPI.getAllAddress(LoginActivity.this);
         }
         //Check login
         username = edtUsername.getText().toString().trim();
         password = edtPassword.getText().toString().trim();
         validObj = new ValidateInput();
-        locationObj.checkAddressPermission(LoginActivity.this, LoginActivity.this);
+
         Boolean checkUsername = validObj.validUsername(username, edtUsername);
         Boolean checkPassword = validObj.validPassword(password, edtPassword);
         if (checkUsername && checkPassword) {
@@ -182,7 +129,7 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(it);
         } else {
             GeneralAPI testAPI = new GeneralAPI();
-            testAPI.getAllAddress(dialog, LoginActivity.this);
+            testAPI.getAllAddress(LoginActivity.this);
         }
     }
 

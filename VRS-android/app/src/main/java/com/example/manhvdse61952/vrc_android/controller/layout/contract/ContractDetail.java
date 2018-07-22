@@ -140,9 +140,8 @@ public class ContractDetail extends AppCompatActivity {
     public void onBackPressed() {
         SharedPreferences settings_3 = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
         settings_3.edit().clear().commit();
-        Intent it = new Intent(ContractDetail.this, ManageContractActivity.class);
-        it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(it);
+        ContractDetail.this.finish();
+        super.onBackPressed();
     }
 
     @Override

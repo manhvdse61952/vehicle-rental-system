@@ -1,18 +1,28 @@
 package com.example.manhvdse61952.vrc_android.controller.layout.vehicle.manage;
 
+import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.Rect;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -60,6 +70,10 @@ public class UpdateVehicle extends AppCompatActivity {
     String frameNumber = "";
     float rentFeePerHour = 0, rentFeePerDay = 0, depositFee = 0;
 
+    LocationManager locationManager;
+    LocationListener locationListener;
+    double longitude = 0, latitude = 0;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,11 +104,10 @@ public class UpdateVehicle extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        SharedPreferences settings = getSharedPreferences(ImmutableValue.SIGNUP_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
+        SharedPreferences settings = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
         settings.edit().clear().commit();
-        Intent it = new Intent(UpdateVehicle.this, ManageVehicleActivity.class);
-        it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(it);
+        UpdateVehicle.this.finish();
+        super.onBackPressed();
     }
 
     private void declareID() {
@@ -125,7 +138,7 @@ public class UpdateVehicle extends AppCompatActivity {
     private void initLayout() {
         dialog = ProgressDialog.show(UpdateVehicle.this, "Hệ thống",
                 "Vui lòng đợi ...", true);
-        SharedPreferences editor = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
+        final SharedPreferences editor = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
         frameNumber = editor.getString(ImmutableValue.MAIN_vehicleID, "Empty");
         Retrofit test = RetrofitConfig.getClient();
         final VehicleAPI testAPI = test.create(VehicleAPI.class);
@@ -198,9 +211,15 @@ public class UpdateVehicle extends AppCompatActivity {
                         });
 
 
-                        SharedPreferences editor = getSharedPreferences(ImmutableValue.SIGNUP_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
-                        String address = editor.getString(ImmutableValue.VEHICLE_address, "Empty");
-                        if (!address.equals("Empty")){
+//                        SharedPreferences editor = getSharedPreferences(ImmutableValue.SIGNUP_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
+                        String address = editor.getString(ImmutableValue.MAIN_vehicleAddress, "Empty");
+                        String latitudeReceive = editor.getString(ImmutableValue.MAIN_vehicleLng, "Empty");
+                        String longitudeReceive = editor.getString(ImmutableValue.MAIN_vehicleLat, "Empty");
+                        if (!latitudeReceive.equals("Empty") && !longitudeReceive.equals("Empty")) {
+                            longitude = Double.parseDouble(longitudeReceive);
+                            latitude = Double.parseDouble(latitudeReceive);
+                        }
+                        if (!address.equals("Empty")) {
                             txt_vehicle_address.setText(address);
                         } else {
                             txt_vehicle_address.setText(obj.getAddress() + "");
@@ -217,7 +236,6 @@ public class UpdateVehicle extends AppCompatActivity {
                             @Override
                             public void onClick(View v) {
                                 Intent it = new Intent(UpdateVehicle.this, SearchAddressVehicle.class);
-                                it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(it);
                             }
                         });
@@ -279,20 +297,60 @@ public class UpdateVehicle extends AppCompatActivity {
         (new Handler()).postDelayed(new Runnable() {
             @Override
             public void run() {
-                String currentAddress = PermissionDevice.getLocation(UpdateVehicle.this, UpdateVehicle.this);
-                String addressFull = "";
-                if (!currentAddress.trim().equals("")) {
-                    String[] arrayAddressTemp = currentAddress.split(",");
-                    addressFull = arrayAddressTemp[0];
-                    for (int i = 1; i < arrayAddressTemp.length - 2; i++) {
-                        addressFull = addressFull + ", " + arrayAddressTemp[i].trim();
+                locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+                locationListener = new LocationListener() {
+                    @Override
+                    public void onLocationChanged(Location location) {
+                        longitude = location.getLongitude();
+                        latitude = location.getLatitude();
+                        String currentAddress = PermissionDevice.getStringAddress(longitude, latitude, UpdateVehicle.this);
+                        txt_vehicle_address.setText(currentAddress);
+                        SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
+                        editor.putString(ImmutableValue.MAIN_vehicleAddress, currentAddress);
+                        editor.putString(ImmutableValue.MAIN_vehicleLat, String.valueOf(location.getLatitude()));
+                        editor.putString(ImmutableValue.MAIN_vehicleLng, String.valueOf(location.getLongitude()));
+                        editor.apply();
+                        locationManager.removeUpdates(locationListener);
                     }
+
+                    @Override
+                    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+                    }
+
+                    @Override
+                    public void onProviderEnabled(String provider) {
+
+                    }
+
+                    @Override
+                    public void onProviderDisabled(String provider) {
+
+                    }
+                };
+                if (ActivityCompat.checkSelfPermission(UpdateVehicle.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    return;
                 }
-                SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SIGNUP_SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
-                editor.putString(ImmutableValue.VEHICLE_address, addressFull);
-                editor.apply();
-                txt_vehicle_address.setText(addressFull);
+                if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+                } else if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+                }
                 dialog.dismiss();
+//                String currentAddress = PermissionDevice.getLocation(UpdateVehicle.this, UpdateVehicle.this);
+//                String addressFull = "";
+//                if (!currentAddress.trim().equals("")) {
+//                    String[] arrayAddressTemp = currentAddress.split(",");
+//                    addressFull = arrayAddressTemp[0];
+//                    for (int i = 1; i < arrayAddressTemp.length - 2; i++) {
+//                        addressFull = addressFull + ", " + arrayAddressTemp[i].trim();
+//                    }
+//                }
+//                SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SIGNUP_SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
+//                editor.putString(ImmutableValue.VEHICLE_address, addressFull);
+//                editor.apply();
+//                txt_vehicle_address.setText(addressFull);
+//                dialog.dismiss();
             }
         }, 500);
     }
@@ -322,8 +380,8 @@ public class UpdateVehicle extends AppCompatActivity {
             }
             obj.setDescription(edt_vehicle_description.getText().toString() + "");
             obj.setAddress(txt_vehicle_address.getText().toString() + "");
-            obj.setLongitude("0");
-            obj.setLatitude("0");
+            obj.setLongitude(String.valueOf(longitude));
+            obj.setLatitude(String.valueOf(latitude));
 
             Retrofit test = RetrofitConfig.getClient();
             VehicleAPI vehicleAPI = test.create(VehicleAPI.class);
@@ -480,5 +538,22 @@ public class UpdateVehicle extends AppCompatActivity {
                 edt.addTextChangedListener(this);
             }
         };
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            View v = getCurrentFocus();
+            if (v instanceof EditText) {
+                Rect outRect = new Rect();
+                v.getGlobalVisibleRect(outRect);
+                if (!outRect.contains((int) event.getRawX(), (int) event.getRawY())) {
+                    v.clearFocus();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+        }
+        return super.dispatchTouchEvent(event);
     }
 }

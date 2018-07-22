@@ -73,8 +73,6 @@ public class VehicleDetail extends AppCompatActivity {
 
         SharedPreferences editor = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
         String frameNumber = editor.getString(ImmutableValue.MAIN_vehicleID, "aaaaaa");
-        final String vehicleType = editor.getString(ImmutableValue.MAIN_vehicleType, ImmutableValue.XE_MAY);
-        final String vehicleSeat = editor.getString(ImmutableValue.MAIN_vehicleSeat, "0");
         String startHour = editor.getString(ImmutableValue.MAIN_startHour, "--");
         String endHour = editor.getString(ImmutableValue.MAIN_endHour, "--");
         String startMinute = editor.getString(ImmutableValue.MAIN_startMinute, "--");
@@ -133,7 +131,7 @@ public class VehicleDetail extends AppCompatActivity {
 
                         sld = new ImageSlider(VehicleDetail.this);
                         vpg.setAdapter(sld);
-                        if (vehicleType.equals(ImmutableValue.XE_MAY)) {
+                        if (mainObj.getVehicleType().equals(ImmutableValue.XE_MAY)) {
                             selectTab = 0;
                             item_engine.setText("Xăng");
                             if (mainObj.getScooter() == true) {
@@ -142,9 +140,9 @@ public class VehicleDetail extends AppCompatActivity {
                                 item_tranmission.setText("Xe số");
                             }
                         } else {
-                            if (vehicleType.equals(ImmutableValue.XE_CA_NHAN)){
+                            if (mainObj.getVehicleType().equals(ImmutableValue.XE_CA_NHAN)){
                                 selectTab = 1;
-                            } else if (vehicleType.equals(ImmutableValue.XE_DU_LICH)) {
+                            } else if (mainObj.getVehicleType().equals(ImmutableValue.XE_DU_LICH)) {
                                 selectTab = 2;
                             }
 
@@ -171,7 +169,7 @@ public class VehicleDetail extends AppCompatActivity {
                         item_price_deposit.setText(deposit);
                         txt_money_deposit.setText(deposit);
 
-                        item_seat.setText(vehicleSeat);
+                        item_seat.setText(mainObj.getSeat() + "");
                         item_year.setText(mainObj.getModelYear() + "");
                         editor.putInt("vehicleYear", mainObj.getModelYear());
                         item_plateNumber.setText(mainObj.getPlateNumber());
@@ -317,8 +315,8 @@ public class VehicleDetail extends AppCompatActivity {
         SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.HOME_SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
         editor.putInt(ImmutableValue.HOME_tabIndex, selectTab);
         editor.apply();
-        Intent it = new Intent(VehicleDetail.this, MainActivity.class);
-        startActivity(it);
+        VehicleDetail.this.finish();
+        super.onBackPressed();
     }
 
     public void scaleView(TextView v, float startScale, float endScale) {

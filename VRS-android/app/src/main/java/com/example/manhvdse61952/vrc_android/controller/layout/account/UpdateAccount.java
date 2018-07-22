@@ -84,6 +84,7 @@ public class UpdateAccount extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        UpdateAccount.this.finish();
         super.onBackPressed();
     }
 
@@ -112,6 +113,17 @@ public class UpdateAccount extends AppCompatActivity {
     }
 
     private void initLayout(){
+        SharedPreferences editor = getSharedPreferences(ImmutableValue.HOME_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
+        id = editor.getInt(ImmutableValue.HOME_userID, 0);
+        String role = editor.getString(ImmutableValue.HOME_role, ImmutableValue.ROLE_USER);
+        if (role.equals(ImmutableValue.ROLE_USER)){
+            img_update_profile.setImageResource(R.drawable.img_customer_edit_2);
+            txt_update_role.setText("Người thuê xe");
+        } else {
+            img_update_profile.setImageResource(R.drawable.img_owner);
+            txt_update_role.setText("Chủ xe");
+        }
+
         img_edit_name.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -147,8 +159,6 @@ public class UpdateAccount extends AppCompatActivity {
         });
         dialog = ProgressDialog.show(UpdateAccount.this, "Hệ thống",
                 "Đang xử lý...", true);
-        SharedPreferences editor = getSharedPreferences(ImmutableValue.HOME_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
-        id = editor.getInt(ImmutableValue.HOME_userID, 0);
         Retrofit test = RetrofitConfig.getClient();
         AccountAPI accountAPI = test.create(AccountAPI.class);
         Call<AccountUpdate> responseBodyCall = accountAPI.getUserInfoByID(id);

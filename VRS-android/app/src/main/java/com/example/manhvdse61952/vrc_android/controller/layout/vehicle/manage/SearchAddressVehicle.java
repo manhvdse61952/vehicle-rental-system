@@ -35,20 +35,13 @@ public class SearchAddressVehicle extends AppCompatActivity {
             @Override
             public void onPlaceSelected(Place place) {
                 String currentAddressStr = PermissionDevice.getStringAddress(place.getLatLng().longitude, place.getLatLng().latitude, SearchAddressVehicle.this);
-                String addressFull = "";
-                if (!currentAddressStr.trim().equals("")) {
-                    String[] arrayAddressTemp = currentAddressStr.split(",");
-                    addressFull = arrayAddressTemp[0];
-                    for (int i = 1; i < arrayAddressTemp.length - 2; i++) {
-                        addressFull = addressFull + ", " + arrayAddressTemp[i].trim();
-                    }
-                }
-                SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SIGNUP_SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
-                editor.putString(ImmutableValue.VEHICLE_address, addressFull);
+
+                SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
+                editor.putString(ImmutableValue.MAIN_vehicleAddress, currentAddressStr);
+                editor.putString(ImmutableValue.MAIN_vehicleLat, String.valueOf(place.getLatLng().latitude));
+                editor.putString(ImmutableValue.MAIN_vehicleLng, String.valueOf(place.getLatLng().longitude));
                 editor.apply();
-                Intent it = new Intent(SearchAddressVehicle.this, UpdateVehicle.class);
-                it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(it);
+                onBackPressed();
             }
 
             @Override
@@ -60,9 +53,8 @@ public class SearchAddressVehicle extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent it = new Intent(SearchAddressVehicle.this, UpdateVehicle.class);
-        it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(it);
+        SearchAddressVehicle.this.finish();
+        super.onBackPressed();
     }
 
     @Override

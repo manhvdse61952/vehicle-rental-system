@@ -1,17 +1,36 @@
 package com.example.manhvdse61952.vrc_android.controller.layout.main;
 
+
+import android.Manifest;
+import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+
+import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.Rect;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
+
+import android.os.Looper;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
+
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.SwipeRefreshLayout;
+
 import android.support.v7.app.AlertDialog;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -21,14 +40,26 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.manhvdse61952.vrc_android.R;
 import com.example.manhvdse61952.vrc_android.controller.layout.account.UpdateAccount;
+import com.example.manhvdse61952.vrc_android.controller.layout.contract.ContractDetail;
+import com.example.manhvdse61952.vrc_android.controller.layout.vehicle.manage.UpdateVehicle;
+import com.example.manhvdse61952.vrc_android.controller.layout.vehicle.showdetail.VehicleDetail;
 import com.example.manhvdse61952.vrc_android.controller.permission.PermissionDevice;
+import com.example.manhvdse61952.vrc_android.controller.resources.GeneralController;
 import com.example.manhvdse61952.vrc_android.controller.resources.ImmutableValue;
+import com.example.manhvdse61952.vrc_android.model.api_interface.ContractAPI;
 import com.example.manhvdse61952.vrc_android.model.api_interface.VehicleAPI;
 import com.example.manhvdse61952.vrc_android.controller.layout.contract.ManageContractActivity;
 import com.example.manhvdse61952.vrc_android.controller.layout.login.LoginActivity;
@@ -37,6 +68,7 @@ import com.example.manhvdse61952.vrc_android.controller.layout.vehicle.showlist.
 import com.example.manhvdse61952.vrc_android.controller.layout.vehicle.showlist.CarTab;
 import com.example.manhvdse61952.vrc_android.controller.layout.vehicle.showlist.TravelCarTab;
 import com.example.manhvdse61952.vrc_android.model.api_model.City;
+import com.example.manhvdse61952.vrc_android.model.api_model.ContractItem;
 import com.example.manhvdse61952.vrc_android.model.api_model.District;
 import com.example.manhvdse61952.vrc_android.model.search_model.SearchVehicleItem;
 import com.example.manhvdse61952.vrc_android.controller.resources.GeneralAPI;
@@ -46,8 +78,11 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -58,16 +93,23 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     ImageView img_current_address, main_extra_search;
-    TextView txt_main_search_place, txt_main_search_address;
+    TextView txt_main_search_address, txt_longitude, txt_latitude;
     NavigationView navigationView;
     DrawerLayout drawer;
     Toolbar toolbar;
     ProgressDialog dialog;
+    LinearLayout ln_advance;
+    Spinner spn_vehicleType, spn_seat, spn_priceType, spn_city, spn_district;
+    EditText edt_priceFrom, edt_priceTo;
+    int cityPosition = 0, districtID = 0;
+    RelativeLayout rl_around;
+
+    Boolean isOpenMaker = false, isOpenAdvance = false;
+    int fromPrice = 0, toPrice = 0;
     ///////////////// USE FOR SEARCH ADAPTER ////////
     public static List<SearchVehicleItem> listMotorbike = new ArrayList<>();
     public static List<SearchVehicleItem> listPersonalCar = new ArrayList<>();
     public static List<SearchVehicleItem> listTravelCar = new ArrayList<>();
-    public static List<District> listAllDistrict = new ArrayList<>();
     //////////////////////////////////////////////////////////////////////
 
     ///////////////// USE FOR TAB LAYOUT /////////
@@ -75,6 +117,11 @@ public class MainActivity extends AppCompatActivity
     private TabLayout tabLayout;
     public static SectionPageAdapter secAdapter;
     /////////////////////////////////////////////////////////////
+
+    ///////////////// TEST CODE ///////////
+    LocationManager locationManager;
+    LocationListener locationListener;
+    ///////////////////////////////////////
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,27 +132,53 @@ public class MainActivity extends AppCompatActivity
 
         declareID();
 
+        checkScreen();
+
+        getCurrentLocation(true);
+
+        GeneralController.scaleView(ln_advance, 0);
+
         //Place Autocomplete
         showSearchPlace();
 
-        //Get list district
-        getAllDistrict();
-
         //Init layout in the first time
-        initLayout();
-
-        //Init the list of vehicle
-//        int districtID = getDistrictIdByName("quận bình thạnh");
-//        if (districtID == 0) {
-//            getAllVehicleByDistrictID(44);
-//        } else {
-//            getAllVehicleByDistrictID(districtID);
-//        }
+        getAllVehicleByDistrictID(44);
 
         img_current_address.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showCurrentPlace();
+                dialog = ProgressDialog.show(MainActivity.this, "Hệ thống",
+                        "Đang xử lý", true);
+                (new Handler()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (isOpenMaker == false){
+                            getCurrentLocation(false);
+                            img_current_address.setImageResource(R.drawable.ic_map_marker_alt);
+                            Toast.makeText(MainActivity.this, "Đã bật tự động lấy vị trí", Toast.LENGTH_SHORT).show();
+                            isOpenMaker = true;
+                        } else if (isOpenMaker){
+                            locationManager.removeUpdates(locationListener);
+                            img_current_address.setImageResource(R.drawable.ic_map_disable);
+                            Toast.makeText(MainActivity.this, "Đã tắt tự động lấy vị trí", Toast.LENGTH_SHORT).show();
+                            isOpenMaker = false;
+                        }
+                        dialog.dismiss();
+                    }
+                }, 500);
+            }
+        });
+
+        main_extra_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isOpenAdvance == false){
+                    GeneralController.scaleView(ln_advance, 600);
+                    isOpenAdvance = true;
+                } else if (isOpenAdvance == true){
+                    GeneralController.scaleView(ln_advance, 0);
+                    isOpenAdvance = false;
+                }
             }
         });
 
@@ -194,8 +267,8 @@ public class MainActivity extends AppCompatActivity
                             settings.edit().clear().commit();
                             SharedPreferences settings_3 = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
                             settings_3.edit().clear().commit();
+                            MainActivity.this.finish();
                             Intent it = new Intent(MainActivity.this, LoginActivity.class);
-                            it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(it);
                             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
                             drawer.closeDrawer(GravityCompat.START);
@@ -214,18 +287,100 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    private void getAllDistrict() {
-        List<City> listCity = GeneralAPI.listAddressFromDB;
-        for (int i = 0; i < listCity.size(); i++) {
-            List<District> listDistrict = listCity.get(i).getDistrict();
-            for (int j = 0; j < listDistrict.size(); j++) {
-                District districtObj = new District();
-                districtObj.setId(listDistrict.get(j).getId());
-                districtObj.setDistrictName(listDistrict.get(j).getDistrictName() + ", " + listCity.get(i).cityName);
-                listAllDistrict.add(districtObj);
-            }
+    private void declareID(){
+        img_current_address = (ImageView)findViewById(R.id.img_current_address);
+        txt_main_search_address = (TextView)findViewById(R.id.txt_main_search_address);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        main_extra_search = (ImageView) findViewById(R.id.main_extra_search);
+        txt_longitude = (TextView)findViewById(R.id.txt_longitude);
+        txt_latitude = (TextView)findViewById(R.id.txt_latitude);
+        ln_advance = (LinearLayout)findViewById(R.id.ln_advance);
+        spn_vehicleType = (Spinner)findViewById(R.id.spn_vehicleType);
+        spn_city = (Spinner)findViewById(R.id.spn_city);
+        spn_district = (Spinner)findViewById(R.id.spn_district);
+        spn_priceType = (Spinner)findViewById(R.id.spn_priceType);
+        spn_seat = (Spinner)findViewById(R.id.spn_seat);
+        edt_priceFrom = (EditText)findViewById(R.id.edt_priceFrom);
+        edt_priceTo = (EditText)findViewById(R.id.edt_priceTo);
+        rl_around = (RelativeLayout)findViewById(R.id.rl_around);
+
+        //Toggle the actionbar
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        if (GeneralAPI.listAddressFromDB.size() == 0) {
+            GeneralAPI testAPI = new GeneralAPI();
+            testAPI.getAllAddress(MainActivity.this);
         }
+        //Use for nav layout
+        navigationView.setNavigationItemSelectedListener(this);
+        SharedPreferences editor = getSharedPreferences(ImmutableValue.HOME_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
+        View hView = navigationView.getHeaderView(0);
+        TextView txtNavFullname = (TextView) hView.findViewById(R.id.txtNavFullname);
+        TextView txtNavUsername = (TextView) hView.findViewById(R.id.txtNavUsername);
+        TextView txtNavRole = (TextView) hView.findViewById(R.id.txtNavRole);
+        txtNavUsername.setText(editor.getString(ImmutableValue.HOME_username, "Empty"));
+        txtNavFullname.setText(editor.getString(ImmutableValue.HOME_fullName, "Empty"));
+        if (editor.getString(ImmutableValue.HOME_role, ImmutableValue.ROLE_USER).equals(ImmutableValue.ROLE_USER)) {
+            txtNavRole.setText("Khách hàng");
+            Menu nav_Menu = navigationView.getMenu();
+            nav_Menu.findItem(R.id.nav_manage_vehicle).setVisible(false);
+            nav_Menu.findItem(R.id.nav_manage_drivers).setVisible(false);
+            nav_Menu.findItem(R.id.nav_discount).setVisible(false);
+        } else {
+            txtNavRole.setText("Chủ xe");
+        }
+
+        rl_around.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog = ProgressDialog.show(MainActivity.this, "Hệ thống",
+                        "Đang xử lý", true);
+                (new Handler()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent it = new Intent(MainActivity.this, MapsActivity.class);
+                        startActivity(it);
+                        dialog.dismiss();
+                    }
+                }, 500);
+            }
+        });
+
+        List<String> listVehicleType = new ArrayList<>();
+        listVehicleType.add("máy");
+        listVehicleType.add("cá nhân");
+        listVehicleType.add("du lịch");
+        ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(this, R.layout.spinner_item, listVehicleType);
+        spn_vehicleType.setAdapter(adapter1);
+
+        List<String> listSeat = new ArrayList<>();
+        listSeat.add("2");
+        listSeat.add("4-7");
+        listSeat.add("8-16");
+        listSeat.add("17-32");
+        listSeat.add("> 32");
+        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this, R.layout.spinner_item, listSeat);
+        spn_seat.setAdapter(adapter2);
+
+        List<String> listPriceType = new ArrayList<>();
+        listPriceType.add("ngày");
+        listPriceType.add("giờ");
+        ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(this, R.layout.spinner_item, listPriceType);
+        spn_priceType.setAdapter(adapter3);
+
+        if (GeneralAPI.listAddressFromDB.size() != 0){
+            initDistrictAndCity();
+        }
+
+        edt_priceFrom.addTextChangedListener(convertFromPriceRealTime(edt_priceFrom));
+        edt_priceTo.addTextChangedListener(convertToPriceRealTime(edt_priceTo));
     }
+
+    //Use for init layout
 
     private int getDistrictIdByName(String districtName) {
         List<City> listCity = GeneralAPI.listAddressFromDB;
@@ -233,16 +388,12 @@ public class MainActivity extends AppCompatActivity
         for (int i = 0; i < listCity.size(); i++) {
             List<District> listDistrict = listCity.get(i).getDistrict();
             for (int j = 0; j < listDistrict.size(); j++) {
-                //String districtConvert = listDistrict.get(j).getDistrictName().toLowerCase().replaceAll("[quận|huyện]", "");
-//                if (districtConvert.equals(districtName)){
-//                    districtID = listDistrict.get(j).getId();
-//                    break;
-//                }
-
-                if (listDistrict.get(j).getDistrictName().toLowerCase().equals(districtName)) {
+                String districtConvert = listDistrict.get(j).getDistrictName().toLowerCase().replace("quận", "");
+                if (districtConvert.equals(districtName)){
                     districtID = listDistrict.get(j).getId();
                     break;
                 }
+
             }
         }
         return districtID;
@@ -341,6 +492,200 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
+    private void initDistrictAndCity() {
+        if (GeneralAPI.listAddressFromDB.size() == 0){
+            GeneralAPI testAPI = new GeneralAPI();
+            testAPI.getAllAddress(MainActivity.this);
+        } else {
+            final List<City> listAddress = GeneralAPI.listAddressFromDB;
+            ArrayAdapter<City> cityArrayAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, listAddress);
+            spn_city.setAdapter(cityArrayAdapter);
+
+            spn_city.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    List<District> districts = listAddress.get(position).getDistrict();
+                    cityPosition = position;
+                    ArrayAdapter<District> districtAdapter = new ArrayAdapter<>(MainActivity.this, R.layout.spinner_item, districts);
+                    spn_district.setAdapter(districtAdapter);
+
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+            spn_district.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    districtID = 0;
+                    District district = listAddress.get(cityPosition).getDistrict().get(position);
+                    districtID = district.getId();
+
+                }
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+        }
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            View v = getCurrentFocus();
+            if ( v instanceof EditText) {
+                Rect outRect = new Rect();
+                v.getGlobalVisibleRect(outRect);
+                if (!outRect.contains((int)event.getRawX(), (int)event.getRawY())) {
+                    v.clearFocus();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+        }
+        return super.dispatchTouchEvent( event );
+    }
+
+    private TextWatcher convertFromPriceRealTime(final EditText edt) {
+        return new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                edt.removeTextChangedListener(this);
+
+                try {
+                    String originalString = s.toString();
+
+                    Long longval;
+                    if (originalString.contains(",")) {
+                        originalString = originalString.replaceAll(",", "");
+                    }
+                    if (!originalString.equals("")){
+                        fromPrice = Integer.parseInt(originalString);
+                    }
+
+
+                    longval = Long.parseLong(originalString);
+
+                    DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.US);
+                    formatter.applyPattern("#,###,###,###");
+                    String formattedString = formatter.format(longval);
+
+                    //setting text after format to EditText
+                    edt.setText(formattedString);
+                    edt.setSelection(edt.getText().length());
+                } catch (NumberFormatException nfe) {
+                    nfe.printStackTrace();
+                }
+
+                edt.addTextChangedListener(this);
+            }
+        };
+    }
+
+    private TextWatcher convertToPriceRealTime(final EditText edt) {
+        return new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                edt.removeTextChangedListener(this);
+
+                try {
+                    String originalString = s.toString();
+
+                    Long longval;
+                    if (originalString.contains(",")) {
+                        originalString = originalString.replaceAll(",", "");
+                    }
+                    if (!originalString.equals("")){
+                        toPrice = Integer.parseInt(originalString);
+                    }
+
+                    longval = Long.parseLong(originalString);
+
+                    DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.US);
+                    formatter.applyPattern("#,###,###,###");
+                    String formattedString = formatter.format(longval);
+
+                    //setting text after format to EditText
+                    edt.setText(formattedString);
+                    edt.setSelection(edt.getText().length());
+                } catch (NumberFormatException nfe) {
+                    nfe.printStackTrace();
+                }
+
+                edt.addTextChangedListener(this);
+            }
+        };
+    }
+
+    //Use for location
+
+    private void getCurrentLocation(final Boolean isFirstTime){
+        /////////// TEST CODE ////////
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                double longitude = location.getLongitude();
+                double latitude = location.getLatitude();
+                txt_longitude.setText(longitude + "");
+                txt_latitude.setText(latitude + "");
+                String currentAddress = PermissionDevice.getStringAddress(longitude, latitude, MainActivity.this);
+                txt_main_search_address.setText(currentAddress);
+                if (isFirstTime == true){
+                    locationManager.removeUpdates(locationListener);
+                }
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+
+            }
+        };
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)){
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+        } else if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+        }
+
+        //////////////////////////////////////////////////////////////////////////
+    }
+
     private void showSearchPlace(){
         PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
@@ -348,7 +693,6 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onPlaceSelected(Place place) {
                 String currentAddressStr = PermissionDevice.getStringAddress(place.getLatLng().longitude, place.getLatLng().latitude, MainActivity.this);
-                txt_main_search_place.setText(place.getName());
                 String addressFull = "";
                 if (!currentAddressStr.trim().equals("")){
                     String[] arrayAddressTemp = currentAddressStr.split(",");
@@ -357,6 +701,8 @@ public class MainActivity extends AppCompatActivity
                         addressFull = addressFull + ", " + arrayAddressTemp[i].trim();
                     }
                 }
+                txt_longitude.setText(place.getLatLng().longitude + "");
+                txt_latitude.setText(place.getLatLng().latitude + "");
                 txt_main_search_address.setText(addressFull);
             }
 
@@ -367,77 +713,64 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
-    private void showCurrentPlace(){
-        dialog = ProgressDialog.show(MainActivity.this, "Hệ thống",
-                "Đang xử lý", true);
-        (new Handler()).postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                String addressCurrent = PermissionDevice.getLocation(MainActivity.this, MainActivity.this);
-                String addressFull = "";
-                if (!addressCurrent.trim().equals("")){
-                    String[] arrayAddressTemp = addressCurrent.split(",");
-                    addressFull = arrayAddressTemp[0];
-                    for (int i = 1; i < arrayAddressTemp.length - 1;i++){
-                        addressFull = addressFull + ", " + arrayAddressTemp[i].trim();
-                    }
-                }
-                txt_main_search_address.setText(addressFull);
-                txt_main_search_place.setText("Vị trí hiện tại");
-                dialog.dismiss();
-            }
-        }, 500);
-
-    }
-
-    private void declareID(){
-        img_current_address = (ImageView)findViewById(R.id.img_current_address);
-        txt_main_search_place = (TextView)findViewById(R.id.txt_main_search_place);
-        txt_main_search_address = (TextView)findViewById(R.id.txt_main_search_address);
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        main_extra_search = (ImageView) findViewById(R.id.main_extra_search);
-
-        //Toggle the actionbar
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-
-        //Use for nav layout
-        navigationView.setNavigationItemSelectedListener(this);
+    private void checkScreen(){
         SharedPreferences editor = getSharedPreferences(ImmutableValue.HOME_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
-        View hView = navigationView.getHeaderView(0);
-        TextView txtNavFullname = (TextView) hView.findViewById(R.id.txtNavFullname);
-        TextView txtNavUsername = (TextView) hView.findViewById(R.id.txtNavUsername);
-        TextView txtNavRole = (TextView) hView.findViewById(R.id.txtNavRole);
-        txtNavUsername.setText(editor.getString(ImmutableValue.HOME_username, "Empty"));
-        txtNavFullname.setText(editor.getString(ImmutableValue.HOME_fullName, "Empty"));
-        if (editor.getString(ImmutableValue.HOME_role, ImmutableValue.ROLE_USER).equals(ImmutableValue.ROLE_USER)) {
-            txtNavRole.setText("Khách hàng");
-            Menu nav_Menu = navigationView.getMenu();
-            nav_Menu.findItem(R.id.nav_manage_vehicle).setVisible(false);
-            nav_Menu.findItem(R.id.nav_manage_drivers).setVisible(false);
-            nav_Menu.findItem(R.id.nav_discount).setVisible(false);
+        SharedPreferences editor2 = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
+        int usernameID = editor.getInt(ImmutableValue.HOME_userID, 0);
+        String vehicleFrameNumber = editor2.getString(ImmutableValue.MAIN_vehicleID, "Empty");
+        String isUpdateVehicle = editor2.getString(ImmutableValue.MAIN_isUpdateVehicle, "Empty");
+        String contractID = editor2.getString(ImmutableValue.MAIN_contractID, "Empty");
+
+        if (usernameID != 0 && vehicleFrameNumber.equals("Empty") && contractID.equals("Empty") && isUpdateVehicle.equals("Empty")){
+            //Nothing to do
+        } else if (usernameID != 0 && !vehicleFrameNumber.equals("Empty") && contractID.equals("Empty") && isUpdateVehicle.equals("Empty")){
+            Intent it = new Intent(MainActivity.this, VehicleDetail.class);
+            startActivity(it);
+        } else if (usernameID != 0 && !vehicleFrameNumber.equals("Empty") && contractID.equals("Empty") && !isUpdateVehicle.equals("Empty")){
+            Intent it = new Intent(MainActivity.this, UpdateVehicle.class);
+            startActivity(it);
+        } else if (usernameID != 0 && vehicleFrameNumber.equals("Empty") && !contractID.equals("Empty")){
+            dialog = ProgressDialog.show(MainActivity.this, "Hệ thống",
+                    "Đang xử lý", true);
+            Retrofit retrofit = RetrofitConfig.getClient();
+            final ContractAPI contractAPI = retrofit.create(ContractAPI.class);
+            Call<ContractItem> responseBodyCall = contractAPI.findContractByID(contractID);
+            responseBodyCall.enqueue(new Callback<ContractItem>() {
+                @Override
+                public void onResponse(Call<ContractItem> call, Response<ContractItem> response) {
+                    if (response.code() == 200){
+                        ContractItem obj = response.body();
+                        String contractStatus = obj.getContractStatus();
+                        if (contractStatus.equals(ImmutableValue.CONTRACT_INACTIVE)
+                                || contractStatus.equals(ImmutableValue.CONTRACT_ACTIVE)
+                                || contractStatus.equals(ImmutableValue.CONTRACT_FINISHED)){
+                            Intent it = new Intent(MainActivity.this, ContractDetail.class);
+                            startActivity(it);
+                        } else {
+                            Intent it = new Intent(MainActivity.this, ManageContractActivity.class);
+                            startActivity(it);
+                        }
+
+                    } else {
+                        Toast.makeText(MainActivity.this, "Đã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
+                        MainActivity.this.finish();
+                        Intent it = new Intent(MainActivity.this, LoginActivity.class);
+                        startActivity(it);
+                    }
+                    dialog.dismiss();
+                }
+
+                @Override
+                public void onFailure(Call<ContractItem> call, Throwable t) {
+                    dialog.dismiss();
+                    Toast.makeText(MainActivity.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
+                }
+            });
         } else {
-            txtNavRole.setText("Chủ xe");
+            MainActivity.this.finish();
+            Intent it = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(it);
         }
-
-        //Get current address in the first time
-        String addressCurrent = PermissionDevice.getLocation(MainActivity.this, MainActivity.this);
-        String addressFull = "";
-        if (!addressCurrent.trim().equals("")){
-            String[] arrayAddressTemp = addressCurrent.split(",");
-            addressFull = arrayAddressTemp[0];
-            for (int i = 1; i < arrayAddressTemp.length - 1;i++){
-                addressFull = addressFull + ", " + arrayAddressTemp[i].trim();
-            }
-        }
-        txt_main_search_address.setText(addressFull);
-        txt_main_search_place.setText("Vị trí hiện tại");
     }
 
-    private void initLayout(){
-        getAllVehicleByDistrictID(44);
-    }
 }

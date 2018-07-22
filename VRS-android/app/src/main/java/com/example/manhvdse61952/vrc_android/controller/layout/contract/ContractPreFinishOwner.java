@@ -1,9 +1,11 @@
 package com.example.manhvdse61952.vrc_android.controller.layout.contract;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -11,7 +13,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -208,6 +212,7 @@ public class ContractPreFinishOwner extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     if (response.code() == 200) {
+                        Toast.makeText(ContractPreFinishOwner.this, "Đã gửi cho bên thuê xe, vui lòng đợi", Toast.LENGTH_SHORT).show();
                         Intent it = new Intent(ContractPreFinishOwner.this, MainActivity.class);
                         startActivity(it);
                     } else {
@@ -228,12 +233,14 @@ public class ContractPreFinishOwner extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     if (response.code() == 200) {
+                        Toast.makeText(ContractPreFinishOwner.this, "Đã gửi thay đổi cho bên thuê xe!", Toast.LENGTH_SHORT).show();
                         long dateValue = new Date().getTime();
                         String currentTime = GeneralController.convertFullTime(dateValue);
                         String childInFDB = GeneralController.generateChildFDB(dateValue);
                         dbr = FirebaseDatabase.getInstance().getReference("Complain").child(String.valueOf(contractID));
                         dbr.child(childInFDB).setValue(new ComplainChat(String.valueOf(contractID), userID,
                                 "Tổng tiền phạt thay đổi! Vui lòng vào kiểm tra", currentTime));
+                        onBackPressed();
                     } else {
                         Toast.makeText(ContractPreFinishOwner.this, "Đã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
                     }
@@ -250,15 +257,17 @@ public class ContractPreFinishOwner extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (contractStatus.equals(ImmutableValue.CONTRACT_ISSUE)) {
-            Intent it = new Intent(ContractPreFinishOwner.this, ContractComplainActivity.class);
-            it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(it);
-        } else {
-            Intent it = new Intent(ContractPreFinishOwner.this, ManageContractActivity.class);
-            it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(it);
-        }
+//        if (contractStatus.equals(ImmutableValue.CONTRACT_ISSUE)) {
+//            Intent it = new Intent(ContractPreFinishOwner.this, ContractComplainActivity.class);
+//            it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//            startActivity(it);
+//        } else {
+//            Intent it = new Intent(ContractPreFinishOwner.this, ManageContractActivity.class);
+//            it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//            startActivity(it);
+//        }
+        ContractPreFinishOwner.this.finish();
+        super.onBackPressed();
     }
 
     @Override
@@ -282,9 +291,8 @@ public class ContractPreFinishOwner extends AppCompatActivity {
                     if (response.body() != null) {
                         ContractItem obj = response.body();
                         if (obj.getContractStatus().equals(ImmutableValue.CONTRACT_FINISHED)) {
-                            Intent it = new Intent(ContractPreFinishOwner.this, ManageContractActivity.class);
-                            it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(it);
+                            Toast.makeText(ContractPreFinishOwner.this, "Hợp đồng đã được thanh toán", Toast.LENGTH_SHORT).show();
+                            onBackPressed();
                         } else {
                             txt_contract_complete_number.setText(contractID);
                             txt_contract_complete_startTime.setText(GeneralController.convertTime(obj.getStartTime()));
@@ -348,5 +356,20 @@ public class ContractPreFinishOwner extends AppCompatActivity {
         });
     }
 
-
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            View v = getCurrentFocus();
+            if ( v instanceof EditText) {
+                Rect outRect = new Rect();
+                v.getGlobalVisibleRect(outRect);
+                if (!outRect.contains((int)event.getRawX(), (int)event.getRawY())) {
+                    v.clearFocus();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+        }
+        return super.dispatchTouchEvent( event );
+    }
 }

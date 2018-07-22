@@ -4,4 +4,9 @@
         <item>Người thuê xe</item>
         <item>Chủ xe</item>
     </string-array>
+    <string-array name="spinnerVehicleType">
+        <item>Xe máy</item>
+        <item>Xe cá nhân</item>
+        <item>Xe du lịch</item>
+    </string-array>
 </resources>

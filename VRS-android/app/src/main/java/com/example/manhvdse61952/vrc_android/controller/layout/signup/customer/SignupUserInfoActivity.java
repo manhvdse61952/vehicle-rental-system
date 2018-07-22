@@ -138,7 +138,6 @@ public class SignupUserInfoActivity extends AppCompatActivity {
                 break;
         }
 
-
     }
 
     @Override
@@ -153,20 +152,6 @@ public class SignupUserInfoActivity extends AppCompatActivity {
         startActivity(it);
     }
 
-    //Use for accept camera in phone when permission granted
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case PermissionDevice.CAMERA_REQUEST_CODE:
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    cameraObj.takePicture(SignupUserInfoActivity.this, SignupUserInfoActivity.this, PermissionDevice.CAMERA_OPEN_CODE);
-                } else {
-                    Toast.makeText(this, "PermissionDevice not granted !", Toast.LENGTH_SHORT).show();
-                    finish();
-                }
-        }
-
-    }
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
@@ -182,7 +167,7 @@ public class SignupUserInfoActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (items[which].equals("Chụp ảnh")){
-                    cameraObj.checkPermission(SignupUserInfoActivity.this, SignupUserInfoActivity.this, PermissionDevice.CAMERA_OPEN_CODE);
+                    cameraObj.takePicture(SignupUserInfoActivity.this, SignupUserInfoActivity.this, PermissionDevice.CAMERA_OPEN_CODE);
                 } else if (items[which].equals("Chọn ảnh từ thư viện")){
                     Intent pickPhoto = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     pickPhoto.setType("image/*");

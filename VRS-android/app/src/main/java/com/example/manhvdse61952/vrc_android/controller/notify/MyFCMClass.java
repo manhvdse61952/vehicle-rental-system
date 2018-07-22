@@ -12,6 +12,7 @@ import android.support.v4.app.NotificationCompat;
 
 import com.example.manhvdse61952.vrc_android.R;
 import com.example.manhvdse61952.vrc_android.controller.layout.contract.ManageContractActivity;
+import com.example.manhvdse61952.vrc_android.controller.layout.main.MainActivity;
 import com.example.manhvdse61952.vrc_android.controller.permission.PermissionDevice;
 import com.example.manhvdse61952.vrc_android.controller.layout.contract.ContractDetail;
 import com.example.manhvdse61952.vrc_android.controller.layout.contract.ContractPreFinishOwner;
@@ -45,7 +46,7 @@ public class MyFCMClass extends FirebaseMessagingService {
             SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
             editor.putString(ImmutableValue.MAIN_contractID, contractID);
             editor.apply();
-            Intent it = new Intent(this, ManageContractActivity.class);
+            Intent it = new Intent(this, MainActivity.class);
             it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             PendingIntent pendingIntent = PendingIntent.getActivity(this, PermissionDevice.NOTIFY_REQUEST_CODE, it, PendingIntent.FLAG_ONE_SHOT);
             NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)

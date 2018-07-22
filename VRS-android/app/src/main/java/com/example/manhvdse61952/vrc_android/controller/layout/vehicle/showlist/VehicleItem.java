@@ -109,8 +109,6 @@ public class VehicleItem extends BaseAdapter {
             public void onClick(View v) {
                 SharedPreferences.Editor editor = context.getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, context.MODE_PRIVATE).edit();
                 editor.putString(ImmutableValue.MAIN_vehicleID, obj.getFrameNumber());
-                editor.putString(ImmutableValue.MAIN_vehicleSeat, obj.getSeat() + "");
-                editor.putString(ImmutableValue.MAIN_vehicleType, obj.getVehicleType());
                 editor.apply();
 
                 Intent it = new Intent(context, VehicleDetail.class);
@@ -122,7 +120,7 @@ public class VehicleItem extends BaseAdapter {
 
     private String getDistrictNameById(int id){
         List<City> listCity = GeneralAPI.listAddressFromDB;
-        String districtName = "quận 12, HCM";
+        String districtName = "";
         for (int i = 0; i< listCity.size(); i++){
             List<District> listDistrict = listCity.get(i).getDistrict();
             for (int j=0; j<listDistrict.size();j++){

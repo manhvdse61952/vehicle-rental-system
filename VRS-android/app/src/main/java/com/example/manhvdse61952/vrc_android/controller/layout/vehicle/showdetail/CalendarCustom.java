@@ -825,6 +825,7 @@ public class CalendarCustom extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        CalendarCustom.this.finish();
         super.onBackPressed();
     }
 

@@ -62,7 +62,6 @@ public class ManageContractActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         swipeLayout.setRefreshing(false);
-
                         SharedPreferences editor = getSharedPreferences(ImmutableValue.HOME_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
                         if (editor.getString(ImmutableValue.HOME_role, ImmutableValue.ROLE_USER).equals(ImmutableValue.ROLE_OWNER)) {
                             loadDataForOwner();
@@ -173,8 +172,9 @@ public class ManageContractActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent it = new Intent(ManageContractActivity.this, MainActivity.class);
-        it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(it);
+        SharedPreferences settings_3 = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
+        settings_3.edit().clear().commit();
+        ManageContractActivity.this.finish();
+        super.onBackPressed();
     }
 }

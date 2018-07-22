@@ -70,9 +70,10 @@ public class ImmutableValue {
     public static final String MAIN_ownerID = "main_ownerID";
     public static final String MAIN_customerID = "main_customerID";
     public static final String MAIN_vehicleID = "main_vehicleID";
-    public static final String MAIN_vehicleSeat = "main_vehicleSeat";
-    public static final String MAIN_vehicleType = "main_vehicleType";
     public static final String MAIN_vehicleName = "main_vehicleName";
+    public static final String MAIN_vehicleAddress = "main_vehicleAddress";
+    public static final String MAIN_vehicleLng = "main_vehicleLng";
+    public static final String MAIN_vehicleLat = "main_vehicleLat";
     public static final String MAIN_vehicleImgFront = "main_vehicleImgFront";
     public static final String MAIN_vehicleImgBack = "main_vehicleImgBack";
     public static final String MAIN_startHour = "main_startHour";
@@ -91,6 +92,7 @@ public class ImmutableValue {
     public static final String MAIN_receiveType = "main_receiveType";
     public static final String MAIN_startDayLong = "main_startDayLong";
     public static final String MAIN_endDayLong = "main_endDayLong";
+    public static final String MAIN_isUpdateVehicle = "main_updateVehicle";
 
     public static final String changeFeeMessageBody = "Chủ xe đã thay đổi phí. Vui lòng kiểm tra";
 }

@@ -120,7 +120,8 @@ public class PaypalExecute extends AppCompatActivity {
                                                 .setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
                                                     @Override
                                                     public void onClick(DialogInterface dialog, int which) {
-                                                        Intent it = new Intent(PaypalExecute.this, ManageContractActivity.class);
+                                                        PaypalExecute.this.finish();
+                                                        Intent it = new Intent(PaypalExecute.this, MainActivity.class);
                                                         it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                                         startActivity(it);
                                                     }

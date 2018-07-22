@@ -28,9 +28,13 @@
             <ImageView
                 android:id="@+id/img_current_address"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp"
+                android:paddingLeft="7dp"
+                android:paddingRight="7dp"
                 android:layout_weight="1"
-                android:src="@drawable/ic_map_marker_alt"
+                android:src="@drawable/ic_map_disable"
                 android:tint="@color/primary_text" />
 
             <LinearLayout
@@ -41,23 +45,44 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="5dp"
                 android:weightSum="10">
-
-                <TextView
-                    android:id="@+id/txt_main_search_place"
+                <LinearLayout
                     android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:weightSum="10"
                     android:layout_height="0dp"
-                    android:layout_weight="3.5"
-                    android:gravity="bottom"
-                    android:text="Vị trí của bạn"
-                    android:textColor="@color/primary_text"
-                    android:textSize="12sp"
-                    android:textStyle="bold" />
-
+                    android:layout_weight="3">
+                    <TextView
+                        android:id="@+id/txt_longitude"
+                        android:layout_width="0dp"
+                        android:layout_weight="4.7"
+                        android:text="00.000000000"
+                        android:maxLength="12"
+                        android:gravity="center_vertical"
+                        android:textSize="12sp"
+                        android:textColor="@color/primary_text"
+                        android:layout_height="match_parent" />
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="0.4"
+                        android:text="/"
+                        android:gravity="center_vertical"
+                        android:layout_height="match_parent" />
+                    <TextView
+                        android:id="@+id/txt_latitude"
+                        android:layout_width="0dp"
+                        android:layout_weight="4.7"
+                        android:text="00.0000000000"
+                        android:maxLength="12"
+                        android:gravity="center_vertical"
+                        android:textSize="12sp"
+                        android:textColor="@color/primary_text"
+                        android:layout_height="match_parent" />
+                </LinearLayout>
                 <TextView
                     android:id="@+id/txt_main_search_address"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="6.5"
+                    android:layout_weight="7"
                     android:gravity="start"
                     android:maxLength="65"
                     android:text="Địa chỉ"
@@ -78,11 +103,15 @@
 
                 <ImageView
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="match_parent"
                     android:background="@color/colorPrimary"
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
                     android:src="@drawable/ic_search"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
                     android:tint="@color/primary_text" />
             </RelativeLayout>
 
@@ -97,8 +126,9 @@
             <ImageView
                 android:id="@+id/main_extra_search"
                 android:layout_width="0dp"
-                android:layout_height="35dp"
-                android:layout_marginRight="5dp"
+                android:layout_height="match_parent"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp"
                 android:layout_weight="1.4"
                 android:src="@drawable/ic_search_plus"
                 android:tint="@color/primary_text" />

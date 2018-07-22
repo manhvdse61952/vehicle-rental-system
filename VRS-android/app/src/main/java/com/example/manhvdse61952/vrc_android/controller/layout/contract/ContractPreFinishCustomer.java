@@ -183,15 +183,17 @@ public class ContractPreFinishCustomer extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (contractStatus.equals(ImmutableValue.CONTRACT_ISSUE)){
-            Intent it = new Intent(ContractPreFinishCustomer.this, ContractComplainActivity.class);
-            it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(it);
-        } else {
-            Intent it = new Intent(ContractPreFinishCustomer.this, ManageContractActivity.class);
-            it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(it);
-        }
+//        if (contractStatus.equals(ImmutableValue.CONTRACT_ISSUE)){
+//            Intent it = new Intent(ContractPreFinishCustomer.this, ContractComplainActivity.class);
+//            it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//            startActivity(it);
+//        } else {
+//            Intent it = new Intent(ContractPreFinishCustomer.this, ManageContractActivity.class);
+//            it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//            startActivity(it);
+//        }
+        ContractPreFinishCustomer.this.finish();
+        super.onBackPressed();
 
     }
 }

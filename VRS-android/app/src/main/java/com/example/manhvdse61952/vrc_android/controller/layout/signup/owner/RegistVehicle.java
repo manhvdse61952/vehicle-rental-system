@@ -290,7 +290,7 @@ public class RegistVehicle extends AppCompatActivity {
             dialog = ProgressDialog.show(RegistVehicle.this, "Đang xử lý",
                     "Vui lòng đợi ...", true);
             GeneralAPI testAPI = new GeneralAPI();
-            testAPI.getAllAddress(dialog, RegistVehicle.this);
+            testAPI.getAllAddress(RegistVehicle.this);
         } else {
             final List<City> listAddress = GeneralAPI.listAddressFromDB;
             ArrayAdapter<City> cityArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, listAddress);
@@ -337,8 +337,6 @@ public class RegistVehicle extends AppCompatActivity {
                 }
             });
         }
-
-
     }
 
     //Init year spinner
@@ -624,7 +622,7 @@ public class RegistVehicle extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (items[which].equals("Chụp ảnh")){
-                    cameraObj.checkPermission(RegistVehicle.this, RegistVehicle.this, PermissionDevice.CAMERA_VEHICLE_CODE_1);
+                    cameraObj.takePicture(RegistVehicle.this, RegistVehicle.this, PermissionDevice.CAMERA_VEHICLE_CODE_1);
                 } else if (items[which].equals("Chọn ảnh từ thư viện")){
                     Intent pickPhoto = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     pickPhoto.setType("image/*");
@@ -647,7 +645,7 @@ public class RegistVehicle extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (items[which].equals("Chụp ảnh")){
-                    cameraObj.checkPermission(RegistVehicle.this, RegistVehicle.this, PermissionDevice.CAMERA_VEHICLE_CODE_2);
+                    cameraObj.takePicture(RegistVehicle.this, RegistVehicle.this, PermissionDevice.CAMERA_VEHICLE_CODE_2);
                 } else if (items[which].equals("Chọn ảnh từ thư viện")){
                     Intent pickPhoto = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     pickPhoto.setType("image/*");
@@ -670,7 +668,7 @@ public class RegistVehicle extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (items[which].equals("Chụp ảnh")){
-                    cameraObj.checkPermission(RegistVehicle.this, RegistVehicle.this, PermissionDevice.CAMERA_VEHICLE_CODE_3);
+                    cameraObj.takePicture(RegistVehicle.this, RegistVehicle.this, PermissionDevice.CAMERA_VEHICLE_CODE_3);
                 } else if (items[which].equals("Chọn ảnh từ thư viện")){
                     Intent pickPhoto = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     pickPhoto.setType("image/*");
@@ -747,18 +745,6 @@ public class RegistVehicle extends AppCompatActivity {
         }
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case PermissionDevice.CAMERA_REQUEST_CODE:
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Intent it = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivityForResult(it, PermissionDevice.CAMERA_OPEN_CODE);
-
-                }
-        }
-
-    }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
 

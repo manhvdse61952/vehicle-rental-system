@@ -107,7 +107,6 @@ public class ContractComplainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent it = new Intent(ContractComplainActivity.this, ContractComplainChat.class);
-                it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(it);
             }
         });
@@ -118,11 +117,9 @@ public class ContractComplainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (userID == ownerID) {
                     Intent it = new Intent(ContractComplainActivity.this, ContractPreFinishOwner.class);
-                    it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(it);
                 } else {
                     Intent it = new Intent(ContractComplainActivity.this, ContractPreFinishCustomer.class);
-                    it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(it);
                 }
             }
@@ -239,15 +236,17 @@ public class ContractComplainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (contractStatus.equals(ImmutableValue.CONTRACT_PRE_FINISHED)) {
-            Intent it = new Intent(ContractComplainActivity.this, ContractPreFinishCustomer.class);
-            it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(it);
-        } else {
-            Intent it = new Intent(ContractComplainActivity.this, ManageContractActivity.class);
-            it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(it);
-        }
+//        if (contractStatus.equals(ImmutableValue.CONTRACT_PRE_FINISHED)) {
+//            Intent it = new Intent(ContractComplainActivity.this, ContractPreFinishCustomer.class);
+//            it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//            startActivity(it);
+//        } else {
+//            Intent it = new Intent(ContractComplainActivity.this, ManageContractActivity.class);
+//            it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//            startActivity(it);
+//        }
+        ContractComplainActivity.this.finish();
+        super.onBackPressed();
     }
 
     @Override

@@ -39,12 +39,14 @@ import retrofit2.Retrofit;
 public class GeneralAPI {
     public static List<City> listAddressFromDB = new ArrayList<>();
     /// Get all district and city in database ///
-    public void getAllAddress(final ProgressDialog progressDialog, final Context ctx) {
+    public void getAllAddress(final Context ctx) {
+        final ProgressDialog progressDialog;
+        progressDialog = ProgressDialog.show(ctx, "Đang xử lý",
+                "Vui lòng đợi ...", true);
         listAddressFromDB = new ArrayList<>();
         Retrofit test = RetrofitConfig.getClient();
         final AddressAPI testAPI = test.create(AddressAPI.class);
         Call<List<City>> responseBodyCall = testAPI.getDistrict();
-
         responseBodyCall.enqueue(new Callback<List<City>>() {
             @Override
             public void onResponse(Call<List<City>> call, Response<List<City>> response) {
@@ -54,10 +56,12 @@ public class GeneralAPI {
                     Toast.makeText(ctx, "Đã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
 
                 }
+                progressDialog.dismiss();
             }
 
             @Override
             public void onFailure(Call<List<City>> call, Throwable t) {
+                progressDialog.dismiss();
                 Toast.makeText(ctx, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
             }
         });

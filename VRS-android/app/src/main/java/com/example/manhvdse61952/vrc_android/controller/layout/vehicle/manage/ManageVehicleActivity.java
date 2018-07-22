@@ -59,9 +59,8 @@ public class ManageVehicleActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent it = new Intent(ManageVehicleActivity.this, MainActivity.class);
-        it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(it);
+        ManageVehicleActivity.this.finish();
+        super.onBackPressed();
     }
 
     @Override
