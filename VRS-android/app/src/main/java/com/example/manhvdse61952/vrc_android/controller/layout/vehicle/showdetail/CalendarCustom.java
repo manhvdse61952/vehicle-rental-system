@@ -1,5 +1,6 @@
 package com.example.manhvdse61952.vrc_android.controller.layout.vehicle.showdetail;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -775,8 +776,9 @@ public class CalendarCustom extends AppCompatActivity {
                 @Override
                 public void run() {
                     progress.cancel();
-                    Intent it = new Intent(CalendarCustom.this, VehicleDetail.class);
-                    startActivity(it);
+                    Intent returnIntent = new Intent();
+                    setResult(Activity.RESULT_OK, returnIntent);
+                    CalendarCustom.this.finish();
                 }
             };
 

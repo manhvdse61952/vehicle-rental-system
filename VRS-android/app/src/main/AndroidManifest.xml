@@ -25,7 +25,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".controller.layout.login.SplashScreen">
+        <activity android:name=".controller.layout.login.SplashScreen"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -73,7 +75,8 @@
             android:name=".controller.layout.main.MainActivity"
             android:label="@string/title_activity_main_2"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateAlwaysHidden" />
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:screenOrientation="portrait"/>
         <meta-data android:name="com.google.android.geo.API_KEY" android:value="@string/google_maps_key" />
         <activity android:name=".controller.layout.main.MapsActivity" android:label="@string/title_activity_maps" android:screenOrientation="portrait" />
         <activity android:name=".controller.layout.signup.owner.RegistVehicle" android:screenOrientation="portrait" />
@@ -95,6 +98,7 @@
         <activity android:name=".controller.layout.vehicle.manage.UpdateVehicle" android:screenOrientation="portrait"></activity>
         <activity android:name=".controller.layout.vehicle.manage.SearchAddressVehicle" android:screenOrientation="portrait"></activity>
         <activity android:name=".controller.layout.account.UpdateAccount" android:screenOrientation="portrait"></activity>
+        <activity android:name=".controller.layout.promotion.PromotionActivity" android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

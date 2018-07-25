@@ -4,12 +4,9 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,13 +14,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.manhvdse61952.vrc_android.R;
-import com.example.manhvdse61952.vrc_android.controller.layout.contract.ManageContractActivity;
-import com.example.manhvdse61952.vrc_android.controller.permission.PermissionDevice;
-import com.example.manhvdse61952.vrc_android.controller.layout.contract.ContractDetail;
 import com.example.manhvdse61952.vrc_android.controller.layout.main.MainActivity;
 import com.example.manhvdse61952.vrc_android.controller.layout.signup.customer.SignupAccountActivity;
-import com.example.manhvdse61952.vrc_android.controller.layout.vehicle.showdetail.VehicleDetail;
-import com.example.manhvdse61952.vrc_android.controller.resources.GeneralAPI;
 import com.example.manhvdse61952.vrc_android.controller.resources.ImmutableValue;
 import com.example.manhvdse61952.vrc_android.controller.validate.ValidateInput;
 import com.example.manhvdse61952.vrc_android.model.api_interface.AccountAPI;
@@ -92,12 +84,8 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void loginAction(){
-        //Check address if empty
-        if (GeneralAPI.listAddressFromDB.size() == 0) {
-            GeneralAPI testAPI = new GeneralAPI();
-            testAPI.getAllAddress(LoginActivity.this);
-        }
+    private void loginAction() {
+
         //Check login
         username = edtUsername.getText().toString().trim();
         password = edtPassword.getText().toString().trim();
@@ -112,25 +100,20 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private void signupAction(){
-        if (GeneralAPI.listAddressFromDB.size() != 0) {
-            SharedPreferences settings_2 = getSharedPreferences(ImmutableValue.SIGNUP_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
-            settings_2.edit().clear().commit();
-            SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SIGNUP_SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
-            editor.putString(ImmutableValue.SIGNUP_username, "");
-            editor.putString(ImmutableValue.SIGNUP_password, "");
-            editor.putString(ImmutableValue.SIGNUP_email, "");
-            editor.putString(ImmutableValue.SIGNUP_fullName, "");
-            editor.putString(ImmutableValue.SIGNUP_phone, "");
-            editor.putString(ImmutableValue.SIGNUP_cmnd, "");
-            editor.putString(ImmutableValue.SIGNUP_img_CMND, "");
-            editor.apply();
-            Intent it = new Intent(LoginActivity.this, SignupAccountActivity.class);
-            startActivity(it);
-        } else {
-            GeneralAPI testAPI = new GeneralAPI();
-            testAPI.getAllAddress(LoginActivity.this);
-        }
+    private void signupAction() {
+        SharedPreferences settings_2 = getSharedPreferences(ImmutableValue.SIGNUP_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
+        settings_2.edit().clear().commit();
+        SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SIGNUP_SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
+        editor.putString(ImmutableValue.SIGNUP_username, "");
+        editor.putString(ImmutableValue.SIGNUP_password, "");
+        editor.putString(ImmutableValue.SIGNUP_email, "");
+        editor.putString(ImmutableValue.SIGNUP_fullName, "");
+        editor.putString(ImmutableValue.SIGNUP_phone, "");
+        editor.putString(ImmutableValue.SIGNUP_cmnd, "");
+        editor.putString(ImmutableValue.SIGNUP_img_CMND, "");
+        editor.apply();
+        Intent it = new Intent(LoginActivity.this, SignupAccountActivity.class);
+        startActivity(it);
     }
 
     private void checkLogin(final String username, String password, final Context ctx, final ProgressDialog progressDialog) {
@@ -160,6 +143,7 @@ public class LoginActivity extends AppCompatActivity {
                     tempEditor.putString(ImmutableValue.MAIN_contractID, "Empty");
                     tempEditor.apply();
                     Intent it = new Intent(ctx, MainActivity.class);
+                    it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     ctx.startActivity(it);
                 }
                 progressDialog.dismiss();

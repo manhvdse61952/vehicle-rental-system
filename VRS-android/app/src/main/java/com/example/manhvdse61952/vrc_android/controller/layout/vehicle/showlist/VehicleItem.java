@@ -19,7 +19,6 @@ import com.example.manhvdse61952.vrc_android.controller.resources.ImmutableValue
 import com.example.manhvdse61952.vrc_android.model.api_model.City;
 import com.example.manhvdse61952.vrc_android.model.api_model.District;
 import com.example.manhvdse61952.vrc_android.model.search_model.SearchVehicleItem;
-import com.example.manhvdse61952.vrc_android.controller.resources.GeneralAPI;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -119,7 +118,7 @@ public class VehicleItem extends BaseAdapter {
     }
 
     private String getDistrictNameById(int id){
-        List<City> listCity = GeneralAPI.listAddressFromDB;
+        List<City> listCity = ImmutableValue.listGeneralAddress;
         String districtName = "";
         for (int i = 0; i< listCity.size(); i++){
             List<District> listDistrict = listCity.get(i).getDistrict();

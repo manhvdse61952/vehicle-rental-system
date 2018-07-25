@@ -132,6 +132,7 @@ public class PaypalExecute extends AppCompatActivity {
 
                                     } else {
                                         Toast.makeText(PaypalExecute.this, "Đã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
+                                        onBackPressed();
                                     }
                                     dialog.dismiss();
 
@@ -141,12 +142,12 @@ public class PaypalExecute extends AppCompatActivity {
                                 public void onFailure(Call<String> call, Throwable t) {
                                     dialog.dismiss();
                                     Toast.makeText(PaypalExecute.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
+                                    onBackPressed();
                                 }
                             });
                         } else {
                             Toast.makeText(this, "Thanh toán thất bại!", Toast.LENGTH_SHORT).show();
-                            Intent it = new Intent(PaypalExecute.this, VehicleDetail.class);
-                            startActivity(it);
+                            onBackPressed();
                         }
 
                     } catch (JSONException e) {
@@ -154,20 +155,19 @@ public class PaypalExecute extends AppCompatActivity {
                     }
                 }
             } else if (resultCode == Activity.RESULT_CANCELED) {
-                Intent it = new Intent(PaypalExecute.this, VehicleDetail.class);
-                startActivity(it);
                 Toast.makeText(this, "Hủy yêu cầu", Toast.LENGTH_SHORT).show();
+                onBackPressed();
             } else if (resultCode == PaymentActivity.RESULT_CANCELED) {
-                Intent it = new Intent(PaypalExecute.this, VehicleDetail.class);
-                startActivity(it);
                 Toast.makeText(this, "Kiểm tra lại tài khoản paypal", Toast.LENGTH_SHORT).show();
+                onBackPressed();
             }
         }
     }
 
     @Override
     public void onBackPressed() {
-        Intent it = new Intent(PaypalExecute.this, VehicleDetail.class);
-        startActivity(it);
+        PaypalExecute.this.finish();
+        super.onBackPressed();
+
     }
 }

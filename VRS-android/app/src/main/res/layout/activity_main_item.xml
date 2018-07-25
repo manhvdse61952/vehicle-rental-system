@@ -13,6 +13,7 @@
         android:weightSum="10">
 
         <ScrollView
+            android:id="@+id/srv_main_vehicle"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="9.2"
@@ -149,7 +150,37 @@
                         android:textColor="#000"
                         android:textSize="16sp" />
                 </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.2dp"
+                    android:layout_margin="10dp"
+                    android:background="#ccc" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="20dp"
+                    android:weightSum="10">
 
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="5"
+                        android:text="Khuyến mãi"
+                        android:textColor="@color/secondary_text"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/item_discount"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="5"
+                        android:text="0 %"
+                        android:textAlignment="textEnd"
+                        android:textColor="#000"
+                        android:textSize="16sp" />
+                </LinearLayout>
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.2dp"
@@ -679,7 +710,35 @@
                                 android:textColor="#797979"
                                 android:textSize="16sp" />
                         </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="10">
 
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="4"
+                                android:text="Giảm giá"
+                                android:textColor="#797979"
+                                android:textSize="14sp" />
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2" />
+
+                            <TextView
+                                android:id="@+id/txt_money_discount"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="4"
+                                android:gravity="end"
+                                android:text="0"
+                                android:textColor="#797979"
+                                android:textSize="16sp" />
+                        </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="match_parent"

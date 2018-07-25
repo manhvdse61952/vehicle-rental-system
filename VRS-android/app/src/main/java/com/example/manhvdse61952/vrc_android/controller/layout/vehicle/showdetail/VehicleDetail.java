@@ -2,11 +2,13 @@ package com.example.manhvdse61952.vrc_android.controller.layout.vehicle.showdeta
 
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewPager;
@@ -21,6 +23,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,6 +50,7 @@ import retrofit2.Retrofit;
 public class VehicleDetail extends AppCompatActivity {
     ImageSlider sld;
     ViewPager vpg;
+    ScrollView srv_main_vehicle;
     Button btnOrderRent;
     FloatingActionButton btn_back;
     DetailVehicleItem mainObj = new DetailVehicleItem();
@@ -57,7 +61,8 @@ public class VehicleDetail extends AppCompatActivity {
             item_plateNumber, item_ownerName, item_engine, item_tranmission, txt_hours, txt_day_start,
             txt_hours_2, txt_day_end, txt_order_type, txt_day_rent, txt_hour_rent,
             txt_money_day_rent, txt_money_hour_rent, txt_money_total, item_price_deposit,
-            txt_usd_convert, txt_money_deposit, txt_pickTime, txt_vehicle_owner;
+            txt_usd_convert, txt_money_deposit, txt_pickTime, txt_vehicle_owner, item_discount
+            , txt_money_discount;
     CheckBox cbx1, cbx2;
     LinearLayout ln_pickTime;
     Switch swt_order_type;
@@ -71,6 +76,119 @@ public class VehicleDetail extends AppCompatActivity {
 
         declareID();
 
+        initLayout();
+
+        btnOrderRent = (Button) findViewById(R.id.btnOrderRent);
+        btnOrderRent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (txt_day_rent.getText().toString().equals("0") && txt_hour_rent.getText().toString().equals("0") && txt_usd_convert.getText().toString().equals("0")){
+                    Toast.makeText(VehicleDetail.this, "Vui lòng chọn ngày giờ thuê xe", Toast.LENGTH_SHORT).show();
+                    txt_pickTime.setFocusable(true);
+                    txt_pickTime.setTextColor(Color.RED);
+                    (new Handler()).postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            srv_main_vehicle.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    srv_main_vehicle.scrollTo(0, srv_main_vehicle.getBottom());
+                                }
+                            });
+                        }
+                    }, 100);
+                } else {
+                    txt_pickTime.setTextColor(Color.parseColor("#212121"));
+                    SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
+                    editor.putString(ImmutableValue.MAIN_totalMoney, Double.toString(usdConvert));
+                    editor.putString(ImmutableValue.MAIN_rentFeeMoney, Double.toString(rentFeeMoney));
+                    editor.putInt(ImmutableValue.MAIN_rentFeePerDayID, rentFeePerDayID);
+                    editor.putInt(ImmutableValue.MAIN_rentFeePerHourID, rentFeePerHourID);
+                    editor.putInt(ImmutableValue.MAIN_receiveType, receiveType);
+                    editor.apply();
+                    Intent it = new Intent(VehicleDetail.this, PaypalExecute.class);
+                    startActivity(it);
+                }
+            }
+        });
+
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        SharedPreferences settings = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
+        settings.edit().clear().commit();
+        SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.HOME_SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
+        editor.putInt(ImmutableValue.HOME_tabIndex, selectTab);
+        editor.apply();
+        VehicleDetail.this.finish();
+        super.onBackPressed();
+    }
+
+    public void scaleView(TextView v, float startScale, float endScale) {
+        Animation anim = new ScaleAnimation(
+                1f, 1f,
+                startScale, endScale,
+                Animation.RELATIVE_TO_SELF, 0f,
+                Animation.RELATIVE_TO_SELF, 0f);
+        anim.setFillAfter(true);
+        anim.setDuration(500);
+        v.startAnimation(anim);
+    }
+
+    public void textColorAnimated(Switch v, int colorValue) {
+        final ObjectAnimator animator = ObjectAnimator.ofInt(v, "textColor", colorValue);
+        animator.setDuration(1000);
+        animator.setEvaluator(new ArgbEvaluator());
+        animator.setInterpolator(new DecelerateInterpolator(2));
+        animator.start();
+    }
+
+    private void declareID(){
+        //Declare id
+        txt_day_rent = (TextView) findViewById(R.id.txt_day_rent);
+        txt_hour_rent = (TextView) findViewById(R.id.txt_hour_rent);
+        txt_money_day_rent = (TextView) findViewById(R.id.txt_money_day_rent);
+        txt_money_hour_rent = (TextView) findViewById(R.id.txt_money_hour_rent);
+        txt_money_total = (TextView) findViewById(R.id.txt_money_total);
+        item_price_slot = (TextView) findViewById(R.id.item_price_slot);
+        item_price_day = (TextView) findViewById(R.id.item_price_day);
+        item_seat = (TextView) findViewById(R.id.item_seat);
+        item_year = (TextView) findViewById(R.id.item_year);
+        item_plateNumber = (TextView) findViewById(R.id.item_plateNumber);
+        item_ownerName = (TextView) findViewById(R.id.item_ownerName);
+        item_engine = (TextView) findViewById(R.id.item_engine);
+        item_tranmission = (TextView) findViewById(R.id.item_tranmission);
+        item_price_deposit = (TextView)findViewById(R.id.item_price_deposit);
+        cbx1 = (CheckBox) findViewById(R.id.cbx1);
+        cbx2 = (CheckBox) findViewById(R.id.cbx2);
+        ln_pickTime = (LinearLayout) findViewById(R.id.ln_pickTime);
+        txt_hours = (TextView) findViewById(R.id.txt_hours);
+        txt_day_start = (TextView) findViewById(R.id.txt_day_start);
+        txt_hours_2 = (TextView) findViewById(R.id.txt_hours_2);
+        txt_day_end = (TextView) findViewById(R.id.txt_day_end);
+        swt_order_type = (Switch) findViewById(R.id.swt_order_type);
+        txt_order_type = (TextView) findViewById(R.id.txt_order_type);
+        txt_usd_convert = (TextView)findViewById(R.id.txt_usd_convert);
+        txt_money_deposit = (TextView)findViewById(R.id.txt_money_deposit);
+        vpg = (ViewPager) findViewById(R.id.vpg);
+        txt_pickTime = (TextView)findViewById(R.id.txt_pickTime);
+        btn_back = (FloatingActionButton)findViewById(R.id.btn_back);
+        txt_vehicle_owner = (TextView)findViewById(R.id.txt_vehicle_owner);
+        ln_hide_order_type = (LinearLayout)findViewById(R.id.ln_hide_order_type);
+        ln_hide_calculator = (LinearLayout)findViewById(R.id.ln_hide_calculator);
+        srv_main_vehicle = (ScrollView)findViewById(R.id.srv_main_vehicle);
+        item_discount = (TextView)findViewById(R.id.item_discount);
+        txt_money_discount = (TextView)findViewById(R.id.txt_money_discount);
+    }
+
+    private void initLayout(){
         SharedPreferences editor = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
         String frameNumber = editor.getString(ImmutableValue.MAIN_vehicleID, "aaaaaa");
         String startHour = editor.getString(ImmutableValue.MAIN_startHour, "--");
@@ -160,6 +278,15 @@ public class VehicleDetail extends AppCompatActivity {
                         }
 
                         NumberFormat nf = new DecimalFormat("#.####");
+                        if (mainObj.getDiscountValue() != 0){
+                            float discountValue = mainObj.getDiscountValue() * 100;
+                            String discountConvert = nf.format(discountValue);
+                            item_discount.setText(discountConvert + " %");
+                        } else {
+                            item_discount.setText("Không");
+                        }
+
+
                         String priceHour = GeneralController.convertPrice(nf.format(mainObj.getRentFeePerHour()));
                         item_price_slot.setText(priceHour);
                         String priceDay = GeneralController.convertPrice(nf.format(mainObj.getRentFeePerDay()));
@@ -197,7 +324,8 @@ public class VehicleDetail extends AppCompatActivity {
                             @Override
                             public void onClick(View v) {
                                 Intent it = new Intent(VehicleDetail.this, CalendarCustom.class);
-                                startActivity(it);
+//                                startActivity(it);
+                                startActivityForResult(it, 1);
                             }
                         });
 
@@ -220,6 +348,9 @@ public class VehicleDetail extends AppCompatActivity {
 
                         totalMoney = totalDay * mainObj.getRentFeePerDay() + totalHour * mainObj.getRentFeePerHour()
                                 + mainObj.getDeposit();
+                        final double discountMoney = (totalDay * mainObj.getRentFeePerDay() + totalHour * mainObj.getRentFeePerHour()) * mainObj.getDiscountValue();
+                        final int viewDiscountMoney = (int)discountMoney;
+                        totalMoney = totalMoney - viewDiscountMoney;
 
                         if (totalDay ==  0 && totalHour == 0){
                             txt_day_rent.setText("0");
@@ -242,6 +373,7 @@ public class VehicleDetail extends AppCompatActivity {
                                         String showDayMoney = GeneralController.convertPrice(nf.format(totalDay * mainObj.getRentFeePerDay()));
                                         String showHourMoney = GeneralController.convertPrice(nf.format(totalHour * mainObj.getRentFeePerHour()));
                                         String showTotalMoney = GeneralController.convertPrice(nf.format(totalMoney));
+                                        String showDiscountMoney = GeneralController.convertPrice(String.valueOf(viewDiscountMoney));
                                         String rentFeeConvert = GeneralController.convertPrice(nf.format(rentFeeMoney));
                                         editor.putString("rentFeeConvert", rentFeeConvert);
                                         editor.putString("totalFeeConvert", showTotalMoney);
@@ -249,6 +381,7 @@ public class VehicleDetail extends AppCompatActivity {
                                         txt_money_day_rent.setText(showDayMoney);
                                         txt_money_hour_rent.setText(showHourMoney);
                                         txt_money_total.setText(showTotalMoney);
+                                        txt_money_discount.setText(showDiscountMoney);
                                         txt_usd_convert.setText(usdConvert + "");
                                     } else {
                                         Toast.makeText(VehicleDetail.this, "Đã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
@@ -275,101 +408,14 @@ public class VehicleDetail extends AppCompatActivity {
                 Toast.makeText(VehicleDetail.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
             }
         });
-
-
-        btnOrderRent = (Button) findViewById(R.id.btnOrderRent);
-        btnOrderRent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (txt_day_rent.getText().toString().equals("0") && txt_hour_rent.getText().toString().equals("0") && txt_usd_convert.getText().toString().equals("0")){
-                    Toast.makeText(VehicleDetail.this, "Vui lòng chọn ngày giờ thuê xe", Toast.LENGTH_SHORT).show();
-                    txt_pickTime.setFocusable(true);
-                    txt_pickTime.setTextColor(Color.RED);
-                } else {
-                    txt_pickTime.setTextColor(Color.parseColor("#212121"));
-                    SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
-                    editor.putString(ImmutableValue.MAIN_totalMoney, Double.toString(usdConvert));
-                    editor.putString(ImmutableValue.MAIN_rentFeeMoney, Double.toString(rentFeeMoney));
-                    editor.putInt(ImmutableValue.MAIN_rentFeePerDayID, rentFeePerDayID);
-                    editor.putInt(ImmutableValue.MAIN_rentFeePerHourID, rentFeePerHourID);
-                    editor.putInt(ImmutableValue.MAIN_receiveType, receiveType);
-                    editor.apply();
-                    Intent it = new Intent(VehicleDetail.this, PaypalExecute.class);
-                    startActivity(it);
-                }
-            }
-        });
-
-        btn_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
     }
 
     @Override
-    public void onBackPressed() {
-        SharedPreferences settings = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
-        settings.edit().clear().commit();
-        SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.HOME_SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
-        editor.putInt(ImmutableValue.HOME_tabIndex, selectTab);
-        editor.apply();
-        VehicleDetail.this.finish();
-        super.onBackPressed();
-    }
-
-    public void scaleView(TextView v, float startScale, float endScale) {
-        Animation anim = new ScaleAnimation(
-                1f, 1f,
-                startScale, endScale,
-                Animation.RELATIVE_TO_SELF, 0f,
-                Animation.RELATIVE_TO_SELF, 0f);
-        anim.setFillAfter(true);
-        anim.setDuration(500);
-        v.startAnimation(anim);
-    }
-
-    public void textColorAnimated(Switch v, int colorValue) {
-        final ObjectAnimator animator = ObjectAnimator.ofInt(v, "textColor", colorValue);
-        animator.setDuration(1000);
-        animator.setEvaluator(new ArgbEvaluator());
-        animator.setInterpolator(new DecelerateInterpolator(2));
-        animator.start();
-    }
-
-    private void declareID(){
-        //Declare id
-        txt_day_rent = (TextView) findViewById(R.id.txt_day_rent);
-        txt_hour_rent = (TextView) findViewById(R.id.txt_hour_rent);
-        txt_money_day_rent = (TextView) findViewById(R.id.txt_money_day_rent);
-        txt_money_hour_rent = (TextView) findViewById(R.id.txt_money_hour_rent);
-        txt_money_total = (TextView) findViewById(R.id.txt_money_total);
-        item_price_slot = (TextView) findViewById(R.id.item_price_slot);
-        item_price_day = (TextView) findViewById(R.id.item_price_day);
-        item_seat = (TextView) findViewById(R.id.item_seat);
-        item_year = (TextView) findViewById(R.id.item_year);
-        item_plateNumber = (TextView) findViewById(R.id.item_plateNumber);
-        item_ownerName = (TextView) findViewById(R.id.item_ownerName);
-        item_engine = (TextView) findViewById(R.id.item_engine);
-        item_tranmission = (TextView) findViewById(R.id.item_tranmission);
-        item_price_deposit = (TextView)findViewById(R.id.item_price_deposit);
-        cbx1 = (CheckBox) findViewById(R.id.cbx1);
-        cbx2 = (CheckBox) findViewById(R.id.cbx2);
-        ln_pickTime = (LinearLayout) findViewById(R.id.ln_pickTime);
-        txt_hours = (TextView) findViewById(R.id.txt_hours);
-        txt_day_start = (TextView) findViewById(R.id.txt_day_start);
-        txt_hours_2 = (TextView) findViewById(R.id.txt_hours_2);
-        txt_day_end = (TextView) findViewById(R.id.txt_day_end);
-        swt_order_type = (Switch) findViewById(R.id.swt_order_type);
-        txt_order_type = (TextView) findViewById(R.id.txt_order_type);
-        txt_usd_convert = (TextView)findViewById(R.id.txt_usd_convert);
-        txt_money_deposit = (TextView)findViewById(R.id.txt_money_deposit);
-        vpg = (ViewPager) findViewById(R.id.vpg);
-        txt_pickTime = (TextView)findViewById(R.id.txt_pickTime);
-        btn_back = (FloatingActionButton)findViewById(R.id.btn_back);
-        txt_vehicle_owner = (TextView)findViewById(R.id.txt_vehicle_owner);
-        ln_hide_order_type = (LinearLayout)findViewById(R.id.ln_hide_order_type);
-        ln_hide_calculator = (LinearLayout)findViewById(R.id.ln_hide_calculator);
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1){
+            if (resultCode == Activity.RESULT_OK){
+                initLayout();
+            }
+        }
     }
 }

@@ -44,8 +44,12 @@ public class ManageContractAdapter extends RecyclerView.Adapter<ManageContractAd
         int depositFee = Integer.parseInt(obj.getDepositFee());
         int totalFee = Integer.parseInt(obj.getTotalFee());
         int rentFee = totalFee - depositFee;
+        int insideFee = contractItemList.get(position).getInsideFee();
+        int outsideFee= contractItemList.get(position).getOutsideFee();
+        int overTimeFee = contractItemList.get(position).getPenaltyOverTime();
+        totalFee = totalFee + insideFee + outsideFee + overTimeFee;
         holder.txt_manage_contract_rent_fee.setText(GeneralController.convertPrice(String.valueOf(rentFee)));
-        holder.txt_manage_contract_total_fee.setText(GeneralController.convertPrice(obj.getTotalFee()));
+        holder.txt_manage_contract_total_fee.setText(GeneralController.convertPrice(String.valueOf(totalFee)));
         holder.ln_manage_contract.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

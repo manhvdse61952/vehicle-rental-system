@@ -1,5 +1,10 @@
 package com.example.manhvdse61952.vrc_android.controller.resources;
 
+import com.example.manhvdse61952.vrc_android.model.api_model.City;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class ImmutableValue {
     //Role of app
     public static final String ROLE_USER = "ROLE_USER";
@@ -95,4 +100,9 @@ public class ImmutableValue {
     public static final String MAIN_isUpdateVehicle = "main_updateVehicle";
 
     public static final String changeFeeMessageBody = "Chủ xe đã thay đổi phí. Vui lòng kiểm tra";
+    public static List<City> listGeneralAddress = new ArrayList<>();
+
+    public static String DISCOUNT_APPROVE = "ENABLE";
+    public static String DISCOUNT_DISABLE = "DISABLE";
+    public static List<String> vehicleFrameNumberListGeneral = new ArrayList<>();
 }

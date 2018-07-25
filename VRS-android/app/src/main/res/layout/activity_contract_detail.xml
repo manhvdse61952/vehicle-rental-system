@@ -503,6 +503,133 @@
                         android:gravity="right"
                         android:text="0 vnd" />
                 </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ln_show_fee"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="150dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal"
+                        android:paddingLeft="10dp"
+                        android:weightSum="1">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.5"
+                            android:text="Trả xe lúc" />
+
+                        <TextView
+                            android:id="@+id/txt_contract_complete_endRealTime"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.5"
+                            android:gravity="right"
+                            android:text="0 ngày 0 giờ" />
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingLeft="10dp"
+                        android:layout_marginTop="5dp"
+                        android:weightSum="1">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.5"
+                            android:text="Quá giờ" />
+
+                        <TextView
+                            android:id="@+id/txt_contract_complete_overTime"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.5"
+                            android:gravity="right"
+                            android:text="0 ngày 0 giờ" />
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal"
+                        android:paddingLeft="10dp"
+                        android:weightSum="1">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.5"
+                            android:text="Phí quá giờ" />
+
+                        <TextView
+                            android:id="@+id/txt_contract_complete_overPrice"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.5"
+                            android:gravity="right"
+                            android:textColor="@color/secondary_text"
+                            android:text="0" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal"
+                        android:paddingLeft="10dp"
+                        android:weightSum="1">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.5"
+                            android:text="Phí nọi thất" />
+
+                        <TextView
+                            android:id="@+id/txt_contract_insideFee"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.5"
+                            android:gravity="right"
+                            android:textColor="@color/secondary_text"
+                            android:text="0" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal"
+                        android:paddingLeft="10dp"
+                        android:weightSum="1">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.5"
+                            android:text="Phí ngoại thất" />
+
+                        <TextView
+                            android:id="@+id/txt_contract_outsideFee"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.5"
+                            android:gravity="right"
+                            android:textColor="@color/secondary_text"
+                            android:text="0" />
+                    </LinearLayout>
+                </LinearLayout>
+
+
+
+
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -517,7 +644,7 @@
                         android:layout_weight="0.6"
                         android:textStyle="bold"
                         android:textColor="@color/secondary_text"
-                        android:text="Tổng tiền tạm thời" />
+                        android:text="Tổng tiền" />
 
                     <TextView
                         android:id="@+id/txt_contract_total_fee"

@@ -32,7 +32,7 @@ public class SearchVehicleItem implements Serializable {
     private String imageLinkFront;
     @SerializedName("discountValue")
     @Expose
-    private int discountValue;
+    private float discountValue;
     @SerializedName("rentFeePerDay")
     @Expose
     private String rentFeePerDay;
@@ -121,11 +121,11 @@ public class SearchVehicleItem implements Serializable {
         this.imageLinkFront = imageLinkFront;
     }
 
-    public int getDiscountValue() {
+    public float getDiscountValue() {
         return discountValue;
     }
 
-    public void setDiscountValue(int discountValue) {
+    public void setDiscountValue(float discountValue) {
         this.discountValue = discountValue;
     }
 

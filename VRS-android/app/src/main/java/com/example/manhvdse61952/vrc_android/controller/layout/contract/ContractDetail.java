@@ -30,6 +30,7 @@ import com.example.manhvdse61952.vrc_android.remote.RetrofitConfig;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -44,9 +45,9 @@ public class ContractDetail extends AppCompatActivity {
             txt_contract_receive_type, txt_contract_rent_time, txt_contract_rent_fee, txt_contract_deposit_fee,
             txt_contract_total_fee, txt_contract_customer_cmnd, txt_contract_customer_phone,
             txt_contract_owner_phone, txt_secret_key, txt_clock_time, txt_clock_day,
-            txt_secret_return_vehicle;
-    PermissionDevice locationObj = new PermissionDevice();
-    LinearLayout ln_clock;
+            txt_secret_return_vehicle, txt_contract_complete_endRealTime, txt_contract_complete_overTime,
+            txt_contract_complete_overPrice, txt_contract_insideFee, txt_contract_outsideFee;
+    LinearLayout ln_clock, ln_show_fee;
     ProgressDialog dialog;
     int customerID = 0, rentFee = 0;
     long currentTimeInServer = 0, startLongTime = 0, endLongTime = 0;
@@ -174,6 +175,12 @@ public class ContractDetail extends AppCompatActivity {
         txt_clock_day = (TextView) findViewById(R.id.txt_clock_day);
         txt_secret_return_vehicle = (TextView) findViewById(R.id.txt_secret_return_vehicle);
         ln_clock = (LinearLayout)findViewById(R.id.ln_clock);
+        txt_contract_complete_endRealTime = (TextView)findViewById(R.id.txt_contract_complete_endRealTime);
+        txt_contract_complete_overTime = (TextView)findViewById(R.id.txt_contract_complete_overTime);
+        txt_contract_complete_overPrice = (TextView)findViewById(R.id.txt_contract_complete_overPrice);
+        txt_contract_insideFee = (TextView)findViewById(R.id.txt_contract_insideFee);
+        txt_contract_outsideFee = (TextView)findViewById(R.id.txt_contract_outsideFee);
+        ln_show_fee = (LinearLayout)findViewById(R.id.ln_show_fee);
     }
 
     private void initLayout() {
@@ -217,19 +224,45 @@ public class ContractDetail extends AppCompatActivity {
                             txt_contract_receive_type.setText("Giao xe tại chỗ");
                         }
                         txt_contract_rent_time.setText(obj.getRentDay() + " ngày " + obj.getRentHour() + " tiếng");
+                        txt_contract_complete_endRealTime.setText(GeneralController.convertTime(obj.getEndRealTime()));
+                        //Calculate overtime
+                        if (obj.getEndRealTime() > obj.getEndTime()) {
+                            long diff = obj.getEndRealTime() - obj.getEndTime();
+                            long diffDate = TimeUnit.MILLISECONDS.toDays(diff);
+                            long diffHour = diff / (60 * 60 * 1000) % 24;
+                            long diffMinute = diff / (60 * 1000) % 60;
+                            if (diffMinute > 30) {
+                                diffHour = diffHour + 1;
+                            }
+                            long overTimeFee = (diffHour*obj.getRentFeePerHour()) + (diffDate*obj.getRentFeePerDay());
+                            txt_contract_complete_overPrice.setText(overTimeFee + "");
+                            txt_contract_complete_overTime.setText(diffDate + " ngày " + diffHour + " giờ");
+                        } else {
+                            txt_contract_complete_overPrice.setText("0");
+                        }
+
                         txt_contract_deposit_fee.setText(GeneralController.convertPrice(obj.getDepositFee()));
-                        txt_contract_total_fee.setText(GeneralController.convertPrice(obj.getTotalFee()));
                         int depositFee = Integer.parseInt(obj.getDepositFee());
                         int totalFee = Integer.parseInt(obj.getTotalFee());
                         rentFee = totalFee - depositFee;
+                        int overTimeFee = obj.getPenaltyOverTime();
+                        int insideFee = obj.getInsideFee();
+                        int outsideFee = obj.getOutsideFee();
+                        totalFee = totalFee + overTimeFee + insideFee + outsideFee;
                         txt_contract_rent_fee.setText(GeneralController.convertPrice(String.valueOf(rentFee)));
+                        txt_contract_complete_overPrice.setText(GeneralController.convertPrice(String.valueOf(overTimeFee)));
+                        txt_contract_outsideFee.setText(GeneralController.convertPrice(String.valueOf(outsideFee)));
+                        txt_contract_insideFee.setText(GeneralController.convertPrice(String.valueOf(insideFee)));
                         customerID = obj.getOwnerID();
-
+                        txt_contract_total_fee.setText(GeneralController.convertPrice(String.valueOf(totalFee)));
                         //Disable delete contract button and return car button
                         if (userID == obj.getOwnerID() && (obj.getContractStatus().equals(ImmutableValue.CONTRACT_INACTIVE)
                                 || obj.getContractStatus().equals(ImmutableValue.CONTRACT_ACTIVE))) {
                             btn_contract_give_car.setVisibility(View.INVISIBLE);
                             btn_remove_contract.setVisibility(View.INVISIBLE);
+                            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) ln_show_fee.getLayoutParams();
+                            params.height = 0;
+                            ln_show_fee.setLayoutParams(params);
                         } else if (obj.getContractStatus().equals(ImmutableValue.CONTRACT_FINISHED)) {
                             LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) ln_clock.getLayoutParams();
                             params.height = 0;
@@ -252,7 +285,7 @@ public class ContractDetail extends AppCompatActivity {
                 } else {
                     dialog.dismiss();
                     Toast.makeText(ContractDetail.this, "Đã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
-                    backToPreviousScreen();
+                    onBackPressed();
                 }
             }
 
@@ -260,7 +293,7 @@ public class ContractDetail extends AppCompatActivity {
             public void onFailure(Call<ContractItem> call, Throwable t) {
                 dialog.dismiss();
                 Toast.makeText(ContractDetail.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
-                backToPreviousScreen();
+                onBackPressed();
             }
         });
     }
@@ -308,7 +341,7 @@ public class ContractDetail extends AppCompatActivity {
                     handler.postDelayed(r, 1000);
                 } else {
                     Toast.makeText(ContractDetail.this, "Đã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
-                    backToPreviousScreen();
+                    onBackPressed();
                 }
                 dialog.dismiss();
             }
@@ -317,7 +350,7 @@ public class ContractDetail extends AppCompatActivity {
             public void onFailure(Call<Long> call, Throwable t) {
                 dialog.dismiss();
                 Toast.makeText(ContractDetail.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
-                backToPreviousScreen();
+                onBackPressed();
             }
         });
     }
@@ -389,10 +422,5 @@ public class ContractDetail extends AppCompatActivity {
         });
     }
 
-    private void backToPreviousScreen() {
-        Intent it = new Intent(ContractDetail.this, ManageContractActivity.class);
-        it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(it);
-    }
 
 }

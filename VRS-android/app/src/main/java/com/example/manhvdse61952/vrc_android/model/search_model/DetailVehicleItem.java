@@ -27,6 +27,7 @@ public class DetailVehicleItem implements Serializable {
     private String vehicleType;
     private String address;
     private String description;
+    private float discountValue;
 
     public int getRentFeePerHourID() {
         return rentFeePerHourID;
@@ -34,6 +35,14 @@ public class DetailVehicleItem implements Serializable {
 
     public void setRentFeePerHourID(int rentFeePerHourID) {
         this.rentFeePerHourID = rentFeePerHourID;
+    }
+
+    public float getDiscountValue() {
+        return discountValue;
+    }
+
+    public void setDiscountValue(float discountValue) {
+        this.discountValue = discountValue;
     }
 
     public String getDescription() {

@@ -1,5 +1,6 @@
 package com.example.manhvdse61952.vrc_android.controller.layout.vehicle.manage;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -41,7 +42,9 @@ public class SearchAddressVehicle extends AppCompatActivity {
                 editor.putString(ImmutableValue.MAIN_vehicleLat, String.valueOf(place.getLatLng().latitude));
                 editor.putString(ImmutableValue.MAIN_vehicleLng, String.valueOf(place.getLatLng().longitude));
                 editor.apply();
-                onBackPressed();
+                Intent returnIntent = new Intent();
+                setResult(Activity.RESULT_OK, returnIntent);
+                SearchAddressVehicle.this.finish();
             }
 
             @Override

@@ -82,7 +82,158 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Chi tiết"
+                    android:text="Phụ phí"
+                    android:textColor="@color/secondary_text"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="15dp"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10dp"
+                    android:weightSum="1">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:text="T.G kết thúc thực tế" />
+
+                    <TextView
+                        android:id="@+id/txt_contract_complete_endRealTime"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:gravity="right"
+                        android:textColor="@color/secondary_text"
+                        android:text="0 ngày 0 giờ" />
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="12dp"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10dp"
+                    android:weightSum="1">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:text="Quá giờ" />
+
+                    <TextView
+                        android:id="@+id/txt_contract_complete_overTime"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:gravity="right"
+                        android:textColor="@color/secondary_text"
+                        android:text="0 ngày 0 giờ" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10dp"
+                    android:weightSum="1">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:text="Phí quá giờ" />
+
+                    <TextView
+                        android:id="@+id/txt_contract_complete_overPrice"
+                        android:padding="5dp"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:gravity="right"
+                        android:textSize="16sp"
+                        android:hint="0"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10dp"
+                    android:weightSum="1">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:textColor="#FF0000"
+                        android:textStyle="bold|italic"
+                        android:text="Phí nội thất" />
+
+                    <EditText
+                        android:id="@+id/edt_contract_complete_inside"
+                        android:layout_width="0dp"
+                        android:padding="5dp"
+                        android:background="@drawable/border_red_white"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:gravity="center"
+                        android:inputType="number"
+                        android:textSize="14sp"
+                        android:textColorHint="#C7C7C7"
+                        android:textColor="@color/secondary_text"
+                        android:hint="Điền giá tiền nếu có"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10dp"
+                    android:weightSum="1">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:textColor="#FF0000"
+                        android:textStyle="bold|italic"
+                        android:text="Phí ngoại thất" />
+
+                    <EditText
+                        android:id="@+id/edt_contract_complete_outside"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:gravity="center"
+                        android:background="@drawable/border_red_white"
+                        android:padding="5dp"
+                        android:inputType="number"
+                        android:textSize="14sp"
+                        android:textColor="@color/secondary_text"
+                        android:textColorHint="#C7C7C7"
+                        android:hint="Điền giá tiền nếu có"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/border_shadow"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Chi tiết hợp đồng"
                     android:textColor="@color/secondary_text"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -205,158 +356,6 @@
                         android:textColor="@color/secondary_text" />
                 </LinearLayout>
             </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/border_shadow"
-                android:orientation="vertical"
-                android:padding="20dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Phụ phí"
-                    android:textColor="@color/secondary_text"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="15dp"
-                    android:orientation="horizontal"
-                    android:paddingLeft="10dp"
-                    android:weightSum="1">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.5"
-                        android:text="T.G kết thúc thực tế" />
-
-                    <TextView
-                        android:id="@+id/txt_contract_complete_endRealTime"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.5"
-                        android:gravity="right"
-                        android:textColor="@color/secondary_text"
-                        android:text="0 ngày 0 giờ" />
-
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="12dp"
-                    android:orientation="horizontal"
-                    android:paddingLeft="10dp"
-                    android:weightSum="1">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.5"
-                        android:text="Quá giờ" />
-
-                    <TextView
-                        android:id="@+id/txt_contract_complete_overTime"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.5"
-                        android:gravity="right"
-                        android:textColor="@color/secondary_text"
-                        android:text="0 ngày 0 giờ" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal"
-                    android:paddingLeft="10dp"
-                    android:weightSum="1">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.5"
-                        android:text="Phí quá giờ" />
-
-                    <TextView
-                        android:id="@+id/txt_contract_complete_overPrice"
-                        android:padding="5dp"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.5"
-                        android:gravity="right"
-                        android:textSize="16sp"
-                        android:hint="0"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="5dp"
-                    android:orientation="horizontal"
-                    android:paddingLeft="10dp"
-                    android:weightSum="1">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.5"
-                        android:textColor="#FF0000"
-                        android:textStyle="bold|italic"
-                        android:text="Phí nội thất" />
-
-                    <EditText
-                        android:id="@+id/edt_contract_complete_inside"
-                        android:layout_width="0dp"
-                        android:padding="5dp"
-                        android:background="@drawable/border_red_white"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.5"
-                        android:gravity="right"
-                        android:inputType="number"
-                        android:textSize="14sp"
-                        android:textColorHint="#C7C7C7"
-                        android:textColor="@color/secondary_text"
-                        android:hint="Điền giá tiền nếu có"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="5dp"
-                    android:orientation="horizontal"
-                    android:paddingLeft="10dp"
-                    android:weightSum="1">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.5"
-                        android:textColor="#FF0000"
-                        android:textStyle="bold|italic"
-                        android:text="Phí ngoại thất" />
-
-                    <EditText
-                        android:id="@+id/edt_contract_complete_outside"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.5"
-                        android:gravity="right"
-                        android:background="@drawable/border_red_white"
-                        android:padding="5dp"
-                        android:inputType="number"
-                        android:textSize="14sp"
-                        android:textColor="@color/secondary_text"
-                        android:textColorHint="#C7C7C7"
-                        android:hint="Điền giá tiền nếu có"/>
-                </LinearLayout>
-            </LinearLayout>
-
 
             <LinearLayout
                 android:layout_width="match_parent"

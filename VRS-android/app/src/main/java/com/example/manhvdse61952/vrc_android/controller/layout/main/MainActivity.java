@@ -20,6 +20,7 @@ import android.os.Handler;
 
 import android.os.Looper;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 
 import android.support.v4.app.ActivityCompat;
@@ -54,6 +55,7 @@ import android.widget.Toast;
 import com.example.manhvdse61952.vrc_android.R;
 import com.example.manhvdse61952.vrc_android.controller.layout.account.UpdateAccount;
 import com.example.manhvdse61952.vrc_android.controller.layout.contract.ContractDetail;
+import com.example.manhvdse61952.vrc_android.controller.layout.promotion.PromotionActivity;
 import com.example.manhvdse61952.vrc_android.controller.layout.vehicle.manage.UpdateVehicle;
 import com.example.manhvdse61952.vrc_android.controller.layout.vehicle.showdetail.VehicleDetail;
 import com.example.manhvdse61952.vrc_android.controller.permission.PermissionDevice;
@@ -71,7 +73,6 @@ import com.example.manhvdse61952.vrc_android.model.api_model.City;
 import com.example.manhvdse61952.vrc_android.model.api_model.ContractItem;
 import com.example.manhvdse61952.vrc_android.model.api_model.District;
 import com.example.manhvdse61952.vrc_android.model.search_model.SearchVehicleItem;
-import com.example.manhvdse61952.vrc_android.controller.resources.GeneralAPI;
 import com.example.manhvdse61952.vrc_android.remote.RetrofitConfig;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
@@ -93,18 +94,18 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     ImageView img_current_address, main_extra_search;
-    TextView txt_main_search_address, txt_longitude, txt_latitude;
+    TextView txt_main_search_address;
     NavigationView navigationView;
     DrawerLayout drawer;
     Toolbar toolbar;
-    ProgressDialog dialog;
     LinearLayout ln_advance;
     Spinner spn_vehicleType, spn_seat, spn_priceType, spn_city, spn_district;
     EditText edt_priceFrom, edt_priceTo;
     int cityPosition = 0, districtID = 0;
     RelativeLayout rl_around;
+    FloatingActionButton fab_renew;
 
-    Boolean isOpenMaker = false, isOpenAdvance = false;
+    Boolean isOpenAdvance = false;
     int fromPrice = 0, toPrice = 0;
     ///////////////// USE FOR SEARCH ADAPTER ////////
     public static List<SearchVehicleItem> listMotorbike = new ArrayList<>();
@@ -130,9 +131,9 @@ public class MainActivity extends AppCompatActivity
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        declareID();
-
         checkScreen();
+
+        declareID();
 
         getCurrentLocation(true);
 
@@ -147,22 +148,14 @@ public class MainActivity extends AppCompatActivity
         img_current_address.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog = ProgressDialog.show(MainActivity.this, "Hệ thống",
+                final ProgressDialog dialog = ProgressDialog.show(MainActivity.this, "Hệ thống",
                         "Đang xử lý", true);
                 (new Handler()).postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        if (isOpenMaker == false){
-                            getCurrentLocation(false);
-                            img_current_address.setImageResource(R.drawable.ic_map_marker_alt);
-                            Toast.makeText(MainActivity.this, "Đã bật tự động lấy vị trí", Toast.LENGTH_SHORT).show();
-                            isOpenMaker = true;
-                        } else if (isOpenMaker){
-                            locationManager.removeUpdates(locationListener);
-                            img_current_address.setImageResource(R.drawable.ic_map_disable);
-                            Toast.makeText(MainActivity.this, "Đã tắt tự động lấy vị trí", Toast.LENGTH_SHORT).show();
-                            isOpenMaker = false;
-                        }
+                            getCurrentLocation(true);
+                            Toast.makeText(MainActivity.this, "Đã lấy vị trí hiện tại", Toast.LENGTH_SHORT).show();
+
                         dialog.dismiss();
                     }
                 }, 500);
@@ -172,10 +165,10 @@ public class MainActivity extends AppCompatActivity
         main_extra_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isOpenAdvance == false){
+                if (isOpenAdvance == false) {
                     GeneralController.scaleView(ln_advance, 600);
                     isOpenAdvance = true;
-                } else if (isOpenAdvance == true){
+                } else if (isOpenAdvance == true) {
                     GeneralController.scaleView(ln_advance, 0);
                     isOpenAdvance = false;
                 }
@@ -247,9 +240,9 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_manage_vehicle) {
             Intent it = new Intent(MainActivity.this, ManageVehicleActivity.class);
             startActivity(it);
-
-//        } else if (id == R.id.nav_slideshow) {
-//
+        } else if (id == R.id.nav_discount) {
+            Intent it = new Intent(MainActivity.this, PromotionActivity.class);
+            startActivity(it);
 //        } else if (id == R.id.nav_manage) {
 //
 //        } else if (id == R.id.nav_share) {
@@ -287,23 +280,22 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    private void declareID(){
-        img_current_address = (ImageView)findViewById(R.id.img_current_address);
-        txt_main_search_address = (TextView)findViewById(R.id.txt_main_search_address);
+    private void declareID() {
+        img_current_address = (ImageView) findViewById(R.id.img_current_address);
+        txt_main_search_address = (TextView) findViewById(R.id.txt_main_search_address);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         main_extra_search = (ImageView) findViewById(R.id.main_extra_search);
-        txt_longitude = (TextView)findViewById(R.id.txt_longitude);
-        txt_latitude = (TextView)findViewById(R.id.txt_latitude);
-        ln_advance = (LinearLayout)findViewById(R.id.ln_advance);
-        spn_vehicleType = (Spinner)findViewById(R.id.spn_vehicleType);
-        spn_city = (Spinner)findViewById(R.id.spn_city);
-        spn_district = (Spinner)findViewById(R.id.spn_district);
-        spn_priceType = (Spinner)findViewById(R.id.spn_priceType);
-        spn_seat = (Spinner)findViewById(R.id.spn_seat);
-        edt_priceFrom = (EditText)findViewById(R.id.edt_priceFrom);
-        edt_priceTo = (EditText)findViewById(R.id.edt_priceTo);
-        rl_around = (RelativeLayout)findViewById(R.id.rl_around);
+        ln_advance = (LinearLayout) findViewById(R.id.ln_advance);
+        spn_vehicleType = (Spinner) findViewById(R.id.spn_vehicleType);
+        spn_city = (Spinner) findViewById(R.id.spn_city);
+        spn_district = (Spinner) findViewById(R.id.spn_district);
+        spn_priceType = (Spinner) findViewById(R.id.spn_priceType);
+        spn_seat = (Spinner) findViewById(R.id.spn_seat);
+        edt_priceFrom = (EditText) findViewById(R.id.edt_priceFrom);
+        edt_priceTo = (EditText) findViewById(R.id.edt_priceTo);
+        rl_around = (RelativeLayout) findViewById(R.id.rl_around);
+        fab_renew = (FloatingActionButton)findViewById(R.id.fab_renew);
 
         //Toggle the actionbar
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -311,10 +303,6 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        if (GeneralAPI.listAddressFromDB.size() == 0) {
-            GeneralAPI testAPI = new GeneralAPI();
-            testAPI.getAllAddress(MainActivity.this);
-        }
         //Use for nav layout
         navigationView.setNavigationItemSelectedListener(this);
         SharedPreferences editor = getSharedPreferences(ImmutableValue.HOME_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
@@ -337,7 +325,7 @@ public class MainActivity extends AppCompatActivity
         rl_around.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog = ProgressDialog.show(MainActivity.this, "Hệ thống",
+                final ProgressDialog dialog = ProgressDialog.show(MainActivity.this, "Hệ thống",
                         "Đang xử lý", true);
                 (new Handler()).postDelayed(new Runnable() {
                     @Override
@@ -372,24 +360,29 @@ public class MainActivity extends AppCompatActivity
         ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(this, R.layout.spinner_item, listPriceType);
         spn_priceType.setAdapter(adapter3);
 
-        if (GeneralAPI.listAddressFromDB.size() != 0){
-            initDistrictAndCity();
-        }
+        initDistrictAndCity();
 
         edt_priceFrom.addTextChangedListener(convertFromPriceRealTime(edt_priceFrom));
         edt_priceTo.addTextChangedListener(convertToPriceRealTime(edt_priceTo));
+
+        fab_renew.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getAllVehicleByDistrictID(44);
+            }
+        });
     }
 
     //Use for init layout
 
     private int getDistrictIdByName(String districtName) {
-        List<City> listCity = GeneralAPI.listAddressFromDB;
+        List<City> listCity = ImmutableValue.listGeneralAddress;
         int districtID = 0;
         for (int i = 0; i < listCity.size(); i++) {
             List<District> listDistrict = listCity.get(i).getDistrict();
             for (int j = 0; j < listDistrict.size(); j++) {
                 String districtConvert = listDistrict.get(j).getDistrictName().toLowerCase().replace("quận", "");
-                if (districtConvert.equals(districtName)){
+                if (districtConvert.equals(districtName)) {
                     districtID = listDistrict.get(j).getId();
                     break;
                 }
@@ -400,7 +393,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void getAllVehicleByDistrictID(int districtID) {
-        dialog = ProgressDialog.show(MainActivity.this, "Hệ thống",
+        final ProgressDialog dialog = ProgressDialog.show(MainActivity.this, "Hệ thống",
                 "Đang xử lý", true);
         Retrofit test = RetrofitConfig.getClient();
         final VehicleAPI testAPI = test.create(VehicleAPI.class);
@@ -493,60 +486,56 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void initDistrictAndCity() {
-        if (GeneralAPI.listAddressFromDB.size() == 0){
-            GeneralAPI testAPI = new GeneralAPI();
-            testAPI.getAllAddress(MainActivity.this);
-        } else {
-            final List<City> listAddress = GeneralAPI.listAddressFromDB;
-            ArrayAdapter<City> cityArrayAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, listAddress);
-            spn_city.setAdapter(cityArrayAdapter);
 
-            spn_city.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    List<District> districts = listAddress.get(position).getDistrict();
-                    cityPosition = position;
-                    ArrayAdapter<District> districtAdapter = new ArrayAdapter<>(MainActivity.this, R.layout.spinner_item, districts);
-                    spn_district.setAdapter(districtAdapter);
+        final List<City> listAddress = ImmutableValue.listGeneralAddress;
+        ArrayAdapter<City> cityArrayAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, listAddress);
+        spn_city.setAdapter(cityArrayAdapter);
 
-                }
+        spn_city.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                List<District> districts = listAddress.get(position).getDistrict();
+                cityPosition = position;
+                ArrayAdapter<District> districtAdapter = new ArrayAdapter<>(MainActivity.this, R.layout.spinner_item, districts);
+                spn_district.setAdapter(districtAdapter);
 
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
+            }
 
-                }
-            });
-            spn_district.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    districtID = 0;
-                    District district = listAddress.get(cityPosition).getDistrict().get(position);
-                    districtID = district.getId();
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
 
-                }
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+        spn_district.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                districtID = 0;
+                District district = listAddress.get(cityPosition).getDistrict().get(position);
+                districtID = district.getId();
+            }
 
-                }
-            });
-        }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             View v = getCurrentFocus();
-            if ( v instanceof EditText) {
+            if (v instanceof EditText) {
                 Rect outRect = new Rect();
                 v.getGlobalVisibleRect(outRect);
-                if (!outRect.contains((int)event.getRawX(), (int)event.getRawY())) {
+                if (!outRect.contains((int) event.getRawX(), (int) event.getRawY())) {
                     v.clearFocus();
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
                 }
             }
         }
-        return super.dispatchTouchEvent( event );
+        return super.dispatchTouchEvent(event);
     }
 
     private TextWatcher convertFromPriceRealTime(final EditText edt) {
@@ -572,7 +561,7 @@ public class MainActivity extends AppCompatActivity
                     if (originalString.contains(",")) {
                         originalString = originalString.replaceAll(",", "");
                     }
-                    if (!originalString.equals("")){
+                    if (!originalString.equals("")) {
                         fromPrice = Integer.parseInt(originalString);
                     }
 
@@ -618,7 +607,7 @@ public class MainActivity extends AppCompatActivity
                     if (originalString.contains(",")) {
                         originalString = originalString.replaceAll(",", "");
                     }
-                    if (!originalString.equals("")){
+                    if (!originalString.equals("")) {
                         toPrice = Integer.parseInt(originalString);
                     }
 
@@ -642,7 +631,7 @@ public class MainActivity extends AppCompatActivity
 
     //Use for location
 
-    private void getCurrentLocation(final Boolean isFirstTime){
+    private void getCurrentLocation(final Boolean isFirstTime) {
         /////////// TEST CODE ////////
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         locationListener = new LocationListener() {
@@ -650,11 +639,9 @@ public class MainActivity extends AppCompatActivity
             public void onLocationChanged(Location location) {
                 double longitude = location.getLongitude();
                 double latitude = location.getLatitude();
-                txt_longitude.setText(longitude + "");
-                txt_latitude.setText(latitude + "");
                 String currentAddress = PermissionDevice.getStringAddress(longitude, latitude, MainActivity.this);
                 txt_main_search_address.setText(currentAddress);
-                if (isFirstTime == true){
+                if (isFirstTime == true) {
                     locationManager.removeUpdates(locationListener);
                 }
             }
@@ -677,32 +664,32 @@ public class MainActivity extends AppCompatActivity
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)){
+        if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
-        } else if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+        } else if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
         }
 
         //////////////////////////////////////////////////////////////////////////
     }
 
-    private void showSearchPlace(){
+    private void showSearchPlace() {
         PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+        EditText edtPlace = (EditText)autocompleteFragment.getView().findViewById(R.id.place_autocomplete_search_input);
+        edtPlace.setHint("Nhập địa chỉ...");
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
                 String currentAddressStr = PermissionDevice.getStringAddress(place.getLatLng().longitude, place.getLatLng().latitude, MainActivity.this);
                 String addressFull = "";
-                if (!currentAddressStr.trim().equals("")){
+                if (!currentAddressStr.trim().equals("")) {
                     String[] arrayAddressTemp = currentAddressStr.split(",");
                     addressFull = arrayAddressTemp[0];
-                    for (int i = 1; i < arrayAddressTemp.length - 1;i++){
+                    for (int i = 1; i < arrayAddressTemp.length - 1; i++) {
                         addressFull = addressFull + ", " + arrayAddressTemp[i].trim();
                     }
                 }
-                txt_longitude.setText(place.getLatLng().longitude + "");
-                txt_latitude.setText(place.getLatLng().latitude + "");
                 txt_main_search_address.setText(addressFull);
             }
 
@@ -713,7 +700,7 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
-    private void checkScreen(){
+    private void checkScreen() {
         SharedPreferences editor = getSharedPreferences(ImmutableValue.HOME_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
         SharedPreferences editor2 = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
         int usernameID = editor.getInt(ImmutableValue.HOME_userID, 0);
@@ -721,16 +708,16 @@ public class MainActivity extends AppCompatActivity
         String isUpdateVehicle = editor2.getString(ImmutableValue.MAIN_isUpdateVehicle, "Empty");
         String contractID = editor2.getString(ImmutableValue.MAIN_contractID, "Empty");
 
-        if (usernameID != 0 && vehicleFrameNumber.equals("Empty") && contractID.equals("Empty") && isUpdateVehicle.equals("Empty")){
+        if (usernameID != 0 && vehicleFrameNumber.equals("Empty") && contractID.equals("Empty") && isUpdateVehicle.equals("Empty")) {
             //Nothing to do
-        } else if (usernameID != 0 && !vehicleFrameNumber.equals("Empty") && contractID.equals("Empty") && isUpdateVehicle.equals("Empty")){
+        } else if (usernameID != 0 && !vehicleFrameNumber.equals("Empty") && contractID.equals("Empty") && isUpdateVehicle.equals("Empty")) {
             Intent it = new Intent(MainActivity.this, VehicleDetail.class);
             startActivity(it);
-        } else if (usernameID != 0 && !vehicleFrameNumber.equals("Empty") && contractID.equals("Empty") && !isUpdateVehicle.equals("Empty")){
+        } else if (usernameID != 0 && !vehicleFrameNumber.equals("Empty") && contractID.equals("Empty") && !isUpdateVehicle.equals("Empty")) {
             Intent it = new Intent(MainActivity.this, UpdateVehicle.class);
             startActivity(it);
-        } else if (usernameID != 0 && vehicleFrameNumber.equals("Empty") && !contractID.equals("Empty")){
-            dialog = ProgressDialog.show(MainActivity.this, "Hệ thống",
+        } else if (usernameID != 0 && vehicleFrameNumber.equals("Empty") && !contractID.equals("Empty")) {
+            final ProgressDialog dialog = ProgressDialog.show(MainActivity.this, "Hệ thống",
                     "Đang xử lý", true);
             Retrofit retrofit = RetrofitConfig.getClient();
             final ContractAPI contractAPI = retrofit.create(ContractAPI.class);
@@ -738,12 +725,12 @@ public class MainActivity extends AppCompatActivity
             responseBodyCall.enqueue(new Callback<ContractItem>() {
                 @Override
                 public void onResponse(Call<ContractItem> call, Response<ContractItem> response) {
-                    if (response.code() == 200){
+                    if (response.code() == 200) {
                         ContractItem obj = response.body();
                         String contractStatus = obj.getContractStatus();
                         if (contractStatus.equals(ImmutableValue.CONTRACT_INACTIVE)
                                 || contractStatus.equals(ImmutableValue.CONTRACT_ACTIVE)
-                                || contractStatus.equals(ImmutableValue.CONTRACT_FINISHED)){
+                                || contractStatus.equals(ImmutableValue.CONTRACT_FINISHED)) {
                             Intent it = new Intent(MainActivity.this, ContractDetail.class);
                             startActivity(it);
                         } else {
@@ -767,7 +754,7 @@ public class MainActivity extends AppCompatActivity
                 }
             });
         } else {
-            MainActivity.this.finish();
+            //MainActivity.this.finish();
             Intent it = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(it);
         }

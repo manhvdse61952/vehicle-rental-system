@@ -1,6 +1,7 @@
 package com.example.manhvdse61952.vrc_android.controller.layout.vehicle.manage;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -236,7 +237,7 @@ public class UpdateVehicle extends AppCompatActivity {
                             @Override
                             public void onClick(View v) {
                                 Intent it = new Intent(UpdateVehicle.this, SearchAddressVehicle.class);
-                                startActivity(it);
+                                startActivityForResult(it, 1);
                             }
                         });
 
@@ -337,20 +338,6 @@ public class UpdateVehicle extends AppCompatActivity {
                     locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
                 }
                 dialog.dismiss();
-//                String currentAddress = PermissionDevice.getLocation(UpdateVehicle.this, UpdateVehicle.this);
-//                String addressFull = "";
-//                if (!currentAddress.trim().equals("")) {
-//                    String[] arrayAddressTemp = currentAddress.split(",");
-//                    addressFull = arrayAddressTemp[0];
-//                    for (int i = 1; i < arrayAddressTemp.length - 2; i++) {
-//                        addressFull = addressFull + ", " + arrayAddressTemp[i].trim();
-//                    }
-//                }
-//                SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SIGNUP_SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
-//                editor.putString(ImmutableValue.VEHICLE_address, addressFull);
-//                editor.apply();
-//                txt_vehicle_address.setText(addressFull);
-//                dialog.dismiss();
             }
         }, 500);
     }
@@ -555,5 +542,14 @@ public class UpdateVehicle extends AppCompatActivity {
             }
         }
         return super.dispatchTouchEvent(event);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1){
+            if (resultCode == Activity.RESULT_OK){
+                initLayout();
+            }
+        }
     }
 }
