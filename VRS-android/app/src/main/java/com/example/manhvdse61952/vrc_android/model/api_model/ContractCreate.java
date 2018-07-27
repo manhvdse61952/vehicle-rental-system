@@ -15,23 +15,27 @@ public class ContractCreate implements Serializable {
     private int hours;
     private int days;
     private int receiveType;
+    private float discountVehicle;
+    private float discountGeneral;
 
-    public ContractCreate(String vehicleID, int userID, String paypalOrderID, String paypalUserID, int rentFeePerHourID, int rentFeePerDayID, long startTime, long endTime, float rentFee, int hours, int days, int receiveType) {
-        this.vehicleID = vehicleID;
-        this.userID = userID;
-        this.paypalOrderID = paypalOrderID;
-        this.paypalUserID = paypalUserID;
-        this.rentFeePerHourID = rentFeePerHourID;
-        this.rentFeePerDayID = rentFeePerDayID;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.rentFee = rentFee;
-        this.hours = hours;
-        this.days = days;
-        this.receiveType = receiveType;
-    }
 
     public ContractCreate() {
+    }
+
+    public float getDiscountVehicle() {
+        return discountVehicle;
+    }
+
+    public void setDiscountVehicle(float discountVehicle) {
+        this.discountVehicle = discountVehicle;
+    }
+
+    public float getDiscountGeneral() {
+        return discountGeneral;
+    }
+
+    public void setDiscountGeneral(float discountGeneral) {
+        this.discountGeneral = discountGeneral;
     }
 
     public String getVehicleID() {

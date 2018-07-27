@@ -12,7 +12,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.manhvdse61952.vrc_android.R;
-import com.example.manhvdse61952.vrc_android.controller.permission.PermissionDevice;
 import com.example.manhvdse61952.vrc_android.controller.resources.GeneralController;
 import com.example.manhvdse61952.vrc_android.controller.resources.ImmutableValue;
 import com.example.manhvdse61952.vrc_android.model.api_model.ContractItem;
@@ -37,8 +36,35 @@ public class ManageContractAdapter extends RecyclerView.Adapter<ManageContractAd
     @Override
     public void onBindViewHolder(RecyclerViewHolder holder, int position) {
         final ContractItem obj = contractItemList.get(position);
-        holder.txt_manage_contract_id.setText(obj.getContractID() + "");
-        holder.txt_manage_contract_status.setText(obj.getContractStatus() + "");
+        holder.txt_manage_contract_id.setText("Hợp đồng #" + obj.getContractID());
+        if(obj.getContractStatus().equals(ImmutableValue.CONTRACT_INACTIVE)){
+            holder.txt_manage_contract_status.setText("Chưa bắt đầu");
+        } else if (obj.getContractStatus().equals(ImmutableValue.CONTRACT_ACTIVE)){
+            holder.txt_manage_contract_status.setText("Đang hoạt động");
+        } else if (obj.getContractStatus().equals(ImmutableValue.CONTRACT_PENDING)){
+            holder.txt_manage_contract_status.setText("Đợi trả xe");
+        } else if (obj.getContractStatus().equals(ImmutableValue.CONTRACT_PRE_FINISHED)){
+            holder.txt_manage_contract_status.setText("Đang thỏa thuận");
+        } else if (obj.getContractStatus().equals(ImmutableValue.CONTRACT_FINISHED)){
+            holder.txt_manage_contract_status.setText("Hoàn thành");
+        } else if (obj.getContractStatus().equals(ImmutableValue.CONTRACT_ISSUE)){
+            holder.txt_manage_contract_status.setText("Khiếu nại");
+        } else if (obj.getContractStatus().equals(ImmutableValue.CONTRACT_REFUNDED)){
+            holder.txt_manage_contract_status.setText("Hủy hợp đồng");
+        }
+
+        if (obj.getContractStatus().equals(ImmutableValue.CONTRACT_FINISHED)){
+            holder.ln_manage_contract.setBackgroundResource(R.drawable.border_green);
+        } else if (obj.getContractStatus().equals(ImmutableValue.CONTRACT_REFUNDED)) {
+            holder.ln_manage_contract.setBackgroundResource(R.drawable.border_red);
+        } else if (obj.getContractStatus().equals(ImmutableValue.CONTRACT_INACTIVE)){
+            holder.ln_manage_contract.setBackgroundResource(R.drawable.border_gray);
+        } else if (obj.getContractStatus().equals(ImmutableValue.CONTRACT_ISSUE)){
+            holder.ln_manage_contract.setBackgroundResource(R.drawable.border_light_green);
+        } else {
+            holder.ln_manage_contract.setBackgroundResource(R.drawable.border_blue);
+        }
+
         holder.txt_manage_contract_start_time.setText(GeneralController.convertTime(obj.getStartTime()));
         holder.txt_manage_contract_end_time.setText(GeneralController.convertTime(obj.getEndTime()));
         int depositFee = Integer.parseInt(obj.getDepositFee());

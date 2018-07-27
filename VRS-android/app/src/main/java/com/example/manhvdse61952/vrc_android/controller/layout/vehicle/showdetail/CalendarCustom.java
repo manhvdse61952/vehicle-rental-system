@@ -9,7 +9,6 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -27,7 +26,6 @@ import com.example.manhvdse61952.vrc_android.remote.RetrofitConfig;
 import com.shawnlin.numberpicker.NumberPicker;
 import com.squareup.timessquare.CalendarPickerView;
 
-import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -38,8 +36,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -284,12 +280,17 @@ public class CalendarCustom extends AppCompatActivity {
                         List<ContractItem> deletedDuplicated = new ArrayList<>();
                         contractItemList = response.body();
 
-                        for (int i = 0; i < contractItemList.size();i++){
-                            if (roleName.equals(ImmutableValue.ROLE_OWNER)
-                            && userID != ownerIdOfVehicle){
-                                deletedDuplicated.add(contractItemList.get(i));
+                        if (roleName.equals(ImmutableValue.ROLE_OWNER)
+                                && userID != ownerIdOfVehicle){
+                            deletedDuplicated.addAll(contractItemList);
+                        } else {
+                            for (int i = 0; i < contractItemList.size();i++){
+                                if (contractItemList.get(i).getContractStatus().equals(ImmutableValue.CONTRACT_REFUNDED)){
+                                    deletedDuplicated.add(contractItemList.get(i));
+                                }
                             }
                         }
+
                         if (deletedDuplicated.size() > 0){
                             for (int i = 0;i < deletedDuplicated.size();i++){
                                 contractItemList.remove(deletedDuplicated.get(i));
@@ -551,30 +552,30 @@ public class CalendarCustom extends AppCompatActivity {
     }
 
     private void resetColorHour() {
-        txt_hour_view_0.setBackgroundResource(R.drawable.border_green);
-        txt_hour_view_1.setBackgroundResource(R.drawable.border_green);
-        txt_hour_view_2.setBackgroundResource(R.drawable.border_green);
-        txt_hour_view_3.setBackgroundResource(R.drawable.border_green);
-        txt_hour_view_4.setBackgroundResource(R.drawable.border_green);
-        txt_hour_view_5.setBackgroundResource(R.drawable.border_green);
-        txt_hour_view_6.setBackgroundResource(R.drawable.border_green);
-        txt_hour_view_7.setBackgroundResource(R.drawable.border_green);
-        txt_hour_view_8.setBackgroundResource(R.drawable.border_green);
-        txt_hour_view_9.setBackgroundResource(R.drawable.border_green);
-        txt_hour_view_10.setBackgroundResource(R.drawable.border_green);
-        txt_hour_view_11.setBackgroundResource(R.drawable.border_green);
-        txt_hour_view_12.setBackgroundResource(R.drawable.border_green);
-        txt_hour_view_13.setBackgroundResource(R.drawable.border_green);
-        txt_hour_view_14.setBackgroundResource(R.drawable.border_green);
-        txt_hour_view_15.setBackgroundResource(R.drawable.border_green);
-        txt_hour_view_16.setBackgroundResource(R.drawable.border_green);
-        txt_hour_view_17.setBackgroundResource(R.drawable.border_green);
-        txt_hour_view_18.setBackgroundResource(R.drawable.border_green);
-        txt_hour_view_19.setBackgroundResource(R.drawable.border_green);
-        txt_hour_view_20.setBackgroundResource(R.drawable.border_green);
-        txt_hour_view_21.setBackgroundResource(R.drawable.border_green);
-        txt_hour_view_22.setBackgroundResource(R.drawable.border_green);
-        txt_hour_view_23.setBackgroundResource(R.drawable.border_green);
+        txt_hour_view_0.setBackgroundResource(R.drawable.border_green_primarygreen);
+        txt_hour_view_1.setBackgroundResource(R.drawable.border_green_primarygreen);
+        txt_hour_view_2.setBackgroundResource(R.drawable.border_green_primarygreen);
+        txt_hour_view_3.setBackgroundResource(R.drawable.border_green_primarygreen);
+        txt_hour_view_4.setBackgroundResource(R.drawable.border_green_primarygreen);
+        txt_hour_view_5.setBackgroundResource(R.drawable.border_green_primarygreen);
+        txt_hour_view_6.setBackgroundResource(R.drawable.border_green_primarygreen);
+        txt_hour_view_7.setBackgroundResource(R.drawable.border_green_primarygreen);
+        txt_hour_view_8.setBackgroundResource(R.drawable.border_green_primarygreen);
+        txt_hour_view_9.setBackgroundResource(R.drawable.border_green_primarygreen);
+        txt_hour_view_10.setBackgroundResource(R.drawable.border_green_primarygreen);
+        txt_hour_view_11.setBackgroundResource(R.drawable.border_green_primarygreen);
+        txt_hour_view_12.setBackgroundResource(R.drawable.border_green_primarygreen);
+        txt_hour_view_13.setBackgroundResource(R.drawable.border_green_primarygreen);
+        txt_hour_view_14.setBackgroundResource(R.drawable.border_green_primarygreen);
+        txt_hour_view_15.setBackgroundResource(R.drawable.border_green_primarygreen);
+        txt_hour_view_16.setBackgroundResource(R.drawable.border_green_primarygreen);
+        txt_hour_view_17.setBackgroundResource(R.drawable.border_green_primarygreen);
+        txt_hour_view_18.setBackgroundResource(R.drawable.border_green_primarygreen);
+        txt_hour_view_19.setBackgroundResource(R.drawable.border_green_primarygreen);
+        txt_hour_view_20.setBackgroundResource(R.drawable.border_green_primarygreen);
+        txt_hour_view_21.setBackgroundResource(R.drawable.border_green_primarygreen);
+        txt_hour_view_22.setBackgroundResource(R.drawable.border_green_primarygreen);
+        txt_hour_view_23.setBackgroundResource(R.drawable.border_green_primarygreen);
     }
 
     private void changeColorHour(int pos) {

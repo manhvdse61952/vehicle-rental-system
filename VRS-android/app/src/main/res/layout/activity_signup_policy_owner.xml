@@ -171,7 +171,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="7"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/btn_accept_hide"
+                    android:background="@drawable/border_green_hide"
                     android:textAllCaps="false"
                     android:text="Hoàn tất"
                     android:textColor="#FFF"

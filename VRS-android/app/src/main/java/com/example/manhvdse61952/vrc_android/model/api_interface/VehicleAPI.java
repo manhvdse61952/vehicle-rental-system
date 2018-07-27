@@ -20,15 +20,9 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface VehicleAPI {
-//    @Headers({"Accept: application/json"})
-//    @GET("/vehicleinformation/getVehicleMakerList/")
-//    Call<List<String>> getVehicleMarker();
-//
-//    @Headers({"Accept: application/json"})
-//    @GET("/vehicleinformation/getVehicleModelsByMaker/{vehiclemaker}")
-//    Call<List<String>> getVehicleModel(@Path("vehiclemaker") String vehiclemaker);
 
     @Headers({"Accept: application/json"})
     @GET("/vehicleinformation/getAll")
@@ -69,4 +63,13 @@ public interface VehicleAPI {
     @PUT("/vehicle/update/{vehicleFrameNumber}")
     Call<ResponseBody> updateVehicle(@Path("vehicleFrameNumber") String vehicleFrameNumber,
                                      @Body VehicleUpdate vehicleUpdate);
+
+    @Headers({"Accept: application/json"})
+    @POST("/search/adv")
+    Call<List<SearchVehicleItem>> getListAdvancedSearch(@Query("seat") int seat,
+                                                        @Query("vehicleType") String vehicleType,
+                                                        @Query("priceFrom") int priceFrom,
+                                                        @Query("priceTo") int priceTo,
+                                                        @Query("districtID") int districtID,
+                                                        @Query("priceType") int priceType);
 }

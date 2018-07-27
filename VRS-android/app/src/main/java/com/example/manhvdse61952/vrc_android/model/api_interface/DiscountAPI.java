@@ -1,6 +1,7 @@
 package com.example.manhvdse61952.vrc_android.model.api_interface;
 
 import com.example.manhvdse61952.vrc_android.model.api_model.Discount;
+import com.example.manhvdse61952.vrc_android.model.api_model.DiscountGeneral;
 
 import java.util.List;
 
@@ -28,4 +29,7 @@ public interface DiscountAPI {
     @GET("/discount/removeDiscount/{frameNumber}")
     Call<ResponseBody> removePromotion(@Path("frameNumber") String frameNumber);
 
+    @Headers({"Accept: application/json"})
+    @GET("/discount/getDiscountByCode/{code}")
+    Call<DiscountGeneral> checkPromotion(@Path("code") String code);
 }

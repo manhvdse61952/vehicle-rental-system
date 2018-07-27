@@ -21,5 +21,229 @@
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_activity_main_2"
         app:menu="@menu/activity_main_2_drawer" />
+    <android.support.design.widget.NavigationView
+        android:layout_width="280dp"
+        android:layout_gravity="end"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:id="@+id/right_drawer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginTop="40dp"
+            android:choiceMode="singleChoice"
+            android:background="@color/primary_text">
+            <LinearLayout
+                android:id="@+id/ln_search_advanced"
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/border_white_green"
+                android:gravity="center"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_width="30dp"
+                    android:src="@drawable/ic_filter"
+                    android:tint="@color/colorPrimary"
+                    android:layout_height="30dp" />
+                <TextView
+                    android:layout_marginLeft="5dp"
+                    android:layout_width="wrap_content"
+                    android:text="Tìm kiếm nâng cao"
+                    android:textSize="16sp"
+                    android:textColor="@color/colorPrimary"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ln_search_advanced_show"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_height="340dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="40dp">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="4"
+                        android:text="Loại xe"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="@color/secondary_text"
+                        android:textSize="14sp"
+                        android:layout_height="wrap_content" />
+                    <Spinner
+                        android:id="@+id/spn_vehicleType"
+                        android:layout_width="0dp"
+                        android:layout_weight="6"
+                        android:layout_height="match_parent"></Spinner>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="40dp">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="5"
+                        android:text="Số chỗ ngồi"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="@color/secondary_text"
+                        android:textSize="14sp"
+                        android:layout_height="wrap_content" />
+                    <Spinner
+                        android:id="@+id/spn_seat"
+                        android:layout_width="0dp"
+                        android:layout_weight="5"
+                        android:layout_height="match_parent"></Spinner>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="40dp">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="4"
+                        android:text="Giá tiền từ"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="@color/secondary_text"
+                        android:textSize="14sp"
+                        android:layout_height="wrap_content" />
+                    <EditText
+                        android:id="@+id/edt_priceFrom"
+                        android:layout_marginRight="10dp"
+                        android:layout_width="0dp"
+                        android:layout_weight="6"
+                        android:hint="100.000"
+                        android:textSize="14sp"
+                        android:textColorHint="#CCC"
+                        android:gravity="center"
+                        android:background="@drawable/border_white"
+                        android:layout_height="match_parent" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="40dp">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="4"
+                        android:text="Giá tiền đến"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="@color/secondary_text"
+                        android:textSize="14sp"
+                        android:layout_height="wrap_content" />
+                    <EditText
+                        android:id="@+id/edt_priceTo"
+                        android:layout_width="0dp"
+                        android:layout_weight="6"
+                        android:layout_marginRight="10dp"
+                        android:hint="200.000"
+                        android:textColorHint="#CCC"
+                        android:textSize="14sp"
+                        android:gravity="center"
+                        android:background="@drawable/border_white"
+                        android:layout_height="match_parent" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="40dp">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="4"
+                        android:text="Đơn giá theo"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="@color/secondary_text"
+                        android:textSize="14sp"
+                        android:layout_height="wrap_content" />
+                    <Spinner
+                        android:id="@+id/spn_priceType"
+                        android:layout_width="0dp"
+                        android:layout_weight="6"
+                        android:layout_height="match_parent"></Spinner>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="40dp">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="4"
+                        android:text="Thành phố"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="@color/secondary_text"
+                        android:textSize="14sp"
+                        android:layout_height="wrap_content" />
+                    <Spinner
+                        android:id="@+id/spn_city"
+                        android:layout_width="0dp"
+                        android:layout_weight="6"
+                        android:layout_height="match_parent"></Spinner>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="40dp">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="4"
+                        android:text="Quận"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="@color/secondary_text"
+                        android:textSize="14sp"
+                        android:layout_height="wrap_content" />
+                    <Spinner
+                        android:id="@+id/spn_district"
+                        android:layout_width="0dp"
+                        android:layout_weight="6"
+                        android:layout_height="match_parent"></Spinner>
+                </LinearLayout>
+                <Button
+                    android:id="@+id/btn_searchAdvance"
+                    android:layout_width="match_parent"
+                    android:background="@drawable/border_green_primarygreen"
+                    android:text="Bắt đầu tìm"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="20dp"
+                    android:textAllCaps="false"
+                    android:textColor="@color/primary_text"
+                    android:layout_height="40dp"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ln_around"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/border_white_green"
+                android:gravity="center"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:layout_marginTop="10dp">
+                <ImageView
+                    android:layout_width="30dp"
+                    android:src="@drawable/ic_search_around"
+                    android:tint="@color/colorPrimary"
+                    android:layout_height="30dp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="Tìm xe quanh bạn"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="16sp"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </LinearLayout>
+    </android.support.design.widget.NavigationView>
+
 
 </android.support.v4.widget.DrawerLayout>

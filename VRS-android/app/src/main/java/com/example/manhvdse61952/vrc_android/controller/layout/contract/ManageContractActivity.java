@@ -109,11 +109,8 @@ public class ManageContractActivity extends AppCompatActivity {
                     } else {
                         txt_manage_contract_error.setVisibility(View.VISIBLE);
                     }
-                } else if (response.code() == 404) {
-                    txt_manage_contract_error.setVisibility(View.VISIBLE);
                 } else {
                     txt_manage_contract_error.setVisibility(View.VISIBLE);
-                    Toast.makeText(ManageContractActivity.this, "Đã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
                 }
                 dialog.dismiss();
             }
@@ -147,11 +144,8 @@ public class ManageContractActivity extends AppCompatActivity {
                     } else {
                         txt_manage_contract_error.setVisibility(View.VISIBLE);
                     }
-                } else if (response.code() == 404) {
-                    txt_manage_contract_error.setVisibility(View.VISIBLE);
                 } else {
                     txt_manage_contract_error.setVisibility(View.VISIBLE);
-                    Toast.makeText(ManageContractActivity.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
                 }
                 dialog.dismiss();
             }

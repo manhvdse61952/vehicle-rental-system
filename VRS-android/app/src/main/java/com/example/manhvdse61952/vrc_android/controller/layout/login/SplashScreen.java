@@ -101,7 +101,7 @@ public class SplashScreen extends AppCompatActivity {
             public void run() {
                 while (progressStatus < 100) {
                     progressStatus++;
-                    SystemClock.sleep(50);
+                    SystemClock.sleep(20);
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
@@ -152,5 +152,10 @@ public class SplashScreen extends AppCompatActivity {
                 });
             }
         }).start();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

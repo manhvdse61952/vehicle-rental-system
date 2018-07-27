@@ -5,20 +5,17 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.manhvdse61952.vrc_android.R;
-import com.example.manhvdse61952.vrc_android.controller.permission.PermissionDevice;
 import com.example.manhvdse61952.vrc_android.controller.resources.GeneralController;
 import com.example.manhvdse61952.vrc_android.controller.resources.ImmutableValue;
 import com.example.manhvdse61952.vrc_android.model.api_interface.ContractAPI;
@@ -28,6 +25,8 @@ import com.example.manhvdse61952.vrc_android.model.api_model.ContractFinish;
 import com.example.manhvdse61952.vrc_android.model.api_model.ContractItem;
 import com.example.manhvdse61952.vrc_android.remote.RetrofitConfig;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
@@ -46,7 +45,8 @@ public class ContractDetail extends AppCompatActivity {
             txt_contract_total_fee, txt_contract_customer_cmnd, txt_contract_customer_phone,
             txt_contract_owner_phone, txt_secret_key, txt_clock_time, txt_clock_day,
             txt_secret_return_vehicle, txt_contract_complete_endRealTime, txt_contract_complete_overTime,
-            txt_contract_complete_overPrice, txt_contract_insideFee, txt_contract_outsideFee;
+            txt_contract_complete_overPrice, txt_contract_insideFee, txt_contract_outsideFee
+            , txt_detail_discount_vehicle, txt_detail_discount_general;
     LinearLayout ln_clock, ln_show_fee;
     ProgressDialog dialog;
     int customerID = 0, rentFee = 0;
@@ -181,6 +181,8 @@ public class ContractDetail extends AppCompatActivity {
         txt_contract_insideFee = (TextView)findViewById(R.id.txt_contract_insideFee);
         txt_contract_outsideFee = (TextView)findViewById(R.id.txt_contract_outsideFee);
         ln_show_fee = (LinearLayout)findViewById(R.id.ln_show_fee);
+        txt_detail_discount_vehicle = (TextView)findViewById(R.id.txt_detail_discount_vehicle);
+        txt_detail_discount_general = (TextView)findViewById(R.id.txt_detail_discount_general);
     }
 
     private void initLayout() {
@@ -218,6 +220,17 @@ public class ContractDetail extends AppCompatActivity {
                         txt_contract_customer_name.setText(obj.getCustomerName());
                         txt_contract_customer_cmnd.setText(obj.getCustomerCMND());
                         txt_contract_customer_phone.setText(obj.getCustomerPhone());
+
+                        NumberFormat nf = new DecimalFormat("#.####");
+                        if (obj.getDiscountVehicle() != 0){
+                            float discountVehicleValue = obj.getDiscountVehicle() * 100;
+                            txt_detail_discount_vehicle.setText(nf.format(discountVehicleValue) + " %");
+                        }
+                        if (obj.getDiscountGeneral() != 0){
+                            float discountGeneralValue = obj.getDiscountGeneral() * 100;
+                            txt_detail_discount_general.setText(nf.format(discountGeneralValue) + " %");
+                        }
+
                         if (obj.getReceiveType() == 0) {
                             txt_contract_receive_type.setText("Tự đến lấy xe");
                         } else {
@@ -256,14 +269,20 @@ public class ContractDetail extends AppCompatActivity {
                         customerID = obj.getOwnerID();
                         txt_contract_total_fee.setText(GeneralController.convertPrice(String.valueOf(totalFee)));
                         //Disable delete contract button and return car button
-                        if (userID == obj.getOwnerID() && (obj.getContractStatus().equals(ImmutableValue.CONTRACT_INACTIVE)
+                        if (obj.getOwnerID() == userID && (obj.getContractStatus().equals(ImmutableValue.CONTRACT_INACTIVE)
                                 || obj.getContractStatus().equals(ImmutableValue.CONTRACT_ACTIVE))) {
                             btn_contract_give_car.setVisibility(View.INVISIBLE);
                             btn_remove_contract.setVisibility(View.INVISIBLE);
                             LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) ln_show_fee.getLayoutParams();
                             params.height = 0;
                             ln_show_fee.setLayoutParams(params);
-                        } else if (obj.getContractStatus().equals(ImmutableValue.CONTRACT_FINISHED)) {
+                        } else if (obj.getCustomerID() == userID && (obj.getContractStatus().equals(ImmutableValue.CONTRACT_INACTIVE)
+                                || obj.getContractStatus().equals(ImmutableValue.CONTRACT_ACTIVE))){
+                            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) ln_show_fee.getLayoutParams();
+                            params.height = 0;
+                            ln_show_fee.setLayoutParams(params);
+                        }
+                        else if (obj.getContractStatus().equals(ImmutableValue.CONTRACT_FINISHED)) {
                             LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) ln_clock.getLayoutParams();
                             params.height = 0;
                             ln_clock.setLayoutParams(params);
@@ -271,15 +290,14 @@ public class ContractDetail extends AppCompatActivity {
                             btn_remove_contract.setVisibility(View.INVISIBLE);
                         } else if (obj.getContractStatus().equals(ImmutableValue.CONTRACT_REFUNDED)) {
                             LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) ln_clock.getLayoutParams();
+                            LinearLayout.LayoutParams params2 = (LinearLayout.LayoutParams) ln_show_fee.getLayoutParams();
                             params.height = 0;
+                            params2.height = 0;
                             ln_clock.setLayoutParams(params);
+                            ln_show_fee.setLayoutParams(params2);
                             btn_contract_give_car.setVisibility(View.INVISIBLE);
                             btn_remove_contract.setVisibility(View.INVISIBLE);
-                        } else if (obj.getContractStatus().equals(ImmutableValue.CONTRACT_PENDING)) {
-                            Intent it = new Intent(ContractDetail.this, ManageContractActivity.class);
-                            startActivity(it);
                         }
-
                         initClock();
                     }
                 } else {
@@ -315,7 +333,7 @@ public class ContractDetail extends AppCompatActivity {
 
                             if (currentTimeInServer >= startLongTime) {
                                 btn_remove_contract.setVisibility(View.INVISIBLE);
-                                btn_contract_give_car.setBackgroundResource(R.drawable.border_green);
+                                btn_contract_give_car.setBackgroundResource(R.drawable.border_green_primarygreen);
                                 btn_contract_give_car.setEnabled(true);
                                 btn_contract_give_car.setClickable(true);
                             } else if (currentTimeInServer < startLongTime){
@@ -373,7 +391,9 @@ public class ContractDetail extends AppCompatActivity {
                                 .setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
+                                        ContractDetail.this.finish();
                                         Intent it = new Intent(ContractDetail.this, MainActivity.class);
+                                        it.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                         startActivity(it);
                                     }
                                 });
@@ -408,6 +428,8 @@ public class ContractDetail extends AppCompatActivity {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.code() == 200) {
                     Toast.makeText(ContractDetail.this, "Hủy thành công", Toast.LENGTH_SHORT).show();
+                    ContractDetail.this.finish();
+                    startActivity(new Intent(ContractDetail.this, MainActivity.class));
                 } else {
                     Toast.makeText(ContractDetail.this, "Đã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
                 }

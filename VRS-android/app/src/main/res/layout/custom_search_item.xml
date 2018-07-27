@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:id="@+id/search_layout_item"
     android:background="@color/primary_text"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
     <ImageView
         android:id="@+id/img_main"
         android:layout_width="match_parent"
@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_below="@+id/img_main"
         android:layout_marginBottom="10dp"
-        android:background="@drawable/border_search_item"
+        android:background="@drawable/border_main_detail"
         android:layout_height="50dp">
         <TextView
             android:id="@+id/txt_main_name"
@@ -54,7 +54,7 @@
         android:layout_height="wrap_content"
         android:text="100.000.000"
         android:textColor="@color/colorPrimaryDark"
-        android:background="@drawable/border_price"
+        android:background="@drawable/border_main_price"
         android:paddingTop="10dp"
         android:textStyle="bold"
         android:paddingBottom="10dp"

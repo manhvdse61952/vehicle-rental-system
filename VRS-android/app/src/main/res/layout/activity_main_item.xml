@@ -68,7 +68,7 @@
                     android:paddingLeft="10dp"
                     android:text="Giá thuê xe"
                     android:textColor="@color/secondary_text"
-                    android:textSize="18sp" />
+                    android:textSize="14sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -155,37 +155,6 @@
                     android:layout_height="0.2dp"
                     android:layout_margin="10dp"
                     android:background="#ccc" />
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="20dp"
-                    android:weightSum="10">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="5"
-                        android:text="Khuyến mãi"
-                        android:textColor="@color/secondary_text"
-                        android:textSize="18sp" />
-
-                    <TextView
-                        android:id="@+id/item_discount"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="5"
-                        android:text="0 %"
-                        android:textAlignment="textEnd"
-                        android:textColor="#000"
-                        android:textSize="16sp" />
-                </LinearLayout>
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.2dp"
-                    android:layout_margin="10dp"
-                    android:background="#ccc" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -194,7 +163,7 @@
                     android:paddingLeft="10dp"
                     android:text="Thông số của xe"
                     android:textColor="@color/secondary_text"
-                    android:textSize="18sp" />
+                    android:textSize="14sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -347,7 +316,7 @@
                     android:paddingLeft="10dp"
                     android:text="Chủ xe"
                     android:textColor="@color/secondary_text"
-                    android:textSize="18sp" />
+                    android:textSize="14sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -392,7 +361,7 @@
                     android:paddingLeft="10dp"
                     android:text="Giấy tờ kèm theo"
                     android:textColor="#000"
-                    android:textSize="18sp" />
+                    android:textSize="14sp" />
 
                 <CheckBox
                     android:id="@+id/cbx1"
@@ -429,7 +398,7 @@
                     android:paddingLeft="10dp"
                     android:text="Chọn thời gian thuê"
                     android:textColor="@color/secondary_text"
-                    android:textSize="18sp" />
+                    android:textSize="14sp" />
 
                 <LinearLayout
                     android:id="@+id/ln_pickTime"
@@ -559,7 +528,7 @@
                         android:paddingLeft="10dp"
                         android:text="Hình thức nhận xe"
                         android:textColor="@color/secondary_text"
-                        android:textSize="18sp" />
+                        android:textSize="14sp" />
 
                     <Switch
                         android:id="@+id/swt_order_type"
@@ -583,6 +552,97 @@
                         android:textColor="@color/secondary_text"
                         android:textSize="14sp" />
                 </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.2dp"
+                    android:layout_margin="10dp"
+                    android:background="#ccc" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="20dp"
+                    android:weightSum="10">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="5"
+                        android:text="Khuyến mãi của xe"
+                        android:textColor="@color/secondary_text"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/item_discount"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="5"
+                        android:text="0 %"
+                        android:textAlignment="textEnd"
+                        android:textColor="#000"
+                        android:textSize="16sp" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:paddingRight="20dp"
+                    android:weightSum="10">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="5"
+                        android:text="Khuyến mãi của hệ thống"
+                        android:textColor="@color/secondary_text"
+                        android:textSize="14sp" />
+                    <TextView
+                        android:id="@+id/txt_discount_general"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="5"
+                        android:text="0 %"
+                        android:textAlignment="textEnd"
+                        android:textColor="#000"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+                <EditText
+                    android:id="@+id/edt_discount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="Nhập mã nếu có"
+                    android:textColorHint="#797979"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingRight="20dp"
+                    android:paddingLeft="20dp"
+                    android:textAllCaps="true"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_gravity="center"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:maxLength="6"
+                    android:background="@drawable/border_white"
+                    android:textAlignment="center"
+                    android:textColor="#000"
+                    android:textSize="14sp" />
+                <Button
+                    android:id="@+id/btn_check_discount"
+                    android:layout_width="wrap_content"
+                    android:text="Kiểm tra mã"
+                    android:textAllCaps="false"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:layout_gravity="center"
+                    android:textColor="@color/primary_text"
+                    android:background="@drawable/border_green_primarygreen"
+                    android:layout_height="wrap_content" />
 
                 <LinearLayout
                     android:id="@+id/ln_hide_calculator"
@@ -603,7 +663,7 @@
                         android:paddingLeft="10dp"
                         android:text="Tiền thuê ước tính"
                         android:textColor="@color/secondary_text"
-                        android:textSize="18sp" />
+                        android:textSize="14sp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"

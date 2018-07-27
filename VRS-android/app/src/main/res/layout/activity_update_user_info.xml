@@ -62,7 +62,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:orientation="horizontal"
-                    android:background="@drawable/border_input">
+                    android:background="@drawable/border_white_grey">
                     <ImageView
                         android:layout_width="0dp"
                         android:layout_weight="1.5"
@@ -87,7 +87,7 @@
                     android:layout_height="50dp"
                     android:orientation="horizontal"
                     android:weightSum="10"
-                    android:background="@drawable/border_input"
+                    android:background="@drawable/border_white_grey"
                     android:gravity="center">
                     <ImageView
                         android:layout_width="0dp"
@@ -123,7 +123,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:orientation="horizontal"
-                    android:background="@drawable/border_input">
+                    android:background="@drawable/border_white_grey">
                     <ImageView
                         android:layout_width="0dp"
                         android:layout_weight="1.5"
@@ -147,7 +147,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:orientation="horizontal"
-                    android:background="@drawable/border_input">
+                    android:background="@drawable/border_white_grey">
                     <ImageView
                         android:layout_width="0dp"
                         android:layout_weight="1.5"
@@ -171,7 +171,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:orientation="horizontal"
-                    android:background="@drawable/border_input">
+                    android:background="@drawable/border_white_grey">
                     <ImageView
                         android:layout_width="0dp"
                         android:layout_weight="1.5"

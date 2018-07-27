@@ -1,6 +1,7 @@
 package com.example.manhvdse61952.vrc_android.controller.resources;
 
 import com.example.manhvdse61952.vrc_android.model.api_model.City;
+import com.example.manhvdse61952.vrc_android.model.search_model.SearchVehicleItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -98,6 +99,8 @@ public class ImmutableValue {
     public static final String MAIN_startDayLong = "main_startDayLong";
     public static final String MAIN_endDayLong = "main_endDayLong";
     public static final String MAIN_isUpdateVehicle = "main_updateVehicle";
+    public static final String MAIN_discountVehicle = "main_discountVehicle";
+    public static final String MAIN_discountGeneral = "main_discountGeneral";
 
     public static final String changeFeeMessageBody = "Chủ xe đã thay đổi phí. Vui lòng kiểm tra";
     public static List<City> listGeneralAddress = new ArrayList<>();
@@ -105,4 +108,5 @@ public class ImmutableValue {
     public static String DISCOUNT_APPROVE = "ENABLE";
     public static String DISCOUNT_DISABLE = "DISABLE";
     public static List<String> vehicleFrameNumberListGeneral = new ArrayList<>();
+    public static List<SearchVehicleItem> listSearchAdvanced = new ArrayList<>();
 }

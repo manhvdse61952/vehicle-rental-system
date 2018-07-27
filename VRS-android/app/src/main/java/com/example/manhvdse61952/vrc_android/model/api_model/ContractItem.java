@@ -35,9 +35,27 @@ public class ContractItem implements Serializable {
     private int penaltyOverTime;
     private long rentFeePerDay;
     private long rentFeePerHour;
+    private float discountVehicle;
+    private float discountGeneral;
 
 
     public ContractItem() {
+    }
+
+    public float getDiscountVehicle() {
+        return discountVehicle;
+    }
+
+    public void setDiscountVehicle(float discountVehicle) {
+        this.discountVehicle = discountVehicle;
+    }
+
+    public float getDiscountGeneral() {
+        return discountGeneral;
+    }
+
+    public void setDiscountGeneral(float discountGeneral) {
+        this.discountGeneral = discountGeneral;
     }
 
     public long getRentFeePerDay() {

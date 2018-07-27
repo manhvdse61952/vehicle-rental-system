@@ -63,10 +63,10 @@ public class SignupPolicyActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (((CheckBox)view).isChecked()){
                     btnSignupAccountAccept.setEnabled(true);
-                    btnSignupAccountAccept.setBackground(getResources().getDrawable(R.drawable.btn_accept));
+                    btnSignupAccountAccept.setBackground(getResources().getDrawable(R.drawable.border_green_primarygreen));
                 } else {
                     btnSignupAccountAccept.setEnabled(false);
-                    btnSignupAccountAccept.setBackground(getResources().getDrawable(R.drawable.btn_accept_hide));
+                    btnSignupAccountAccept.setBackground(getResources().getDrawable(R.drawable.border_green_hide));
                 }
             }
         });

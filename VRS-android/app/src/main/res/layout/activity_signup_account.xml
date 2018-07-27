@@ -193,7 +193,7 @@
                 android:layout_marginRight="20dp"
                 android:layout_height="50dp"
                 android:layout_alignParentRight="true"
-                android:background="@drawable/border_green"
+                android:background="@drawable/border_green_primarygreen"
                 android:text="Tiếp tục"
                 android:textAllCaps="false"
                 android:textColor="#FFF"

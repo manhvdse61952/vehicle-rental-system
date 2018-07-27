@@ -213,7 +213,9 @@ public class ContractPreFinishOwner extends AppCompatActivity {
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     if (response.code() == 200) {
                         Toast.makeText(ContractPreFinishOwner.this, "Đã gửi cho bên thuê xe, vui lòng đợi", Toast.LENGTH_SHORT).show();
+                        ContractPreFinishOwner.this.finish();
                         Intent it = new Intent(ContractPreFinishOwner.this, MainActivity.class);
+                        it.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(it);
                     } else {
                         Toast.makeText(ContractPreFinishOwner.this, "Đã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
@@ -284,7 +286,9 @@ public class ContractPreFinishOwner extends AppCompatActivity {
                         ContractItem obj = response.body();
                         if (obj.getContractStatus().equals(ImmutableValue.CONTRACT_FINISHED)) {
                             Toast.makeText(ContractPreFinishOwner.this, "Hợp đồng đã được thanh toán", Toast.LENGTH_SHORT).show();
-                            onBackPressed();
+                            Intent it = new Intent(ContractPreFinishOwner.this, MainActivity.class);
+                            it.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(it);
                         } else {
                             txt_contract_complete_number.setText(contractID);
                             txt_contract_complete_startTime.setText(GeneralController.convertTime(obj.getStartTime()));

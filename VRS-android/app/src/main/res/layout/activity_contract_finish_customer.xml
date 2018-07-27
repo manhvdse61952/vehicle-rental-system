@@ -449,7 +449,7 @@
                     android:layout_weight="6.5"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10sp"
-                    android:background="@drawable/border_green"
+                    android:background="@drawable/border_green_primarygreen"
                     android:text="đồng ý"
                     android:textColor="@color/primary_text"
                     android:textSize="16sp"

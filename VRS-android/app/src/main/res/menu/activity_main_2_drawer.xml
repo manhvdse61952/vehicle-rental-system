@@ -6,7 +6,7 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_manage_vehicle"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@drawable/ic_manage_vehicle_2_24dp"
             android:title="Quản lý xe" />
         <item
             android:id="@+id/nav_manage_drivers"

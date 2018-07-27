@@ -4,9 +4,11 @@ import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -14,13 +16,16 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.ScaleAnimation;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -33,9 +38,11 @@ import com.example.manhvdse61952.vrc_android.controller.permission.PermissionDev
 import com.example.manhvdse61952.vrc_android.controller.resources.GeneralController;
 import com.example.manhvdse61952.vrc_android.controller.resources.ImmutableValue;
 import com.example.manhvdse61952.vrc_android.model.api_interface.ContractAPI;
+import com.example.manhvdse61952.vrc_android.model.api_interface.DiscountAPI;
 import com.example.manhvdse61952.vrc_android.model.api_interface.VehicleAPI;
 import com.example.manhvdse61952.vrc_android.controller.layout.main.MainActivity;
 import com.example.manhvdse61952.vrc_android.controller.layout.order.PaypalExecute;
+import com.example.manhvdse61952.vrc_android.model.api_model.DiscountGeneral;
 import com.example.manhvdse61952.vrc_android.model.search_model.DetailVehicleItem;
 import com.example.manhvdse61952.vrc_android.remote.RetrofitConfig;
 
@@ -51,18 +58,22 @@ public class VehicleDetail extends AppCompatActivity {
     ImageSlider sld;
     ViewPager vpg;
     ScrollView srv_main_vehicle;
-    Button btnOrderRent;
+    Button btnOrderRent, btn_check_discount;
     FloatingActionButton btn_back;
     DetailVehicleItem mainObj = new DetailVehicleItem();
     int selectTab = 0, rentFeePerHourID = 0, rentFeePerDayID = 0, totalHour = 0, receiveType = 0, totalDay = 0;
     Double totalMoney = 0.0, rentFeeMoney = 0.0, usdConvert = 0.0;
+    int viewDiscountMoney = 0;
+    float discountVehicle = 0, discountGeneral = 0;
 
     TextView item_price_slot, item_price_day, item_seat, item_year,
             item_plateNumber, item_ownerName, item_engine, item_tranmission, txt_hours, txt_day_start,
             txt_hours_2, txt_day_end, txt_order_type, txt_day_rent, txt_hour_rent,
             txt_money_day_rent, txt_money_hour_rent, txt_money_total, item_price_deposit,
             txt_usd_convert, txt_money_deposit, txt_pickTime, txt_vehicle_owner, item_discount
-            , txt_money_discount;
+            , txt_money_discount, txt_discount_general;
+
+    EditText edt_discount;
     CheckBox cbx1, cbx2;
     LinearLayout ln_pickTime;
     Switch swt_order_type;
@@ -101,10 +112,13 @@ public class VehicleDetail extends AppCompatActivity {
                     txt_pickTime.setTextColor(Color.parseColor("#212121"));
                     SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
                     editor.putString(ImmutableValue.MAIN_totalMoney, Double.toString(usdConvert));
+                    rentFeeMoney = rentFeeMoney - viewDiscountMoney;
                     editor.putString(ImmutableValue.MAIN_rentFeeMoney, Double.toString(rentFeeMoney));
                     editor.putInt(ImmutableValue.MAIN_rentFeePerDayID, rentFeePerDayID);
                     editor.putInt(ImmutableValue.MAIN_rentFeePerHourID, rentFeePerHourID);
                     editor.putInt(ImmutableValue.MAIN_receiveType, receiveType);
+                    editor.putFloat(ImmutableValue.MAIN_discountVehicle, discountVehicle);
+                    editor.putFloat(ImmutableValue.MAIN_discountGeneral, discountGeneral);
                     editor.apply();
                     Intent it = new Intent(VehicleDetail.this, PaypalExecute.class);
                     startActivity(it);
@@ -118,6 +132,13 @@ public class VehicleDetail extends AppCompatActivity {
                 onBackPressed();
             }
         });
+
+        btn_check_discount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkDiscountAction();
+            }
+        });
     }
 
     @Override
@@ -129,6 +150,44 @@ public class VehicleDetail extends AppCompatActivity {
         editor.apply();
         VehicleDetail.this.finish();
         super.onBackPressed();
+    }
+
+    private void checkDiscountAction(){
+        dialog = ProgressDialog.show(VehicleDetail.this, "Đang xử lý",
+                "Vui lòng đợi ...", true);
+        String code = edt_discount.getText().toString().trim().toUpperCase();
+        if (code.equals("")){
+            Toast.makeText(this, "Vui lòng điền mã ", Toast.LENGTH_SHORT).show();
+        } else {
+            Retrofit test = RetrofitConfig.getClient();
+            DiscountAPI discountAPI = test.create(DiscountAPI.class);
+            Call<DiscountGeneral> responseBodyCall = discountAPI.checkPromotion(code);
+            responseBodyCall.enqueue(new Callback<DiscountGeneral>() {
+                @Override
+                public void onResponse(Call<DiscountGeneral> call, Response<DiscountGeneral> response) {
+                    if (response.code() == 200){
+                        DiscountGeneral obj = response.body();
+                        if (obj.getStatus().equals(ImmutableValue.DISCOUNT_DISABLE)){
+                            Toast.makeText(VehicleDetail.this, "Mã không hợp lệ", Toast.LENGTH_SHORT).show();
+                        } else {
+                            discountGeneral = obj.getValue();
+                            Toast.makeText(VehicleDetail.this, "Áp dụng thành công", Toast.LENGTH_SHORT).show();
+                            initLayout();
+                        }
+                    } else {
+                        Toast.makeText(VehicleDetail.this, "Mã không hợp lệ", Toast.LENGTH_SHORT).show();
+                    }
+                    dialog.dismiss();
+                }
+
+                @Override
+                public void onFailure(Call<DiscountGeneral> call, Throwable t) {
+                    dialog.dismiss();
+                    Toast.makeText(VehicleDetail.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
     }
 
     public void scaleView(TextView v, float startScale, float endScale) {
@@ -186,6 +245,9 @@ public class VehicleDetail extends AppCompatActivity {
         srv_main_vehicle = (ScrollView)findViewById(R.id.srv_main_vehicle);
         item_discount = (TextView)findViewById(R.id.item_discount);
         txt_money_discount = (TextView)findViewById(R.id.txt_money_discount);
+        btn_check_discount = (Button)findViewById(R.id.btn_check_discount);
+        txt_discount_general = (TextView)findViewById(R.id.txt_discount_general);
+        edt_discount = (EditText)findViewById(R.id.edt_discount);
     }
 
     private void initLayout(){
@@ -281,9 +343,15 @@ public class VehicleDetail extends AppCompatActivity {
                         if (mainObj.getDiscountValue() != 0){
                             float discountValue = mainObj.getDiscountValue() * 100;
                             String discountConvert = nf.format(discountValue);
+                            discountVehicle = mainObj.getDiscountValue();
                             item_discount.setText(discountConvert + " %");
                         } else {
                             item_discount.setText("Không");
+                        }
+                        if (discountGeneral != 0){
+                            float discountValue = discountGeneral * 100;
+                            String discountConvert = nf.format(discountValue);
+                            txt_discount_general.setText(discountConvert + " %");
                         }
 
 
@@ -346,10 +414,12 @@ public class VehicleDetail extends AppCompatActivity {
                             }
                         });
 
+                        //Calculate money (magic)
                         totalMoney = totalDay * mainObj.getRentFeePerDay() + totalHour * mainObj.getRentFeePerHour()
                                 + mainObj.getDeposit();
-                        final double discountMoney = (totalDay * mainObj.getRentFeePerDay() + totalHour * mainObj.getRentFeePerHour()) * mainObj.getDiscountValue();
-                        final int viewDiscountMoney = (int)discountMoney;
+                        float discountPercent = 1 - ((1 - discountVehicle) - ((1 - discountVehicle)*discountGeneral));
+                        double discountMoney = (totalDay * mainObj.getRentFeePerDay() + totalHour * mainObj.getRentFeePerHour()) * discountPercent;
+                        viewDiscountMoney = (int)discountMoney;
                         totalMoney = totalMoney - viewDiscountMoney;
 
                         if (totalDay ==  0 && totalHour == 0){
@@ -366,7 +436,7 @@ public class VehicleDetail extends AppCompatActivity {
                                 public void onResponse(Call<Double> call, Response<Double> response) {
                                     if (response.code() == 200){
                                         usdConvert = response.body();
-                                        rentFeeMoney = totalDay * mainObj.getRentFeePerDay() + totalHour * mainObj.getRentFeePerHour() ;
+                                        rentFeeMoney = (totalDay * mainObj.getRentFeePerDay()) + (totalHour * mainObj.getRentFeePerHour());
                                         rentFeePerDayID = mainObj.getRentFeePerDayID();
                                         rentFeePerHourID = mainObj.getRentFeePerHourID();
                                         NumberFormat nf = new DecimalFormat("#.####");
@@ -417,5 +487,22 @@ public class VehicleDetail extends AppCompatActivity {
                 initLayout();
             }
         }
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            View v = getCurrentFocus();
+            if ( v instanceof EditText) {
+                Rect outRect = new Rect();
+                v.getGlobalVisibleRect(outRect);
+                if (!outRect.contains((int)event.getRawX(), (int)event.getRawY())) {
+                    v.clearFocus();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+        }
+        return super.dispatchTouchEvent( event );
     }
 }

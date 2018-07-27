@@ -30,7 +30,7 @@
             android:id="@+id/txt_vehicle_name"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:background="@drawable/border_green"
+            android:background="@drawable/border_green_primarygreen"
             android:gravity="center_vertical"
             android:text="Test vehicle 1"
             android:paddingLeft="10dp"
