@@ -730,7 +730,7 @@
             <Button
                 android:id="@+id/btnCreateVehicle"
                 android:layout_width="match_parent"
-                android:text="Đặt xe"
+                android:text="Đăng ký xe"
                 android:textColor="@color/primary_text"
                 android:background="@color/colorPrimary"
                 android:layout_height="wrap_content" />

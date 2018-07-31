@@ -1,4 +1,4 @@
-package com.example.manhvdse61952.vrc_android.controller.layout.signup.owner;
+package com.example.manhvdse61952.vrc_android.controller.layout.vehicle.manage;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -68,7 +68,7 @@ public class SearchVehicleInfoActivity extends AppCompatActivity {
                     img_delete.setVisibility(View.VISIBLE);
                 } else {
                     img_delete.setVisibility(View.INVISIBLE);
-                    searchVehicleInfoAdapter = new SearchVehicleInfoAdapter(vehicleInformationList, SearchVehicleInfoActivity.this);
+                    searchVehicleInfoAdapter = new SearchVehicleInfoAdapter(vehicleInformationList, SearchVehicleInfoActivity.this, SearchVehicleInfoActivity.this);
                     recyclerView.setAdapter(searchVehicleInfoAdapter);
                     searchVehicleInfoAdapter.notifyDataSetChanged();
                 }
@@ -84,7 +84,7 @@ public class SearchVehicleInfoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 edt_search_vehicle_info.setText("");
-                searchVehicleInfoAdapter = new SearchVehicleInfoAdapter(vehicleInformationList, SearchVehicleInfoActivity.this);
+                searchVehicleInfoAdapter = new SearchVehicleInfoAdapter(vehicleInformationList, SearchVehicleInfoActivity.this, SearchVehicleInfoActivity.this);
                 recyclerView.setAdapter(searchVehicleInfoAdapter);
                 searchVehicleInfoAdapter.notifyDataSetChanged();
             }
@@ -116,7 +116,7 @@ public class SearchVehicleInfoActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(SearchVehicleInfoActivity.this, "Đã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
                 }
-                searchVehicleInfoAdapter = new SearchVehicleInfoAdapter(vehicleInformationList, SearchVehicleInfoActivity.this);
+                searchVehicleInfoAdapter = new SearchVehicleInfoAdapter(vehicleInformationList, SearchVehicleInfoActivity.this, SearchVehicleInfoActivity.this);
                 recyclerView.setAdapter(searchVehicleInfoAdapter);
                 searchVehicleInfoAdapter.notifyDataSetChanged();
                 dialog.dismiss();
@@ -143,7 +143,7 @@ public class SearchVehicleInfoActivity extends AppCompatActivity {
             }
         }
 
-        searchVehicleInfoAdapter = new SearchVehicleInfoAdapter(vehicleInformationListAfterSearch, SearchVehicleInfoActivity.this);
+        searchVehicleInfoAdapter = new SearchVehicleInfoAdapter(vehicleInformationListAfterSearch, SearchVehicleInfoActivity.this, SearchVehicleInfoActivity.this);
         recyclerView.setAdapter(searchVehicleInfoAdapter);
         searchVehicleInfoAdapter.notifyDataSetChanged();
     }

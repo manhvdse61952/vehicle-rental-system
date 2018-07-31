@@ -36,22 +36,16 @@
         </activity>
         <activity android:name=".controller.layout.login.LoginActivity" android:screenOrientation="portrait"></activity>
         <activity
-            android:name=".controller.layout.signup.customer.SignupUserInfoActivity"
+            android:name=".controller.layout.signup.SignupUserInfoActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".controller.layout.signup.customer.SignupAccountActivity"
+            android:name=".controller.layout.signup.SignupAccountActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".controller.layout.signup.customer.SignupRoleActivity"
+            android:name=".controller.layout.signup.SignupPolicyActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".controller.layout.signup.customer.SignupPolicyActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".controller.layout.signup.owner.SignupOwnerOne"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".controller.layout.signup.owner.SignupOwnerPolicy"
+            android:name=".controller.layout.vehicle.manage.CreateVehicleType"
             android:screenOrientation="portrait" />
         <activity
             android:name=".controller.layout.vehicle.showdetail.VehicleDetail"
@@ -79,7 +73,7 @@
             android:screenOrientation="portrait"/>
         <meta-data android:name="com.google.android.geo.API_KEY" android:value="@string/google_maps_key" />
         <activity android:name=".controller.layout.main.MapsActivity" android:label="@string/title_activity_maps" android:screenOrientation="portrait" />
-        <activity android:name=".controller.layout.signup.owner.RegistVehicle" android:screenOrientation="portrait" />
+        <activity android:name=".controller.layout.vehicle.manage.CreateVehicle" android:screenOrientation="portrait" />
         <activity android:name=".controller.layout.vehicle.showdetail.CalendarCustom" android:screenOrientation="portrait" />
         <activity android:name=".controller.layout.contract.ContractDetail" android:screenOrientation="portrait"/>
         <activity android:name=".controller.layout.vehicle.manage.ManageVehicleActivity" android:screenOrientation="portrait"/>
@@ -92,7 +86,7 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <activity android:name=".controller.layout.signup.owner.SearchVehicleInfoActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".controller.layout.vehicle.manage.SearchVehicleInfoActivity" android:screenOrientation="portrait"></activity>
         <activity android:name=".controller.layout.contract.ContractComplainActivity" android:screenOrientation="portrait"></activity>
         <activity android:name=".controller.layout.contract.ContractComplainChat" android:screenOrientation="portrait"></activity>
         <activity android:name=".controller.layout.vehicle.manage.UpdateVehicle" android:screenOrientation="portrait"></activity>

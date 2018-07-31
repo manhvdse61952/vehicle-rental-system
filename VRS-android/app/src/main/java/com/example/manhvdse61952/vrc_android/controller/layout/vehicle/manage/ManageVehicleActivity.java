@@ -12,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +39,7 @@ public class ManageVehicleActivity extends AppCompatActivity {
     TextView txt_manage_vehicle_empty;
     ProgressDialog dialog;
     SwipeRefreshLayout swipeLayout;
+    ImageView imgCreateVehicle;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,6 +57,32 @@ public class ManageVehicleActivity extends AppCompatActivity {
         loadData();
 
         reloadData();
+
+        imgCreateVehicle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SIGNUP_SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
+                editor.putString(ImmutableValue.VEHICLE_vehicleMaker, "Empty");
+                editor.putString(ImmutableValue.VEHICLE_vehicleModel, "Empty");
+                editor.putString(ImmutableValue.VEHICLE_img_vehicle_1, "");
+                editor.putString(ImmutableValue.VEHICLE_img_vehicle_2, "");
+                editor.putString(ImmutableValue.VEHICLE_img_frameNumber, "");
+                editor.putInt(ImmutableValue.VEHICLE_year, -1);
+                editor.putString(ImmutableValue.VEHICLE_frameNumber, "");
+                editor.putString(ImmutableValue.VEHICLE_plateNumber, "");
+                editor.putInt(ImmutableValue.VEHICLE_city, -1);
+                editor.putInt(ImmutableValue.VEHICLE_district, -1);
+                editor.putString(ImmutableValue.VEHICLE_rentFeePerHours, "");
+                editor.putString(ImmutableValue.VEHICLE_rentFeePerDay, "");
+                editor.putString(ImmutableValue.VEHICLE_depositFee, "");
+                editor.putInt(ImmutableValue.VEHICLE_isGasoline, -1);
+                editor.putInt(ImmutableValue.VEHICLE_isManual, -1);
+                editor.putInt(ImmutableValue.VEHICLE_requireHouseHold, 0);
+                editor.putInt(ImmutableValue.VEHICLE_requireIdCard, 0);
+                editor.apply();
+                startActivity(new Intent(ManageVehicleActivity.this, CreateVehicleType.class));
+            }
+        });
     }
 
     @Override
@@ -76,6 +104,7 @@ public class ManageVehicleActivity extends AppCompatActivity {
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         swipeLayout = (SwipeRefreshLayout)findViewById(R.id.swipeLayout);
+        imgCreateVehicle = (ImageView)findViewById(R.id.imgCreateVehicle);
     }
 
     private void loadData(){

@@ -691,6 +691,7 @@ public class MainActivity extends AppCompatActivity
         };
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             dialog.dismiss();
+            Toast.makeText(this, "Vui lòng thoát ứng dụng và chạy lại", Toast.LENGTH_SHORT).show();
             finish();
         }
         if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
@@ -728,6 +729,8 @@ public class MainActivity extends AppCompatActivity
             }
         });
     }
+
+    //Use for revert layout
 
     private void checkScreen() {
         SharedPreferences editor = getSharedPreferences(ImmutableValue.HOME_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
@@ -788,6 +791,8 @@ public class MainActivity extends AppCompatActivity
             startActivity(it);
         }
     }
+
+    //Use for advanced search
 
     private void searchAdvancedAction(){
         //Validate vehicle type
@@ -884,5 +889,6 @@ public class MainActivity extends AppCompatActivity
             }
         });
     }
+
 
 }

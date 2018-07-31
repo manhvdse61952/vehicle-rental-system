@@ -5,10 +5,10 @@
     android:layout_height="wrap_content"
     android:textSize="12sp"
     android:gravity="center"
-    android:background="@drawable/border_green_white"
+    android:background="@drawable/border_primarygreen_white"
     android:textColor="@color/primary_text"
-    android:paddingTop="10dip"
-    android:paddingBottom="10dip"
+    android:paddingTop="12dip"
+    android:paddingBottom="12dip"
     android:paddingLeft="2dp"
     android:paddingRight="2dp"
     />

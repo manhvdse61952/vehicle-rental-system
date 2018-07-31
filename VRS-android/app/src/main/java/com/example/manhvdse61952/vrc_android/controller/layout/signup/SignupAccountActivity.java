@@ -1,4 +1,4 @@
-package com.example.manhvdse61952.vrc_android.controller.layout.signup.customer;
+package com.example.manhvdse61952.vrc_android.controller.layout.signup;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -14,8 +14,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.manhvdse61952.vrc_android.R;
-import com.example.manhvdse61952.vrc_android.controller.permission.PermissionDevice;
-import com.example.manhvdse61952.vrc_android.controller.layout.login.LoginActivity;
 import com.example.manhvdse61952.vrc_android.controller.resources.ImmutableValue;
 import com.example.manhvdse61952.vrc_android.controller.validate.ValidateInput;
 import com.example.manhvdse61952.vrc_android.model.api_interface.AccountAPI;
@@ -47,17 +45,7 @@ public class SignupAccountActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
-
-        //Declare id
-        edtSignupUsername = (EditText) findViewById(R.id.edtSignupUsername);
-        edtSignupPassword = (EditText) findViewById(R.id.edtSignupPassword);
-        edtSignupEmail = (EditText) findViewById(R.id.edtSignupEmail);
-        signup_username_txt = (TextInputLayout) findViewById(R.id.signup_username_txt);
-        signup_password_txt = (TextInputLayout) findViewById(R.id.signup_password_txt);
-        signup_email_txt = (TextInputLayout) findViewById(R.id.signup_email_txt);
-        btnNext = (Button) findViewById(R.id.btnSignupAccountNext);
-
-        revertValue();
+        declareID();
 
         //button Next
         btnNext.setOnClickListener(new View.OnClickListener() {
@@ -82,31 +70,16 @@ public class SignupAccountActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        SharedPreferences settings_2 = getSharedPreferences(ImmutableValue.SIGNUP_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
+        settings_2.edit().clear().commit();
+        SignupAccountActivity.this.finish();
         super.onBackPressed();
-        Intent it = new Intent(SignupAccountActivity.this, LoginActivity.class);
-        startActivity(it);
     }
 
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
-    }
-
-    private void revertValue(){
-        SharedPreferences editor = getSharedPreferences(ImmutableValue.SIGNUP_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
-        String getUsername = editor.getString(ImmutableValue.SIGNUP_username, "");
-        String getPassword = editor.getString(ImmutableValue.SIGNUP_password, "");
-        String getEmail = editor.getString(ImmutableValue.SIGNUP_email, "");
-        if (!getUsername.trim().equals("")){
-            edtSignupUsername.setText(getUsername);
-        }
-        if (!getPassword.trim().equals("")){
-            edtSignupPassword.setText(getPassword);
-        }
-        if (!getEmail.trim().equals("")){
-            edtSignupEmail.setText(getEmail);
-        }
     }
 
     private void nextAction(){
@@ -194,6 +167,17 @@ public class SignupAccountActivity extends AppCompatActivity {
                 Toast.makeText(ctx, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void declareID(){
+        //Declare id
+        edtSignupUsername = (EditText) findViewById(R.id.edtSignupUsername);
+        edtSignupPassword = (EditText) findViewById(R.id.edtSignupPassword);
+        edtSignupEmail = (EditText) findViewById(R.id.edtSignupEmail);
+        signup_username_txt = (TextInputLayout) findViewById(R.id.signup_username_txt);
+        signup_password_txt = (TextInputLayout) findViewById(R.id.signup_password_txt);
+        signup_email_txt = (TextInputLayout) findViewById(R.id.signup_email_txt);
+        btnNext = (Button) findViewById(R.id.btnSignupAccountNext);
     }
 
 }

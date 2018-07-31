@@ -1,9 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:map="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/map"
-    android:name="com.google.android.gms.maps.SupportMapFragment"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".controller.layout.main.MapsActivity" />
+    xmlns:tools="http://schemas.android.com/tools">
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".controller.layout.main.MapsActivity" />
+    <LinearLayout
+        android:id="@+id/ln_detail"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:background="@color/primary_text"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="10"
+            android:layout_marginTop="5dp"
+            android:layout_height="70dp">
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_weight="2.5"
+                android:src="@drawable/img_default_image"
+                android:layout_height="match_parent" />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="4.5"
+                android:orientation="vertical"
+                android:weightSum="9"
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/txt_vehicle_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="3"
+                    android:gravity="center_vertical"
+                    android:text="Chưa có xe"
+                    android:textColor="@color/secondary_text"/>
+                <TextView
+                    android:id="@+id/txt_distance"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="3"
+                    android:gravity="center_vertical"
+                    android:text="Khoảng cách: ..."/>
+                <TextView
+                    android:id="@+id/txt_duration"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="3"
+                    android:gravity="center_vertical"
+                    android:text="Thời gian: ..."/>
+            </LinearLayout>
+            <Button
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:layout_gravity="center"
+                android:text="Xem"
+                android:textColor="@color/primary_text"
+                android:background="@drawable/border_green_primarygreen"
+                android:layout_marginRight="10dp"
+                android:textAllCaps="false"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#CCC"
+            android:layout_margin="5dp"></View>
+    </LinearLayout>
+</RelativeLayout>

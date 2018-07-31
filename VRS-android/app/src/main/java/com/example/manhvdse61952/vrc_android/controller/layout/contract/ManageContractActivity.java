@@ -3,21 +3,29 @@ package com.example.manhvdse61952.vrc_android.controller.layout.contract;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.manhvdse61952.vrc_android.R;
+import com.example.manhvdse61952.vrc_android.controller.layout.contract.contract_tab.ExecuteContractTab;
+import com.example.manhvdse61952.vrc_android.controller.layout.contract.contract_tab.FinishContractTab;
+import com.example.manhvdse61952.vrc_android.controller.layout.contract.contract_tab.RemoveContractTab;
 import com.example.manhvdse61952.vrc_android.controller.layout.main.MainActivity;
+import com.example.manhvdse61952.vrc_android.controller.layout.main.SectionPageAdapter;
 import com.example.manhvdse61952.vrc_android.controller.resources.ImmutableValue;
 import com.example.manhvdse61952.vrc_android.model.api_interface.ContractAPI;
 import com.example.manhvdse61952.vrc_android.model.api_model.ContractItem;
@@ -33,10 +41,14 @@ import retrofit2.Retrofit;
 
 public class ManageContractActivity extends AppCompatActivity {
     List<ContractItem> contractItemList = new ArrayList<>();
-    RecyclerView recyclerView;
-    ManageContractAdapter manageContractAdapter;
+    public static List<ContractItem> listContractFinish = new ArrayList<>();
+    public static List<ContractItem> listContractRemove = new ArrayList<>();
+    public static List<ContractItem> listContractAnother = new ArrayList<>();
+    public static SectionPageAdapter secAdapter;
+    public static ViewPager viewPager;
+    private TabLayout tabLayout;
+
     TextView txt_manage_contract_error;
-    SwipeRefreshLayout swipeLayout;
     ProgressDialog dialog;
 
     @Override
@@ -51,34 +63,7 @@ public class ManageContractActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
 
-        //Reload page
-        swipeLayout = findViewById(R.id.swipeLayout);
-        swipeLayout.setColorScheme(android.R.color.holo_blue_dark, android.R.color.holo_blue_light, android.R.color.holo_green_light, android.R.color.holo_green_dark);
-        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                swipeLayout.setRefreshing(true);
-                (new Handler()).postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        swipeLayout.setRefreshing(false);
-                        SharedPreferences editor = getSharedPreferences(ImmutableValue.HOME_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
-                        if (editor.getString(ImmutableValue.HOME_role, ImmutableValue.ROLE_USER).equals(ImmutableValue.ROLE_OWNER)) {
-                            loadDataForOwner();
-                        } else {
-                            loadDataForCustomer();
-                        }
-                    }
-                }, 500);
-            }
-        });
-
-
         txt_manage_contract_error = (TextView) findViewById(R.id.txt_manage_contract_error);
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_contract_manage_view);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerView.setLayoutManager(mLayoutManager);
-
         SharedPreferences editor = getSharedPreferences(ImmutableValue.HOME_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
         if (editor.getString(ImmutableValue.HOME_role, ImmutableValue.ROLE_USER).equals(ImmutableValue.ROLE_OWNER)) {
             loadDataForOwner();
@@ -103,9 +88,23 @@ public class ManageContractActivity extends AppCompatActivity {
                     if (response.body() != null) {
                         txt_manage_contract_error.setVisibility(View.INVISIBLE);
                         contractItemList = response.body();
-                        manageContractAdapter = new ManageContractAdapter(contractItemList, ManageContractActivity.this);
-                        recyclerView.setAdapter(manageContractAdapter);
-                        manageContractAdapter.notifyDataSetChanged();
+                        listContractFinish = new ArrayList<>();
+                        listContractRemove = new ArrayList<>();
+                        listContractAnother = new ArrayList<>();
+                        for (int i = 0; i < contractItemList.size();i++){
+                            if (contractItemList.get(i).getContractStatus().equals(ImmutableValue.CONTRACT_FINISHED)){
+                                listContractFinish.add(contractItemList.get(i));
+                            } else if (contractItemList.get(i).getContractStatus().equals(ImmutableValue.CONTRACT_REFUNDED)){
+                                listContractRemove.add(contractItemList.get(i));
+                            } else {
+                                listContractAnother.add(contractItemList.get(i));
+                            }
+                        }
+                        viewPager = (ViewPager) findViewById(R.id.container);
+                        setupViewPager(viewPager);
+                        tabLayout = (TabLayout) findViewById(R.id.tabs);
+                        tabLayout.setupWithViewPager(viewPager);
+                        createTabIcons();
                     } else {
                         txt_manage_contract_error.setVisibility(View.VISIBLE);
                     }
@@ -138,9 +137,23 @@ public class ManageContractActivity extends AppCompatActivity {
                     if (response.body() != null) {
                         txt_manage_contract_error.setVisibility(View.INVISIBLE);
                         contractItemList = response.body();
-                        manageContractAdapter = new ManageContractAdapter(contractItemList, ManageContractActivity.this);
-                        recyclerView.setAdapter(manageContractAdapter);
-                        manageContractAdapter.notifyDataSetChanged();
+                        listContractFinish = new ArrayList<>();
+                        listContractRemove = new ArrayList<>();
+                        listContractAnother = new ArrayList<>();
+                        for (int i = 0; i < contractItemList.size();i++){
+                            if (contractItemList.get(i).getContractStatus().equals(ImmutableValue.CONTRACT_FINISHED)){
+                                listContractFinish.add(contractItemList.get(i));
+                            } else if (contractItemList.get(i).getContractStatus().equals(ImmutableValue.CONTRACT_REFUNDED)){
+                                listContractRemove.add(contractItemList.get(i));
+                            } else {
+                                listContractAnother.add(contractItemList.get(i));
+                            }
+                        }
+                        viewPager = (ViewPager) findViewById(R.id.container);
+                        setupViewPager(viewPager);
+                        tabLayout = (TabLayout) findViewById(R.id.tabs);
+                        tabLayout.setupWithViewPager(viewPager);
+                        createTabIcons();
                     } else {
                         txt_manage_contract_error.setVisibility(View.VISIBLE);
                     }
@@ -170,5 +183,56 @@ public class ManageContractActivity extends AppCompatActivity {
         settings_3.edit().clear().commit();
         ManageContractActivity.this.finish();
         super.onBackPressed();
+    }
+
+    private void setupViewPager(ViewPager viewPager) {
+        secAdapter = new SectionPageAdapter(getSupportFragmentManager());
+        secAdapter.addFragment(new ExecuteContractTab(), "Cần xử lý");
+        secAdapter.addFragment(new FinishContractTab(), "Hoàn thành");
+        secAdapter.addFragment(new RemoveContractTab(), "Hủy");
+        viewPager.setAdapter(secAdapter);
+    }
+
+    private void createTabIcons() {
+        TextView tabOne = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
+        tabOne.setText("Cần xử lý");
+        tabOne.setTextSize(16);
+        tabOne.setTextColor(Color.parseColor("#0288D1"));
+        tabLayout.getTabAt(0).setCustomView(tabOne);
+        tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#0288D1"));
+
+        TextView tabTwo = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
+        tabTwo.setText("Hoàn thành");
+        tabTwo.setTextSize(16);
+        tabLayout.getTabAt(1).setCustomView(tabTwo);
+
+        TextView tabThree = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
+        tabThree.setText("Hủy");
+        tabThree.setTextColor(Color.RED);
+        tabThree.setTextSize(16);
+        tabLayout.getTabAt(2).setCustomView(tabThree);
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                if (tab.getPosition() == 0){
+                    tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#0288D1"));
+                } else if (tab.getPosition() == 1){
+                    tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#009688"));
+                } else {
+                    tabLayout.setSelectedTabIndicatorColor(Color.RED);
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
     }
 }

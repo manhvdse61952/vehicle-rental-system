@@ -392,7 +392,6 @@ public class VehicleDetail extends AppCompatActivity {
                             @Override
                             public void onClick(View v) {
                                 Intent it = new Intent(VehicleDetail.this, CalendarCustom.class);
-//                                startActivity(it);
                                 startActivityForResult(it, 1);
                             }
                         });

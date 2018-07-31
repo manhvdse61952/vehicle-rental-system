@@ -15,7 +15,7 @@ import android.widget.Toast;
 
 import com.example.manhvdse61952.vrc_android.R;
 import com.example.manhvdse61952.vrc_android.controller.layout.main.MainActivity;
-import com.example.manhvdse61952.vrc_android.controller.layout.signup.customer.SignupAccountActivity;
+import com.example.manhvdse61952.vrc_android.controller.layout.signup.SignupAccountActivity;
 import com.example.manhvdse61952.vrc_android.controller.resources.ImmutableValue;
 import com.example.manhvdse61952.vrc_android.controller.validate.ValidateInput;
 import com.example.manhvdse61952.vrc_android.model.api_interface.AccountAPI;
@@ -101,8 +101,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void signupAction() {
-        SharedPreferences settings_2 = getSharedPreferences(ImmutableValue.SIGNUP_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
-        settings_2.edit().clear().commit();
         SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SIGNUP_SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
         editor.putString(ImmutableValue.SIGNUP_username, "");
         editor.putString(ImmutableValue.SIGNUP_password, "");
@@ -111,6 +109,7 @@ public class LoginActivity extends AppCompatActivity {
         editor.putString(ImmutableValue.SIGNUP_phone, "");
         editor.putString(ImmutableValue.SIGNUP_cmnd, "");
         editor.putString(ImmutableValue.SIGNUP_img_CMND, "");
+        editor.putString(ImmutableValue.SIGNUP_role, "");
         editor.apply();
         Intent it = new Intent(LoginActivity.this, SignupAccountActivity.class);
         startActivity(it);

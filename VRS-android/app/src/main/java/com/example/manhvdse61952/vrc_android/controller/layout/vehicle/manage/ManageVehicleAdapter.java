@@ -41,7 +41,12 @@ public class ManageVehicleAdapter extends RecyclerView.Adapter<ManageVehicleAdap
         if (vehicleList.get(position).getImageLinkFront().equals("")){
             Picasso.get().load(R.drawable.img_default_image).into(holder.imageManageVehicle);
         }
-        Picasso.get().load(vehicleList.get(position).getImageLinkFront()).into(holder.imageManageVehicle);
+        if (vehicleList.get(position).getImageLinkFront().equals("")){
+            Picasso.get().load(R.drawable.img_default_image).into(holder.imageManageVehicle);
+        } else {
+            Picasso.get().load(vehicleList.get(position).getImageLinkFront()).into(holder.imageManageVehicle);
+        }
+
         holder.ln_vehicle_item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

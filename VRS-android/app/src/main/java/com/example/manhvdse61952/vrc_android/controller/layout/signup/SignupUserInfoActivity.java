@@ -1,22 +1,21 @@
-package com.example.manhvdse61952.vrc_android.controller.layout.signup.customer;
+package com.example.manhvdse61952.vrc_android.controller.layout.signup;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,6 +44,7 @@ public class SignupUserInfoActivity extends AppCompatActivity {
     String name = "", phone = "", cmnd = "", picturePath = "";
     ValidateInput validObj;
     TextView txt_cmnd_error;
+    RadioButton rd_user, rd_owner;
     RelativeLayout ln_image_execute;
 
     private PermissionDevice cameraObj = new PermissionDevice();
@@ -63,18 +63,7 @@ public class SignupUserInfoActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
 
-        //Declare id
-        btnSignupAccountClean = (Button) findViewById(R.id.btnSignupAccountClean);
-        btnNext = (Button) findViewById(R.id.btnSignupAccountNext);
-        imgShowCMND = (ImageView) findViewById(R.id.imgSignupCMND);
-        edtSignupCNMD = (EditText) findViewById(R.id.edtSignupCMND);
-        signup_name_txt = (TextInputLayout) findViewById(R.id.signup_name_txt);
-        signup_phone_txt = (TextInputLayout) findViewById(R.id.signup_phone_txt);
-        signup_cmnd_txt = (TextInputLayout) findViewById(R.id.signup_cmnd_txt);
-        txt_cmnd_error = (TextView)findViewById(R.id.txt_cmnd_error);
-        ln_image_execute = (RelativeLayout)findViewById(R.id.ln_image_execute);
-        edtSignupName = (EditText) findViewById(R.id.edtSignupName);
-        edtSignupPhone = (EditText) findViewById(R.id.edtSignupPhone);
+        declareID();
 
         revertValue();
 
@@ -100,6 +89,26 @@ public class SignupUserInfoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 executeImage();
+            }
+        });
+
+        rd_user.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){
+                    rd_user.setChecked(true);
+                    rd_owner.setChecked(false);
+                }
+            }
+        });
+
+        rd_owner.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){
+                    rd_user.setChecked(false);
+                    rd_owner.setChecked(true);
+                }
             }
         });
 
@@ -148,8 +157,8 @@ public class SignupUserInfoActivity extends AppCompatActivity {
         editor.putString(ImmutableValue.SIGNUP_cmnd, edtSignupCNMD.getText().toString());
         editor.putString(ImmutableValue.SIGNUP_img_CMND, picturePath);
         editor.apply();
-        Intent it = new Intent(SignupUserInfoActivity.this, SignupAccountActivity.class);
-        startActivity(it);
+        SignupUserInfoActivity.this.finish();
+        super.onBackPressed();
     }
 
     @Override
@@ -186,6 +195,7 @@ public class SignupUserInfoActivity extends AppCompatActivity {
         String getPhone = editor.getString(ImmutableValue.SIGNUP_phone, "");
         String getCmnd = editor.getString(ImmutableValue.SIGNUP_cmnd, "");
         String getImage = editor.getString(ImmutableValue.SIGNUP_img_CMND, "");
+        String getRole = editor.getString(ImmutableValue.SIGNUP_role, ImmutableValue.ROLE_OWNER);
         if (!getName.trim().equals("")){
             edtSignupName.setText(getName);
         }
@@ -201,6 +211,14 @@ public class SignupUserInfoActivity extends AppCompatActivity {
             Picasso.get().load(imgFile).into(imgShowCMND);
             txt_cmnd_error.setVisibility(View.INVISIBLE);
         }
+
+        if (getRole.equals(ImmutableValue.ROLE_USER)){
+            rd_user.setChecked(true);
+            rd_owner.setChecked(false);
+        } else if (getRole.equals(ImmutableValue.ROLE_OWNER)){
+            rd_user.setChecked(false);
+            rd_owner.setChecked(true);
+        }
     }
 
     private void nextAction(){
@@ -208,6 +226,12 @@ public class SignupUserInfoActivity extends AppCompatActivity {
         name = edtSignupName.getText().toString();
         phone = edtSignupPhone.getText().toString();
         cmnd = edtSignupCNMD.getText().toString();
+        String role = "";
+        if (rd_user.isChecked()){
+            role = ImmutableValue.ROLE_USER;
+        } else {
+            role = ImmutableValue.ROLE_OWNER;
+        }
 
         validObj = new ValidateInput();
         Boolean checkName = validObj.validName(name, edtSignupName);
@@ -218,12 +242,13 @@ public class SignupUserInfoActivity extends AppCompatActivity {
             dialog = ProgressDialog.show(SignupUserInfoActivity.this, "Đăng ký",
                     "Đang kiểm tra ...", true);
             checkExistedCmnd(cmnd, name, phone,
-                    picturePath, SignupUserInfoActivity.this, edtSignupCNMD, dialog);
+                    picturePath, edtSignupCNMD, dialog, role);
         }
     }
 
     public void checkExistedCmnd(final String cmnd, final String name, final String phone,
-                                 final String imagePath, final Context ctx, final EditText input, final ProgressDialog progressDialog) {
+                                 final String imagePath, final EditText input,
+                                 final ProgressDialog progressDialog, final String role) {
         Retrofit test = RetrofitConfig.getClient();
         final AccountAPI testAPI = test.create(AccountAPI.class);
         Call<Boolean> responseBodyCall = testAPI.checkCmnd(cmnd);
@@ -235,18 +260,19 @@ public class SignupUserInfoActivity extends AppCompatActivity {
                         input.setError("CMND đã có người sử dụng");
                         input.requestFocus();
                     } else {
-                        SharedPreferences.Editor editor = ctx.getSharedPreferences(ImmutableValue.SIGNUP_SHARED_PREFERENCES_CODE, ctx.MODE_PRIVATE).edit();
+                        SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SIGNUP_SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
                         editor.putString(ImmutableValue.SIGNUP_fullName, name);
                         editor.putString(ImmutableValue.SIGNUP_phone, phone);
                         editor.putString(ImmutableValue.SIGNUP_cmnd, cmnd);
                         editor.putString(ImmutableValue.SIGNUP_img_CMND, imagePath);
+                        editor.putString(ImmutableValue.SIGNUP_role, role);
                         editor.apply();
 
-                        Intent it = new Intent(ctx, SignupRoleActivity.class);
-                        ctx.startActivity(it);
+                        Intent it = new Intent(SignupUserInfoActivity.this, SignupPolicyActivity.class);
+                        startActivity(it);
                     }
                 } else {
-                    Toast.makeText(ctx, "Đã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SignupUserInfoActivity.this, "Đã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
                 }
 
                 progressDialog.dismiss();
@@ -255,8 +281,25 @@ public class SignupUserInfoActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<Boolean> call, Throwable t) {
                 progressDialog.dismiss();
-                Toast.makeText(ctx, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SignupUserInfoActivity.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void declareID(){
+        //Declare id
+        btnSignupAccountClean = (Button) findViewById(R.id.btnSignupAccountClean);
+        btnNext = (Button) findViewById(R.id.btnSignupAccountNext);
+        imgShowCMND = (ImageView) findViewById(R.id.imgSignupCMND);
+        edtSignupCNMD = (EditText) findViewById(R.id.edtSignupCMND);
+        signup_name_txt = (TextInputLayout) findViewById(R.id.signup_name_txt);
+        signup_phone_txt = (TextInputLayout) findViewById(R.id.signup_phone_txt);
+        signup_cmnd_txt = (TextInputLayout) findViewById(R.id.signup_cmnd_txt);
+        txt_cmnd_error = (TextView)findViewById(R.id.txt_cmnd_error);
+        ln_image_execute = (RelativeLayout)findViewById(R.id.ln_image_execute);
+        edtSignupName = (EditText) findViewById(R.id.edtSignupName);
+        edtSignupPhone = (EditText) findViewById(R.id.edtSignupPhone);
+        rd_user = (RadioButton)findViewById(R.id.rd_user);
+        rd_owner = (RadioButton)findViewById(R.id.rd_owner);
     }
 }

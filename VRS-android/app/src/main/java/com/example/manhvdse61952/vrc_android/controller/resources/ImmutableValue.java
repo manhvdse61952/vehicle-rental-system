@@ -109,4 +109,5 @@ public class ImmutableValue {
     public static String DISCOUNT_DISABLE = "DISABLE";
     public static List<String> vehicleFrameNumberListGeneral = new ArrayList<>();
     public static List<SearchVehicleItem> listSearchAdvanced = new ArrayList<>();
+    public static List<String> mapsDetail = new ArrayList<>();
 }

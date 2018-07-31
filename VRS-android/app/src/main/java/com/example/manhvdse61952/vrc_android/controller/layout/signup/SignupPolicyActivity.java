@@ -1,4 +1,4 @@
-package com.example.manhvdse61952.vrc_android.controller.layout.signup.customer;
+package com.example.manhvdse61952.vrc_android.controller.layout.signup;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -84,7 +84,6 @@ public class SignupPolicyActivity extends AppCompatActivity {
                 String phone = editor.getString(ImmutableValue.SIGNUP_phone, null);
                 String cmnd = editor.getString(ImmutableValue.SIGNUP_cmnd, null);
                 String paypal = "";
-                //String address = editor.getString("address", null);
                 String CMND_image_path = editor.getString(ImmutableValue.SIGNUP_img_CMND, null);
                 String rolename = editor.getString(ImmutableValue.SIGNUP_role, null);
 
@@ -106,9 +105,8 @@ public class SignupPolicyActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        SignupPolicyActivity.this.finish();
         super.onBackPressed();
-        Intent it = new Intent(SignupPolicyActivity.this, SignupRoleActivity.class);
-        startActivity(it);
     }
 
     @Override
@@ -139,7 +137,9 @@ public class SignupPolicyActivity extends AppCompatActivity {
                         public void onClick(DialogInterface dialogInterface, int i) {
                             SharedPreferences settings = getSharedPreferences(ImmutableValue.SIGNUP_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
                             settings.edit().clear().commit();
+                            SignupPolicyActivity.this.finish();
                             Intent it = new Intent(ctx, LoginActivity.class);
+                            it.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                             ctx.startActivity(it);
                         }
                     });

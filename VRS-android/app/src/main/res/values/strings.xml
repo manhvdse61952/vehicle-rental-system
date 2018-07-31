@@ -9,4 +9,30 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_maps">Map</string>
     <string name="string_service_unavailable_permission_denied">Ứng dụng cần quyền truy cập các dịch vụ sau</string>
+    <string name="policy">Trong thỏa thuận này, Bên A là người thuê và sử dụng phương tiện, bên B là chủ sở hữu phương tiện và VRS là bên hỗ trợ qui trình, quản lý ứng dụng. Công ty sở hữu và xử lý giao dịch để thuê xe.
+Mục đích của thỏa thuận này là thuê, bởi Chủ sở hữu (VRS), của chiếc xe được mô tả trong thỏa thuận, với Bên A.
+1. Thời gian và trả lại xe.
+Thỏa thuận này sẽ có thời hạn được thỏa thuận và được nêu trong hợp đồng này. Tuy nhiên, nếu Bên A muốn kéo dài thời gian thỏa thuận, anh / cô ấy nên thông báo cho chủ sở hữu trước khi kết thúc thời hạn thỏa thuận.
+Khi kết thúc giai đoạn thỏa thuận. Bên A sẽ trả lại xe được thuê, cùng với tất cả tài liệu, lốp xe, dụng cụ và phụ kiện, vào ngày và địa điểm được quy định trong thỏa thuận này.
+Nếu Bên A nên sử dụng chiếc xe khi thỏa thuận đã hết hạn và không có sự cho phép của chủ sở hữu, bảo hiểm đã đồng ý sẽ tự động bị treo.
+Chiếc xe được cung cấp bởi bên B với bình nhiên liệu đầy đủ, và bên A được yêu cầu trả lại trong cùng một điều kiện. Nếu xe được trả lại dưới mức nhiên liệu này, bên A sẽ bị tính thêm phí tổn.
+Khoản tiền gửi sẽ được VRS giữ và trả lại khi bên A trả lại xe, sau khi xác minh rằng nội thất của nó và điều kiện bên ngoài là tại thời điểm giao hàng và tuân thủ các điều khoản và điều kiện của thỏa thuận này.
+
+2. Sử dụng xe
+Bên A sẽ nhận được một chiếc xe từ chủ sở hữu, mô tả của nó chi tiết trong thỏa thuận này, trong điều kiện làm việc tốt và được trang bị tất cả các tài liệu và công cụ cần thiết, v.v.
+Tất cả điều này, được kiểm tra và xác minh bởi cả hai bên trước khi Bên A nhận được chiếc xe thuê.
+Chiếc xe chỉ có thể được lái bởi Bên A hoặc một nhân viên được ủy quyền của Bên A, như đã nêu trong thỏa thuận này. Người lái xe phải trên 25 tuổi và đã có bằng lái xe phù hợp với loại xe tối thiểu 3 năm.
+Bên A cam kết chăm sóc chiếc xe và lái nó theo luật giao thông hiện hành.
+Bên A cam kết sử dụng phương tiện được thuê theo các điều kiện sử dụng sau:
+• Bên A sẽ không thay đổi cấu trúc của chiếc xe thuê nói chung và, cụ thể, không được lắp đặt giá đỡ trên mái xe.
+• Bên A không được sử dụng xe để đẩy hoặc kéo bất kỳ phương tiện nào khác.
+• Bên A sẽ không sử dụng xe trong các sự kiện thể thao hoặc đào tạo dưới bất kỳ hình thức nào.
+• Bên A sẽ không cho phép bất kỳ người nào khác không được nêu tên trong thỏa thuận này để lái xe.
+• Bên A sẽ đảm bảo rằng chiếc xe được đỗ một cách thích hợp và được bảo đảm an toàn khi không sử dụng.
+
+Tổng số tiền đã thỏa thuận là tổng phí thuê trong hợp đồng này. Giá này bao gồm số tiền đã thỏa thuận về thời gian, nếu thích hợp, nhiên liệu đã mua hoặc không được thay thế, bảo hiểm được lấy ra và các khoản thuế phải trả cho
+sự giao dịch.
+Bên A phải thay thế bất kỳ bộ phận nào của chiếc xe bị hỏng hoặc bị mất do nguyên nhân mà bên A chịu trách nhiệm và phải cung cấp khoản tiền theo các điều khoản của hợp đồng theo thỏa thuận.
+Bên B có trách nhiệm hoàn trả những thanh toán gây ra bởi phương tiện mà bên A đã chi trả ví dụ như thay lốp, thay nhớt, bảo trì máy móc, ...
+Mọi chi phí phát sinh bởi bên B khi yêu cầu bất kỳ khoản phí nào nêu trên từ bên A sẽ được hoàn trả theo quy định của pháp luật.</string>
 </resources>

@@ -14,7 +14,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:orientation="horizontal"
-            android:weightSum="9"
+            android:weightSum="7.5"
             android:layout_marginRight="20dp"
             android:layout_height="match_parent">
             <TextView
@@ -24,10 +24,11 @@
                 android:textSize="14sp"
                 android:gravity="center"
                 android:textColor="#CCCCCC"
+                android:textStyle="bold"
                 android:layout_height="wrap_content" />
             <ImageView
                 android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_weight="1.5"
                 android:src="@drawable/ic_back_two"
                 android:rotation="180"
                 android:tint="#CCCCCC"
@@ -42,22 +43,7 @@
                 android:layout_height="wrap_content" />
             <ImageView
                 android:layout_width="0dp"
-                android:layout_weight="1"
-                android:src="@drawable/ic_back_two"
-                android:rotation="180"
-                android:tint="#CCCCCC"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:layout_width="0dp"
                 android:layout_weight="1.5"
-                android:text="Bước 3"
-                android:textSize="14sp"
-                android:gravity="center"
-                android:textColor="#CCCCCC"
-                android:layout_height="wrap_content" />
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_weight="1"
                 android:src="@drawable/ic_back_two"
                 android:rotation="180"
                 android:tint="#FFFFFF"
@@ -65,11 +51,10 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_weight="1.5"
-                android:text="Bước 4"
+                android:text="Bước 3"
                 android:textSize="14sp"
                 android:gravity="center"
                 android:textColor="#FFFFFF"
-                android:textStyle="bold"
                 android:layout_height="wrap_content" />
         </LinearLayout>
     </android.support.v7.widget.Toolbar>
@@ -85,13 +70,15 @@
             android:layout_weight="1"
             android:textColor="#000"
             android:gravity="center"
-            android:textSize="24sp"
+            android:textSize="18sp"
             android:text="Điều khoản sử dụng" />
         <ScrollView
-            android:background="@drawable/border_white"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:padding="5dp"
+            android:scrollbars="vertical"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
             android:layout_weight="7">
 
             <LinearLayout
@@ -102,49 +89,8 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="18dp"
-                    android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged." />
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="18dp"
-                    android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged." />
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="18dp"
-                    android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged." />
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="18dp"
-                    android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged." />
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="18dp"
-                    android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged." />
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="18dp"
-                    android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged." />
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="18dp"
-                    android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged." />
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="18dp"
-                    android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged." />
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="18dp"
-                    android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged." />
-
+                    android:textSize="14dp"
+                    android:text="@string/policy"/>
             </LinearLayout>
         </ScrollView>
 
