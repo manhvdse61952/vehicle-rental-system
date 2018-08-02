@@ -96,17 +96,18 @@ import retrofit2.Retrofit;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    ImageView img_current_address, main_extra_search;
+    ImageView main_extra_search;
     TextView txt_main_search_address;
     NavigationView navigationView;
     DrawerLayout drawer;
     Toolbar toolbar;
-    int cityPosition = 0, districtID = 0;
+    int cityPosition = 0, districtID = 0, districtSelectID = 0;
     FloatingActionButton fab_renew;
     int fromPrice = 0, toPrice = 0, checkLoop = -1;
     List<Integer> listSeat = new ArrayList<>();
     String vehicleType = "";
     int priceType = 0;
+    double longitude = 0, latitude = 0;
 
 
     LinearLayout ln_search_advanced, ln_search_advanced_show, ln_around;
@@ -144,35 +145,24 @@ public class MainActivity extends AppCompatActivity
 
         declareID();
 
-        getCurrentLocation(true);
+        getCurrentLocation();
 
         //Place Autocomplete
         showSearchPlace();
 
         //Init layout in the first time
-        getAllVehicleByDistrictID(44);
-
-        img_current_address.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final ProgressDialog dialog = ProgressDialog.show(MainActivity.this, "Hệ thống",
-                        "Đang xử lý", true);
-                (new Handler()).postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                            getCurrentLocation(true);
-                            Toast.makeText(MainActivity.this, "Đã lấy vị trí hiện tại", Toast.LENGTH_SHORT).show();
-
-                        dialog.dismiss();
-                    }
-                }, 500);
-            }
-        });
 
         main_extra_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 drawer.openDrawer(Gravity.END);
+            }
+        });
+
+        fab_renew.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getAllVehicleByDistrictID(districtID);
             }
         });
 
@@ -281,24 +271,23 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void declareID() {
-        img_current_address = (ImageView) findViewById(R.id.img_current_address);
         txt_main_search_address = (TextView) findViewById(R.id.txt_main_search_address);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         main_extra_search = (ImageView) findViewById(R.id.main_extra_search);
-        fab_renew = (FloatingActionButton)findViewById(R.id.fab_renew);
+        fab_renew = (FloatingActionButton) findViewById(R.id.fab_renew);
 
-        ln_search_advanced = (LinearLayout)findViewById(R.id.ln_search_advanced);
-        ln_search_advanced_show= (LinearLayout)findViewById(R.id.ln_search_advanced_show);
-        spn_vehicleType = (Spinner)findViewById(R.id.spn_vehicleType);
-        spn_seat = (Spinner)findViewById(R.id.spn_seat);
-        edt_priceFrom = (EditText)findViewById(R.id.edt_priceFrom);
-        edt_priceTo = (EditText)findViewById(R.id.edt_priceTo);
-        spn_city = (Spinner)findViewById(R.id.spn_city);
-        spn_district = (Spinner)findViewById(R.id.spn_district);
-        spn_priceType = (Spinner)findViewById(R.id.spn_priceType);
-        btn_searchAdvance = (Button)findViewById(R.id.btn_searchAdvance);
-        ln_around = (LinearLayout)findViewById(R.id.ln_around);
+        ln_search_advanced = (LinearLayout) findViewById(R.id.ln_search_advanced);
+        ln_search_advanced_show = (LinearLayout) findViewById(R.id.ln_search_advanced_show);
+        spn_vehicleType = (Spinner) findViewById(R.id.spn_vehicleType);
+        spn_seat = (Spinner) findViewById(R.id.spn_seat);
+        edt_priceFrom = (EditText) findViewById(R.id.edt_priceFrom);
+        edt_priceTo = (EditText) findViewById(R.id.edt_priceTo);
+        spn_city = (Spinner) findViewById(R.id.spn_city);
+        spn_district = (Spinner) findViewById(R.id.spn_district);
+        spn_priceType = (Spinner) findViewById(R.id.spn_priceType);
+        btn_searchAdvance = (Button) findViewById(R.id.btn_searchAdvance);
+        ln_around = (LinearLayout) findViewById(R.id.ln_around);
 
 
         //Toggle the actionbar
@@ -320,7 +309,6 @@ public class MainActivity extends AppCompatActivity
             txtNavRole.setText("Khách hàng");
             Menu nav_Menu = navigationView.getMenu();
             nav_Menu.findItem(R.id.nav_manage_vehicle).setVisible(false);
-            nav_Menu.findItem(R.id.nav_manage_drivers).setVisible(false);
             nav_Menu.findItem(R.id.nav_discount).setVisible(false);
         } else {
             txtNavRole.setText("Chủ xe");
@@ -347,7 +335,7 @@ public class MainActivity extends AppCompatActivity
         ln_search_advanced.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isOpenAdvanced){
+                if (isOpenAdvanced) {
                     GeneralController.scaleView(ln_search_advanced_show, 0);
                     isOpenAdvanced = false;
                 } else {
@@ -384,13 +372,6 @@ public class MainActivity extends AppCompatActivity
         edt_priceFrom.addTextChangedListener(convertFromPriceRealTime(edt_priceFrom));
         edt_priceTo.addTextChangedListener(convertToPriceRealTime(edt_priceTo));
 
-        fab_renew.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getAllVehicleByDistrictID(44);
-            }
-        });
-
         btn_searchAdvance.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -401,13 +382,20 @@ public class MainActivity extends AppCompatActivity
 
     //Use for init layout
 
-    private int getDistrictIdByName(String districtName) {
+    private void getDistrictIdByName(String districtName) {
+        districtName = districtName.toLowerCase();
+        districtName = GeneralController.removeAccentCharacter(districtName);
+        districtName = districtName.replace("quan", "");
+        districtName = districtName.replace("huyen", "");
         List<City> listCity = ImmutableValue.listGeneralAddress;
-        int districtID = 0;
+        districtID = 63;
         for (int i = 0; i < listCity.size(); i++) {
             List<District> listDistrict = listCity.get(i).getDistrict();
             for (int j = 0; j < listDistrict.size(); j++) {
-                String districtConvert = listDistrict.get(j).getDistrictName().toLowerCase().replace("quận", "");
+                String districtConvert = listDistrict.get(j).getDistrictName().toLowerCase();
+                districtConvert = GeneralController.removeAccentCharacter(districtConvert);
+                districtConvert = districtConvert.replace("quan", "");
+                districtConvert = districtConvert.replace("huyen", "");
                 if (districtConvert.equals(districtName)) {
                     districtID = listDistrict.get(j).getId();
                     break;
@@ -415,10 +403,14 @@ public class MainActivity extends AppCompatActivity
 
             }
         }
-        return districtID;
+
+        getAllVehicleByDistrictID(districtID);
     }
 
     private void getAllVehicleByDistrictID(int districtID) {
+        listMotorbike = new ArrayList<>();
+        listPersonalCar = new ArrayList<>();
+        listTravelCar = new ArrayList<>();
         final ProgressDialog dialog = ProgressDialog.show(MainActivity.this, "Hệ thống",
                 "Đang xử lý", true);
         Retrofit test = RetrofitConfig.getClient();
@@ -428,10 +420,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onResponse(Call<List<SearchVehicleItem>> call, Response<List<SearchVehicleItem>> response) {
                 if (response.code() == 200) {
-                    if (response != null) {
-                        listMotorbike = new ArrayList<>();
-                        listPersonalCar = new ArrayList<>();
-                        listTravelCar = new ArrayList<>();
+                    if (response.body() != null) {
                         List<SearchVehicleItem> listAll = response.body();
                         for (int i = 0; i < listAll.size(); i++) {
                             if (listAll.get(i).getVehicleType().equals(ImmutableValue.XE_MAY)) {
@@ -486,14 +475,20 @@ public class MainActivity extends AppCompatActivity
                         SharedPreferences editor = getSharedPreferences(ImmutableValue.HOME_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
                         int tabIndex = editor.getInt(ImmutableValue.HOME_tabIndex, 0);
                         viewPager.setCurrentItem(tabIndex);
+                        dialog.dismiss();
+                    } else {
+                        Toast.makeText(MainActivity.this, "Khu vực của bạn không có xe! Hệ thống sẽ hiển thị xe ở khu vực khác", Toast.LENGTH_SHORT).show();
+                        getAllVehicleByDistrictID(40);
                     }
                 } else {
-                    Toast.makeText(MainActivity.this, "Đã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Khu vực của bạn không có xe! Hệ thống sẽ hiển thị xe ở khu vực khác", Toast.LENGTH_SHORT).show();
+                    getAllVehicleByDistrictID(40);
                     viewPager = (ViewPager) findViewById(R.id.container);
                     setupViewPager(viewPager);
                     tabLayout = (TabLayout) findViewById(R.id.tabs);
                     tabLayout.setupWithViewPager(viewPager);
                     createTabIcons();
+                    dialog.dismiss();
                 }
                 dialog.dismiss();
             }
@@ -505,7 +500,7 @@ public class MainActivity extends AppCompatActivity
                 tabLayout = (TabLayout) findViewById(R.id.tabs);
                 tabLayout.setupWithViewPager(viewPager);
                 createTabIcons();
-                Toast.makeText(MainActivity.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(MainActivity.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
             }
         });
@@ -535,9 +530,9 @@ public class MainActivity extends AppCompatActivity
         spn_district.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                districtID = 0;
+                districtSelectID = 0;
                 District district = listAddress.get(cityPosition).getDistrict().get(position);
-                districtID = district.getId();
+                districtSelectID = district.getId();
             }
 
             @Override
@@ -657,21 +652,13 @@ public class MainActivity extends AppCompatActivity
 
     //Use for location
 
-    private void getCurrentLocation(final Boolean isFirstTime) {
+    private void getCurrentLocation() {
         final ProgressDialog dialog = ProgressDialog.show(MainActivity.this, "Hệ thống",
                 "Đang xử lý", true);
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                double longitude = location.getLongitude();
-                double latitude = location.getLatitude();
-                String currentAddress = PermissionDevice.getStringAddress(longitude, latitude, MainActivity.this);
-                txt_main_search_address.setText(currentAddress);
-                if (isFirstTime == true) {
-                    locationManager.removeUpdates(locationListener);
-                }
-                dialog.dismiss();
             }
 
             @Override
@@ -696,8 +683,21 @@ public class MainActivity extends AppCompatActivity
         }
         if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+            Location lastLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            longitude = lastLocation.getLongitude();
+            latitude = lastLocation.getLatitude();
+            String district = PermissionDevice.getStringDistrict(longitude, latitude, MainActivity.this);
+            getDistrictIdByName(district);
+            dialog.dismiss();
+
         } else if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+            Location lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            longitude = lastLocation.getLongitude();
+            latitude = lastLocation.getLatitude();
+            String district = PermissionDevice.getStringDistrict(longitude, latitude, MainActivity.this);
+            getDistrictIdByName(district);
+            dialog.dismiss();
         }
 
         //////////////////////////////////////////////////////////////////////////
@@ -706,21 +706,20 @@ public class MainActivity extends AppCompatActivity
     private void showSearchPlace() {
         PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
-        EditText edtPlace = (EditText)autocompleteFragment.getView().findViewById(R.id.place_autocomplete_search_input);
+        EditText edtPlace = (EditText) autocompleteFragment.getView().findViewById(R.id.place_autocomplete_search_input);
         edtPlace.setHint("Nhập địa chỉ...");
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
-                String currentAddressStr = PermissionDevice.getStringAddress(place.getLatLng().longitude, place.getLatLng().latitude, MainActivity.this);
-                String addressFull = "";
-                if (!currentAddressStr.trim().equals("")) {
-                    String[] arrayAddressTemp = currentAddressStr.split(",");
-                    addressFull = arrayAddressTemp[0];
-                    for (int i = 1; i < arrayAddressTemp.length - 1; i++) {
-                        addressFull = addressFull + ", " + arrayAddressTemp[i].trim();
-                    }
-                }
-                txt_main_search_address.setText(addressFull);
+                listMotorbike = new ArrayList<>();
+                listPersonalCar = new ArrayList<>();
+                listTravelCar = new ArrayList<>();
+
+                txt_main_search_address.setText(place.getName());
+                String searchDistrictStr = PermissionDevice.getStringDistrict(place.getLatLng().longitude, place.getLatLng().latitude,
+                        MainActivity.this);
+                getDistrictIdByName(searchDistrictStr);
+                //getAllVehicleByDistrictID(districtID);
             }
 
             @Override
@@ -775,6 +774,7 @@ public class MainActivity extends AppCompatActivity
                         MainActivity.this.finish();
                         Intent it = new Intent(MainActivity.this, LoginActivity.class);
                         startActivity(it);
+                        dialog.dismiss();
                     }
                     dialog.dismiss();
                 }
@@ -794,54 +794,54 @@ public class MainActivity extends AppCompatActivity
 
     //Use for advanced search
 
-    private void searchAdvancedAction(){
+    private void searchAdvancedAction() {
         //Validate vehicle type
-        if (spn_vehicleType.getSelectedItemPosition() == 0){
+        if (spn_vehicleType.getSelectedItemPosition() == 0) {
             vehicleType = ImmutableValue.XE_MAY;
-        } else if (spn_vehicleType.getSelectedItemPosition() == 1){
+        } else if (spn_vehicleType.getSelectedItemPosition() == 1) {
             vehicleType = ImmutableValue.XE_CA_NHAN;
         } else {
             vehicleType = ImmutableValue.XE_DU_LICH;
         }
 
         //Validate seat
-        if (spn_seat.getSelectedItemPosition() == 0){
+        if (spn_seat.getSelectedItemPosition() == 0) {
             listSeat = new ArrayList<>();
             listSeat.add(2);
-        } else if (spn_seat.getSelectedItemPosition() == 1){
+        } else if (spn_seat.getSelectedItemPosition() == 1) {
             listSeat = new ArrayList<>();
-            for (int i = 4;i <=7;i++){
+            for (int i = 4; i <= 7; i++) {
                 listSeat.add(i);
             }
-        } else if (spn_seat.getSelectedItemPosition() == 2){
+        } else if (spn_seat.getSelectedItemPosition() == 2) {
             listSeat = new ArrayList<>();
-            for (int i = 8;i <=16;i++){
+            for (int i = 8; i <= 16; i++) {
                 listSeat.add(i);
             }
-        } else if (spn_seat.getSelectedItemPosition() == 3){
+        } else if (spn_seat.getSelectedItemPosition() == 3) {
             listSeat = new ArrayList<>();
-            for (int i = 17;i <=32;i++){
+            for (int i = 17; i <= 32; i++) {
                 listSeat.add(i);
             }
-        } else if (spn_seat.getSelectedItemPosition() == 4){
+        } else if (spn_seat.getSelectedItemPosition() == 4) {
             listSeat = new ArrayList<>();
-            for (int i = 33;i <=60;i++){
+            for (int i = 33; i <= 60; i++) {
                 listSeat.add(i);
             }
         }
 
         //Validate price type
-        if (spn_priceType.getSelectedItemPosition() == 0){
+        if (spn_priceType.getSelectedItemPosition() == 0) {
             priceType = 1;
         } else {
             priceType = 3;
         }
 
         //Validate price
-        if (fromPrice < 10000 || toPrice < 10000){
+        if (fromPrice < 10000 || toPrice < 10000) {
             Toast.makeText(this, "Giá tiền từ 10,000 trở lên", Toast.LENGTH_SHORT).show();
         } else {
-            if (fromPrice > toPrice){
+            if (fromPrice > toPrice) {
                 Toast.makeText(this, "Giá tiền khoảng trước phải nhỏ hơn giá tiền khoảng sau", Toast.LENGTH_SHORT).show();
             } else {
                 // Run successfull code
@@ -856,10 +856,10 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    private void forwardLoop(final ProgressDialog dialog){
-        if (checkLoop >= listSeat.size() - 1){
+    private void forwardLoop(final ProgressDialog dialog) {
+        if (checkLoop >= listSeat.size() - 1) {
             dialog.dismiss();
-            if (ImmutableValue.listSearchAdvanced.size() > 0){
+            if (ImmutableValue.listSearchAdvanced.size() > 0) {
                 startActivity(new Intent(MainActivity.this, SearchAdvancedActivity.class));
             } else {
                 Toast.makeText(this, "Không tìm thấy xe phù hợp", Toast.LENGTH_SHORT).show();
@@ -871,11 +871,11 @@ public class MainActivity extends AppCompatActivity
         Retrofit retrofit = RetrofitConfig.getClient();
         VehicleAPI vehicleAPI = retrofit.create(VehicleAPI.class);
         Call<List<SearchVehicleItem>> responseBodyCall = vehicleAPI.getListAdvancedSearch(listSeat.get(checkLoop), vehicleType,
-                fromPrice, toPrice, districtID, priceType);
+                fromPrice, toPrice, districtSelectID, priceType);
         responseBodyCall.enqueue(new Callback<List<SearchVehicleItem>>() {
             @Override
             public void onResponse(Call<List<SearchVehicleItem>> call, Response<List<SearchVehicleItem>> response) {
-                if (response.code() == 200){
+                if (response.code() == 200) {
                     ImmutableValue.listSearchAdvanced.addAll(response.body());
                 }
                 forwardLoop(dialog);

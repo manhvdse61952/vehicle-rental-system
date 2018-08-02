@@ -9,10 +9,6 @@
             android:icon="@drawable/ic_manage_vehicle_2_24dp"
             android:title="Quản lý xe" />
         <item
-            android:id="@+id/nav_manage_drivers"
-            android:icon="@drawable/ic_manage_driver"
-            android:title="Quản lý tài xế" />
-        <item
             android:id="@+id/nav_view_history"
             android:icon="@drawable/ic_view_history"
             android:title="Xem báo cáo" />

@@ -62,6 +62,7 @@ public class ManageVehicleActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SIGNUP_SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
+                SharedPreferences.Editor editor2 = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
                 editor.putString(ImmutableValue.VEHICLE_vehicleMaker, "Empty");
                 editor.putString(ImmutableValue.VEHICLE_vehicleModel, "Empty");
                 editor.putString(ImmutableValue.VEHICLE_img_vehicle_1, "");
@@ -79,7 +80,11 @@ public class ManageVehicleActivity extends AppCompatActivity {
                 editor.putInt(ImmutableValue.VEHICLE_isManual, -1);
                 editor.putInt(ImmutableValue.VEHICLE_requireHouseHold, 0);
                 editor.putInt(ImmutableValue.VEHICLE_requireIdCard, 0);
+                editor2.putString(ImmutableValue.MAIN_vehicleAddress, "");
+                editor2.putString(ImmutableValue.MAIN_vehicleLat, "");
+                editor2.putString(ImmutableValue.MAIN_vehicleLng, "");
                 editor.apply();
+                editor2.apply();
                 startActivity(new Intent(ManageVehicleActivity.this, CreateVehicleType.class));
             }
         });
@@ -130,7 +135,8 @@ public class ManageVehicleActivity extends AppCompatActivity {
                     }
 
                 } else {
-                    Toast.makeText(ManageVehicleActivity.this, "Đã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
+                    txt_manage_vehicle_empty.setVisibility(View.VISIBLE);
+//                    Toast.makeText(ManageVehicleActivity.this, "Đã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
                 }
                 dialog.dismiss();
             }

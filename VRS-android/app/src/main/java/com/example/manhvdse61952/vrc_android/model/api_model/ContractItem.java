@@ -37,9 +37,27 @@ public class ContractItem implements Serializable {
     private long rentFeePerHour;
     private float discountVehicle;
     private float discountGeneral;
+    private double longitude;
+    private double latitude;
 
 
     public ContractItem() {
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
     }
 
     public float getDiscountVehicle() {

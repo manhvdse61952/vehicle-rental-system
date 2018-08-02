@@ -95,6 +95,7 @@
         <activity android:name=".controller.layout.promotion.PromotionActivity" android:screenOrientation="portrait"></activity>
         <activity android:name=".controller.layout.report.ViewReportActivity" android:screenOrientation="portrait"></activity>
         <activity android:name=".controller.layout.main.SearchAdvancedActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".controller.layout.vehicle.showdetail.VehicleMap" android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

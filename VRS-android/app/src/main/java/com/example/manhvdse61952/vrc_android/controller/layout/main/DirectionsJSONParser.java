@@ -1,7 +1,5 @@
 package com.example.manhvdse61952.vrc_android.controller.layout.main;
 
-import android.util.Log;
-
 import com.example.manhvdse61952.vrc_android.controller.resources.ImmutableValue;
 import com.google.android.gms.maps.model.LatLng;
 

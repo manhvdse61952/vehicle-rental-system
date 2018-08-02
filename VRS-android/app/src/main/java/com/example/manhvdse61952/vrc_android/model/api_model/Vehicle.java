@@ -17,8 +17,10 @@ public class Vehicle implements Serializable {
     private int districtID;
     private int isGasoline;
     private int isManual;
+    private double longitude;
+    private double latitude;
 
-    public Vehicle(String frameNumber, int ownerID, int vehicleInformationID, String description, float rentFeePerSlot, float rentFeePerDay, float rentFeePerHours, float depositFee, String plateNumber, int requireHouseHold, int requireIdCard, int districtID, int isGasoline, int isManual) {
+    public Vehicle(String frameNumber, int ownerID, int vehicleInformationID, String description, float rentFeePerSlot, float rentFeePerDay, float rentFeePerHours, float depositFee, String plateNumber, int requireHouseHold, int requireIdCard, int districtID, int isGasoline, int isManual, double longitude, double latitude) {
         this.frameNumber = frameNumber;
         this.ownerID = ownerID;
         this.vehicleInformationID = vehicleInformationID;
@@ -33,10 +35,28 @@ public class Vehicle implements Serializable {
         this.districtID = districtID;
         this.isGasoline = isGasoline;
         this.isManual = isManual;
+        this.longitude = longitude;
+        this.latitude = latitude;
     }
 
     public Vehicle(){
 
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
     }
 
     public int getIsGasoline() {

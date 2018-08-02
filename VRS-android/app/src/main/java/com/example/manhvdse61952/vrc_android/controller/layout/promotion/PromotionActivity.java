@@ -14,11 +14,13 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.manhvdse61952.vrc_android.R;
+import com.example.manhvdse61952.vrc_android.controller.resources.GeneralController;
 import com.example.manhvdse61952.vrc_android.controller.resources.ImmutableValue;
 import com.example.manhvdse61952.vrc_android.model.api_interface.DiscountAPI;
 import com.example.manhvdse61952.vrc_android.model.api_interface.VehicleAPI;
@@ -45,11 +47,15 @@ public class PromotionActivity extends AppCompatActivity {
     Button btnCreatePromo;
     PromotionAdapter promotionAdapter;
     ProgressDialog dialogTemp;
+    LinearLayout ln_hide_promotion;
 
     Calendar calendar;
-    int currentDay = 0, currentMonth = 0, currentYear = 0, checkLoop = -1;;
+    int currentDay = 0, currentMonth = 0, currentYear = 0, checkLoop = -1;
     float discountValue = 0;
     long startDateLong = 0, endDateLong = 0;
+    Boolean isOpen = false;
+
+    List<Discount> discountList = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -96,6 +102,7 @@ public class PromotionActivity extends AppCompatActivity {
         spnPromoQuantity = (Spinner) findViewById(R.id.spnPromoQuantity);
         check_list = (RecyclerView) findViewById(R.id.check_list);
         btnCreatePromo = (Button) findViewById(R.id.btnCreatePromo);
+        ln_hide_promotion = (LinearLayout) findViewById(R.id.ln_hide_promotion);
     }
 
     private void initLayout() {
@@ -108,6 +115,8 @@ public class PromotionActivity extends AppCompatActivity {
         currentYear = calendar.get(Calendar.YEAR);
         currentMonth = calendar.get(Calendar.MONTH);
         currentDay = calendar.get(Calendar.DAY_OF_MONTH);
+
+        GeneralController.scaleView(ln_hide_promotion, 0);
 
         //Init spinner value
         List<String> listValue = new ArrayList<>();
@@ -234,10 +243,9 @@ public class PromotionActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Discount>> call, Response<List<Discount>> response) {
                 if (response.code() == 200) {
-                    List<Discount> discountList = response.body();
-                    promotionAdapter = new PromotionAdapter(discountList, PromotionActivity.this, PromotionActivity.this);
-                    check_list.setAdapter(promotionAdapter);
-                    promotionAdapter.notifyDataSetChanged();
+                    discountList = new ArrayList<>();
+                    discountList = response.body();
+                    getListVehicleOfOwner();
                 }
                 dialog.dismiss();
             }
@@ -251,23 +259,28 @@ public class PromotionActivity extends AppCompatActivity {
         });
     }
 
-    private void createPromotionAction(){
-        if (startDateLong == 0 || endDateLong == 0 || startDateLong > endDateLong){
-            Toast.makeText(this, "Vui lòng chọn ngày hợp lệ", Toast.LENGTH_SHORT).show();
-        } else if (startDateLong != 0 && endDateLong != 0 && discountValue == 0){
-            Toast.makeText(this, "Vui lòng chọn mức giảm giá", Toast.LENGTH_SHORT).show();
-        } else if (startDateLong != 0 && endDateLong != 0 && discountValue != 0 && ImmutableValue.vehicleFrameNumberListGeneral.size() == 0){
-            Toast.makeText(this, "Vui lòng chọn xe cần thêm giảm giá", Toast.LENGTH_SHORT).show();
+    private void createPromotionAction() {
+        if (isOpen == false) {
+            GeneralController.scaleView(ln_hide_promotion, 250);
+            isOpen = true;
         } else {
+            if (startDateLong == 0 || endDateLong == 0 || startDateLong > endDateLong) {
+                Toast.makeText(this, "Vui lòng chọn ngày hợp lệ", Toast.LENGTH_SHORT).show();
+            } else if (startDateLong != 0 && endDateLong != 0 && discountValue == 0) {
+                Toast.makeText(this, "Vui lòng chọn mức giảm giá", Toast.LENGTH_SHORT).show();
+            } else if (startDateLong != 0 && endDateLong != 0 && discountValue != 0 && ImmutableValue.vehicleFrameNumberListGeneral.size() == 0) {
+                Toast.makeText(this, "Vui lòng chọn xe cần thêm giảm giá", Toast.LENGTH_SHORT).show();
+            } else {
 
-            dialogTemp = ProgressDialog.show(PromotionActivity.this, "Hệ thống",
-                    "Đang xử lý ...", true);
-            forwardLoop();
+                dialogTemp = ProgressDialog.show(PromotionActivity.this, "Hệ thống",
+                        "Đang xử lý ...", true);
+                forwardLoop();
+            }
         }
     }
 
-    private void forwardLoop(){
-        if (checkLoop >= ImmutableValue.vehicleFrameNumberListGeneral.size()-1){
+    private void forwardLoop() {
+        if (checkLoop >= ImmutableValue.vehicleFrameNumberListGeneral.size() - 1) {
             dialogTemp.dismiss();
             Toast.makeText(this, "Tạo thành công", Toast.LENGTH_SHORT).show();
             PromotionActivity.this.finish();
@@ -278,11 +291,11 @@ public class PromotionActivity extends AppCompatActivity {
         Retrofit retrofit = RetrofitConfig.getClient();
         DiscountAPI discountAPI = retrofit.create(DiscountAPI.class);
         Call<ResponseBody> responseBodyCall = discountAPI.updatePromotion(ImmutableValue.vehicleFrameNumberListGeneral.get(checkLoop)
-                ,discountValue, startDateLong, endDateLong);
+                , discountValue, startDateLong, endDateLong);
         responseBodyCall.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if (response.code() == 200){
+                if (response.code() == 200) {
                     forwardLoop();
                 } else {
                     dialogTemp.dismiss();
@@ -295,6 +308,79 @@ public class PromotionActivity extends AppCompatActivity {
                 dialogTemp.dismiss();
                 Toast.makeText(PromotionActivity.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
                 return;
+            }
+        });
+    }
+
+    private void getListVehicleOfOwner() {
+        final ProgressDialog dialog;
+        dialog = ProgressDialog.show(PromotionActivity.this, "Hệ thống",
+                "Đang xử lý ...", true);
+        SharedPreferences editor = getSharedPreferences(ImmutableValue.HOME_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
+        int ownerID = editor.getInt(ImmutableValue.HOME_userID, 0);
+        Retrofit retrofit = RetrofitConfig.getClient();
+        VehicleAPI vehicleAPI = retrofit.create(VehicleAPI.class);
+        Call<List<SearchVehicleItem>> responseBodyCall = vehicleAPI.getVehicleByOwnerID(ownerID);
+        responseBodyCall.enqueue(new Callback<List<SearchVehicleItem>>() {
+            @Override
+            public void onResponse(Call<List<SearchVehicleItem>> call, Response<List<SearchVehicleItem>> response) {
+                if (response.code() == 200) {
+                    List<SearchVehicleItem> listVehicle = new ArrayList<>();
+                    List<Discount> listDiscountFinal = new ArrayList<>();
+                    listVehicle = response.body();
+                    if (discountList.size() > 0) {
+                        for (int i = 0; i < listVehicle.size(); i++) {
+                            for (int j = 0; j < discountList.size(); j++) {
+                                if (listVehicle.get(i).getFrameNumber().equals(discountList.get(j).getVehicleFrameNumber())) {
+                                    Discount obj = new Discount();
+                                    obj.setEndDay(discountList.get(j).getEndDay());
+                                    obj.setStartDay(discountList.get(j).getStartDay());
+                                    obj.setVehicleFrameNumber(discountList.get(j).getVehicleFrameNumber());
+                                    obj.setDiscountStatus(discountList.get(j).getDiscountStatus());
+                                    obj.setDiscountID(discountList.get(j).getDiscountID());
+                                    obj.setDiscountValue(discountList.get(j).getDiscountValue());
+                                    obj.setVehicleMaker(discountList.get(j).getVehicleMaker());
+                                    obj.setVehicleModel(discountList.get(j).getVehicleModel());
+                                    listDiscountFinal.add(obj);
+                                } else {
+                                    Discount obj = new Discount();
+                                    obj.setEndDay(0);
+                                    obj.setStartDay(0);
+                                    obj.setVehicleFrameNumber(listVehicle.get(i).getFrameNumber());
+                                    obj.setDiscountStatus("");
+                                    obj.setDiscountID(0);
+                                    obj.setDiscountValue(0);
+                                    obj.setVehicleMaker(listVehicle.get(i).getVehicleMaker());
+                                    obj.setVehicleModel(listVehicle.get(i).getVehicleModel());
+                                    listDiscountFinal.add(obj);
+                                }
+                            }
+                        }
+                    } else {
+                        for (int i = 0; i < listVehicle.size();i++){
+                            Discount obj = new Discount();
+                            obj.setEndDay(0);
+                            obj.setStartDay(0);
+                            obj.setVehicleFrameNumber(listVehicle.get(i).getFrameNumber());
+                            obj.setDiscountStatus("");
+                            obj.setDiscountID(0);
+                            obj.setDiscountValue(0);
+                            obj.setVehicleMaker(listVehicle.get(i).getVehicleMaker());
+                            obj.setVehicleModel(listVehicle.get(i).getVehicleModel());
+                            listDiscountFinal.add(obj);
+                        }
+                    }
+                    promotionAdapter = new PromotionAdapter(listDiscountFinal, PromotionActivity.this, PromotionActivity.this);
+                    check_list.setAdapter(promotionAdapter);
+                    promotionAdapter.notifyDataSetChanged();
+                }
+                dialog.dismiss();
+            }
+
+            @Override
+            public void onFailure(Call<List<SearchVehicleItem>> call, Throwable t) {
+                dialog.dismiss();
+                Toast.makeText(PromotionActivity.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -32,6 +32,8 @@ import com.example.manhvdse61952.vrc_android.model.api_model.ContractItem;
 import com.example.manhvdse61952.vrc_android.remote.RetrofitConfig;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import retrofit2.Call;
@@ -100,6 +102,15 @@ public class ManageContractActivity extends AppCompatActivity {
                                 listContractAnother.add(contractItemList.get(i));
                             }
                         }
+                        if (listContractAnother.size() > 0){
+                            Collections.sort(listContractAnother, new CustomComparator());
+                        }
+                        if (listContractFinish.size() > 0){
+                            Collections.sort(listContractFinish, new CustomComparator());
+                        }
+                        if (listContractRemove.size() > 0){
+                            Collections.sort(listContractRemove, new CustomComparator());
+                        }
                         viewPager = (ViewPager) findViewById(R.id.container);
                         setupViewPager(viewPager);
                         tabLayout = (TabLayout) findViewById(R.id.tabs);
@@ -148,6 +159,15 @@ public class ManageContractActivity extends AppCompatActivity {
                             } else {
                                 listContractAnother.add(contractItemList.get(i));
                             }
+                        }
+                        if (listContractAnother.size() > 0){
+                            Collections.sort(listContractAnother, new CustomComparator());
+                        }
+                        if (listContractFinish.size() > 0){
+                            Collections.sort(listContractFinish, new CustomComparator());
+                        }
+                        if (listContractRemove.size() > 0){
+                            Collections.sort(listContractRemove, new CustomComparator());
                         }
                         viewPager = (ViewPager) findViewById(R.id.container);
                         setupViewPager(viewPager);
@@ -234,5 +254,12 @@ public class ManageContractActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    public class CustomComparator implements Comparator<ContractItem>{
+        @Override
+        public int compare(ContractItem o1, ContractItem o2) {
+            return Integer.parseInt(o2.getContractID()) - Integer.parseInt(o1.getContractID());
+        }
     }
 }

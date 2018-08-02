@@ -31,11 +31,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="80dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
                 android:textColor="@color/secondary_text"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:layout_centerHorizontal="true"
-                android:text="Không có kết quả"/>
+                android:text="Không có hợp đồng"/>
             <android.support.design.widget.TabLayout
                 android:id="@+id/tabs"
                 android:layout_width="match_parent"

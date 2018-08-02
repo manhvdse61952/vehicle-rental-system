@@ -28,9 +28,28 @@ public class DetailVehicleItem implements Serializable {
     private String address;
     private String description;
     private float discountValue;
+    private double longitude;
+    private double latitude;
+
 
     public int getRentFeePerHourID() {
         return rentFeePerHourID;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
     }
 
     public void setRentFeePerHourID(int rentFeePerHourID) {

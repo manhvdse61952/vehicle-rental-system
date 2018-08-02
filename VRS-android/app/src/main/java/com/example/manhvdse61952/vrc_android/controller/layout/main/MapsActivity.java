@@ -16,6 +16,9 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,7 +27,10 @@ import com.example.manhvdse61952.vrc_android.R;
 import com.example.manhvdse61952.vrc_android.controller.layout.vehicle.showdetail.VehicleDetail;
 import com.example.manhvdse61952.vrc_android.controller.resources.GeneralController;
 import com.example.manhvdse61952.vrc_android.controller.resources.ImmutableValue;
+import com.example.manhvdse61952.vrc_android.model.api_interface.VehicleAPI;
 import com.example.manhvdse61952.vrc_android.model.api_model.Tracking;
+import com.example.manhvdse61952.vrc_android.model.api_model.VehicleLocation;
+import com.example.manhvdse61952.vrc_android.remote.RetrofitConfig;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -36,6 +42,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
 
@@ -45,10 +52,17 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -61,6 +75,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     LinearLayout ln_detail;
     TextView txt_vehicle_name, txt_distance, txt_duration;
+    ImageView img_vehicle_front;
+
+    List<VehicleLocation> listTracking;
+    Button btn_view_detail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,12 +94,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
-    private void declareID(){
-        ln_detail = (LinearLayout)findViewById(R.id.ln_detail);
-        txt_vehicle_name = (TextView)findViewById(R.id.txt_vehicle_name);
-        txt_distance = (TextView)findViewById(R.id.txt_distance);
-        txt_duration = (TextView)findViewById(R.id.txt_duration);
+    private void declareID() {
+        ln_detail = (LinearLayout) findViewById(R.id.ln_detail);
+        txt_vehicle_name = (TextView) findViewById(R.id.txt_vehicle_name);
+        txt_distance = (TextView) findViewById(R.id.txt_distance);
+        txt_duration = (TextView) findViewById(R.id.txt_duration);
+        img_vehicle_front = (ImageView)findViewById(R.id.img_vehicle_front);
+        btn_view_detail = (Button)findViewById(R.id.btn_view_detail);
     }
+
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
@@ -330,7 +351,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             if (points.size() != 0) {
                 // Drawing polyline in the Google Map for the i-th route
                 polylineFinal = mMap.addPolyline(lineOptions);
-                if (ImmutableValue.mapsDetail.size() > 0){
+                if (ImmutableValue.mapsDetail.size() > 0) {
                     txt_duration.setText(ImmutableValue.mapsDetail.get(0));
                     txt_distance.setText(ImmutableValue.mapsDetail.get(1));
                 }
@@ -340,73 +361,182 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     //Get all location on DB
     private void getLocationFromDB() {
-        final List<Tracking> listTracking = new ArrayList<>();
-        final List<Tracking> listFinalTracking = new ArrayList<>();
+        listTracking = new ArrayList<>();
+        final List<VehicleLocation> listFinalTracking = new ArrayList<>();
 
-        //Test value
-        listTracking.add(new Tracking("DLMRR8745R9845476", 106.629545, 10.853224));
-        listTracking.add(new Tracking("HFEFE1657U4856411", 106.658632, 10.836006));
-        listTracking.add(new Tracking("KJ113564", 106.634225,10.806666));
-        listTracking.add(new Tracking("KBBFW5210E5454861", 106.800352,10.865851));
-        double lat = lastLocation.getLatitude();
-        double lng = lastLocation.getLongitude();
-        final LatLng lastLatLng = new LatLng(lat, lng);
-        //Add all vehicle in circle distance
-        if (listTracking.size() != 0) {
-            for (int i = 0; i < listTracking.size(); i++) {
-                Location vehicleLocation = new Location("");
-                double vehicleLat = listTracking.get(i).getLatitude();
-                double vehicleLng = listTracking.get(i).getLongitude();
-                vehicleLocation.setLatitude(vehicleLat);
-                vehicleLocation.setLongitude(vehicleLng);
-                if (lastLocation.distanceTo(vehicleLocation) <= circleDistance){
-                    listFinalTracking.add(listTracking.get(i));
-                }
-            }
-        }
+        final ProgressDialog dialog = ProgressDialog.show(MapsActivity.this, "Hệ thống",
+                "Đang xử lý", true);
+        Retrofit test = RetrofitConfig.getClient();
+        final VehicleAPI testAPI = test.create(VehicleAPI.class);
+        Call<List<VehicleLocation>> responseBodyCall = testAPI.getVehicleLocation();
+        responseBodyCall.enqueue(new Callback<List<VehicleLocation>>() {
+            @Override
+            public void onResponse(Call<List<VehicleLocation>> call, Response<List<VehicleLocation>> response) {
+                if (response.isSuccessful()) {
+                    listTracking = response.body();
+                    if (listTracking.size() > 0) {
 
-        //show maker in maps
-        if (listFinalTracking.size() > 0){
-            for (int i = 0; i < listFinalTracking.size();i++){
-                double vehicleLat = listFinalTracking.get(i).getLatitude();
-                double vehicleLng = listFinalTracking.get(i).getLongitude();
-                LatLng vehicleLatLng = new LatLng(vehicleLat, vehicleLng);
-                mMap.addMarker(new MarkerOptions().position(vehicleLatLng)
-                        .title(listTracking.get(i).getVehicleFrameNumber())
-                        .snippet(listTracking.get(i).getVehicleFrameNumber())
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.car))
-                );
-            }
-            mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                @Override
-                public boolean onMarkerClick(Marker marker) {
-                    GeneralController.scaleView(ln_detail, 0);
-                    for (int i = 0; i < listFinalTracking.size(); i++){
-                        if (marker.getTitle().equals(listFinalTracking.get(i).getVehicleFrameNumber())){
-                            double vehicleLat = listFinalTracking.get(i).getLatitude();
-                            double vehicleLng = listFinalTracking.get(i).getLongitude();
-                            LatLng vehicleLatLng = new LatLng(vehicleLat, vehicleLng);
-                            if (polylineFinal != null){
-                                polylineFinal.remove();
-                                getRouteToMarker(lastLatLng, vehicleLatLng);
-                            } else {
-                                getRouteToMarker(lastLatLng, vehicleLatLng);
-                            }
-                            (new Handler()).postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    GeneralController.scaleView(ln_detail, 170);
+                        double lat = lastLocation.getLatitude();
+                        double lng = lastLocation.getLongitude();
+                        final LatLng lastLatLng = new LatLng(lat, lng);
+                        //Add all vehicle in circle distance
+                        if (listTracking.size() != 0) {
+                            for (int i = 0; i < listTracking.size(); i++) {
+                                Location vehicleLocation = new Location("");
+                                double vehicleLat = listTracking.get(i).getLatitude();
+                                double vehicleLng = listTracking.get(i).getLongitude();
+                                vehicleLocation.setLatitude(vehicleLat);
+                                vehicleLocation.setLongitude(vehicleLng);
+                                if (lastLocation.distanceTo(vehicleLocation) <= circleDistance) {
+                                    listFinalTracking.add(listTracking.get(i));
                                 }
-                            }, 500);
-                            txt_vehicle_name.setText(marker.getTitle());
+
+                            }
+                        }
+
+                        //show maker in maps
+                        if (listFinalTracking.size() > 0) {
+                            for (int i = 0; i < listFinalTracking.size(); i++) {
+                                double vehicleLat = listFinalTracking.get(i).getLatitude();
+                                double vehicleLng = listFinalTracking.get(i).getLongitude();
+                                LatLng vehicleLatLng = new LatLng(vehicleLat, vehicleLng);
+                                mMap.addMarker(new MarkerOptions().position(vehicleLatLng)
+                                        .title(listFinalTracking.get(i).getVehicleMaker() + " "
+                                        + listFinalTracking.get(i).getVehicleModel())
+                                        .snippet(listFinalTracking.get(i).getFrameNumber())
+                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.car))
+                                );
+                            }
+                            mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                                @Override
+                                public boolean onMarkerClick(final Marker marker) {
+                                    GeneralController.scaleView(ln_detail, 0);
+                                    for (int i = 0; i < listFinalTracking.size(); i++) {
+                                        if (marker.getSnippet().equals(listFinalTracking.get(i).getFrameNumber())) {
+                                            double vehicleLat = listFinalTracking.get(i).getLatitude();
+                                            double vehicleLng = listFinalTracking.get(i).getLongitude();
+                                            LatLng vehicleLatLng = new LatLng(vehicleLat, vehicleLng);
+                                            if (polylineFinal != null) {
+                                                polylineFinal.remove();
+                                                getRouteToMarker(lastLatLng, vehicleLatLng);
+                                            } else {
+                                                getRouteToMarker(lastLatLng, vehicleLatLng);
+                                            }
+                                            (new Handler()).postDelayed(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    GeneralController.scaleView(ln_detail, 170);
+                                                }
+                                            }, 500);
+                                            txt_vehicle_name.setText(marker.getTitle());
+                                            Picasso.get().load(listFinalTracking.get(i).getImageLinkFront()).into(img_vehicle_front);
+                                            btn_view_detail.setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
+                                                    editor.putString(ImmutableValue.MAIN_vehicleID, marker.getSnippet());
+                                                    editor.apply();
+
+                                                    Intent it = new Intent(MapsActivity.this, VehicleDetail.class);
+                                                    startActivity(it);
+                                                }
+                                            });
+                                        }
+                                    }
+                                    return true;
+                                }
+                            });
+
                         }
                     }
+                } else {
+                    Toast.makeText(MapsActivity.this, "Không có xe nào quanh bạn", Toast.LENGTH_SHORT).show();
 
-                    return true;
+//                    onBackPressed();
                 }
-            });
-        }
+                dialog.dismiss();
+            }
+
+            @Override
+            public void onFailure(Call<List<VehicleLocation>> call, Throwable t) {
+                dialog.dismiss();
+                Toast.makeText(MapsActivity.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
+                onBackPressed();
+            }
+        });
 
     }
+
+
+//    //Get all location on DB
+//    private void getLocationFromDB() {
+//        final List<Tracking> listTracking = new ArrayList<>();
+//        final List<Tracking> listFinalTracking = new ArrayList<>();
+//
+//        //Test value
+//        listTracking.add(new Tracking("DLMRR8745R9845476", 106.63, 10.8529));
+//        listTracking.add(new Tracking("HFEFE1657U4856411", 106.658632, 10.836006));
+//        listTracking.add(new Tracking("KJ113564", 106.634225,10.806666));
+//        listTracking.add(new Tracking("KBBFW5210E5454861", 106.800352,10.865851));
+//        double lat = lastLocation.getLatitude();
+//        double lng = lastLocation.getLongitude();
+//        final LatLng lastLatLng = new LatLng(lat, lng);
+//        //Add all vehicle in circle distance
+//        if (listTracking.size() != 0) {
+//            for (int i = 0; i < listTracking.size(); i++) {
+//                Location vehicleLocation = new Location("");
+//                double vehicleLat = listTracking.get(i).getLatitude();
+//                double vehicleLng = listTracking.get(i).getLongitude();
+//                vehicleLocation.setLatitude(vehicleLat);
+//                vehicleLocation.setLongitude(vehicleLng);
+//                if (lastLocation.distanceTo(vehicleLocation) <= circleDistance){
+//                    listFinalTracking.add(listTracking.get(i));
+//                }
+//            }
+//        }
+//
+//        //show maker in maps
+//        if (listFinalTracking.size() > 0){
+//            for (int i = 0; i < listFinalTracking.size();i++){
+//                double vehicleLat = listFinalTracking.get(i).getLatitude();
+//                double vehicleLng = listFinalTracking.get(i).getLongitude();
+//                LatLng vehicleLatLng = new LatLng(vehicleLat, vehicleLng);
+//                mMap.addMarker(new MarkerOptions().position(vehicleLatLng)
+//                        .title(listTracking.get(i).getVehicleFrameNumber())
+//                        .snippet(listTracking.get(i).getVehicleFrameNumber())
+//                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.car))
+//                );
+//            }
+//            mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+//                @Override
+//                public boolean onMarkerClick(Marker marker) {
+//                    GeneralController.scaleView(ln_detail, 0);
+//                    for (int i = 0; i < listFinalTracking.size(); i++){
+//                        if (marker.getTitle().equals(listFinalTracking.get(i).getVehicleFrameNumber())){
+//                            double vehicleLat = listFinalTracking.get(i).getLatitude();
+//                            double vehicleLng = listFinalTracking.get(i).getLongitude();
+//                            LatLng vehicleLatLng = new LatLng(vehicleLat, vehicleLng);
+//                            if (polylineFinal != null){
+//                                polylineFinal.remove();
+//                                getRouteToMarker(lastLatLng, vehicleLatLng);
+//                            } else {
+//                                getRouteToMarker(lastLatLng, vehicleLatLng);
+//                            }
+//                            (new Handler()).postDelayed(new Runnable() {
+//                                @Override
+//                                public void run() {
+//                                    GeneralController.scaleView(ln_detail, 170);
+//                                }
+//                            }, 500);
+//                            txt_vehicle_name.setText(marker.getTitle());
+//                        }
+//                    }
+//
+//                    return true;
+//                }
+//            });
+//        }
+//
+//    }
 }
 

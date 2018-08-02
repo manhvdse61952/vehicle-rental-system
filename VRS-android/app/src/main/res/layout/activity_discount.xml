@@ -23,172 +23,175 @@
             android:textColor="@android:color/white" />
     </android.support.v7.widget.Toolbar>
 
+        <LinearLayout
+            android:id="@+id/ln_hide_promotion"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:orientation="vertical"
+            android:background="@drawable/border_red_white"
+            android:padding="10dp"
+            android:weightSum="9">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="3"
+                android:orientation="horizontal"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:weightSum="1">
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="0.1"
+                    android:adjustViewBounds="true"
+                    android:maxHeight="20dp"
+                    android:src="@drawable/ic_calendar_alt"
+                    tools:ignore="VectorDrawableCompat" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.3"
+                    android:fontFamily="sans-serif"
+                    android:text="Ngày bắt đầu"
+                    android:textColor="@android:color/background_dark"
+                    android:textSize="14sp"
+                    android:typeface="normal" />
+
+                <TextView
+                    android:id="@+id/txtStartTimePromo"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.6"
+                    android:background="@android:color/transparent"
+                    android:ellipsize="end"
+                    android:ems="10"
+                    android:gravity="end|center_vertical"
+                    android:paddingRight="20dp"
+                    android:text="Chọn ngày bắt đầu"
+                    android:textColorHint="#666666"
+                    android:textSize="16sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="3"
+                android:orientation="horizontal"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:weightSum="1">
+
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="0.1"
+                    android:adjustViewBounds="true"
+                    android:maxHeight="20dp"
+                    android:src="@drawable/ic_calendar_alt"
+                    tools:ignore="VectorDrawableCompat" />
+
+                <TextView
+
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.3"
+                    android:fontFamily="sans-serif"
+                    android:text="Ngày kết thúc"
+                    android:textColor="@android:color/background_dark"
+                    android:textSize="14sp"
+                    android:typeface="normal" />
+
+                <TextView
+                    android:id="@+id/txtEndTimePromo"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.6"
+                    android:background="@android:color/transparent"
+                    android:ellipsize="end"
+                    android:ems="10"
+                    android:gravity="end|center_vertical"
+                    android:hint="Biển số"
+                    android:inputType="text"
+                    android:paddingRight="20dp"
+                    android:text="Chọn ngày kết thúc"
+                    android:textColorHint="#666666"
+                    android:textSize="16sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="3"
+                android:orientation="horizontal"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:weightSum="1"
+                >
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="0.1"
+                    android:adjustViewBounds="true"
+                    android:maxHeight="20dp"
+                    app:srcCompat="@drawable/ic_info_outline_black_24dp"
+                    tools:ignore="VectorDrawableCompat" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.4"
+                    android:fontFamily="sans-serif"
+                    android:text="Mức giảm giá"
+                    android:textColor="@android:color/background_dark"
+                    android:textSize="14sp"
+                    android:typeface="normal" />
+
+                <Spinner
+                    android:id="@+id/spnPromoQuantity"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.5"
+                    android:drawSelectorOnTop="true"
+                    android:gravity="end"></Spinner>
+            </LinearLayout>
+        </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:weightSum="10">
-
+        android:weightSum="10"
+        android:layout_height="match_parent">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.75"
-            android:orientation="horizontal"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:weightSum="1">
-
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginRight="10dp"
-                android:layout_weight="0.1"
-                android:adjustViewBounds="true"
-                android:maxHeight="30dp"
-                android:src="@drawable/ic_calendar_alt"
-                tools:ignore="VectorDrawableCompat" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="0.3"
-                android:fontFamily="sans-serif"
-                android:text="Ngày bắt đầu"
-                android:textColor="@android:color/background_dark"
-                android:textSize="14sp"
-                android:typeface="normal" />
-
-            <TextView
-                android:id="@+id/txtStartTimePromo"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.6"
-                android:background="@android:color/transparent"
-                android:ellipsize="end"
-                android:ems="10"
-                android:gravity="end|center_vertical"
-                android:paddingRight="20dp"
-                android:text="Chọn ngày bắt đầu"
-                android:textColorHint="#666666"
-                android:textSize="16sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.75"
-            android:orientation="horizontal"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:weightSum="1">
-
-
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginRight="10dp"
-                android:layout_weight="0.1"
-                android:adjustViewBounds="true"
-                android:maxHeight="30dp"
-                android:src="@drawable/ic_calendar_alt"
-                tools:ignore="VectorDrawableCompat" />
-
-            <TextView
-
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="0.3"
-                android:fontFamily="sans-serif"
-                android:text="Ngày kết thúc"
-                android:textColor="@android:color/background_dark"
-                android:textSize="14sp"
-                android:typeface="normal" />
-
-            <TextView
-                android:id="@+id/txtEndTimePromo"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="0.6"
-                android:background="@android:color/transparent"
-                android:ellipsize="end"
-                android:ems="10"
-                android:gravity="end|center_vertical"
-                android:hint="Biển số"
-                android:inputType="text"
-                android:paddingRight="20dp"
-                android:text="Chọn ngày kết thúc"
-                android:textColorHint="#666666"
-                android:textSize="16sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.75"
-            android:orientation="horizontal"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:weightSum="1"
-
-            >
-
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginRight="10dp"
-                android:layout_weight="0.1"
-                android:adjustViewBounds="true"
-                android:maxHeight="30dp"
-                app:srcCompat="@drawable/ic_info_outline_black_24dp"
-                tools:ignore="VectorDrawableCompat" />
-
-            <TextView
-
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="0.4"
-                android:fontFamily="sans-serif"
-                android:text="Mức giảm giá"
-                android:textColor="@android:color/background_dark"
-                android:textSize="14sp"
-                android:typeface="normal" />
-
-            <Spinner
-                android:id="@+id/spnPromoQuantity"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="0.5"
-                android:drawSelectorOnTop="true"
-                android:gravity="end"></Spinner>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="6.75"
-            android:gravity="center_vertical"
+            android:layout_weight="9"
             android:orientation="vertical">
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 android:gravity="center"
-                android:padding="5dp"
                 android:text="Danh sách xe"
                 android:textColor="#000"
-                android:textSize="18sp" />
+                android:textSize="16sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 android:background="@color/colorPrimary"
                 android:orientation="horizontal"
                 android:weightSum="10">
@@ -208,28 +211,12 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="4.3"
+                    android:layout_weight="5"
                     android:gravity="center"
                     android:text="Tên xe"
                     android:textColor="@color/primary_text"
                     android:textSize="12sp" />
 
-                <View
-                    android:layout_width="0.5dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="2dp"
-                    android:layout_marginTop="2dp"
-                    android:background="@color/primary_text" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:textSize="12sp"
-                    android:padding="2dp"
-                    android:gravity="center"
-                    android:text="Giảm (%)"
-                    android:textColor="@color/primary_text" />
 
                 <View
                     android:layout_width="0.5dp"
@@ -257,7 +244,7 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1.2"
+                    android:layout_weight="1.5"
                     android:gravity="center"
                     android:text="T.thái"
                     android:textSize="12sp"
@@ -267,17 +254,21 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/check_list"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="8"
                 android:scrollbars="none"></android.support.v7.widget.RecyclerView>
         </LinearLayout>
-
         <Button
             android:id="@+id/btnCreatePromo"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
+            android:layout_gravity="bottom"
             android:background="@color/colorPrimary"
-            android:text="Tạo giảm giá"
+            android:text="Tạo khuyến mãi"
             android:textColor="@color/primary_text" />
     </LinearLayout>
+
+
+
 </LinearLayout>

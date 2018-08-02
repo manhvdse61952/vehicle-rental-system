@@ -67,7 +67,7 @@ public class PromotionAdapter extends RecyclerView.Adapter<PromotionAdapter.Recy
         float discountValue = obj.getDiscountValue() * 100;
         NumberFormat nf = new DecimalFormat("#.####");
         String discountValueConvert = nf.format(discountValue);
-        holder.txt_discount_value.setText(discountValueConvert);
+        holder.txt_discount_value.setText("Khuyến mãi " + discountValueConvert + " %");
         if (obj.getStartDay()!= 0 && obj.getEndDay()!= 0){
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             Date startDate = new Date(obj.getStartDay());

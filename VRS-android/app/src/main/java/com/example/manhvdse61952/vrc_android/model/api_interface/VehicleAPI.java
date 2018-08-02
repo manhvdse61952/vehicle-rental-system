@@ -2,6 +2,7 @@ package com.example.manhvdse61952.vrc_android.model.api_interface;
 
 
 import com.example.manhvdse61952.vrc_android.model.api_model.VehicleInformation;
+import com.example.manhvdse61952.vrc_android.model.api_model.VehicleLocation;
 import com.example.manhvdse61952.vrc_android.model.api_model.VehicleUpdate;
 import com.example.manhvdse61952.vrc_android.model.search_model.DetailVehicleItem;
 import com.example.manhvdse61952.vrc_android.model.search_model.SearchVehicleItem;
@@ -72,4 +73,8 @@ public interface VehicleAPI {
                                                         @Query("priceTo") int priceTo,
                                                         @Query("districtID") int districtID,
                                                         @Query("priceType") int priceType);
+
+    @Headers({"Accept: application/json"})
+    @GET("/vehicle/getLocationList")
+    Call<List<VehicleLocation>> getVehicleLocation();
 }

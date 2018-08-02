@@ -94,7 +94,7 @@ public class ContractItemTab extends BaseAdapter {
         } else if (contractItem.getContractStatus().equals(ImmutableValue.CONTRACT_REFUNDED)) {
             viewHolder.ln_manage_contract.setBackgroundResource(R.drawable.border_red);
         } else if (contractItem.getContractStatus().equals(ImmutableValue.CONTRACT_INACTIVE)){
-            viewHolder.ln_manage_contract.setBackgroundResource(R.drawable.border_gray);
+            viewHolder.ln_manage_contract.setBackgroundResource(R.drawable.border_blue);
         } else if (contractItem.getContractStatus().equals(ImmutableValue.CONTRACT_ISSUE)){
             viewHolder.ln_manage_contract.setBackgroundResource(R.drawable.border_high_blue);
         } else {

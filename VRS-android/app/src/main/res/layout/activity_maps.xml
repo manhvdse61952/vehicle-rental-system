@@ -22,6 +22,8 @@
             android:layout_marginTop="5dp"
             android:layout_height="70dp">
             <ImageView
+                android:layout_margin="5dp"
+                android:id="@+id/img_vehicle_front"
                 android:layout_width="0dp"
                 android:layout_weight="2.5"
                 android:src="@drawable/img_default_image"
@@ -31,6 +33,7 @@
                 android:layout_weight="4.5"
                 android:orientation="vertical"
                 android:weightSum="9"
+                android:paddingLeft="5dp"
                 android:layout_height="match_parent">
                 <TextView
                     android:id="@+id/txt_vehicle_name"
@@ -56,10 +59,11 @@
                     android:text="Thời gian: ..."/>
             </LinearLayout>
             <Button
+                android:id="@+id/btn_view_detail"
                 android:layout_width="0dp"
                 android:layout_weight="3"
                 android:layout_gravity="center"
-                android:text="Xem"
+                android:text="Chi tiết"
                 android:textColor="@color/primary_text"
                 android:background="@drawable/border_green_primarygreen"
                 android:layout_marginRight="10dp"

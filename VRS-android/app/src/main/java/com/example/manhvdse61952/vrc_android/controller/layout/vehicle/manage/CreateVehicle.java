@@ -1,5 +1,6 @@
 package com.example.manhvdse61952.vrc_android.controller.layout.vehicle.manage;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -7,8 +8,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -28,6 +35,7 @@ import android.widget.Toast;
 import com.example.manhvdse61952.vrc_android.R;
 import com.example.manhvdse61952.vrc_android.controller.layout.main.MainActivity;
 import com.example.manhvdse61952.vrc_android.controller.permission.PermissionDevice;
+import com.example.manhvdse61952.vrc_android.controller.resources.GeneralController;
 import com.example.manhvdse61952.vrc_android.controller.resources.ImmutableValue;
 import com.example.manhvdse61952.vrc_android.model.api_interface.VehicleAPI;
 import com.example.manhvdse61952.vrc_android.model.api_model.City;
@@ -60,8 +68,8 @@ public class CreateVehicle extends AppCompatActivity {
 
     VehicleInformation vehicleInfoObj;
     String vehicleType, vehicleTypeGeneral;
-    TextView txtCarModel;
-    Spinner spnEngine, spnTranmission, spnYear, spnCity, spnDistrict;
+    TextView txtCarModel, txt_vehicle_address;
+    Spinner spnEngine, spnTranmission, spnYear;
     List<String> listEngineType = new ArrayList<>();
     List<String> listTranmissionType = new ArrayList<>();
     String maker, model, year;
@@ -74,12 +82,15 @@ public class CreateVehicle extends AppCompatActivity {
     RelativeLayout btnImageFront, btnImageBack, btnImageFrame;
     ValidateInput validObj = new ValidateInput();
     CheckBox cbxHouseHold, cbxIdCard;
-    Button btnCreateVehicle;
+    Button btnCreateVehicle, btn_current_address, btn_write_address;
 
     //Value to save in shared preferences
     int required_household_registration = 0, required_id_card = 0;
     String picturePath1 = "", picturePath2 = "", picturePath3 = "", vehicleName = "";
-    int cityPosition = 0, districtID, vehicleInfoID;
+    int districtID = 0, vehicleInfoID;
+    LocationManager locationManager;
+    LocationListener locationListener;
+    double longitude = 0, latitude = 0;
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -93,8 +104,6 @@ public class CreateVehicle extends AppCompatActivity {
         spnTranmission = (Spinner) findViewById(R.id.spnTranmission);
         spnYear = (Spinner) findViewById(R.id.spnYear);
         txtCarModel = (TextView) findViewById(R.id.txtCarModel);
-        spnCity = (Spinner) findViewById(R.id.spnCity);
-        spnDistrict = (Spinner) findViewById(R.id.spnDistrict);
         txtSeat = (TextView) findViewById(R.id.txtSeat);
         btnImageFront = (RelativeLayout) findViewById(R.id.btnImageFront);
         btnImageBack = (RelativeLayout) findViewById(R.id.btnImageBack);
@@ -114,6 +123,9 @@ public class CreateVehicle extends AppCompatActivity {
         cbxHouseHold = (CheckBox) findViewById(R.id.cbxHouseHold);
         cbxIdCard = (CheckBox) findViewById(R.id.cbxIdCard);
         btnCreateVehicle = (Button) findViewById(R.id.btnCreateVehicle);
+        txt_vehicle_address = (TextView)findViewById(R.id.txt_vehicle_address);
+        btn_current_address = (Button)findViewById(R.id.btn_current_address);
+        btn_write_address = (Button)findViewById(R.id.btn_write_address);
     }
 
     @Override
@@ -153,9 +165,6 @@ public class CreateVehicle extends AppCompatActivity {
                 startActivityForResult(it, 666);
             }
         });
-
-        //Init district and city spinner
-        initDistrictAndCity();
 
         //Convert price in real time
         edtPriceHour.addTextChangedListener(convertPriceRealTime(edtPriceHour));
@@ -240,6 +249,21 @@ public class CreateVehicle extends AppCompatActivity {
             }
         });
 
+        btn_current_address.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showCurrentAddress();
+            }
+        });
+
+        btn_write_address.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent it = new Intent(CreateVehicle.this, SearchAddressVehicle.class);
+                startActivityForResult(it, 777);
+            }
+        });
+
         //Revert value when user change the layout
         revertValue();
     }
@@ -296,55 +320,6 @@ public class CreateVehicle extends AppCompatActivity {
         if (editor.getInt(ImmutableValue.VEHICLE_isManual, -1) != -1 && (vehicleType.equals(ImmutableValue.XE_CA_NHAN) || vehicleType.equals(ImmutableValue.XE_DU_LICH))) {
             spnTranmission.setSelection(editor.getInt(ImmutableValue.VEHICLE_isManual, -1));
         }
-    }
-
-    //Init district and city spinner
-    private void initDistrictAndCity() {
-
-        final List<City> listAddress = ImmutableValue.listGeneralAddress;
-        ArrayAdapter<City> cityArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, listAddress);
-        cityArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spnCity.setAdapter(cityArrayAdapter);
-        SharedPreferences editor = getSharedPreferences(ImmutableValue.SIGNUP_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
-        int citySelectPosition = editor.getInt(ImmutableValue.VEHICLE_city, -1);
-        final int districtSelectPosition = editor.getInt(ImmutableValue.VEHICLE_district, -1);
-        if (citySelectPosition != -1) {
-            spnCity.setSelection(citySelectPosition);
-        }
-        spnCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                List<District> districts = listAddress.get(position).getDistrict();
-                cityPosition = position;
-                ArrayAdapter<District> districtAdapter = new ArrayAdapter<>(CreateVehicle.this, android.R.layout.simple_spinner_dropdown_item, districts);
-                spnDistrict.setAdapter(districtAdapter);
-                if (districtSelectPosition != 1) {
-                    spnDistrict.setSelection(districtSelectPosition);
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-        spnDistrict.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                districtID = 0;
-                District district = listAddress.get(cityPosition).getDistrict().get(position);
-                districtID = district.getId();
-                SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SIGNUP_SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
-                editor.putInt(ImmutableValue.VEHICLE_city, cityPosition);
-                editor.putInt(ImmutableValue.VEHICLE_district, position);
-                editor.apply();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
     }
 
     //Init year spinner
@@ -471,6 +446,12 @@ public class CreateVehicle extends AppCompatActivity {
         } else {
             isGasoline = 0;
         }
+        SharedPreferences editor2 = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
+        longitude = Double.parseDouble(editor2.getString(ImmutableValue.MAIN_vehicleLng, "0"));
+        latitude = Double.parseDouble(editor2.getString(ImmutableValue.MAIN_vehicleLat, "0"));
+        String district = PermissionDevice.getStringDistrict(longitude, latitude, CreateVehicle.this);
+        getDistrictIdByName(district);
+
 
         String hourPriceTemp = edtPriceHour.getText().toString().trim().replaceAll(",", "");
         String dayPriceTemp = edtPriceDay.getText().toString().trim().replaceAll(",", "");
@@ -490,25 +471,33 @@ public class CreateVehicle extends AppCompatActivity {
         if (!vehicleType.equals(vehicleTypeGeneral)) {
             Toast.makeText(this, "Không đúng loại xe! Hãy chọn xe khác", Toast.LENGTH_SHORT).show();
         } else {
-            if (checkFrameNumber && checkPlateNumber && checkPricePerHours && checkPricePerDay
-                    && checkDepositFee && checkImage1 && checkImage2 && checkImage3 && checkVehicleName) {
-                SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SIGNUP_SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
-                editor.putString(ImmutableValue.VEHICLE_frameNumber, edtFrame.getText().toString());
-                editor.putString(ImmutableValue.VEHICLE_plateNumber, edtPlate.getText().toString());
-                editor.putString(ImmutableValue.VEHICLE_rentFeePerHours, edtPriceHour.getText().toString());
-                editor.putString(ImmutableValue.VEHICLE_rentFeePerDay, edtPriceDay.getText().toString());
-                editor.putString(ImmutableValue.VEHICLE_depositFee, edtDepositFee.getText().toString());
-                editor.apply();
+            if (districtID == 0){
+                Toast.makeText(this, "Hệ thống chỉ hỗ trợ ở HCM, Đà Nẵng và Hà Nội", Toast.LENGTH_SHORT).show();
+            } else {
+                if (checkFrameNumber && checkPlateNumber && checkPricePerHours && checkPricePerDay
+                        && checkDepositFee && checkImage1 && checkImage2 && checkImage3 && checkVehicleName
+                        && districtID != 0) {
+                    SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.SIGNUP_SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
+                    editor.putString(ImmutableValue.VEHICLE_frameNumber, edtFrame.getText().toString());
+                    editor.putString(ImmutableValue.VEHICLE_plateNumber, edtPlate.getText().toString());
+                    editor.putString(ImmutableValue.VEHICLE_rentFeePerHours, edtPriceHour.getText().toString());
+                    editor.putString(ImmutableValue.VEHICLE_rentFeePerDay, edtPriceDay.getText().toString());
+                    editor.putString(ImmutableValue.VEHICLE_depositFee, edtDepositFee.getText().toString());
+                    editor.apply();
 
-                ProgressDialog dialog = ProgressDialog.show(CreateVehicle.this, "Đang xử lý",
-                        "Vui lòng đợi ...", true);
-                checkFrameNumber(edtFrame.getText().toString().trim(), dialog, edtFrame,
-                        vehicleInfoID, districtID, dayPriceTemp,
-                        hourPriceTemp, depositPriceTemp, edtPlate.getText().toString().trim(),
-                        required_household_registration, required_id_card,
-                        isGasoline, isManual, picturePath3, picturePath1, picturePath2);
 
+
+                    ProgressDialog dialog = ProgressDialog.show(CreateVehicle.this, "Đang xử lý",
+                            "Vui lòng đợi ...", true);
+                    checkFrameNumber(edtFrame.getText().toString().trim(), dialog, edtFrame,
+                            vehicleInfoID, districtID, dayPriceTemp,
+                            hourPriceTemp, depositPriceTemp, edtPlate.getText().toString().trim(),
+                            required_household_registration, required_id_card,
+                            isGasoline, isManual, picturePath2, picturePath3, picturePath1);
+
+                }
             }
+
         }
 
     }
@@ -557,6 +546,7 @@ public class CreateVehicle extends AppCompatActivity {
 
     private void revertValue() {
         SharedPreferences editor = getSharedPreferences(ImmutableValue.SIGNUP_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
+        SharedPreferences editor2 = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
         String vehicleMaker = editor.getString(ImmutableValue.VEHICLE_vehicleMaker, "Empty");
         String vehicleModel = editor.getString(ImmutableValue.VEHICLE_vehicleModel, "Empty");
         String picture1 = editor.getString(ImmutableValue.VEHICLE_img_vehicle_1, "");
@@ -569,11 +559,15 @@ public class CreateVehicle extends AppCompatActivity {
         String deposit = editor.getString(ImmutableValue.VEHICLE_depositFee, "");
         int requireHouseHold = editor.getInt(ImmutableValue.VEHICLE_requireHouseHold, 0);
         int requireIdCard = editor.getInt(ImmutableValue.VEHICLE_requireIdCard, 0);
+        String vehicleAddress = editor2.getString(ImmutableValue.MAIN_vehicleAddress, "");
         if (requireHouseHold != 0) {
             cbxHouseHold.setChecked(true);
         }
         if (requireIdCard != 0) {
             cbxIdCard.setChecked(true);
+        }
+        if (!vehicleAddress.equals("")){
+            txt_vehicle_address.setText(vehicleAddress);
         }
         if (vehicleMaker.equals("Empty") == false && vehicleModel.equals("Empty") == false) {
             txtCarModel.setText(vehicleMaker + " " + vehicleModel);
@@ -752,6 +746,11 @@ public class CreateVehicle extends AppCompatActivity {
                 if (resultCode == Activity.RESULT_OK){
                     revertValue();
                 }
+                break;
+            case 777:
+                if (resultCode == Activity.RESULT_OK){
+                    initLayout();
+                }
         }
     }
 
@@ -763,8 +762,8 @@ public class CreateVehicle extends AppCompatActivity {
                                  final int vehicleInformationID, final int districtID,
                                  final String rentFeePerDay, final String rentFeePerHours, final String depositFee,
                                  final String plateNumber, final int requireHouseHold, final int requireIdCard,
-                                 final int isGasoline, final int isManual, final String picture_path, final String img_vehicle_1,
-                                 final String img_vehicle_2) {
+                                 final int isGasoline, final int isManual, final String img_vehicle_1, final String img_vehicle_2,
+                                 final String picture_path) {
         Retrofit test = RetrofitConfig.getClient();
         final VehicleAPI testAPI = test.create(VehicleAPI.class);
         Call<Boolean> responseBodyCall = testAPI.checkDuplicatedFrameNumber(frameNumber);
@@ -784,6 +783,7 @@ public class CreateVehicle extends AppCompatActivity {
                 } else {
                     progressDialog.dismiss();
                     Toast.makeText(CreateVehicle.this, "Đã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
+                    onBackPressed();
                 }
             }
 
@@ -797,8 +797,8 @@ public class CreateVehicle extends AppCompatActivity {
 
     private void createNewVehicle(String frameNumber, int vehicleInformationID, String rentFeePerDay, String rentFeePerHours,
                                   String depositFee, String plateNumber, int requireHouseHold, int requireIdCard, int districtID,
-                                  int isGasoline, int isManual, String imagePath, String imageVehicle1,
-                                  String imageVehicle2){
+                                  int isGasoline, int isManual, String img_vehicle_1, String img_vehicle_2,
+                                  String picture_path){
         SharedPreferences editor = getSharedPreferences(ImmutableValue.HOME_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
         int userID = editor.getInt(ImmutableValue.HOME_userID, 0);
         String description = "";
@@ -807,24 +807,27 @@ public class CreateVehicle extends AppCompatActivity {
         ObjectMapper objectMapper = new ObjectMapper();
         Vehicle vehicleObj = new Vehicle(frameNumber, userID, vehicleInformationID, description, Float.valueOf(rentFeePerSlot),
                 Float.valueOf(rentFeePerDay), Float.valueOf(rentFeePerHours), Float.valueOf(depositFee), plateNumber,
-                requireHouseHold, requireIdCard, districtID, isGasoline, isManual);
+                requireHouseHold, requireIdCard, districtID, isGasoline, isManual, longitude, latitude);
 
         try {
             String json = objectMapper.writeValueAsString(vehicleObj);
             String IMG_JPEG = "image/jpeg";
-            File imageFile = new File(imagePath);
-            File imageVehicleFile1 = new File(imageVehicle1);
-            File imageVehicleFile2 = new File(imageVehicle2);
+            File imageVehicleFile1 = new File(img_vehicle_1);
+            File imageVehicleFile2 = new File(img_vehicle_2);
+            File imageFile = new File(picture_path);
 
-            RequestBody fileBody = RequestBody.create(okhttp3.MediaType.parse(IMG_JPEG), imageFile);
-            RequestBody fileBody2 = RequestBody.create(okhttp3.MediaType.parse(IMG_JPEG), imageVehicleFile1);
-            RequestBody fileBody3 = RequestBody.create(okhttp3.MediaType.parse(IMG_JPEG), imageVehicleFile2);
+
+            RequestBody fileBody = RequestBody.create(okhttp3.MediaType.parse(IMG_JPEG), imageVehicleFile1);
+            RequestBody fileBody2 = RequestBody.create(okhttp3.MediaType.parse(IMG_JPEG), imageVehicleFile2);
+            RequestBody fileBody3 = RequestBody.create(okhttp3.MediaType.parse(IMG_JPEG), imageFile);
+
+
 
             RequestBody data = RequestBody.create(MediaType.parse("text/plain"), json);
 
-            MultipartBody.Part body = MultipartBody.Part.createFormData("files", imageFile.getName(), fileBody);
-            MultipartBody.Part body2 = MultipartBody.Part.createFormData("files", imageVehicleFile1.getName(), fileBody2);
-            MultipartBody.Part body3 = MultipartBody.Part.createFormData("files", imageVehicleFile2.getName(), fileBody3);
+            MultipartBody.Part body = MultipartBody.Part.createFormData("files", imageVehicleFile1.getName(), fileBody);
+            MultipartBody.Part body2 = MultipartBody.Part.createFormData("files", imageVehicleFile2.getName(), fileBody2);
+            MultipartBody.Part body3 = MultipartBody.Part.createFormData("files", imageFile.getName(), fileBody3);
             MultipartBody.Part[] imagesParts = new MultipartBody.Part[3];
             imagesParts[0] = body;
             imagesParts[1] = body2;
@@ -844,6 +847,8 @@ public class CreateVehicle extends AppCompatActivity {
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 SharedPreferences settings = getSharedPreferences(ImmutableValue.SIGNUP_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
                                 settings.edit().clear().commit();
+                                SharedPreferences settings2 = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
+                                settings2.edit().clear().commit();
                                 CreateVehicle.this.finish();
                                 Intent it = new Intent(CreateVehicle.this, MainActivity.class);
                                 it.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -874,4 +879,102 @@ public class CreateVehicle extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
+    private void getDistrictIdByName(String districtName) {
+        districtName = districtName.toLowerCase();
+        districtName = GeneralController.removeAccentCharacter(districtName);
+        districtName = districtName.replace("quan", "");
+        districtName = districtName.replace("huyen", "");
+        List<City> listCity = ImmutableValue.listGeneralAddress;
+        districtID = 63;
+        for (int i = 0; i < listCity.size(); i++) {
+            List<District> listDistrict = listCity.get(i).getDistrict();
+            for (int j = 0; j < listDistrict.size(); j++) {
+                String districtConvert = listDistrict.get(j).getDistrictName().toLowerCase();
+                districtConvert = GeneralController.removeAccentCharacter(districtConvert);
+                districtConvert = districtConvert.replace("quan", "");
+                districtConvert = districtConvert.replace("huyen", "");
+                if (districtConvert.equals(districtName)) {
+                    districtID = listDistrict.get(j).getId();
+                    break;
+                }
+
+            }
+        }
+    }
+
+    private void showCurrentAddress() {
+        dialog = ProgressDialog.show(CreateVehicle.this, "Hệ thống",
+                "Đang xử lý", true);
+        (new Handler()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+                locationListener = new LocationListener() {
+                    @Override
+                    public void onLocationChanged(Location location) {
+//                        longitude = location.getLongitude();
+//                        latitude = location.getLatitude();
+//                        String currentAddress = PermissionDevice.getStringAddress(longitude, latitude, CreateVehicle.this);
+//                        txt_vehicle_address.setText(currentAddress);
+//                        SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
+//                        editor.putString(ImmutableValue.MAIN_vehicleAddress, currentAddress);
+//                        editor.putString(ImmutableValue.MAIN_vehicleLat, String.valueOf(location.getLatitude()));
+//                        editor.putString(ImmutableValue.MAIN_vehicleLng, String.valueOf(location.getLongitude()));
+//                        editor.apply();
+//                        locationManager.removeUpdates(locationListener);
+//                        dialog.dismiss();
+                    }
+
+                    @Override
+                    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+                    }
+
+                    @Override
+                    public void onProviderEnabled(String provider) {
+
+                    }
+
+                    @Override
+                    public void onProviderDisabled(String provider) {
+
+                    }
+                };
+                if (ActivityCompat.checkSelfPermission(CreateVehicle.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    finish();
+                    return;
+                }
+                if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+                    Location lastLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                    longitude = lastLocation.getLongitude();
+                    latitude = lastLocation.getLatitude();
+                    String currentAddress = PermissionDevice.getStringAddress(longitude, latitude, CreateVehicle.this);
+                    txt_vehicle_address.setText(currentAddress);
+                    SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
+                    editor.putString(ImmutableValue.MAIN_vehicleAddress, currentAddress);
+                    editor.putString(ImmutableValue.MAIN_vehicleLat, String.valueOf(latitude));
+                    editor.putString(ImmutableValue.MAIN_vehicleLng, String.valueOf(longitude));
+                    editor.apply();
+                    dialog.dismiss();
+
+                } else if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+                    Location lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                    longitude = lastLocation.getLongitude();
+                    latitude = lastLocation.getLatitude();
+                    String currentAddress = PermissionDevice.getStringAddress(longitude, latitude, CreateVehicle.this);
+                    txt_vehicle_address.setText(currentAddress);
+                    SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
+                    editor.putString(ImmutableValue.MAIN_vehicleAddress, currentAddress);
+                    editor.putString(ImmutableValue.MAIN_vehicleLat, String.valueOf(latitude));
+                    editor.putString(ImmutableValue.MAIN_vehicleLng, String.valueOf(longitude));
+                    editor.apply();
+                    dialog.dismiss();
+                }
+            }
+        }, 500);
+    }
+
 }

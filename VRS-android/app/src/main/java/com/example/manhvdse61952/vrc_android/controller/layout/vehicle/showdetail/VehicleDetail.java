@@ -58,9 +58,10 @@ public class VehicleDetail extends AppCompatActivity {
     ImageSlider sld;
     ViewPager vpg;
     ScrollView srv_main_vehicle;
-    Button btnOrderRent, btn_check_discount;
+    Button btnOrderRent, btn_check_discount, btn_show_map;
     FloatingActionButton btn_back;
     DetailVehicleItem mainObj = new DetailVehicleItem();
+    LinearLayout ln_discount_hide;
     int selectTab = 0, rentFeePerHourID = 0, rentFeePerDayID = 0, totalHour = 0, receiveType = 0, totalDay = 0;
     Double totalMoney = 0.0, rentFeeMoney = 0.0, usdConvert = 0.0;
     int viewDiscountMoney = 0;
@@ -71,7 +72,7 @@ public class VehicleDetail extends AppCompatActivity {
             txt_hours_2, txt_day_end, txt_order_type, txt_day_rent, txt_hour_rent,
             txt_money_day_rent, txt_money_hour_rent, txt_money_total, item_price_deposit,
             txt_usd_convert, txt_money_deposit, txt_pickTime, txt_vehicle_owner, item_discount
-            , txt_money_discount, txt_discount_general;
+            , txt_money_discount, txt_discount_general, txt_show_location;
 
     EditText edt_discount;
     CheckBox cbx1, cbx2;
@@ -153,12 +154,12 @@ public class VehicleDetail extends AppCompatActivity {
     }
 
     private void checkDiscountAction(){
-        dialog = ProgressDialog.show(VehicleDetail.this, "Đang xử lý",
-                "Vui lòng đợi ...", true);
         String code = edt_discount.getText().toString().trim().toUpperCase();
         if (code.equals("")){
             Toast.makeText(this, "Vui lòng điền mã ", Toast.LENGTH_SHORT).show();
         } else {
+            dialog = ProgressDialog.show(VehicleDetail.this, "Đang xử lý",
+                    "Vui lòng đợi ...", true);
             Retrofit test = RetrofitConfig.getClient();
             DiscountAPI discountAPI = test.create(DiscountAPI.class);
             Call<DiscountGeneral> responseBodyCall = discountAPI.checkPromotion(code);
@@ -248,6 +249,9 @@ public class VehicleDetail extends AppCompatActivity {
         btn_check_discount = (Button)findViewById(R.id.btn_check_discount);
         txt_discount_general = (TextView)findViewById(R.id.txt_discount_general);
         edt_discount = (EditText)findViewById(R.id.edt_discount);
+        ln_discount_hide = (LinearLayout)findViewById(R.id.ln_discount_hide);
+        btn_show_map = (Button)findViewById(R.id.btn_show_map);
+        txt_show_location = (TextView)findViewById(R.id.txt_show_location);
     }
 
     private void initLayout(){
@@ -292,13 +296,14 @@ public class VehicleDetail extends AppCompatActivity {
                         int userID = editor2.getInt(ImmutableValue.HOME_userID, 0);
                         if (userID == mainObj.getOwnerID()){
                             txt_vehicle_owner.setText("Đây là xe của bạn");
-                            txt_vehicle_owner.setBackgroundResource(R.drawable.border_red);
                             txt_pickTime.setText("Xem lịch thuê của xe");
                             btnOrderRent.setEnabled(false);
                             btnOrderRent.setText("");
-                            btnOrderRent.setBackgroundResource(R.drawable.border_red);
                             GeneralController.scaleView(ln_hide_order_type, 0);
                             GeneralController.scaleView(ln_hide_calculator, 0);
+                            GeneralController.scaleView(ln_discount_hide, 0);
+                            edt_discount.setVisibility(View.INVISIBLE);
+                            btn_check_discount.setVisibility(View.INVISIBLE);
                         }
 
                         // use for init layout
@@ -308,6 +313,9 @@ public class VehicleDetail extends AppCompatActivity {
                         editor.putString(ImmutableValue.MAIN_vehicleName, mainObj.getVehicleMaker() + " " + mainObj.getVehicleModel());
                         editor.putInt(ImmutableValue.MAIN_ownerID, mainObj.getOwnerID());
                         editor.apply();
+
+                        String vehicleAddress = PermissionDevice.getStringAddress(mainObj.getLongitude(), mainObj.getLatitude(), VehicleDetail.this);
+                        txt_show_location.setText(vehicleAddress);
 
                         sld = new ImageSlider(VehicleDetail.this);
                         vpg.setAdapter(sld);
@@ -395,6 +403,18 @@ public class VehicleDetail extends AppCompatActivity {
                                 startActivityForResult(it, 1);
                             }
                         });
+
+                        btn_show_map.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                SharedPreferences.Editor editor2 = getSharedPreferences(ImmutableValue.SIGNUP_SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
+                                editor2.putFloat(ImmutableValue.VEHICLE_longitude, Float.parseFloat(String.valueOf(mainObj.getLongitude())));
+                                editor2.putFloat(ImmutableValue.VEHICLE_latitude, Float.parseFloat(String.valueOf(mainObj.getLatitude())));
+                                editor2.apply();
+                                startActivity(new Intent(VehicleDetail.this, VehicleMap.class));
+                            }
+                        });
+
 
                         //Use for switch
                         scaleView(txt_order_type, 0f, 0f);

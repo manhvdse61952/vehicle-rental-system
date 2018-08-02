@@ -330,13 +330,15 @@ public class ContractDetail extends AppCompatActivity {
                     r = new Runnable() {
                         @Override
                         public void run() {
-
-                            if (currentTimeInServer >= startLongTime) {
+                            if (currentTimeInServer >= startLongTime){
+                                btn_remove_contract.setVisibility(View.INVISIBLE);
+                            }
+                            if (currentTimeInServer >= (endLongTime - 1000*60*15)) {
                                 btn_remove_contract.setVisibility(View.INVISIBLE);
                                 btn_contract_give_car.setBackgroundResource(R.drawable.border_green_primarygreen);
                                 btn_contract_give_car.setEnabled(true);
                                 btn_contract_give_car.setClickable(true);
-                            } else if (currentTimeInServer < startLongTime){
+                            } else if (currentTimeInServer < (endLongTime - 1000*60*15)){
                                 btn_contract_give_car.setBackgroundResource(R.drawable.border_green_hide);
                                 btn_contract_give_car.setEnabled(false);
                                 btn_contract_give_car.setClickable(false);

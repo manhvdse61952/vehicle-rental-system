@@ -94,4 +94,15 @@ public class GeneralController {
             }
         }, 100);
     }
+
+    public static String removeAccentCharacter(String str){
+        str = str.toLowerCase().trim();
+        str = str.replaceAll("[áàảãạâấầẩẫậăắằẳẵặ]","a");
+        str = str.replaceAll("đ","d");
+        str = str.replaceAll("[éèẻẽẹêếềểễệ]","e");
+        str = str.replaceAll("[íìỉĩị]","i");
+        str = str.replaceAll("[óòỏõọôốồổỗộơớờởỡợ]","o");
+        str = str.replaceAll("[úùủũụưứừửữự]","u");
+        return str;
+    }
 }

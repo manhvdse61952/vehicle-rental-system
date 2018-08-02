@@ -212,10 +212,10 @@ public class UpdateVehicle extends AppCompatActivity {
                         });
 
 
-//                        SharedPreferences editor = getSharedPreferences(ImmutableValue.SIGNUP_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
+                        SharedPreferences editor = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
                         String address = editor.getString(ImmutableValue.MAIN_vehicleAddress, "Empty");
-                        String latitudeReceive = editor.getString(ImmutableValue.MAIN_vehicleLng, "Empty");
-                        String longitudeReceive = editor.getString(ImmutableValue.MAIN_vehicleLat, "Empty");
+                        String latitudeReceive = editor.getString(ImmutableValue.MAIN_vehicleLat, "Empty");
+                        String longitudeReceive = editor.getString(ImmutableValue.MAIN_vehicleLng, "Empty");
                         if (!latitudeReceive.equals("Empty") && !longitudeReceive.equals("Empty")) {
                             longitude = Double.parseDouble(longitudeReceive);
                             latitude = Double.parseDouble(latitudeReceive);
@@ -223,7 +223,8 @@ public class UpdateVehicle extends AppCompatActivity {
                         if (!address.equals("Empty")) {
                             txt_vehicle_address.setText(address);
                         } else {
-                            txt_vehicle_address.setText(obj.getAddress() + "");
+                            String addressDB = PermissionDevice.getStringAddress(obj.getLongitude(), obj.getLatitude(), UpdateVehicle.this);
+                            txt_vehicle_address.setText(addressDB + "");
                         }
 
                         btn_current_address.setOnClickListener(new View.OnClickListener() {
@@ -302,16 +303,16 @@ public class UpdateVehicle extends AppCompatActivity {
                 locationListener = new LocationListener() {
                     @Override
                     public void onLocationChanged(Location location) {
-                        longitude = location.getLongitude();
-                        latitude = location.getLatitude();
-                        String currentAddress = PermissionDevice.getStringAddress(longitude, latitude, UpdateVehicle.this);
-                        txt_vehicle_address.setText(currentAddress);
-                        SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
-                        editor.putString(ImmutableValue.MAIN_vehicleAddress, currentAddress);
-                        editor.putString(ImmutableValue.MAIN_vehicleLat, String.valueOf(location.getLatitude()));
-                        editor.putString(ImmutableValue.MAIN_vehicleLng, String.valueOf(location.getLongitude()));
-                        editor.apply();
-                        locationManager.removeUpdates(locationListener);
+//                        longitude = location.getLongitude();
+//                        latitude = location.getLatitude();
+//                        String currentAddress = PermissionDevice.getStringAddress(longitude, latitude, UpdateVehicle.this);
+//                        txt_vehicle_address.setText(currentAddress);
+//                        SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
+//                        editor.putString(ImmutableValue.MAIN_vehicleAddress, currentAddress);
+//                        editor.putString(ImmutableValue.MAIN_vehicleLat, String.valueOf(location.getLatitude()));
+//                        editor.putString(ImmutableValue.MAIN_vehicleLng, String.valueOf(location.getLongitude()));
+//                        editor.apply();
+//                        locationManager.removeUpdates(locationListener);
                     }
 
                     @Override
@@ -334,8 +335,30 @@ public class UpdateVehicle extends AppCompatActivity {
                 }
                 if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
                     locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+                    Location lastLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                    longitude = lastLocation.getLongitude();
+                    latitude = lastLocation.getLatitude();
+                    String currentAddress = PermissionDevice.getStringAddress(longitude, latitude, UpdateVehicle.this);
+                    txt_vehicle_address.setText(currentAddress);
+                    SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
+                    editor.putString(ImmutableValue.MAIN_vehicleAddress, currentAddress);
+                    editor.putString(ImmutableValue.MAIN_vehicleLat, String.valueOf(latitude));
+                    editor.putString(ImmutableValue.MAIN_vehicleLng, String.valueOf(longitude));
+                    editor.apply();
+                    dialog.dismiss();
                 } else if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                     locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+                    Location lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                    longitude = lastLocation.getLongitude();
+                    latitude = lastLocation.getLatitude();
+                    String currentAddress = PermissionDevice.getStringAddress(longitude, latitude, UpdateVehicle.this);
+                    txt_vehicle_address.setText(currentAddress);
+                    SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
+                    editor.putString(ImmutableValue.MAIN_vehicleAddress, currentAddress);
+                    editor.putString(ImmutableValue.MAIN_vehicleLat, String.valueOf(latitude));
+                    editor.putString(ImmutableValue.MAIN_vehicleLng, String.valueOf(longitude));
+                    editor.apply();
+                    dialog.dismiss();
                 }
                 dialog.dismiss();
             }

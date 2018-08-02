@@ -57,8 +57,8 @@ public class ImmutableValue {
     public static final String VEHICLE_requireHouseHold = "vehicle_requireHouseHold";
     public static final String VEHICLE_requireIdCard = "vehicle_requireIdCard";
     public static final String VEHICLE_informationID = "vehicle_informationID";
-    public static final String VEHICLE_districtID = "vehicle_districtID";
-    public static final String VEHICLE_address = "vehicle_address";
+    public static final String VEHICLE_longitude = "vehicle_districtID";
+    public static final String VEHICLE_latitude = "vehicle_address";
 
     //Home information value
     public static final String HOME_SHARED_PREFERENCES_CODE = "VRS_HOME";

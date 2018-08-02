@@ -239,8 +239,6 @@ public class PermissionDevice {
 
         try {
             addresses = geocoder.getFromLocation(latitude, longitude, 1);
-//            String city = addresses.get(0).getAdminArea();
-//            String country = addresses.get(0).getCountryName();
             currentDistrict = addresses.get(0).getSubAdminArea();
 
         } catch (IOException e) {

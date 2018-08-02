@@ -454,93 +454,47 @@
                     android:layout_gravity="center_vertical"
                     android:layout_height="match_parent" />
             </LinearLayout>
-
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="@drawable/border_white_grey"
                 android:minHeight="45dp"
-                android:orientation="horizontal"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:weightSum="1">
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginRight="10dp"
-                    android:layout_weight="0.1"
-                    android:adjustViewBounds="true"
-                    android:maxHeight="30dp"
-                    app:srcCompat="@drawable/ic_location_on_black_24dp"
-                    tools:ignore="VectorDrawableCompat" />
-
+                android:orientation="vertical"
+                android:padding="10dp"
+                android:layout_height="wrap_content">
                 <TextView
-
-                    android:layout_width="0dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="0.25"
-                    android:fontFamily="sans-serif"
-                    android:text="Thành phố"
-                    android:textColor="@android:color/background_dark"
-                    android:textSize="14sp"
-                    android:typeface="normal" />
-
-                <Spinner
-                    android:id="@+id/spnCity"
-                    android:layout_width="0dp"
-                    android:layout_weight="0.65"
-                    android:gravity="end"
-                    android:layout_gravity="center_vertical"
-                    android:drawSelectorOnTop="true"
-                    android:layout_height="match_parent"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/border_white_grey"
-                android:minHeight="45dp"
-                android:orientation="horizontal"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:weightSum="1">
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginRight="10dp"
-                    android:layout_weight="0.1"
-                    android:adjustViewBounds="true"
-                    android:maxHeight="30dp"
-                    app:srcCompat="@drawable/ic_location_on_black_24dp"
-                    tools:ignore="VectorDrawableCompat" />
-
+                    android:text="Vị trí của xe"
+                    android:textColor="@color/secondary_text"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:weightSum="10"
+                    android:layout_height="wrap_content">
+                    <Button
+                        android:id="@+id/btn_current_address"
+                        android:layout_width="0dp"
+                        android:layout_weight="5"
+                        android:text="Lấy vị trí tại chỗ"
+                        android:textAllCaps="false"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"/>
+                    <Button
+                        android:id="@+id/btn_write_address"
+                        android:layout_width="0dp"
+                        android:layout_weight="5"
+                        android:text="Nhập vị trí"
+                        android:textAllCaps="false"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"/>
+                </LinearLayout>
                 <TextView
-
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="0.25"
-                    android:fontFamily="sans-serif"
-                    android:text="Quận"
-                    android:textColor="@android:color/background_dark"
-                    android:textSize="14sp"
-                    android:typeface="normal" />
-
-                <Spinner
-                    android:id="@+id/spnDistrict"
-                    android:layout_width="0dp"
-                    android:layout_weight="0.65"
-                    android:gravity="end"
-                    android:layout_gravity="center_vertical"
-                    android:drawSelectorOnTop="true"
-                    android:layout_height="match_parent"/>
+                    android:id="@+id/txt_vehicle_address"
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="wrap_content"
+                    android:text="Chưa nhận được vị trí..."
+                    android:textColor="@color/secondary_text"
+                    android:layout_height="wrap_content" />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -715,7 +669,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:text="Sộ hộ khẩu"
+                    android:text="Sổ hộ khẩu"
                     android:checked="false"
                     android:textSize="16sp" />
 
