@@ -9,4 +9,9 @@
         <item>Xe cá nhân</item>
         <item>Xe du lịch</item>
     </string-array>
+    <string-array name="receiveType">
+        <item>Khách tự đến lấy xe</item>
+        <item>Giao xe tại chỗ</item>
+        <item>Cả 2 hình thức</item>
+    </string-array>
 </resources>

@@ -2,6 +2,7 @@ package com.example.manhvdse61952.vrc_android.controller.permission;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -26,9 +27,18 @@ import android.util.SparseArray;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.manhvdse61952.vrc_android.controller.layout.login.LoginActivity;
+import com.example.manhvdse61952.vrc_android.controller.layout.login.SplashScreen;
+import com.example.manhvdse61952.vrc_android.controller.layout.main.MainActivity;
+import com.example.manhvdse61952.vrc_android.controller.resources.ImmutableValue;
+import com.example.manhvdse61952.vrc_android.model.api_interface.AddressAPI;
+import com.example.manhvdse61952.vrc_android.model.api_model.City;
+import com.example.manhvdse61952.vrc_android.remote.RetrofitConfig;
 import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.text.TextBlock;
 import com.google.android.gms.vision.text.TextRecognizer;
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.TedPermission;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
@@ -42,7 +52,19 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static android.Manifest.permission.CAMERA;
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+
 import id.zelory.compressor.Compressor;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class PermissionDevice {
 
@@ -69,7 +91,6 @@ public class PermissionDevice {
 
     // Paypal ///////////////////
     public static final int PAYPAL_REQUEST_CODE = 301;
-
     ///////////////////////////////////// USE FOR CAMERA //////////////////////////////////////
     //Open camera
     public void takePicture(Context ctx, Activity atv, int code) {
@@ -210,23 +231,24 @@ public class PermissionDevice {
         Geocoder geocoder;
         List<Address> addresses;
         geocoder = new Geocoder(ctx, Locale.getDefault());
-
-        try {
-            addresses = geocoder.getFromLocation(latitude, longitude, 1);
-            currentAddress = addresses.get(0).getAddressLine(0);
+        if (longitude != 0 && latitude != 0){
+            try {
+                addresses = geocoder.getFromLocation(latitude, longitude, 1);
+                currentAddress = addresses.get(0).getAddressLine(0);
 //            String city = addresses.get(0).getAdminArea();
 //            String country = addresses.get(0).getCountryName();
 //            String district = addresses.get(0).getSubAdminArea();
-            if (!currentAddress.trim().equals("")){
-                String[] arrayAddressTemp = currentAddress.split(",");
-                addressFull = arrayAddressTemp[0];
-                for (int i = 1; i < arrayAddressTemp.length - 1;i++){
-                    addressFull = addressFull + ", " + arrayAddressTemp[i].trim();
+                if (!currentAddress.trim().equals("")){
+                    String[] arrayAddressTemp = currentAddress.split(",");
+                    addressFull = arrayAddressTemp[0];
+                    for (int i = 1; i < arrayAddressTemp.length - 1;i++){
+                        addressFull = addressFull + ", " + arrayAddressTemp[i].trim();
+                    }
                 }
-            }
 
-        } catch (IOException e) {
-            e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         return addressFull;
     }
@@ -236,14 +258,16 @@ public class PermissionDevice {
         Geocoder geocoder;
         List<Address> addresses;
         geocoder = new Geocoder(ctx, Locale.getDefault());
+        if (longitude != 0 && latitude != 0){
+            try {
+                addresses = geocoder.getFromLocation(latitude, longitude, 1);
+                currentDistrict = addresses.get(0).getSubAdminArea();
 
-        try {
-            addresses = geocoder.getFromLocation(latitude, longitude, 1);
-            currentDistrict = addresses.get(0).getSubAdminArea();
-
-        } catch (IOException e) {
-            e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
+
         return currentDistrict;
     }
 
@@ -296,6 +320,99 @@ public class PermissionDevice {
         }
 
         return getCmndFromImage;
+    }
+
+    ////////////////////////////// REAL-TIME check permission ////////////////////////////
+    public static void checkDevicePermission(final Context ctx, final String signal){
+        TedPermission.with(ctx).setPermissionListener(new PermissionListener() {
+            @Override
+            public void onPermissionGranted() {
+                Boolean result = checkOnGPS(ctx);
+                if (result == false) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
+                    builder.setMessage("Ứng dụng cần mở GPS trên điện thoại để hoạt động").setCancelable(false)
+                            .setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    ctx.startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                                }
+                            })
+                            .setNegativeButton("Tắt ứng dụng", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent intent = new Intent(Intent.ACTION_MAIN);
+                                    intent.addCategory(Intent.CATEGORY_HOME);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    ctx.startActivity(intent);
+                                }
+                            });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                    dialog.setCanceledOnTouchOutside(false);
+                } else{
+                   if (signal.equals("main")){
+                       Intent it = new Intent(ctx, MainActivity.class);
+                       it.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                       ctx.startActivity(it);
+                   }
+
+//                    ImmutableValue.listGeneralAddress = new ArrayList<>();
+//                    Retrofit test = RetrofitConfig.getClient();
+//                    final AddressAPI testAPI = test.create(AddressAPI.class);
+//                    Call<List<City>> responseBodyCall = testAPI.getDistrict();
+//                    responseBodyCall.enqueue(new Callback<List<City>>() {
+//                        @Override
+//                        public void onResponse(Call<List<City>> call, Response<List<City>> response) {
+//                            if (response.code() == 200) {
+//                                isActiveAll = true;
+//                                ImmutableValue.listGeneralAddress = response.body();
+//
+//                            } else {
+//                                Toast.makeText(ctx, "Đã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
+//                            }
+//
+//                        }
+//
+//                        @Override
+//                        public void onFailure(Call<List<City>> call, Throwable t) {
+//                            Toast.makeText(ctx, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
+//                        }
+//                    });
+
+                }
+            }
+
+            @Override
+            public void onPermissionDenied(ArrayList<String> deniedPermissions) {
+                Toast.makeText(ctx, "Yêu cầu bị chặn! Vui lòng tắt ứng dụng", Toast.LENGTH_SHORT).show();
+            }
+        })
+                .setGotoSettingButtonText("Cài đặt")
+                .setDeniedCloseButtonText("Tắt ứng dụng")
+                .setDeniedMessage("Ứng dụng cần quyền truy cập để hoạt động")
+                .setPermissions(CAMERA, READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE, ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION)
+                .check();
+    }
+
+    public static Boolean checkOnGPS(Context ctx) {
+        boolean result = false;
+
+        // check GPS is on or not
+        LocationManager locationManager = (LocationManager) ctx.getSystemService(Context.LOCATION_SERVICE);
+
+        boolean gps_enable = false;
+        boolean network_enable = false;
+
+        try {
+            gps_enable = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+            network_enable = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        if (gps_enable == true && network_enable == true) {
+            result = true;
+        }
+        return result;
     }
 
 }

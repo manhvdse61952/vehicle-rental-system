@@ -4,6 +4,7 @@ import com.example.manhvdse61952.vrc_android.model.api_model.ComplainIssue;
 import com.example.manhvdse61952.vrc_android.model.api_model.ContractCreate;
 import com.example.manhvdse61952.vrc_android.model.api_model.ContractFinish;
 import com.example.manhvdse61952.vrc_android.model.api_model.ContractItem;
+import com.example.manhvdse61952.vrc_android.model.api_model.Feedback;
 
 import java.util.List;
 
@@ -68,5 +69,18 @@ public interface ContractAPI {
     @Headers({"Accept: application/json"})
     @POST("/contract/refund")
     Call<ResponseBody> removeContract(@Query("contractID") int contractID);
+
+    @Headers({"Accept: application/json"})
+    @POST("/feedback/update")
+    Call<ResponseBody> feedbackContract(@Query("contractID") int contractID,
+                                        @Query("content") String content,
+                                        @Query("createTime") long createTime,
+                                        @Query("rate") int rate);
+
+
+    @Headers({"Accept: application/json"})
+    @GET("/contract/callSupport/{contractID}")
+    Call<ResponseBody> callSupport(@Path("contractID") int contractID);
+
 
 }

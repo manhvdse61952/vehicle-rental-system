@@ -30,7 +30,25 @@ public class DetailVehicleItem implements Serializable {
     private float discountValue;
     private double longitude;
     private double latitude;
+    private String deliveryType;
+    private Boolean hasDriver;
 
+
+    public String getDeliveryType() {
+        return deliveryType;
+    }
+
+    public void setDeliveryType(String deliveryType) {
+        this.deliveryType = deliveryType;
+    }
+
+    public Boolean getHasDriver() {
+        return hasDriver;
+    }
+
+    public void setHasDriver(Boolean hasDriver) {
+        this.hasDriver = hasDriver;
+    }
 
     public int getRentFeePerHourID() {
         return rentFeePerHourID;

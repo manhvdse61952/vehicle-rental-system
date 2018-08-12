@@ -1,21 +1,29 @@
 package com.example.manhvdse61952.vrc_android.controller.layout.login;
 
 import android.animation.ValueAnimator;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.manhvdse61952.vrc_android.R;
 import com.example.manhvdse61952.vrc_android.controller.layout.main.MainActivity;
+import com.example.manhvdse61952.vrc_android.controller.permission.PermissionDevice;
 import com.example.manhvdse61952.vrc_android.controller.resources.ImmutableValue;
 import com.example.manhvdse61952.vrc_android.model.api_interface.AddressAPI;
 import com.example.manhvdse61952.vrc_android.model.api_model.City;
@@ -42,15 +50,18 @@ public class SplashScreen extends AppCompatActivity {
     private int progressStatus = 0;
     private Handler handler = new Handler();
     ImageView img_logo;
+    RelativeLayout view_parent;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.spash_screen);
         progressBar = (ProgressBar) findViewById(R.id.progress_bar);
-        img_logo = (ImageView)findViewById(R.id.img_logo);
+        img_logo = (ImageView) findViewById(R.id.img_logo);
+        view_parent = (RelativeLayout) findViewById(R.id.view_parent);
         scaleImage(0);
         setUp();
+//        initProgressBar();
     }
 
 
@@ -62,7 +73,7 @@ public class SplashScreen extends AppCompatActivity {
         responseBodyCall.enqueue(new Callback<List<City>>() {
             @Override
             public void onResponse(Call<List<City>> call, Response<List<City>> response) {
-                if (response.code() == 200){
+                if (response.code() == 200) {
                     ImmutableValue.listGeneralAddress = response.body();
                     progressStatus = progressStatus + 10;
                     progressBar.setProgress(progressStatus);
@@ -81,7 +92,7 @@ public class SplashScreen extends AppCompatActivity {
 
     }
 
-    private void scaleImage(int value){
+    private void scaleImage(int value) {
         ValueAnimator anim = ValueAnimator.ofInt(img_logo.getMeasuredHeight(), value);
         anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
@@ -95,7 +106,7 @@ public class SplashScreen extends AppCompatActivity {
         anim.start();
     }
 
-    private void initProgressBar(){
+    private void initProgressBar() {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -108,7 +119,7 @@ public class SplashScreen extends AppCompatActivity {
                             progressBar.setProgress(progressStatus);
                         }
                     });
-                    if (progressStatus == 40){
+                    if (progressStatus == 40) {
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
@@ -121,19 +132,46 @@ public class SplashScreen extends AppCompatActivity {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
+//                        PermissionDevice.checkDevicePermission(SplashScreen.this, "main");
                         TedPermission.with(getApplicationContext()).setPermissionListener(new PermissionListener() {
                             @Override
                             public void onPermissionGranted() {
-                                // Close this activity
-                                SplashScreen.this.finish();
-                                // Navigate to Login activity
-                                if (ImmutableValue.listGeneralAddress.size() != 0){
-                                    startActivity(new Intent(SplashScreen.this, MainActivity.class));
+                                Boolean result = PermissionDevice.checkOnGPS(SplashScreen.this);
+                                if (result == false) {
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(SplashScreen.this);
+                                    builder.setMessage("Ứng dụng cần mở GPS trên điện thoại để hoạt động").setCancelable(false)
+                                            .setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                                                    SplashScreen.this.finish();
+                                                    startActivity(getIntent());
+
+                                                }
+                                            })
+                                            .setNegativeButton("Tắt ứng dụng", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    Intent intent = new Intent(Intent.ACTION_MAIN);
+                                                    intent.addCategory(Intent.CATEGORY_HOME);
+                                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                    startActivity(intent);
+                                                }
+                                            });
+                                    AlertDialog dialog = builder.create();
+                                    dialog.show();
+                                    dialog.setCanceledOnTouchOutside(false);
                                 } else {
-                                    Toast.makeText(SplashScreen.this, "Đã xảy ra lỗi từ hệ thống! Xin vui lòng quay lại sau", Toast.LENGTH_SHORT).show();
+                                    SplashScreen.this.finish();
+                                    startActivity(new Intent(SplashScreen.this, MainActivity.class));
+                                    // Navigate to Login activity
+//                                    if (ImmutableValue.listGeneralAddress.size() != 0) {
+//                                        SplashScreen.this.finish();
+//                                        startActivity(new Intent(SplashScreen.this, MainActivity.class));
+//                                    } else {
+//                                        Toast.makeText(SplashScreen.this, "Đã xảy ra lỗi từ hệ thống! Xin vui lòng quay lại sau", Toast.LENGTH_SHORT).show();
+//                                    }
                                 }
-
-
                             }
 
                             @Override
@@ -143,9 +181,9 @@ public class SplashScreen extends AppCompatActivity {
                             }
                         })
                                 .setGotoSettingButtonText("Cài đặt")
-                                .setDeniedCloseButtonText("Hủy thao tác")
+                                .setDeniedCloseButtonText("Tắt ứng dụng")
                                 .setDeniedMessage("Ứng dụng cần quyền truy cập để hoạt động")
-                                .setPermissions(CAMERA, READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE, ACCESS_FINE_LOCATION)
+                                .setPermissions(CAMERA, READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE, ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION)
                                 .check();
                     }
 
@@ -158,4 +196,5 @@ public class SplashScreen extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
     }
+
 }

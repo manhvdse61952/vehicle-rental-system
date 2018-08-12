@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.example.manhvdse61952.vrc_android.R;
 import com.example.manhvdse61952.vrc_android.controller.layout.main.MainActivity;
 import com.example.manhvdse61952.vrc_android.controller.layout.signup.SignupAccountActivity;
+import com.example.manhvdse61952.vrc_android.controller.permission.PermissionDevice;
 import com.example.manhvdse61952.vrc_android.controller.resources.ImmutableValue;
 import com.example.manhvdse61952.vrc_android.controller.validate.ValidateInput;
 import com.example.manhvdse61952.vrc_android.model.api_interface.AccountAPI;
@@ -47,6 +48,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
         //Declare id
         username_txt = (TextInputLayout) findViewById(R.id.username_txt);
         password_txt = (TextInputLayout) findViewById(R.id.password_txt);
@@ -142,7 +144,7 @@ public class LoginActivity extends AppCompatActivity {
                     tempEditor.putString(ImmutableValue.MAIN_contractID, "Empty");
                     tempEditor.apply();
                     Intent it = new Intent(ctx, MainActivity.class);
-                    it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     ctx.startActivity(it);
                 }
                 progressDialog.dismiss();

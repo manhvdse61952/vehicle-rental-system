@@ -11,8 +11,17 @@ public class Discount implements Serializable {
     private long endDay;
     private String vehicleMaker;
     private String vehicleModel;
+    private String imageLinkFront;
 
     public Discount() {
+    }
+
+    public String getImageLinkFront() {
+        return imageLinkFront;
+    }
+
+    public void setImageLinkFront(String imageLinkFront) {
+        this.imageLinkFront = imageLinkFront;
     }
 
     public String getVehicleMaker() {

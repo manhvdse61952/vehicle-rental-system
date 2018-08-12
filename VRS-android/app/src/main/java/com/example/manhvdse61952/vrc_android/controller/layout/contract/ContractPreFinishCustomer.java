@@ -23,6 +23,9 @@ import com.example.manhvdse61952.vrc_android.controller.permission.PermissionDev
 import com.example.manhvdse61952.vrc_android.model.api_model.ContractItem;
 import com.example.manhvdse61952.vrc_android.remote.RetrofitConfig;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -33,7 +36,7 @@ public class ContractPreFinishCustomer extends AppCompatActivity {
     Button btn_pay, btn_complain;
     TextView txt_contract_complete_number, txt_contract_complete_overPrice, txt_contract_complete_startTime, txt_contract_complete_endTime, txt_contract_complete_rentTime,
             txt_contract_complete_rentFee, txt_contract_complete_deposit, txt_contract_complete_endRealTime,
-            txt_contract_complete_total, txt_contract_insideFee, txt_contract_outsideFee;
+            txt_contract_complete_total, txt_contract_insideFee, txt_contract_outsideFee, txt_deliveryType;
     String contractID = "0";
     String contractStatus = ImmutableValue.CONTRACT_PRE_FINISHED;
     ProgressDialog dialog;
@@ -63,6 +66,7 @@ public class ContractPreFinishCustomer extends AppCompatActivity {
         txt_contract_complete_overPrice = (TextView) findViewById(R.id.txt_contract_complete_overPrice);
         txt_contract_insideFee = (TextView)findViewById(R.id.txt_contract_insideFee);
         txt_contract_outsideFee = (TextView)findViewById(R.id.txt_contract_outsideFee);
+        txt_deliveryType = (TextView)findViewById(R.id.txt_deliveryType);
 
         initLayout();
 
@@ -136,22 +140,29 @@ public class ContractPreFinishCustomer extends AppCompatActivity {
                 if (response.code() == 200) {
                     if (response.body() != null) {
                         ContractItem obj = response.body();
+                        NumberFormat nf = new DecimalFormat("#.####");
                         txt_contract_complete_number.setText(contractID);
+                        if (obj.getDeliveryType().equals(ImmutableValue.DELIVERY_CUSTOMER_PICK_UP)){
+                            txt_deliveryType.setText("Khách tự đến lấy xe");
+                        } else {
+                            txt_deliveryType.setText("Giao xe tại chỗ");
+                        }
+
                         txt_contract_complete_startTime.setText(GeneralController.convertTime(obj.getStartTime()));
                         txt_contract_complete_endTime.setText(GeneralController.convertTime(obj.getEndTime()));
                         txt_contract_complete_endRealTime.setText(GeneralController.convertTime(obj.getEndRealTime()));
                         txt_contract_complete_rentTime.setText(obj.getRentDay() + " ngày " + obj.getRentHour() + " giờ");
-                        txt_contract_complete_overPrice.setText(obj.getPenaltyOverTime() + "");
-                        int depositFee = Integer.parseInt(obj.getDepositFee());
-                        int totalFee = Integer.parseInt(obj.getTotalFee());
-                        int rentFee = totalFee - depositFee;
-                        String rentFeeConvert = String.valueOf(rentFee);
-                        totalFee = totalFee + obj.getInsideFee() + obj.getOutsideFee() + obj.getPenaltyOverTime();
-                        txt_contract_complete_rentFee.setText(GeneralController.convertPrice(rentFeeConvert));
-                        txt_contract_complete_deposit.setText(GeneralController.convertPrice(obj.getDepositFee()));
-                        txt_contract_complete_total.setText(GeneralController.convertPrice(String.valueOf(totalFee)));
-                        txt_contract_insideFee.setText(GeneralController.convertPrice(String.valueOf(obj.getInsideFee())));
-                        txt_contract_outsideFee.setText(GeneralController.convertPrice(String.valueOf(obj.getOutsideFee())));
+                        txt_contract_complete_overPrice.setText(GeneralController.convertPrice(nf.format(Double.parseDouble(obj.getPenaltyOverTime()))));
+                        double depositFee = Double.parseDouble(obj.getDepositFee());
+                        double totalFee = Double.parseDouble(obj.getTotalFee());
+                        double rentFee = totalFee - depositFee;
+                        totalFee = totalFee + Double.parseDouble(obj.getInsideFee()) + Double.parseDouble(obj.getOutsideFee())
+                                + Double.parseDouble(obj.getPenaltyOverTime());
+                        txt_contract_complete_rentFee.setText(GeneralController.convertPrice(nf.format(rentFee)));
+                        txt_contract_complete_deposit.setText(GeneralController.convertPrice(nf.format(depositFee)));
+                        txt_contract_complete_total.setText(GeneralController.convertPrice(nf.format(totalFee)));
+                        txt_contract_insideFee.setText(GeneralController.convertPrice(nf.format(Double.parseDouble(obj.getInsideFee()))));
+                        txt_contract_outsideFee.setText(GeneralController.convertPrice(nf.format(Double.parseDouble(obj.getOutsideFee()))));
                         contractStatus = obj.getContractStatus();
                         if (contractStatus.equals(ImmutableValue.CONTRACT_ISSUE)){
                             btn_complain.setVisibility(View.INVISIBLE);

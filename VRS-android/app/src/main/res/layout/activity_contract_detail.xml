@@ -38,31 +38,29 @@
             <LinearLayout
                 android:id="@+id/ln_clock"
                 android:layout_width="match_parent"
-                android:orientation="vertical"
+                android:orientation="horizontal"
                 android:background="@drawable/border_shadow"
                 android:layout_marginBottom="10dp"
-                android:padding="20dp"
+                android:weightSum="10"
+                android:padding="10dp"
                 android:layout_height="wrap_content">
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Thời gian trên hệ thống"
-                    android:textSize="16sp"
-                    android:textColor="@color/secondary_text"
-                    android:textStyle="bold" />
-                <TextView
                     android:id="@+id/txt_clock_time"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="6"
                     android:text="00:00:00"
-                    android:gravity="center_horizontal"
+                    android:paddingLeft="20dp"
+                    android:gravity="center_vertical"
                     android:textColor="@color/secondary_text"
-                    android:textSize="36dp"
+                    android:textSize="18dp"
                     android:layout_height="wrap_content" />
                 <TextView
                     android:id="@+id/txt_clock_day"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="4"
                     android:text="17/07/2018"
-                    android:textSize="20dp"
+                    android:textSize="14dp"
+                    android:layout_gravity="center"
                     android:gravity="center_horizontal"
                     android:textColor="@color/secondary_text"
                     android:layout_height="wrap_content" />
@@ -415,7 +413,22 @@
                         android:text="Tự đến lấy xe" />
 
                 </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10dp"
+                    android:weightSum="1">
 
+                    <TextView
+                        android:id="@+id/txt_customer_location"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="..." />
+
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -652,7 +665,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.5"
-                            android:text="Phí nọi thất" />
+                            android:text="Phí nội thất" />
 
                         <TextView
                             android:id="@+id/txt_contract_insideFee"
@@ -687,11 +700,6 @@
                             android:text="0" />
                     </LinearLayout>
                 </LinearLayout>
-
-
-
-
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -720,7 +728,57 @@
                         android:textStyle="bold" />
                 </LinearLayout>
             </LinearLayout>
-
+            <LinearLayout
+                android:id="@+id/ln_feedback"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:padding="20dp"
+                android:background="@drawable/border_shadow"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="Đánh giá"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/secondary_text"
+                    android:layout_height="wrap_content" />
+                <EditText
+                    android:id="@+id/edt_feedback"
+                    android:layout_width="match_parent"
+                    android:inputType="textMultiLine"
+                    android:maxLength="300"
+                    android:maxLines="8"
+                    android:layout_marginTop="10dp"
+                    android:minLines="5"
+                    android:hint="Nhập nội dung (có thể bỏ trống)"
+                    android:textColorHint="#7C7C7C"
+                    android:textSize="14sp"
+                    android:gravity="top|left"
+                    android:padding="5dp"
+                    android:background="@drawable/button_dash_arround"
+                    android:layout_height="wrap_content" />
+                <RatingBar
+                    android:id="@+id/rt_feedback"
+                    android:layout_width="wrap_content"
+                    android:numStars="5"
+                    android:layout_gravity="center_horizontal"
+                    android:stepSize="1"
+                    android:layout_marginTop="10dp"
+                    android:layout_height="wrap_content" />
+                <Button
+                    android:id="@+id/btn_send_feedback"
+                    android:layout_width="wrap_content"
+                    android:text="Gửi đánh giá"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:layout_margin="5dp"
+                    android:textColor="@color/primary_text"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/border_green_primarygreen"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:orientation="horizontal"

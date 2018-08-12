@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -95,7 +96,8 @@
         <activity android:name=".controller.layout.promotion.PromotionActivity" android:screenOrientation="portrait"></activity>
         <activity android:name=".controller.layout.report.ViewReportActivity" android:screenOrientation="portrait"></activity>
         <activity android:name=".controller.layout.main.SearchAdvancedActivity" android:screenOrientation="portrait"></activity>
-        <activity android:name=".controller.layout.vehicle.showdetail.VehicleMap" android:screenOrientation="portrait"></activity>
+        <activity android:name=".controller.layout.vehicle.showdetail.VehicleMap" android:label="@string/title_activity_maps" android:screenOrientation="portrait"></activity>
+        <activity android:name=".controller.layout.promotion.PromotionDetail" android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

@@ -20,6 +20,8 @@ import com.example.manhvdse61952.vrc_android.controller.resources.GeneralControl
 import com.example.manhvdse61952.vrc_android.controller.resources.ImmutableValue;
 import com.example.manhvdse61952.vrc_android.model.api_model.ContractItem;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.List;
 
 public class ContractItemTab extends BaseAdapter {
@@ -87,6 +89,10 @@ public class ContractItemTab extends BaseAdapter {
             viewHolder.txt_manage_contract_status.setText("Khiếu nại");
         } else if (contractItem.getContractStatus().equals(ImmutableValue.CONTRACT_REFUNDED)){
             viewHolder.txt_manage_contract_status.setText("Hủy hợp đồng");
+        } else if (contractItem.getContractStatus().equals(ImmutableValue.CONTRACT_NEED_SUPPORT)){
+            viewHolder.txt_manage_contract_status.setText("Nhờ hỗ trợ");
+        } else {
+            viewHolder.txt_manage_contract_status.setText("Lỗi");
         }
 
         if (contractItem.getContractStatus().equals(ImmutableValue.CONTRACT_FINISHED)){
@@ -95,7 +101,8 @@ public class ContractItemTab extends BaseAdapter {
             viewHolder.ln_manage_contract.setBackgroundResource(R.drawable.border_red);
         } else if (contractItem.getContractStatus().equals(ImmutableValue.CONTRACT_INACTIVE)){
             viewHolder.ln_manage_contract.setBackgroundResource(R.drawable.border_blue);
-        } else if (contractItem.getContractStatus().equals(ImmutableValue.CONTRACT_ISSUE)){
+        } else if (contractItem.getContractStatus().equals(ImmutableValue.CONTRACT_ISSUE)
+                || contractItem.getContractStatus().equals(ImmutableValue.CONTRACT_NEED_SUPPORT)){
             viewHolder.ln_manage_contract.setBackgroundResource(R.drawable.border_high_blue);
         } else {
             viewHolder.ln_manage_contract.setBackgroundResource(R.drawable.border_blue);
@@ -103,12 +110,18 @@ public class ContractItemTab extends BaseAdapter {
 
         viewHolder.txt_manage_contract_start_time.setText(GeneralController.convertTime(contractItem.getStartTime()));
         viewHolder.txt_manage_contract_end_time.setText(GeneralController.convertTime(contractItem.getEndTime()));
-        int depositFee = Integer.parseInt(contractItem.getDepositFee());
-        int totalFee = Integer.parseInt(contractItem.getTotalFee());
-        int rentFee = totalFee - depositFee;
-        int insideFee = contractItemList.get(position).getInsideFee();
-        int outsideFee= contractItemList.get(position).getOutsideFee();
-        int overTimeFee = contractItemList.get(position).getPenaltyOverTime();
+        NumberFormat nf = new DecimalFormat("#.####");
+        double depositFeeFromDB = Double.parseDouble(contractItem.getDepositFee());
+        double totalFeeFromDB = Double.parseDouble(contractItem.getTotalFee());
+        String depositFeeString = nf.format(depositFeeFromDB);
+        String totalFeeString = nf.format(totalFeeFromDB);
+
+        long depositFee = Long.parseLong(depositFeeString);
+        long totalFee = Long.parseLong(totalFeeString);
+        long rentFee = totalFee - depositFee;
+        long insideFee = Long.parseLong(contractItemList.get(position).getInsideFee());
+        long outsideFee= Long.parseLong(contractItemList.get(position).getOutsideFee());
+        long overTimeFee = Long.parseLong(contractItemList.get(position).getPenaltyOverTime());
         totalFee = totalFee + insideFee + outsideFee + overTimeFee;
         viewHolder.txt_manage_contract_rent_fee.setText(GeneralController.convertPrice(String.valueOf(rentFee)));
         viewHolder.txt_manage_contract_total_fee.setText(GeneralController.convertPrice(String.valueOf(totalFee)));
@@ -134,10 +147,12 @@ public class ContractItemTab extends BaseAdapter {
                     ctx.startActivity(it);
                 } else if (contractItem.getContractStatus().equals(ImmutableValue.CONTRACT_PRE_FINISHED) && userID == contractItem.getOwnerID()){
                     Toast.makeText(ctx, "Bạn vui lòng đợi khách hàng xác nhận", Toast.LENGTH_SHORT).show();
-                } else if (contractItem.getContractStatus().equals(ImmutableValue.CONTRACT_ISSUE)){
+                } else if (contractItem.getContractStatus().equals(ImmutableValue.CONTRACT_ISSUE) ||
+                        contractItem.getContractStatus().equals(ImmutableValue.CONTRACT_NEED_SUPPORT)){
                     Intent it = new Intent(ctx, ContractComplainActivity.class);
                     ctx.startActivity(it);
-                } else {
+                }
+                else {
                     Intent it = new Intent(ctx, ContractDetail.class);
                     ctx.startActivity(it);
                 }

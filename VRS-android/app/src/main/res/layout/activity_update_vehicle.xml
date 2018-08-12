@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
@@ -21,6 +22,17 @@
             android:text="Sửa thông tin xe"
             android:textColor="@android:color/white"
             android:textSize="16sp" />
+        <ImageView
+            android:id="@+id/imgDeleteVehicle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:padding="10dp"
+            android:rotation="45"
+            android:layout_marginRight="20dp"
+            app:srcCompat="@drawable/ic_add_white_24dp"
+            tools:ignore="VectorDrawableCompat">
+        </ImageView>
     </android.support.v7.widget.Toolbar>
 
     <ScrollView
@@ -357,6 +369,72 @@
                     android:textSize="16sp" />
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border_white_grey"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                android:paddingBottom="5dp"
+                android:paddingLeft="20dp"
+                android:paddingTop="5dp">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:gravity="center_vertical"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:src="@drawable/ic_calendar_alt"
+                        android:layout_height="20dp" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:text="Thời gian rảnh của xe (theo tuần)"
+                        android:textColor="#000"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:id="@+id/cbx_monday"
+                    android:text="Thứ hai"
+                    android:layout_height="wrap_content" />
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:id="@+id/cbx_tuesday"
+                    android:text="Thứ ba"
+                    android:layout_height="wrap_content" />
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:id="@+id/cbx_wednesday"
+                    android:text="Thứ tư"
+                    android:layout_height="wrap_content" />
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:id="@+id/cbx_thursday"
+                    android:text="Thứ năm"
+                    android:layout_height="wrap_content" />
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:id="@+id/cbx_friday"
+                    android:text="Thứ sáu"
+                    android:layout_height="wrap_content" />
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:id="@+id/cbx_saturday"
+                    android:text="Thứ bảy"
+                    android:layout_height="wrap_content" />
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:id="@+id/cbx_sunday"
+                    android:text="Chủ nhật"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -406,7 +484,6 @@
                 android:orientation="vertical"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
-                android:background="@drawable/border_red_white"
                 android:paddingBottom="10dp">
 
                 <TextView
@@ -417,7 +494,7 @@
                     android:layout_marginTop="10dp"
                     android:text="Thông số của xe"
                     android:textColor="@color/secondary_text"
-                    android:textSize="18sp" />
+                    android:textSize="16sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -443,7 +520,7 @@
                         android:text="7"
                         android:textAlignment="textEnd"
                         android:textColor="#000"
-                        android:textSize="16sp" />
+                        android:textSize="14sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -470,7 +547,7 @@
                         android:text="2016"
                         android:textAlignment="textEnd"
                         android:textColor="#000"
-                        android:textSize="16sp" />
+                        android:textSize="14sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -497,7 +574,7 @@
                         android:text="Xăng"
                         android:textAlignment="textEnd"
                         android:textColor="#000"
-                        android:textSize="16sp" />
+                        android:textSize="14sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -524,7 +601,7 @@
                         android:text="Số sàn"
                         android:textAlignment="textEnd"
                         android:textColor="#000"
-                        android:textSize="16sp" />
+                        android:textSize="14sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -551,7 +628,7 @@
                         android:text="60A1-111.11"
                         android:textAlignment="textEnd"
                         android:textColor="#000"
-                        android:textSize="16sp" />
+                        android:textSize="14sp" />
                 </LinearLayout>
 
                 <View
@@ -570,7 +647,7 @@
                     android:paddingLeft="10dp"
                     android:text="Chủ xe"
                     android:textColor="@color/secondary_text"
-                    android:textSize="18sp" />
+                    android:textSize="16sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -596,7 +673,7 @@
                         android:text="Vũ Đức Mạnh"
                         android:textAlignment="textEnd"
                         android:textColor="#000"
-                        android:textSize="16sp" />
+                        android:textSize="14sp" />
                 </LinearLayout>
             </LinearLayout>
 

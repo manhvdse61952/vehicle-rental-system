@@ -103,9 +103,13 @@ public class PaypalExecute extends AppCompatActivity {
                             obj.setHours(editor2.getInt(ImmutableValue.MAIN_totalHour, 0));
                             obj.setDays(editor2.getInt(ImmutableValue.MAIN_totalDay, 0));
                             obj.setRentFee(Float.valueOf(editor2.getString(ImmutableValue.MAIN_rentFeeMoney, "0.0")));
-                            obj.setReceiveType(editor2.getInt(ImmutableValue.MAIN_receiveType, 0));
+                            obj.setReceiveType(editor2.getInt(ImmutableValue.MAIN_receiveType, 1));
                             obj.setDiscountVehicle(editor2.getFloat(ImmutableValue.MAIN_discountVehicle, 0));
                             obj.setDiscountGeneral(editor2.getFloat(ImmutableValue.MAIN_discountGeneral, 0));
+                            double latitude = Double.parseDouble(editor2.getString(ImmutableValue.MAIN_customer_Lat, "0"));
+                            double longitude = Double.parseDouble(editor2.getString(ImmutableValue.MAIN_customer_Lng, "0"));
+                            obj.setDeliveryLat(latitude);
+                            obj.setDeliveryLng(longitude);
 
                             Retrofit retrofit = RetrofitConfig.getClient();
                             final ContractAPI contractAPI = retrofit.create(ContractAPI.class);

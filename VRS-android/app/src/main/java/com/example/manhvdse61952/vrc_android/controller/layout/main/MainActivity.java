@@ -310,6 +310,7 @@ public class MainActivity extends AppCompatActivity
             Menu nav_Menu = navigationView.getMenu();
             nav_Menu.findItem(R.id.nav_manage_vehicle).setVisible(false);
             nav_Menu.findItem(R.id.nav_discount).setVisible(false);
+            nav_Menu.findItem(R.id.nav_view_history).setVisible(false);
         } else {
             txtNavRole.setText("Chủ xe");
         }
@@ -339,7 +340,7 @@ public class MainActivity extends AppCompatActivity
                     GeneralController.scaleView(ln_search_advanced_show, 0);
                     isOpenAdvanced = false;
                 } else {
-                    GeneralController.scaleView(ln_search_advanced_show, 700);
+                    GeneralController.scaleView(ln_search_advanced_show, -420);
                     isOpenAdvanced = true;
                 }
             }
@@ -388,7 +389,7 @@ public class MainActivity extends AppCompatActivity
         districtName = districtName.replace("quan", "");
         districtName = districtName.replace("huyen", "");
         List<City> listCity = ImmutableValue.listGeneralAddress;
-        districtID = 63;
+        districtID = 40;
         for (int i = 0; i < listCity.size(); i++) {
             List<District> listDistrict = listCity.get(i).getDistrict();
             for (int j = 0; j < listDistrict.size(); j++) {
@@ -396,7 +397,7 @@ public class MainActivity extends AppCompatActivity
                 districtConvert = GeneralController.removeAccentCharacter(districtConvert);
                 districtConvert = districtConvert.replace("quan", "");
                 districtConvert = districtConvert.replace("huyen", "");
-                if (districtConvert.equals(districtName)) {
+                if (districtConvert.trim().equals(districtName)) {
                     districtID = listDistrict.get(j).getId();
                     break;
                 }
@@ -476,9 +477,10 @@ public class MainActivity extends AppCompatActivity
                         int tabIndex = editor.getInt(ImmutableValue.HOME_tabIndex, 0);
                         viewPager.setCurrentItem(tabIndex);
                         dialog.dismiss();
-                    } else {
-                        Toast.makeText(MainActivity.this, "Khu vực của bạn không có xe! Hệ thống sẽ hiển thị xe ở khu vực khác", Toast.LENGTH_SHORT).show();
-                        getAllVehicleByDistrictID(40);
+//                    } else {
+//                        Toast.makeText(MainActivity.this, "Khu vực của bạn không có xe! Hệ thống sẽ hiển thị xe ở khu vực khác", Toast.LENGTH_SHORT).show();
+//                        getAllVehicleByDistrictID(40);
+//                    }
                     }
                 } else {
                     Toast.makeText(MainActivity.this, "Khu vực của bạn không có xe! Hệ thống sẽ hiển thị xe ở khu vực khác", Toast.LENGTH_SHORT).show();
@@ -681,26 +683,33 @@ public class MainActivity extends AppCompatActivity
             Toast.makeText(this, "Vui lòng thoát ứng dụng và chạy lại", Toast.LENGTH_SHORT).show();
             finish();
         }
-        if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
-            Location lastLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-            longitude = lastLocation.getLongitude();
-            latitude = lastLocation.getLatitude();
-            String district = PermissionDevice.getStringDistrict(longitude, latitude, MainActivity.this);
-            getDistrictIdByName(district);
-            dialog.dismiss();
+        if (locationManager == null) {
+            PermissionDevice.checkOnGPS(MainActivity.this);
+            MainActivity.this.finish();
+            startActivity(getIntent());
+        } else {
+            if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+                Location lastLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                longitude = lastLocation.getLongitude();
+                latitude = lastLocation.getLatitude();
+                String district = PermissionDevice.getStringDistrict(longitude, latitude, MainActivity.this);
+                getDistrictIdByName(district);
+                dialog.dismiss();
 
-        } else if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-            Location lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            longitude = lastLocation.getLongitude();
-            latitude = lastLocation.getLatitude();
-            String district = PermissionDevice.getStringDistrict(longitude, latitude, MainActivity.this);
-            getDistrictIdByName(district);
-            dialog.dismiss();
+            } else if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+                Location lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                longitude = lastLocation.getLongitude();
+                latitude = lastLocation.getLatitude();
+                String district = PermissionDevice.getStringDistrict(longitude, latitude, MainActivity.this);
+                getDistrictIdByName(district);
+                dialog.dismiss();
+            } else {
+                getAllVehicleByDistrictID(40);
+                dialog.dismiss();
+            }
         }
-
-        //////////////////////////////////////////////////////////////////////////
     }
 
     private void showSearchPlace() {
@@ -736,16 +745,12 @@ public class MainActivity extends AppCompatActivity
         SharedPreferences editor2 = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
         int usernameID = editor.getInt(ImmutableValue.HOME_userID, 0);
         String vehicleFrameNumber = editor2.getString(ImmutableValue.MAIN_vehicleID, "Empty");
-        String isUpdateVehicle = editor2.getString(ImmutableValue.MAIN_isUpdateVehicle, "Empty");
         String contractID = editor2.getString(ImmutableValue.MAIN_contractID, "Empty");
 
-        if (usernameID != 0 && vehicleFrameNumber.equals("Empty") && contractID.equals("Empty") && isUpdateVehicle.equals("Empty")) {
+        if (usernameID != 0 && vehicleFrameNumber.equals("Empty") && contractID.equals("Empty")) {
             //Nothing to do
-        } else if (usernameID != 0 && !vehicleFrameNumber.equals("Empty") && contractID.equals("Empty") && isUpdateVehicle.equals("Empty")) {
+        } else if (usernameID != 0 && !vehicleFrameNumber.equals("Empty") && contractID.equals("Empty")) {
             Intent it = new Intent(MainActivity.this, VehicleDetail.class);
-            startActivity(it);
-        } else if (usernameID != 0 && !vehicleFrameNumber.equals("Empty") && contractID.equals("Empty") && !isUpdateVehicle.equals("Empty")) {
-            Intent it = new Intent(MainActivity.this, UpdateVehicle.class);
             startActivity(it);
         } else if (usernameID != 0 && vehicleFrameNumber.equals("Empty") && !contractID.equals("Empty")) {
             final ProgressDialog dialog = ProgressDialog.show(MainActivity.this, "Hệ thống",

@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.provider.MediaStore;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -46,6 +48,8 @@ public class SignupUserInfoActivity extends AppCompatActivity {
     TextView txt_cmnd_error;
     RadioButton rd_user, rd_owner;
     RelativeLayout ln_image_execute;
+    Snackbar snackbar = null;
+    LinearLayout view_parent;
 
     private PermissionDevice cameraObj = new PermissionDevice();
     ProgressDialog dialog;
@@ -127,7 +131,17 @@ public class SignupUserInfoActivity extends AppCompatActivity {
                     if (getCMND.length() >= 7){
                         edtSignupCNMD.setText(getCMND + "");
                     } else {
-                        Toast.makeText(this, "Máy không hỗ trợ tự động lấy số CMND. Hãy tự điền bằng tay", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(this, "Máy không hỗ trợ tự động lấy số CMND. Hãy tự điền bằng tay", Toast.LENGTH_SHORT).show();
+                        snackbar = Snackbar
+                                .make(view_parent, "Máy không hỗ trợ tự động lấy số CMND. Hãy tự điền bằng tay", Snackbar.LENGTH_INDEFINITE)
+                                .setAction("đồng ý", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        snackbar.dismiss();
+                                    }
+                                });
+
+                        snackbar.show();
                     }
                 }
                 break;
@@ -301,5 +315,6 @@ public class SignupUserInfoActivity extends AppCompatActivity {
         edtSignupPhone = (EditText) findViewById(R.id.edtSignupPhone);
         rd_user = (RadioButton)findViewById(R.id.rd_user);
         rd_owner = (RadioButton)findViewById(R.id.rd_owner);
+        view_parent = (LinearLayout)findViewById(R.id.view_parent);
     }
 }

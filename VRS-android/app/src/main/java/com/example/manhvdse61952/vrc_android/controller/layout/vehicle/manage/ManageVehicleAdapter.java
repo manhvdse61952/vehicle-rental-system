@@ -3,6 +3,7 @@ package com.example.manhvdse61952.vrc_android.controller.layout.vehicle.manage;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,6 +39,13 @@ public class ManageVehicleAdapter extends RecyclerView.Adapter<ManageVehicleAdap
         holder.txt_vehicle_name.setText(vehicleList.get(position).getVehicleMaker() + " "
                 + vehicleList.get(position).getVehicleModel());
         holder.txt_vehicle_frameNumber.setText(vehicleList.get(position).getFrameNumber());
+        if(vehicleList.get(position).getCurrentStatus().equals(ImmutableValue.VEHICLE_STATUS_AVAILABLE)){
+            holder.txt_vehicle_status.setText("rảnh rỗi");
+        } else {
+            holder.txt_vehicle_status.setText("đang bận");
+            holder.txt_vehicle_status.setTextColor(Color.parseColor("#FF0000"));
+        }
+
         if (vehicleList.get(position).getImageLinkFront().equals("")){
             Picasso.get().load(R.drawable.img_default_image).into(holder.imageManageVehicle);
         }
@@ -69,14 +77,15 @@ public class ManageVehicleAdapter extends RecyclerView.Adapter<ManageVehicleAdap
     }
 
     public class RecyclerViewHolder extends RecyclerView.ViewHolder {
-        TextView txt_vehicle_name, txt_vehicle_frameNumber;
+        TextView txt_vehicle_name, txt_vehicle_frameNumber, txt_vehicle_status;
         ImageView imageManageVehicle;
         LinearLayout ln_vehicle_item;
         public RecyclerViewHolder(View itemView) {
             super(itemView);
-            txt_vehicle_name = itemView.findViewById(R.id.txt_vehicle_name);
-            txt_vehicle_frameNumber = itemView.findViewById(R.id.txt_vehicle_frameNumber);
-            imageManageVehicle = itemView.findViewById(R.id.manage_vehicle_image);
+            txt_vehicle_name = (TextView)itemView.findViewById(R.id.txt_vehicle_name);
+            txt_vehicle_frameNumber = (TextView)itemView.findViewById(R.id.txt_vehicle_frameNumber);
+            txt_vehicle_status = (TextView)itemView.findViewById(R.id.txt_vehicle_status);
+            imageManageVehicle = (ImageView)itemView.findViewById(R.id.manage_vehicle_image);
             ln_vehicle_item = (LinearLayout)itemView.findViewById(R.id.ln_vehicle_item);
         }
     }

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:weightSum="10"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="10">
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar2"
         android:layout_width="match_parent"
@@ -18,138 +19,205 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Xem báo cáo doanh thu"
-            android:textSize="18sp"
-            android:textColor="@color/primary_text" />
+            android:textColor="@color/primary_text"
+            android:textSize="18sp" />
     </android.support.v7.widget.Toolbar>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:orientation="horizontal"
-        android:weightSum="10"
-        android:layout_weight="1">
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="3"
-            android:text="Xem theo"
-            android:textSize="16sp"
-            android:gravity="center_vertical"
-            android:paddingLeft="10dp"
-            android:textColor="@color/secondary_text"
-            android:layout_height="match_parent" />
-        <View
-            android:layout_width="0.5dp"
-            android:background="#FFDDDDDD"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            android:layout_height="match_parent"/>
-        <Spinner
-            android:id="@+id/spn_report_first"
-            android:layout_width="0dp"
-            android:layout_weight="3.5"
-            android:layout_height="match_parent"></Spinner>
-        <View
-            android:layout_width="0.5dp"
-            android:background="#FFDDDDDD"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            android:layout_height="match_parent"/>
-        <Spinner
-            android:id="@+id/spn_report_second"
-            android:layout_width="0dp"
-            android:layout_weight="3.5"
-            android:layout_height="match_parent"></Spinner>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:orientation="horizontal"
-        android:weightSum="10"
-        android:layout_weight="1">
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="5"
-            android:text="Tổng doanh thu"
-            android:textSize="16sp"
-            android:textColor="@color/secondary_text"
-            android:gravity="center_vertical"
-            android:paddingLeft="10dp"
-            android:layout_height="match_parent" />
-        <TextView
-            android:id="@+id/txt_report_totalMoney"
-            android:layout_width="0dp"
-            android:layout_weight="5"
-            android:textSize="16sp"
-            android:text="100,000"
-            android:maxLength="13"
-            android:textColor="#FF0000"
-            android:gravity="center_vertical|end"
-            android:paddingRight="20dp"
-            android:layout_height="match_parent" />
-    </LinearLayout>
 
-    <com.github.mikephil.charting.charts.PieChart
-        android:id="@+id/pie_chart"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="6">
-    </com.github.mikephil.charting.charts.PieChart>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:weightSum="10"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_weight="2">
+        android:padding="10dp">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_weight="1"
             android:orientation="horizontal"
-            android:weightSum="10"
-            android:layout_weight="5">
+            android:weightSum="10">
+
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="6"
-                android:textColor="@color/secondary_text"
-                android:text="Tổng tiền hủy hợp đồng"
-                android:textSize="16sp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
                 android:gravity="center_vertical"
                 android:paddingLeft="10dp"
-                android:layout_height="match_parent" />
+                android:text="Xem theo"
+                android:textColor="@color/secondary_text"
+                android:textSize="14sp" />
+
+            <Spinner
+                android:id="@+id/spn_report_first"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="4"
+                android:background="@drawable/custom_spinner"
+                android:gravity="end"
+                android:paddingEnd="15dp"
+                android:popupBackground="#DFFFFFFF">
+
+            </Spinner>
+
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="4"
-                android:text="1,000,000,000"
-                android:maxLength="13"
-                android:textColor="#ff0000"
-                android:gravity="center_vertical|end"
-                android:paddingRight="20dp"
-                android:textSize="16sp"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Năm"
+                android:textColor="@color/secondary_text"
+                android:textSize="14sp" />
+
+            <Spinner
+                android:id="@+id/spn_report_second"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="5dp"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="3"
+                android:background="@drawable/custom_spinner"
+                android:gravity="end"
+                android:paddingEnd="15dp"
+                android:popupBackground="#DFFFFFFF"></Spinner>
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_weight="0.75"
             android:orientation="horizontal"
-            android:weightSum="10"
-            android:layout_weight="5">
+            android:weightSum="10">
+
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="6"
-                android:textColor="@color/secondary_text"
-                android:text="Tổng tiền phạt trên hợp đồng"
-                android:textSize="16sp"
+                android:layout_height="match_parent"
+                android:layout_weight="5"
                 android:gravity="center_vertical"
                 android:paddingLeft="10dp"
-                android:layout_height="match_parent" />
+                android:text="Tổng doanh thu"
+                android:textColor="@color/secondary_text"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/txt_report_totalMoney"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="5"
+                android:gravity="center_vertical|end"
+                android:maxLength="13"
+                android:paddingRight="20dp"
+                android:text="0"
+                android:textColor="#FF0000"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.75"
+            android:orientation="horizontal"
+            android:weightSum="10">
+
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="4"
-                android:text="150,000"
-                android:textColor="#ff0000"
-                android:maxLength="13"
+                android:layout_height="match_parent"
+                android:layout_weight="5"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:text="Tổng số hợp đồng"
+                android:textColor="@color/secondary_text"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/txt_report_totalContract"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="5"
                 android:gravity="center_vertical|end"
+                android:maxLength="13"
                 android:paddingRight="20dp"
-                android:textSize="16sp"
-                android:layout_height="match_parent" />
+                android:text="0"
+                android:textColor="#FF0000"
+                android:textSize="14sp" />
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1.5"
+            android:orientation="vertical"
+            android:weightSum="10">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="5"
+                android:orientation="horizontal"
+                android:weightSum="10">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="6"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="10dp"
+                    android:text="Tổng tiền hủy hợp đồng"
+                    android:textColor="@color/secondary_text"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/txt_report_totalRefunded"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="4"
+                    android:gravity="center_vertical|end"
+                    android:maxLength="13"
+                    android:paddingRight="20dp"
+                    android:text="0"
+                    android:textColor="#ff0000"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="5"
+                android:orientation="horizontal"
+                android:weightSum="10">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="6"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="10dp"
+                    android:text="Tổng tiền phạt trên hợp đồng"
+                    android:textColor="@color/secondary_text"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/txt_report_total_fee"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="4"
+                    android:gravity="center_vertical|end"
+                    android:maxLength="13"
+                    android:paddingRight="20dp"
+                    android:text="0"
+                    android:textColor="#ff0000"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/pie_chart"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="5.75">
+
+        </com.github.mikephil.charting.charts.PieChart>
     </LinearLayout>
 </LinearLayout>

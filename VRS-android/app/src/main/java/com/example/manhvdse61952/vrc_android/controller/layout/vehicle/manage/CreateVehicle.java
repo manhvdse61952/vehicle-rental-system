@@ -25,8 +25,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -46,6 +49,8 @@ import com.example.manhvdse61952.vrc_android.remote.RetrofitConfig;
 import com.example.manhvdse61952.vrc_android.controller.validate.ValidateInput;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -69,7 +74,7 @@ public class CreateVehicle extends AppCompatActivity {
     VehicleInformation vehicleInfoObj;
     String vehicleType, vehicleTypeGeneral;
     TextView txtCarModel, txt_vehicle_address;
-    Spinner spnEngine, spnTranmission, spnYear;
+    Spinner spnEngine, spnTranmission, spnYear, spn_receiveType;
     List<String> listEngineType = new ArrayList<>();
     List<String> listTranmissionType = new ArrayList<>();
     String maker, model, year;
@@ -81,8 +86,12 @@ public class CreateVehicle extends AppCompatActivity {
     PermissionDevice cameraObj = new PermissionDevice();
     RelativeLayout btnImageFront, btnImageBack, btnImageFrame;
     ValidateInput validObj = new ValidateInput();
-    CheckBox cbxHouseHold, cbxIdCard;
+    CheckBox cbxHouseHold, cbxIdCard, cbx_haveDriver;
     Button btnCreateVehicle, btn_current_address, btn_write_address;
+    private DatabaseReference dbr;
+    RadioButton rd_free_full, rd_free_specific;
+    LinearLayout ln_free_dow;
+    CheckBox cbx_monday, cbx_tuesday, cbx_wednesday, cbx_thursday, cbx_friday, cbx_saturday, cbx_sunday;
 
     //Value to save in shared preferences
     int required_household_registration = 0, required_id_card = 0;
@@ -91,6 +100,8 @@ public class CreateVehicle extends AppCompatActivity {
     LocationManager locationManager;
     LocationListener locationListener;
     double longitude = 0, latitude = 0;
+    Boolean monday = true, tuesday = true, wednesday = true, thursday = true, friday = true,
+    saturday = true, sunday = true;
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -126,6 +137,18 @@ public class CreateVehicle extends AppCompatActivity {
         txt_vehicle_address = (TextView)findViewById(R.id.txt_vehicle_address);
         btn_current_address = (Button)findViewById(R.id.btn_current_address);
         btn_write_address = (Button)findViewById(R.id.btn_write_address);
+        cbx_haveDriver = (CheckBox)findViewById(R.id.cbx_haveDriver);
+        spn_receiveType = (Spinner)findViewById(R.id.spn_receiveType);
+        rd_free_full = (RadioButton)findViewById(R.id.rd_free_full);
+        rd_free_specific = (RadioButton)findViewById(R.id.rd_free_specific);
+        ln_free_dow = (LinearLayout)findViewById(R.id.ln_free_dow);
+        cbx_monday = (CheckBox)findViewById(R.id.cbx_monday);
+        cbx_tuesday = (CheckBox)findViewById(R.id.cbx_tuesday);
+        cbx_wednesday = (CheckBox)findViewById(R.id.cbx_wednesday);
+        cbx_thursday = (CheckBox)findViewById(R.id.cbx_thursday);
+        cbx_friday = (CheckBox)findViewById(R.id.cbx_friday);
+        cbx_saturday = (CheckBox)findViewById(R.id.cbx_saturday);
+        cbx_sunday = (CheckBox)findViewById(R.id.cbx_sunday);
     }
 
     @Override
@@ -266,6 +289,26 @@ public class CreateVehicle extends AppCompatActivity {
 
         //Revert value when user change the layout
         revertValue();
+
+        rd_free_full.setChecked(true);
+        GeneralController.scaleView(ln_free_dow, 0);
+        rd_free_full.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){
+                    GeneralController.scaleView(ln_free_dow, 0);
+                }
+            }
+        });
+
+        rd_free_specific.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){
+                    GeneralController.scaleView(ln_free_dow, -230);
+                }
+            }
+        });
     }
 
     @Override
@@ -446,6 +489,48 @@ public class CreateVehicle extends AppCompatActivity {
         } else {
             isGasoline = 0;
         }
+
+        if (rd_free_full.isChecked()){
+            cbx_monday.setChecked(false);
+            cbx_tuesday.setChecked(false);
+            cbx_wednesday.setChecked(false);
+            cbx_thursday.setChecked(false);
+            cbx_friday.setChecked(false);
+            cbx_saturday.setChecked(false);
+            cbx_sunday.setChecked(false);
+
+            monday = false;
+            tuesday = false;
+            wednesday = false;
+            thursday = false;
+            friday = false;
+            saturday = false;
+            sunday = false;
+        }
+
+        if (cbx_monday.isChecked()){
+            monday = false;
+        }
+        if (cbx_tuesday.isChecked()){
+            tuesday = false;
+        }
+        if (cbx_wednesday.isChecked()){
+            wednesday = false;
+        }
+        if (cbx_thursday.isChecked()){
+            thursday = false;
+        }
+        if (cbx_friday.isChecked()){
+            friday = false;
+        }
+        if (cbx_saturday.isChecked()){
+            saturday = false;
+        }
+        if (cbx_sunday.isChecked()){
+            sunday = false;
+        }
+
+
         SharedPreferences editor2 = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
         longitude = Double.parseDouble(editor2.getString(ImmutableValue.MAIN_vehicleLng, "0"));
         latitude = Double.parseDouble(editor2.getString(ImmutableValue.MAIN_vehicleLat, "0"));
@@ -456,6 +541,14 @@ public class CreateVehicle extends AppCompatActivity {
         String hourPriceTemp = edtPriceHour.getText().toString().trim().replaceAll(",", "");
         String dayPriceTemp = edtPriceDay.getText().toString().trim().replaceAll(",", "");
         String depositPriceTemp = edtDepositFee.getText().toString().trim().replaceAll(",", "");
+        Boolean haveDriver = false;
+        if (cbx_haveDriver.isChecked()){
+            haveDriver = true;
+        } else {
+            haveDriver = false;
+        }
+        int receiveType = 0;
+        receiveType = spn_receiveType.getSelectedItemPosition();
 
 
         Boolean checkPlateNumber = validObj.validFrameNumber(edtPlate.getText().toString().trim(), edtPlate);
@@ -473,7 +566,11 @@ public class CreateVehicle extends AppCompatActivity {
         } else {
             if (districtID == 0){
                 Toast.makeText(this, "Hệ thống chỉ hỗ trợ ở HCM, Đà Nẵng và Hà Nội", Toast.LENGTH_SHORT).show();
-            } else {
+            } else if (rd_free_specific.isChecked() && monday == true && tuesday == true
+                    && wednesday == true && thursday == true && friday == true && saturday == true && sunday == true){
+                Toast.makeText(this, "Vui lòng chọn ít nhất một thứ trong tuần", Toast.LENGTH_SHORT).show();
+            }
+            else {
                 if (checkFrameNumber && checkPlateNumber && checkPricePerHours && checkPricePerDay
                         && checkDepositFee && checkImage1 && checkImage2 && checkImage3 && checkVehicleName
                         && districtID != 0) {
@@ -493,8 +590,8 @@ public class CreateVehicle extends AppCompatActivity {
                             vehicleInfoID, districtID, dayPriceTemp,
                             hourPriceTemp, depositPriceTemp, edtPlate.getText().toString().trim(),
                             required_household_registration, required_id_card,
-                            isGasoline, isManual, picturePath2, picturePath3, picturePath1);
-
+                            isGasoline, isManual, picturePath2, picturePath3, picturePath1, haveDriver, receiveType, monday,
+                            tuesday, wednesday, thursday, friday, saturday, sunday);
                 }
             }
 
@@ -763,7 +860,9 @@ public class CreateVehicle extends AppCompatActivity {
                                  final String rentFeePerDay, final String rentFeePerHours, final String depositFee,
                                  final String plateNumber, final int requireHouseHold, final int requireIdCard,
                                  final int isGasoline, final int isManual, final String img_vehicle_1, final String img_vehicle_2,
-                                 final String picture_path) {
+                                 final String picture_path, final Boolean haveDriver, final int receiveType,
+                                 final Boolean monday, final Boolean tuesday, final Boolean wednesday,
+                                 final Boolean thursday, final Boolean friday, final Boolean saturday, final Boolean sunday) {
         Retrofit test = RetrofitConfig.getClient();
         final VehicleAPI testAPI = test.create(VehicleAPI.class);
         Call<Boolean> responseBodyCall = testAPI.checkDuplicatedFrameNumber(frameNumber);
@@ -778,7 +877,8 @@ public class CreateVehicle extends AppCompatActivity {
                     } else {
                         createNewVehicle(frameNumber, vehicleInformationID, rentFeePerDay, rentFeePerHours,
                                 depositFee, plateNumber, requireHouseHold, requireIdCard, districtID, isGasoline,
-                                isManual, picture_path, img_vehicle_1, img_vehicle_2);
+                                isManual, picture_path, img_vehicle_1, img_vehicle_2, haveDriver, receiveType, monday,
+                                tuesday, wednesday, thursday, friday, saturday, sunday);
                     }
                 } else {
                     progressDialog.dismiss();
@@ -795,10 +895,11 @@ public class CreateVehicle extends AppCompatActivity {
         });
     }
 
-    private void createNewVehicle(String frameNumber, int vehicleInformationID, String rentFeePerDay, String rentFeePerHours,
+    private void createNewVehicle(final String frameNumber, int vehicleInformationID, String rentFeePerDay, String rentFeePerHours,
                                   String depositFee, String plateNumber, int requireHouseHold, int requireIdCard, int districtID,
                                   int isGasoline, int isManual, String img_vehicle_1, String img_vehicle_2,
-                                  String picture_path){
+                                  String picture_path, Boolean haveDriver, int receiveType, final Boolean monday, final Boolean tuesday, final Boolean wednesday,
+                                  final Boolean thursday, final Boolean friday, final Boolean saturday, final Boolean sunday){
         SharedPreferences editor = getSharedPreferences(ImmutableValue.HOME_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
         int userID = editor.getInt(ImmutableValue.HOME_userID, 0);
         String description = "";
@@ -807,7 +908,8 @@ public class CreateVehicle extends AppCompatActivity {
         ObjectMapper objectMapper = new ObjectMapper();
         Vehicle vehicleObj = new Vehicle(frameNumber, userID, vehicleInformationID, description, Float.valueOf(rentFeePerSlot),
                 Float.valueOf(rentFeePerDay), Float.valueOf(rentFeePerHours), Float.valueOf(depositFee), plateNumber,
-                requireHouseHold, requireIdCard, districtID, isGasoline, isManual, longitude, latitude);
+                requireHouseHold, requireIdCard, districtID, isGasoline, isManual, longitude, latitude, haveDriver, receiveType
+        , monday, tuesday, wednesday, thursday, friday, saturday, sunday);
 
         try {
             String json = objectMapper.writeValueAsString(vehicleObj);
@@ -849,6 +951,10 @@ public class CreateVehicle extends AppCompatActivity {
                                 settings.edit().clear().commit();
                                 SharedPreferences settings2 = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
                                 settings2.edit().clear().commit();
+                                dbr = FirebaseDatabase.getInstance().getReference("Locations").child(frameNumber);
+                                dbr.child("latitude").setValue(latitude);
+                                dbr.child("longitude").setValue(longitude);
+
                                 CreateVehicle.this.finish();
                                 Intent it = new Intent(CreateVehicle.this, MainActivity.class);
                                 it.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -894,7 +1000,7 @@ public class CreateVehicle extends AppCompatActivity {
                 districtConvert = GeneralController.removeAccentCharacter(districtConvert);
                 districtConvert = districtConvert.replace("quan", "");
                 districtConvert = districtConvert.replace("huyen", "");
-                if (districtConvert.equals(districtName)) {
+                if (districtConvert.trim().equals(districtName)) {
                     districtID = listDistrict.get(j).getId();
                     break;
                 }

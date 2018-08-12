@@ -17,9 +17,27 @@ public class ContractCreate implements Serializable {
     private int receiveType;
     private float discountVehicle;
     private float discountGeneral;
+    private double deliveryLat;
+    private double deliveryLng;
 
 
     public ContractCreate() {
+    }
+
+    public double getDeliveryLat() {
+        return deliveryLat;
+    }
+
+    public void setDeliveryLat(double deliveryLat) {
+        this.deliveryLat = deliveryLat;
+    }
+
+    public double getDeliveryLng() {
+        return deliveryLng;
+    }
+
+    public void setDeliveryLng(double deliveryLng) {
+        this.deliveryLng = deliveryLng;
     }
 
     public float getDiscountVehicle() {

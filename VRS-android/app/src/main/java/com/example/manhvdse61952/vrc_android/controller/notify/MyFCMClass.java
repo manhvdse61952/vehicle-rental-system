@@ -55,7 +55,7 @@ public class MyFCMClass extends FirebaseMessagingService {
                     .setContentText(messageBody)
                     .setAutoCancel(true)
                     .setSound(defaultSoundUri)
-                    .setPriority(Notification.PRIORITY_MAX)
+                    .setPriority(Notification.PRIORITY_HIGH)
                     .setContentIntent(pendingIntent);
             notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
         } else {
@@ -64,7 +64,7 @@ public class MyFCMClass extends FirebaseMessagingService {
                     .setContentTitle(title)
                     .setContentText(messageBody)
                     .setAutoCancel(true)
-                    .setPriority(Notification.PRIORITY_MAX)
+                    .setPriority(Notification.PRIORITY_HIGH)
                     .setSound(defaultSoundUri);
             notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
         }

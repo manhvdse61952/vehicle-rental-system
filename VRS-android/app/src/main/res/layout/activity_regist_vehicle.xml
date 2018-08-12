@@ -164,7 +164,7 @@
                     android:gravity="end|center_vertical"
                     android:paddingRight="20dp"
                     android:text="Nhấn để chọn xe"
-                    android:textColorHint="#666666"
+                    android:textColor="@color/secondary_text"
                     android:textSize="16sp" />
             </LinearLayout>
             <LinearLayout
@@ -216,7 +216,7 @@
                     android:hint="Biển số"
                     android:inputType="text"
                     android:paddingRight="20dp"
-                    android:textColorHint="#666666"
+                    android:textColor="@color/secondary_text"
                     android:textSize="16sp" />
             </LinearLayout>
             <LinearLayout
@@ -268,7 +268,7 @@
                     android:hint="Số khung"
                     android:inputType="text"
                     android:paddingRight="20dp"
-                    android:textColorHint="#666666"
+                    android:textColor="@color/secondary_text"
                     android:textSize="16sp" />
             </LinearLayout>
             <LinearLayout
@@ -524,7 +524,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_weight="0.3"
                     android:fontFamily="sans-serif"
-                    android:text="Giá thuê/giờ"
+                    android:text="Tiền thuê/giờ"
                     android:textColor="@android:color/background_dark"
                     android:textSize="14sp"
                     android:typeface="normal" />
@@ -539,7 +539,7 @@
                     android:ellipsize="end"
                     android:ems="10"
                     android:gravity="right|center_vertical"
-                    android:hint="Gợi ý: 100.000"
+                    android:hint="Gợi ý: 100.000   "
                     android:maxLength="11"
                     android:inputType="number"
                     android:paddingRight="10dp"
@@ -575,7 +575,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_weight="0.35"
                     android:fontFamily="sans-serif"
-                    android:text="Giá thuê/ngày"
+                    android:text="Tiền thuê/ngày"
                     android:textColor="@android:color/background_dark"
                     android:textSize="14sp"
                     android:typeface="normal" />
@@ -625,7 +625,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_weight="0.3"
                     android:fontFamily="sans-serif"
-                    android:text="Giá cọc"
+                    android:text="Tiền cọc"
                     android:textColor="@android:color/background_dark"
                     android:textSize="14sp"
                     android:typeface="normal" />
@@ -651,6 +651,146 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/border_white_grey"
+                android:minHeight="50dp"
+                android:orientation="horizontal"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:weightSum="1">
+
+                <CheckBox
+                    android:id="@+id/cbx_haveDriver"
+                    android:layout_width="match_parent"
+                    android:text="Xe có kèm theo tài xế"
+                    android:paddingLeft="10dp"
+                    android:checked="true"
+                    android:layout_height="match_parent" />
+
+            </LinearLayout>
+
+            <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/border_white_grey"
+            android:minHeight="50dp"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:weightSum="10">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="4.5"
+                android:text="Hình thức nhận xe"
+                android:gravity="center_vertical"
+                android:textColor="@color/secondary_text"
+                android:paddingLeft="10dp"
+                android:layout_height="match_parent" />
+            <Spinner
+                android:id="@+id/spn_receiveType"
+                android:layout_width="0dp"
+                android:layout_weight="5.5"
+                android:entries="@array/receiveType"
+                android:drawSelectorOnTop="true"
+                android:layout_height="match_parent">
+
+            </Spinner>
+
+        </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/border_white_grey"
+                android:minHeight="50dp"
+                android:orientation="vertical"
+                android:padding="10dp"
+                android:weightSum="10">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:padding="10dp"
+                    android:gravity="center_vertical"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:src="@drawable/ic_calendar_alt"
+                        android:layout_height="20dp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:text="Thời gian rảnh của xe (theo tuần)"
+                        android:textColor="@color/secondary_text"/>
+                </LinearLayout>
+                <RadioGroup
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <RadioButton
+                        android:id="@+id/rd_free_full"
+                        android:layout_width="wrap_content"
+                        android:text="Xe rảnh cả tuần"
+                        android:layout_height="wrap_content" />
+                    <RadioButton
+                        android:id="@+id/rd_free_specific"
+                        android:layout_width="wrap_content"
+                        android:text="Xe rảnh vào các thứ"
+                        android:layout_height="wrap_content" />
+                </RadioGroup>
+                <LinearLayout
+                    android:id="@+id/ln_free_dow"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="40dp"
+                    android:layout_height="230dp">
+                    <CheckBox
+                        android:id="@+id/cbx_monday"
+                        android:layout_width="wrap_content"
+                        android:text="Thứ hai"
+                        android:layout_height="wrap_content" />
+                    <CheckBox
+                        android:id="@+id/cbx_tuesday"
+                        android:layout_width="wrap_content"
+                        android:text="Thứ ba"
+                        android:layout_height="wrap_content" />
+                    <CheckBox
+                        android:id="@+id/cbx_wednesday"
+                        android:layout_width="wrap_content"
+                        android:text="Thứ tư"
+                        android:layout_height="wrap_content" />
+                    <CheckBox
+                        android:id="@+id/cbx_thursday"
+                        android:layout_width="wrap_content"
+                        android:text="Thứ năm"
+                        android:layout_height="wrap_content" />
+                    <CheckBox
+                        android:id="@+id/cbx_friday"
+                        android:layout_width="wrap_content"
+                        android:text="Thứ sáu"
+                        android:layout_height="wrap_content" />
+                    <CheckBox
+                        android:id="@+id/cbx_saturday"
+                        android:layout_width="wrap_content"
+                        android:text="Thứ bảy"
+                        android:layout_height="wrap_content" />
+                    <CheckBox
+                        android:id="@+id/cbx_sunday"
+                        android:layout_width="wrap_content"
+                        android:text="Chủ nhật"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:paddingLeft="20dp"
                 android:layout_marginTop="10dp"
@@ -660,7 +800,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Giấy tờ"
+                    android:text="Giấy tờ yêu cầu"
                     android:textColor="#000"
                     android:textSize="16sp" />
 

@@ -32,7 +32,6 @@
             android:layout_marginRight="20dp"
             app:srcCompat="@drawable/ic_add_white_24dp"
             tools:ignore="VectorDrawableCompat">
-
         </ImageView>
     </android.support.v7.widget.Toolbar>
     <android.support.v4.widget.SwipeRefreshLayout

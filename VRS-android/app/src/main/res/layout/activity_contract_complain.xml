@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ln_parent_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:focusableInTouchMode="true"
@@ -22,31 +23,33 @@
             android:textColor="@color/primary_text"
             android:textSize="18sp" />
     </android.support.v7.widget.Toolbar>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:weightSum="10">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_gravity="center_vertical"
             android:layout_margin="10dp"
-            android:padding="10dp"
+            android:layout_weight="7"
             android:background="@drawable/border_shadow"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="10dp"
+            android:visibility="visible">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
                 android:gravity="center_vertical"
-
                 android:text="Lý do khiếu nại"
                 android:textColor="@color/secondary_text"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textSize="16sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -56,110 +59,141 @@
                 android:weightSum="10">
 
                 <CheckBox
-                    android:layout_marginLeft="10dp"
                     android:id="@+id/cbx_issue_inside"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
                     android:layout_weight="5"
-                    android:text="Phí nội thất sai" />
+                    android:text="Phí nội thất sai"
+                    android:textSize="14sp" />
 
                 <CheckBox
                     android:id="@+id/cbx_issue_outside"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="5"
-                    android:text="Phí ngoại thất sai" />
+                    android:text="Phí ngoại thất sai"
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <CheckBox
-                android:layout_marginLeft="10dp"
                 android:id="@+id/cbx_issue_owner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
-                android:text="Lỗi khách quan bên chủ xe" />
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:text="Lỗi khách quan bên chủ xe"
+                android:textSize="14sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
-                android:text="Mô tả (tối đa 500 kí tự)"
+                android:layout_marginTop="5dp"
+                android:gravity="center_vertical"
+                android:text="Mô tả (tối đa 300 kí tự)"
                 android:textColor="@color/secondary_text"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textSize="16sp" />
 
             <EditText
                 android:id="@+id/edt_issue_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
                 android:background="@drawable/button_dash_arround"
                 android:gravity="top|left"
                 android:hint="Nhập nội dung (có thể bỏ trống)"
                 android:inputType="textMultiLine"
-                android:maxLength="500"
-                android:maxLines="7"
-                android:minLines="3"
+                android:maxLength="300"
+                android:maxLines="4"
+                android:minLines="4"
                 android:padding="10dp"
                 android:scrollbars="vertical"
                 android:textSize="14sp" />
 
-            <LinearLayout
+            <Button
+                android:id="@+id/btn_send_complain"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/border_green_primarygreen"
                 android:paddingBottom="10dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
+                android:paddingTop="10dp"
+                android:text="Gửi yêu cầu"
+                android:textAllCaps="false"
+                android:textColor="@color/primary_text" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="2"
+            android:orientation="horizontal"
+            android:weightSum="10">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="7"
+                android:orientation="vertical"
                 android:weightSum="10">
 
                 <Button
-                    android:id="@+id/btn_send_complain"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="5dp"
+                    android:id="@+id/btn_view_complain"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
                     android:layout_weight="5"
                     android:background="@drawable/border_green_primarygreen"
+                    android:drawableRight="@drawable/ic_check_contract"
+                    android:drawableTint="@color/primary_text"
                     android:paddingBottom="10dp"
-                    android:paddingTop="10dp"
-                    android:text="Gửi yêu cầu"
-                    android:textAllCaps="false"
-                    android:textColor="@color/primary_text" />
-
-                <Button
-                    android:id="@+id/btn_view_complain"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="5"
-                    android:background="@drawable/border_red"
-                    android:paddingBottom="10dp"
+                    android:paddingRight="10dp"
                     android:paddingTop="10dp"
                     android:text="Xem lại hợp đồng"
                     android:textAllCaps="false"
                     android:textColor="@color/primary_text" />
+
+                <Button
+                    android:id="@+id/btn_open_chat"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="5"
+                    android:background="@drawable/border_blue"
+                    android:drawableRight="@drawable/ic_chat"
+                    android:drawableTint="@color/primary_text"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:text="Nói chuyện với bên kia   "
+                    android:textAllCaps="false"
+                    android:textColor="@color/primary_text"
+                    android:textSize="14sp"
+                    android:visibility="visible" />
             </LinearLayout>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.5" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/btn_callCenter"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="bottom"
+                android:layout_weight="1.5"
+                android:src="@drawable/ic_system"
+                android:tint="@color/primary_text" />
         </LinearLayout>
-        <Button
-            android:visibility="invisible"
-            android:id="@+id/btn_open_chat"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Nói chuyện với bên kia"
-            android:textSize="16sp"
-            android:layout_margin="20dp"
-            android:textColor="@color/primary_text"
-            android:background="@drawable/border_green_primarygreen" />
+
     </LinearLayout>
 </LinearLayout>

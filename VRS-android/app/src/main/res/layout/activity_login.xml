@@ -14,7 +14,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            android:src="@drawable/img_login_background" />
+            android:tint="#6F000000"
+            android:src="@drawable/splash_screen_2" />
 
         <RelativeLayout
             android:id="@+id/relativeLayout"

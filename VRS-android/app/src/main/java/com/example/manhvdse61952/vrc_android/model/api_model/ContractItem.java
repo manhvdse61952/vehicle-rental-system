@@ -13,7 +13,6 @@ public class ContractItem implements Serializable {
     private String vehicleYear;
     private String vehicleSeat;
     private String customerName;
-    private int receiveType;
     private int rentDay;
     private int rentHour;
     private String depositFee;
@@ -25,14 +24,14 @@ public class ContractItem implements Serializable {
     private int ownerID;
     private int customerID;
 
-    private int outsideFee;
-    private int insideFee;
+    private String outsideFee;
+    private String insideFee;
     private long endRealTime;
     private String issueContent;
     private Boolean isOwnerIssue;
     private Boolean isInsideIssue;
     private Boolean isOutsideIssue;
-    private int penaltyOverTime;
+    private String penaltyOverTime;
     private long rentFeePerDay;
     private long rentFeePerHour;
     private float discountVehicle;
@@ -40,160 +39,12 @@ public class ContractItem implements Serializable {
     private double longitude;
     private double latitude;
 
+    private String feedbackContent;
+    private int feedbackStar;
+    private String deliveryType;
+
 
     public ContractItem() {
-    }
-
-    public double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
-    }
-
-    public double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-    }
-
-    public float getDiscountVehicle() {
-        return discountVehicle;
-    }
-
-    public void setDiscountVehicle(float discountVehicle) {
-        this.discountVehicle = discountVehicle;
-    }
-
-    public float getDiscountGeneral() {
-        return discountGeneral;
-    }
-
-    public void setDiscountGeneral(float discountGeneral) {
-        this.discountGeneral = discountGeneral;
-    }
-
-    public long getRentFeePerDay() {
-        return rentFeePerDay;
-    }
-
-    public void setRentFeePerDay(long rentFeePerDay) {
-        this.rentFeePerDay = rentFeePerDay;
-    }
-
-    public long getRentFeePerHour() {
-        return rentFeePerHour;
-    }
-
-    public void setRentFeePerHour(long rentFeePerHour) {
-        this.rentFeePerHour = rentFeePerHour;
-    }
-
-    public String getIssueContent() {
-        return issueContent;
-    }
-
-    public void setIssueContent(String issueContent) {
-        this.issueContent = issueContent;
-    }
-
-    public int getOutsideFee() {
-        return outsideFee;
-    }
-
-    public void setOutsideFee(int outsideFee) {
-        this.outsideFee = outsideFee;
-    }
-
-    public int getInsideFee() {
-        return insideFee;
-    }
-
-    public void setInsideFee(int insideFee) {
-        this.insideFee = insideFee;
-    }
-
-    public long getEndRealTime() {
-        return endRealTime;
-    }
-
-    public void setEndRealTime(long endRealTime) {
-        this.endRealTime = endRealTime;
-    }
-
-    public Boolean getOwnerIssue() {
-        return isOwnerIssue;
-    }
-
-    public void setOwnerIssue(Boolean ownerIssue) {
-        isOwnerIssue = ownerIssue;
-    }
-
-    public Boolean getInsideIssue() {
-        return isInsideIssue;
-    }
-
-    public void setInsideIssue(Boolean insideIssue) {
-        isInsideIssue = insideIssue;
-    }
-
-    public Boolean getOutsideIssue() {
-        return isOutsideIssue;
-    }
-
-    public void setOutsideIssue(Boolean outsideIssue) {
-        isOutsideIssue = outsideIssue;
-    }
-
-    public int getPenaltyOverTime() {
-        return penaltyOverTime;
-    }
-
-    public void setPenaltyOverTime(int penaltyOverTime) {
-        this.penaltyOverTime = penaltyOverTime;
-    }
-
-    public int getOwnerID() {
-        return ownerID;
-    }
-
-    public void setOwnerID(int ownerID) {
-        this.ownerID = ownerID;
-    }
-
-    public int getCustomerID() {
-        return customerID;
-    }
-
-    public void setCustomerID(int customerID) {
-        this.customerID = customerID;
-    }
-
-    public String getOwnerPhone() {
-        return ownerPhone;
-    }
-
-    public void setOwnerPhone(String ownerPhone) {
-        this.ownerPhone = ownerPhone;
-    }
-
-    public String getCustomerCMND() {
-        return customerCMND;
-    }
-
-    public void setCustomerCMND(String customerCMND) {
-        this.customerCMND = customerCMND;
-    }
-
-    public String getCustomerPhone() {
-        return customerPhone;
-    }
-
-    public void setCustomerPhone(String customerPhone) {
-        this.customerPhone = customerPhone;
     }
 
     public String getContractID() {
@@ -276,14 +127,6 @@ public class ContractItem implements Serializable {
         this.customerName = customerName;
     }
 
-    public int getReceiveType() {
-        return receiveType;
-    }
-
-    public void setReceiveType(int receiveType) {
-        this.receiveType = receiveType;
-    }
-
     public int getRentDay() {
         return rentDay;
     }
@@ -322,5 +165,181 @@ public class ContractItem implements Serializable {
 
     public void setServerTime(long serverTime) {
         this.serverTime = serverTime;
+    }
+
+    public String getOwnerPhone() {
+        return ownerPhone;
+    }
+
+    public void setOwnerPhone(String ownerPhone) {
+        this.ownerPhone = ownerPhone;
+    }
+
+    public String getCustomerCMND() {
+        return customerCMND;
+    }
+
+    public void setCustomerCMND(String customerCMND) {
+        this.customerCMND = customerCMND;
+    }
+
+    public String getCustomerPhone() {
+        return customerPhone;
+    }
+
+    public void setCustomerPhone(String customerPhone) {
+        this.customerPhone = customerPhone;
+    }
+
+    public int getOwnerID() {
+        return ownerID;
+    }
+
+    public void setOwnerID(int ownerID) {
+        this.ownerID = ownerID;
+    }
+
+    public int getCustomerID() {
+        return customerID;
+    }
+
+    public void setCustomerID(int customerID) {
+        this.customerID = customerID;
+    }
+
+    public String getOutsideFee() {
+        return outsideFee;
+    }
+
+    public void setOutsideFee(String outsideFee) {
+        this.outsideFee = outsideFee;
+    }
+
+    public String getInsideFee() {
+        return insideFee;
+    }
+
+    public void setInsideFee(String insideFee) {
+        this.insideFee = insideFee;
+    }
+
+    public long getEndRealTime() {
+        return endRealTime;
+    }
+
+    public void setEndRealTime(long endRealTime) {
+        this.endRealTime = endRealTime;
+    }
+
+    public String getIssueContent() {
+        return issueContent;
+    }
+
+    public void setIssueContent(String issueContent) {
+        this.issueContent = issueContent;
+    }
+
+    public Boolean getOwnerIssue() {
+        return isOwnerIssue;
+    }
+
+    public void setOwnerIssue(Boolean ownerIssue) {
+        isOwnerIssue = ownerIssue;
+    }
+
+    public Boolean getInsideIssue() {
+        return isInsideIssue;
+    }
+
+    public void setInsideIssue(Boolean insideIssue) {
+        isInsideIssue = insideIssue;
+    }
+
+    public Boolean getOutsideIssue() {
+        return isOutsideIssue;
+    }
+
+    public void setOutsideIssue(Boolean outsideIssue) {
+        isOutsideIssue = outsideIssue;
+    }
+
+    public String getPenaltyOverTime() {
+        return penaltyOverTime;
+    }
+
+    public void setPenaltyOverTime(String penaltyOverTime) {
+        this.penaltyOverTime = penaltyOverTime;
+    }
+
+    public long getRentFeePerDay() {
+        return rentFeePerDay;
+    }
+
+    public void setRentFeePerDay(long rentFeePerDay) {
+        this.rentFeePerDay = rentFeePerDay;
+    }
+
+    public long getRentFeePerHour() {
+        return rentFeePerHour;
+    }
+
+    public void setRentFeePerHour(long rentFeePerHour) {
+        this.rentFeePerHour = rentFeePerHour;
+    }
+
+    public float getDiscountVehicle() {
+        return discountVehicle;
+    }
+
+    public void setDiscountVehicle(float discountVehicle) {
+        this.discountVehicle = discountVehicle;
+    }
+
+    public float getDiscountGeneral() {
+        return discountGeneral;
+    }
+
+    public void setDiscountGeneral(float discountGeneral) {
+        this.discountGeneral = discountGeneral;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getFeedbackContent() {
+        return feedbackContent;
+    }
+
+    public void setFeedbackContent(String feedbackContent) {
+        this.feedbackContent = feedbackContent;
+    }
+
+    public int getFeedbackStar() {
+        return feedbackStar;
+    }
+
+    public void setFeedbackStar(int feedbackStar) {
+        this.feedbackStar = feedbackStar;
+    }
+
+    public String getDeliveryType() {
+        return deliveryType;
+    }
+
+    public void setDeliveryType(String deliveryType) {
+        this.deliveryType = deliveryType;
     }
 }

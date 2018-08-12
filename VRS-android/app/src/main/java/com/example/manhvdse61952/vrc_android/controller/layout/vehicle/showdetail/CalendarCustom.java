@@ -7,11 +7,13 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,6 +22,8 @@ import com.example.manhvdse61952.vrc_android.R;
 import com.example.manhvdse61952.vrc_android.controller.resources.ImmutableValue;
 import com.example.manhvdse61952.vrc_android.model.api_interface.ContractAPI;
 import com.example.manhvdse61952.vrc_android.model.api_interface.TimeAPI;
+import com.example.manhvdse61952.vrc_android.model.api_interface.VehicleAPI;
+import com.example.manhvdse61952.vrc_android.model.api_model.BusyDay;
 import com.example.manhvdse61952.vrc_android.model.api_model.ContractItem;
 import com.example.manhvdse61952.vrc_android.model.api_model.RentTime;
 import com.example.manhvdse61952.vrc_android.remote.RetrofitConfig;
@@ -55,12 +59,14 @@ public class CalendarCustom extends AppCompatActivity {
     Date selectDayTemp = null;
     ProgressDialog dialog;
     RadioButton rd_oneDay, rd_multipleDay;
+    LinearLayout ln_parent_layout;
+    Snackbar snackbar = null;
     TextView txt_hour_view_0, txt_hour_view_1, txt_hour_view_2, txt_hour_view_3, txt_hour_view_4, txt_hour_view_5,
             txt_hour_view_6, txt_hour_view_7, txt_hour_view_8, txt_hour_view_9, txt_hour_view_10, txt_hour_view_11,
             txt_hour_view_12, txt_hour_view_13, txt_hour_view_14, txt_hour_view_15, txt_hour_view_16, txt_hour_view_17,
-            txt_hour_view_18, txt_hour_view_19, txt_hour_view_20, txt_hour_view_21, txt_hour_view_22, txt_hour_view_23
-            ,txt_hide_start, txt_hide_end, txt_title;
+            txt_hour_view_18, txt_hour_view_19, txt_hour_view_20, txt_hour_view_21, txt_hour_view_22, txt_hour_view_23, txt_hide_start, txt_hide_end, txt_title;
     NumberPicker time_picker_hours_start, time_picker_minutes_start, time_picker_hours_end, time_picker_minutes_end;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,7 +90,6 @@ public class CalendarCustom extends AppCompatActivity {
 
         //Execute selected day
         executeSelectedDay();
-
 
 
         btn_save_time.setOnClickListener(new View.OnClickListener() {
@@ -121,12 +126,13 @@ public class CalendarCustom extends AppCompatActivity {
         txt_hour_view_21 = (TextView) findViewById(R.id.txt_hour_view_21);
         txt_hour_view_22 = (TextView) findViewById(R.id.txt_hour_view_22);
         txt_hour_view_23 = (TextView) findViewById(R.id.txt_hour_view_23);
-        txt_hide_start = (TextView)findViewById(R.id.txt_hide_start);
-        txt_hide_end = (TextView)findViewById(R.id.txt_hide_end);
-        txt_title = (TextView)findViewById(R.id.txt_title);
+        txt_hide_start = (TextView) findViewById(R.id.txt_hide_start);
+        txt_hide_end = (TextView) findViewById(R.id.txt_hide_end);
+        txt_title = (TextView) findViewById(R.id.txt_title);
         calendarPickerView = (CalendarPickerView) findViewById(R.id.calendar_view);
         rd_oneDay = (RadioButton) findViewById(R.id.rd_oneDay);
         rd_multipleDay = (RadioButton) findViewById(R.id.rd_multipleDay);
+        ln_parent_layout = (LinearLayout) findViewById(R.id.ln_parent_layout);
 
         Calendar nextYear = Calendar.getInstance();
         nextYear.add(Calendar.YEAR, 1);
@@ -219,7 +225,7 @@ public class CalendarCustom extends AppCompatActivity {
 
     private void getRentHoursByVehicle() {
         SharedPreferences editor = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
-        String frameNumber = editor.getString(ImmutableValue.MAIN_vehicleID, "Empty");
+        final String frameNumber = editor.getString(ImmutableValue.MAIN_vehicleID, "Empty");
         if (!frameNumber.equals("Empty")) {
             Retrofit retrofit = RetrofitConfig.getClient();
             TimeAPI timeAPI = retrofit.create(TimeAPI.class);
@@ -231,10 +237,10 @@ public class CalendarCustom extends AppCompatActivity {
                         if (response.body() != null) {
                             listRentHoursGetByAPI = new ArrayList<>();
                             listRentHoursGetByAPI = response.body();
-                            getRentHourByUser();
+                            getRentHourByFreeTime(frameNumber);
                         }
                     } else {
-                        getRentHourByUser();
+                        getRentHourByFreeTime(frameNumber);
                     }
                 }
 
@@ -252,13 +258,95 @@ public class CalendarCustom extends AppCompatActivity {
         }
     }
 
+    private void getRentHourByFreeTime(String frameNumber) {
+        Retrofit retrofit = RetrofitConfig.getClient();
+        VehicleAPI vehicleAPI = retrofit.create(VehicleAPI.class);
+        Call<BusyDay> responseBodyCall = vehicleAPI.getBusyDay(frameNumber);
+        responseBodyCall.enqueue(new Callback<BusyDay>() {
+            @Override
+            public void onResponse(Call<BusyDay> call, Response<BusyDay> response) {
+                if (response.code() == 200) {
+                    BusyDay obj = response.body();
+                    Boolean monday, tuesday, wednesday, thursday, friday, saturday, sunday;
+                    monday = obj.getBusyMon();
+                    tuesday = obj.getBusyTue();
+                    wednesday = obj.getBusyWed();
+                    thursday = obj.getBusyThu();
+                    friday = obj.getBusyFri();
+                    saturday = obj.getBusySat();
+                    sunday = obj.getBusySun();
+
+                    List<Integer> listDOW = new ArrayList<>();
+                    if (monday == true) {
+                        listDOW.add(2);
+                    }
+                    if (tuesday == true) {
+                        listDOW.add(3);
+                    }
+                    if (wednesday == true) {
+                        listDOW.add(4);
+                    }
+                    if (thursday == true) {
+                        listDOW.add(5);
+                    }
+                    if (friday == true) {
+                        listDOW.add(6);
+                    }
+                    if (saturday == true) {
+                        listDOW.add(7);
+                    }
+                    if (sunday == true) {
+                        listDOW.add(1);
+                    }
+
+                    if (listDOW.size() > 0) {
+                        //Execute
+                        Date dateTemp = new Date(currentLongDay);
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                        String dateTemp2 = sdf.format(dateTemp);
+                        try {
+                            Date dateTempWithoutHour = sdf.parse(dateTemp2);
+                            Calendar c = Calendar.getInstance();
+                            Long dateLongTemp = dateTempWithoutHour.getTime() + 1000*60*60;
+                            for (int i = 0; i < 364; i++) {
+                                c.setTimeInMillis(dateLongTemp);
+                                for (int j = 0; j < listDOW.size(); j++) {
+                                    if (c.get(Calendar.DAY_OF_WEEK) == listDOW.get(j)) {
+                                        RentTime rObj = new RentTime();
+                                        rObj.setStartTime(dateLongTemp);
+                                        rObj.setEndTime(dateLongTemp + 1000*60*60*23);
+                                        listRentHoursGetByAPI.add(rObj);
+                                    }
+                                }
+                                dateLongTemp = dateLongTemp + 1000*60*60*24;
+                            }
+
+
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    getRentHourByUser();
+                } else {
+                    getRentHourByUser();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BusyDay> call, Throwable t) {
+                dialog.dismiss();
+                Toast.makeText(CalendarCustom.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     private void getRentHourByUser() {
         SharedPreferences editor = getSharedPreferences(ImmutableValue.HOME_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
         SharedPreferences editor2 = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
         final int userID = editor.getInt(ImmutableValue.HOME_userID, 0);
         final String roleName = editor.getString(ImmutableValue.HOME_role, ImmutableValue.ROLE_USER);
         final int ownerIdOfVehicle = editor2.getInt(ImmutableValue.MAIN_ownerID, 0);
-        if (userID == ownerIdOfVehicle){
+        if (userID == ownerIdOfVehicle) {
             ownerViewCalendarMode();
         }
         Retrofit retrofit = RetrofitConfig.getClient();
@@ -281,23 +369,23 @@ public class CalendarCustom extends AppCompatActivity {
                         contractItemList = response.body();
 
                         if (roleName.equals(ImmutableValue.ROLE_OWNER)
-                                && userID != ownerIdOfVehicle){
+                                && userID != ownerIdOfVehicle) {
                             deletedDuplicated.addAll(contractItemList);
                         } else {
-                            for (int i = 0; i < contractItemList.size();i++){
-                                if (contractItemList.get(i).getContractStatus().equals(ImmutableValue.CONTRACT_REFUNDED)){
+                            for (int i = 0; i < contractItemList.size(); i++) {
+                                if (contractItemList.get(i).getContractStatus().equals(ImmutableValue.CONTRACT_REFUNDED)) {
                                     deletedDuplicated.add(contractItemList.get(i));
                                 }
                             }
                         }
 
-                        if (deletedDuplicated.size() > 0){
-                            for (int i = 0;i < deletedDuplicated.size();i++){
+                        if (deletedDuplicated.size() > 0) {
+                            for (int i = 0; i < deletedDuplicated.size(); i++) {
                                 contractItemList.remove(deletedDuplicated.get(i));
                             }
                         }
 
-                        if (contractItemList.size() > 0){
+                        if (contractItemList.size() > 0) {
                             for (int i = 0; i < contractItemList.size(); i++) {
                                 RentTime timeObj = new RentTime();
                                 timeObj.setStartTime(contractItemList.get(i).getStartTime());
@@ -366,7 +454,7 @@ public class CalendarCustom extends AppCompatActivity {
         }
     }
 
-    private void highLightRentDay(){
+    private void highLightRentDay() {
         for (int i = 0; i < listRentHoursGetByAPI.size(); i++) {
             getListRentHour(listRentHoursGetByAPI.get(i).getStartTime(),
                     listRentHoursGetByAPI.get(i).getEndTime());
@@ -386,7 +474,7 @@ public class CalendarCustom extends AppCompatActivity {
         }
 
         //Get rent day
-        if (listRentHourString.size() > 0){
+        if (listRentHourString.size() > 0) {
             List<String> listRentDay = new ArrayList<>();
             List<String> deletedOverTime = new ArrayList<>();
             for (int i = 0; i < listRentHourString.size(); i++) {
@@ -412,7 +500,7 @@ public class CalendarCustom extends AppCompatActivity {
                         deletedOverTime.add(listRentDay.get(i));
                     }
                 }
-                for (int i = 0; i < deletedOverTime.size();i++){
+                for (int i = 0; i < deletedOverTime.size(); i++) {
                     listRentDay.remove(deletedOverTime.get(i));
                 }
             } catch (ParseException e) {
@@ -498,14 +586,58 @@ public class CalendarCustom extends AppCompatActivity {
 
                 String selectDayFormat = formatSelectedDay(endDatePicker);
                 resetColorHour();
+
+                List<Integer> listRent = new ArrayList<>();
+                String dayShowInMessage = "";
+                int maxHour = 0;
+                int minHour = 0;
+
                 for (int i = 0; i < listRentHourString.size(); i++) {
                     String[] temp = listRentHourString.get(i).split(":");
                     String itemInList = temp[1] + ":" + temp[2] + ":" + temp[3];
+                    String itemTemp = listRentHourString.get(i);
                     if (itemInList.equals(selectDayFormat)) {
+                        dayShowInMessage = itemInList;
+                        dayShowInMessage = dayShowInMessage.replaceAll(":", "/");
                         changeColorHour(Integer.parseInt(temp[0]));
+                        listRent.add(Integer.parseInt(temp[0]));
                     }
                 }
 
+
+                String strMessageDay = "";
+                if (listRent.size() > 0) {
+                    maxHour = listRent.get(0);
+                    minHour = listRent.get(0);
+                    for (int i = 0; i < listRent.size(); i++) {
+                        if (minHour > listRent.get(i)) {
+                            minHour = listRent.get(i);
+                        }
+                        if (maxHour < listRent.get(i)) {
+                            maxHour = listRent.get(i);
+                        }
+                    }
+
+                    strMessageDay = "Xe bận từ: " + minHour + "h -> " + maxHour + "h";
+                    if (minHour == 0 && maxHour == 23){
+                        strMessageDay = "Xe bận cả ngày";
+                    }
+
+                    snackbar = Snackbar
+                            .make(ln_parent_layout, strMessageDay, Snackbar.LENGTH_INDEFINITE)
+                            .setAction("đồng ý", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    snackbar.dismiss();
+                                }
+                            });
+
+                    snackbar.show();
+                } else {
+                    snackbar = Snackbar
+                            .make(ln_parent_layout, "Xe không bận", Snackbar.LENGTH_SHORT);
+                    snackbar.show();
+                }
             }
 
             @Override
@@ -685,7 +817,7 @@ public class CalendarCustom extends AppCompatActivity {
         return isFree;
     }
 
-    private void ownerViewCalendarMode(){
+    private void ownerViewCalendarMode() {
         rd_oneDay.setVisibility(View.INVISIBLE);
         rd_multipleDay.setVisibility(View.INVISIBLE);
         time_picker_hours_end.setVisibility(View.INVISIBLE);
@@ -752,7 +884,7 @@ public class CalendarCustom extends AppCompatActivity {
             Toast.makeText(CalendarCustom.this, "Vui lòng chọn thời gian hợp lệ", Toast.LENGTH_SHORT).show();
         } else if (totalDay == 0 && totalHour < 2) {
             Toast.makeText(CalendarCustom.this, "Thời gian thuê tối thiểu là 2 tiếng", Toast.LENGTH_SHORT).show();
-        } else if(isFree == false){
+        } else if (isFree == false) {
             Toast.makeText(this, "Thời gian này đã có người thuê! Vui lòng chọn lại", Toast.LENGTH_SHORT).show();
         } else {
             SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
@@ -824,7 +956,6 @@ public class CalendarCustom extends AppCompatActivity {
         result = day + " / " + month + " / " + year;
         return result;
     }
-
 
     @Override
     public void onBackPressed() {

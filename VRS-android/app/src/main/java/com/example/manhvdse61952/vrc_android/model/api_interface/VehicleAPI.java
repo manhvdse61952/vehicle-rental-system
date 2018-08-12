@@ -1,6 +1,8 @@
 package com.example.manhvdse61952.vrc_android.model.api_interface;
 
 
+import com.example.manhvdse61952.vrc_android.model.api_model.BusyDay;
+import com.example.manhvdse61952.vrc_android.model.api_model.Feedback;
 import com.example.manhvdse61952.vrc_android.model.api_model.VehicleInformation;
 import com.example.manhvdse61952.vrc_android.model.api_model.VehicleLocation;
 import com.example.manhvdse61952.vrc_android.model.api_model.VehicleUpdate;
@@ -14,6 +16,7 @@ import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
@@ -77,4 +80,16 @@ public interface VehicleAPI {
     @Headers({"Accept: application/json"})
     @GET("/vehicle/getLocationList")
     Call<List<VehicleLocation>> getVehicleLocation();
+
+    @Headers({"Accept: application/json"})
+    @GET("/feedback/listFeedback/{vehicleID}")
+    Call<List<Feedback>> getFeedback(@Path("vehicleID") String vehicleID);
+
+    @Headers({"Accept: application/json"})
+    @DELETE("/vehicle/delete/{frameNumber}")
+    Call<ResponseBody> deleteVehicle(@Path("frameNumber") String frameNumber);
+
+    @Headers({"Accept: application/json"})
+    @GET("/vehicle/getBusyInWeek/{frameNumber}")
+    Call<BusyDay> getBusyDay(@Path("frameNumber") String frameNumber);
 }

@@ -1,21 +1,28 @@
 package com.example.manhvdse61952.vrc_android.controller.layout.contract;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Rect;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.manhvdse61952.vrc_android.R;
+import com.example.manhvdse61952.vrc_android.controller.permission.PermissionDevice;
 import com.example.manhvdse61952.vrc_android.controller.resources.GeneralController;
 import com.example.manhvdse61952.vrc_android.controller.resources.ImmutableValue;
 import com.example.manhvdse61952.vrc_android.model.api_interface.ContractAPI;
@@ -38,7 +45,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class ContractDetail extends AppCompatActivity {
-    Button btn_contract_give_car, btn_remove_contract;
+    Button btn_contract_give_car, btn_remove_contract,btn_send_feedback;
     TextView txt_contract_start_time, txt_contract_end_time, txt_contract_id, txt_contract_owner_name, txt_contract_vehicle_name,
             txt_contract_vehicle_year, txt_contract_vehicle_seat, txt_contract_customer_name,
             txt_contract_receive_type, txt_contract_rent_time, txt_contract_rent_fee, txt_contract_deposit_fee,
@@ -46,10 +53,13 @@ public class ContractDetail extends AppCompatActivity {
             txt_contract_owner_phone, txt_secret_key, txt_clock_time, txt_clock_day,
             txt_secret_return_vehicle, txt_contract_complete_endRealTime, txt_contract_complete_overTime,
             txt_contract_complete_overPrice, txt_contract_insideFee, txt_contract_outsideFee
-            , txt_detail_discount_vehicle, txt_detail_discount_general;
-    LinearLayout ln_clock, ln_show_fee;
+            , txt_detail_discount_vehicle, txt_detail_discount_general, txt_customer_location;
+    LinearLayout ln_clock, ln_show_fee, ln_feedback;
     ProgressDialog dialog;
-    int customerID = 0, rentFee = 0;
+    RatingBar rt_feedback;
+    EditText edt_feedback;
+    int customerID = 0, contractIdGeneral = 0;
+    long rentFee = 0;
     long currentTimeInServer = 0, startLongTime = 0, endLongTime = 0;
     Date currentTime = null, currentDay = null;
     Handler handler;
@@ -183,6 +193,11 @@ public class ContractDetail extends AppCompatActivity {
         ln_show_fee = (LinearLayout)findViewById(R.id.ln_show_fee);
         txt_detail_discount_vehicle = (TextView)findViewById(R.id.txt_detail_discount_vehicle);
         txt_detail_discount_general = (TextView)findViewById(R.id.txt_detail_discount_general);
+        ln_feedback = (LinearLayout)findViewById(R.id.ln_feedback);
+        edt_feedback = (EditText)findViewById(R.id.edt_feedback);
+        rt_feedback = (RatingBar)findViewById(R.id.rt_feedback);
+        btn_send_feedback = (Button)findViewById(R.id.btn_send_feedback);
+        txt_customer_location = (TextView)findViewById(R.id.txt_customer_location);
     }
 
     private void initLayout() {
@@ -192,6 +207,7 @@ public class ContractDetail extends AppCompatActivity {
         SharedPreferences editor2 = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
         final int userID = editor1.getInt(ImmutableValue.HOME_userID, 0);
         final String contractID = editor2.getString(ImmutableValue.MAIN_contractID, "Empty");
+        contractIdGeneral = Integer.parseInt(contractID);
         Retrofit retrofit = RetrofitConfig.getClient();
         final ContractAPI contractAPI = retrofit.create(ContractAPI.class);
         Call<ContractItem> responseBodyCall = contractAPI.findContractByID(contractID);
@@ -220,6 +236,12 @@ public class ContractDetail extends AppCompatActivity {
                         txt_contract_customer_name.setText(obj.getCustomerName());
                         txt_contract_customer_cmnd.setText(obj.getCustomerCMND());
                         txt_contract_customer_phone.setText(obj.getCustomerPhone());
+                        if (obj.getFeedbackContent() == null){
+                            edt_feedback.setText("");
+                        } else {
+                            edt_feedback.setText(obj.getFeedbackContent() + "");
+                        }
+                        rt_feedback.setRating((float)obj.getFeedbackStar());
 
                         NumberFormat nf = new DecimalFormat("#.####");
                         if (obj.getDiscountVehicle() != 0){
@@ -231,10 +253,14 @@ public class ContractDetail extends AppCompatActivity {
                             txt_detail_discount_general.setText(nf.format(discountGeneralValue) + " %");
                         }
 
-                        if (obj.getReceiveType() == 0) {
+                        if (obj.getDeliveryType().equals(ImmutableValue.DELIVERY_CUSTOMER_PICK_UP)) {
                             txt_contract_receive_type.setText("Tự đến lấy xe");
+                            txt_customer_location.setVisibility(View.INVISIBLE);
                         } else {
                             txt_contract_receive_type.setText("Giao xe tại chỗ");
+                            String customerAddress = PermissionDevice.getStringAddress(obj.getLongitude(), obj.getLatitude(), ContractDetail.this);
+                            txt_customer_location.setVisibility(View.VISIBLE);
+                            txt_customer_location.setText(customerAddress + "");
                         }
                         txt_contract_rent_time.setText(obj.getRentDay() + " ngày " + obj.getRentHour() + " tiếng");
                         txt_contract_complete_endRealTime.setText(GeneralController.convertTime(obj.getEndRealTime()));
@@ -254,13 +280,18 @@ public class ContractDetail extends AppCompatActivity {
                             txt_contract_complete_overPrice.setText("0");
                         }
 
-                        txt_contract_deposit_fee.setText(GeneralController.convertPrice(obj.getDepositFee()));
-                        int depositFee = Integer.parseInt(obj.getDepositFee());
-                        int totalFee = Integer.parseInt(obj.getTotalFee());
+                        double depositFeeFromDB = Double.parseDouble(obj.getDepositFee());
+                        double totalFeeFromDB = Double.parseDouble(obj.getTotalFee());
+                        String depositFeeString = nf.format(depositFeeFromDB);
+                        String totalFeeString = nf.format(totalFeeFromDB);
+                        txt_contract_deposit_fee.setText(GeneralController.convertPrice(depositFeeString));
+
+                        long depositFee = Long.parseLong(depositFeeString);
+                        long totalFee = Long.parseLong(totalFeeString);
                         rentFee = totalFee - depositFee;
-                        int overTimeFee = obj.getPenaltyOverTime();
-                        int insideFee = obj.getInsideFee();
-                        int outsideFee = obj.getOutsideFee();
+                        long overTimeFee = Long.parseLong(obj.getPenaltyOverTime());
+                        long insideFee = Long.parseLong(obj.getInsideFee());
+                        long outsideFee = Long.parseLong(obj.getOutsideFee());
                         totalFee = totalFee + overTimeFee + insideFee + outsideFee;
                         txt_contract_rent_fee.setText(GeneralController.convertPrice(String.valueOf(rentFee)));
                         txt_contract_complete_overPrice.setText(GeneralController.convertPrice(String.valueOf(overTimeFee)));
@@ -276,11 +307,17 @@ public class ContractDetail extends AppCompatActivity {
                             LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) ln_show_fee.getLayoutParams();
                             params.height = 0;
                             ln_show_fee.setLayoutParams(params);
+                            LinearLayout.LayoutParams params2 = (LinearLayout.LayoutParams) ln_feedback.getLayoutParams();
+                            params2.height = 0;
+                            ln_feedback.setLayoutParams(params2);
                         } else if (obj.getCustomerID() == userID && (obj.getContractStatus().equals(ImmutableValue.CONTRACT_INACTIVE)
                                 || obj.getContractStatus().equals(ImmutableValue.CONTRACT_ACTIVE))){
                             LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) ln_show_fee.getLayoutParams();
                             params.height = 0;
                             ln_show_fee.setLayoutParams(params);
+                            LinearLayout.LayoutParams params2 = (LinearLayout.LayoutParams) ln_feedback.getLayoutParams();
+                            params2.height = 0;
+                            ln_feedback.setLayoutParams(params2);
                         }
                         else if (obj.getContractStatus().equals(ImmutableValue.CONTRACT_FINISHED)) {
                             LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) ln_clock.getLayoutParams();
@@ -288,6 +325,12 @@ public class ContractDetail extends AppCompatActivity {
                             ln_clock.setLayoutParams(params);
                             btn_contract_give_car.setVisibility(View.INVISIBLE);
                             btn_remove_contract.setVisibility(View.INVISIBLE);
+                            if (obj.getOwnerID() == userID){
+                                LinearLayout.LayoutParams params2 = (LinearLayout.LayoutParams) ln_feedback.getLayoutParams();
+                                params2.height = 0;
+                                ln_feedback.setLayoutParams(params2);
+                            }
+
                         } else if (obj.getContractStatus().equals(ImmutableValue.CONTRACT_REFUNDED)) {
                             LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) ln_clock.getLayoutParams();
                             LinearLayout.LayoutParams params2 = (LinearLayout.LayoutParams) ln_show_fee.getLayoutParams();
@@ -295,9 +338,18 @@ public class ContractDetail extends AppCompatActivity {
                             params2.height = 0;
                             ln_clock.setLayoutParams(params);
                             ln_show_fee.setLayoutParams(params2);
+                            LinearLayout.LayoutParams params3 = (LinearLayout.LayoutParams) ln_feedback.getLayoutParams();
+                            params3.height = 0;
+                            ln_feedback.setLayoutParams(params3);
                             btn_contract_give_car.setVisibility(View.INVISIBLE);
                             btn_remove_contract.setVisibility(View.INVISIBLE);
                         }
+                        btn_send_feedback.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                sendFeedback();
+                            }
+                        });
                         initClock();
                     }
                 } else {
@@ -446,5 +498,52 @@ public class ContractDetail extends AppCompatActivity {
         });
     }
 
+    private void sendFeedback(){
+        final ProgressDialog dialog = ProgressDialog.show(ContractDetail.this, "Đang xử lý",
+                "Vui lòng đợi ...", true);
+        String content = edt_feedback.getText().toString();
+        Date currentTime = new Date();
+        long currentTimeLong = currentTime.getTime();
+        float getRating = rt_feedback.getRating();
+        int rating = (int)getRating;
+
+        Retrofit retrofit = RetrofitConfig.getClient();
+        ContractAPI contractAPI = retrofit.create(ContractAPI.class);
+        Call<ResponseBody> responseBodyCall = contractAPI.feedbackContract(contractIdGeneral, content, currentTimeLong, rating);
+        responseBodyCall.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()){
+                    Toast.makeText(ContractDetail.this, "Đánh giá gửi thành công", Toast.LENGTH_SHORT).show();
+                    finish();
+                    startActivity(getIntent());
+                }
+                dialog.dismiss();
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                dialog.dismiss();
+                Toast.makeText(ContractDetail.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            View v = getCurrentFocus();
+            if (v instanceof EditText) {
+                Rect outRect = new Rect();
+                v.getGlobalVisibleRect(outRect);
+                if (!outRect.contains((int) event.getRawX(), (int) event.getRawY())) {
+                    v.clearFocus();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+        }
+        return super.dispatchTouchEvent(event);
+    }
 
 }

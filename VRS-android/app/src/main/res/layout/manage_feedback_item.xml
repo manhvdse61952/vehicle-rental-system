@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/txt_img_feedback"
+            android:layout_width="50dp"
+            android:gravity="center"
+            android:text="e"
+            android:textAllCaps="true"
+            android:textSize="18sp"
+            android:layout_margin="10dp"
+            android:background="@drawable/border_circle_feedback"
+            android:textColor="@color/primary_text"
+            android:textStyle="bold"
+            android:layout_height="50dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_margin="10dp"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="10"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/txt_feedback_name"
+                    android:layout_width="0dp"
+                    android:layout_weight="6"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:text="example user 1"
+                    android:gravity="center_vertical"
+                    android:textStyle="bold"
+                    android:textColor="@color/secondary_text"/>
+                <TextView
+                    android:id="@+id/txt_feedback_time"
+                    android:layout_width="0dp"
+                    android:layout_weight="4"
+                    android:gravity="end"
+                    android:text="00 / 00 / 0000"
+                    android:textStyle="italic"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <TextView
+                android:id="@+id/txt_feedback_content"
+                android:layout_width="wrap_content"
+                android:textSize="14sp"
+                android:text="example comment"
+                android:textColor="#797979"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

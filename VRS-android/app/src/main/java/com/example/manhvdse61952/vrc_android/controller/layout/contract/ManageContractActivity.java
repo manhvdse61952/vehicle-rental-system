@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -49,6 +50,7 @@ public class ManageContractActivity extends AppCompatActivity {
     public static SectionPageAdapter secAdapter;
     public static ViewPager viewPager;
     private TabLayout tabLayout;
+    FloatingActionButton fab;
 
     TextView txt_manage_contract_error;
     ProgressDialog dialog;
@@ -65,6 +67,7 @@ public class ManageContractActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
 
+        fab = (FloatingActionButton)findViewById(R.id.fab);
         txt_manage_contract_error = (TextView) findViewById(R.id.txt_manage_contract_error);
         SharedPreferences editor = getSharedPreferences(ImmutableValue.HOME_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
         if (editor.getString(ImmutableValue.HOME_role, ImmutableValue.ROLE_USER).equals(ImmutableValue.ROLE_OWNER)) {
@@ -72,6 +75,18 @@ public class ManageContractActivity extends AppCompatActivity {
         } else {
             loadDataForCustomer();
         }
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences editor = getSharedPreferences(ImmutableValue.HOME_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
+                if (editor.getString(ImmutableValue.HOME_role, ImmutableValue.ROLE_USER).equals(ImmutableValue.ROLE_OWNER)) {
+                    loadDataForOwner();
+                } else {
+                    loadDataForCustomer();
+                }
+            }
+        });
 
     }
 

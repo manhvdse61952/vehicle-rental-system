@@ -11,6 +11,13 @@ public class ImmutableValue {
     public static final String ROLE_USER = "ROLE_USER";
     public static final String ROLE_OWNER = "ROLE_OWNER";
 
+    //DeliveryType
+    public static final String DELIVERY_BOTH = "BOTH";
+    public static final String DELIVERY_CUSTOMER_PICK_UP = "CUSTOMER_PICK_UP";
+
+    //Vehicle status
+    public static final String VEHICLE_STATUS_AVAILABLE = "AVAILABLE";
+
     //Vehicle type
     public static final String XE_MAY = "XE_MAY";
     public static final String XE_CA_NHAN = "XE_CA_NHAN";
@@ -24,6 +31,7 @@ public class ImmutableValue {
     public static final String CONTRACT_FINISHED = "FINISHED";
     public static final String CONTRACT_ISSUE = "ISSUE";
     public static final String CONTRACT_REFUNDED = "REFUNDED";
+    public static final String CONTRACT_NEED_SUPPORT = "NEED_SUPPORT";
 
     ///// SHARED PREFERENCES CODE and value of it /////
     //Sign up information for customer
@@ -101,13 +109,22 @@ public class ImmutableValue {
     public static final String MAIN_isUpdateVehicle = "main_updateVehicle";
     public static final String MAIN_discountVehicle = "main_discountVehicle";
     public static final String MAIN_discountGeneral = "main_discountGeneral";
+    public static final String MAIN_customer_Lng = "main_customer_lng";
+    public static final String MAIN_customer_Lat = "main_customer_lat";
+
+    //discount
+    public static final String DISCOUNT_SHARED_PREFERENCES_CODE = "discount_code";
+    public static final String DISCOUNT_vehicle_frame = "discount_vehicle_id";
+    public static final String DISCOUNT_imageFront = "discount_image_front";
+    public static final String DISCOUNT_vehicle_name = "discount_vehicle_name";
+    public static final String DISCOUNT_value = "discount_value";
+    public static final String DISCOUNT_date = "discount_date";
 
     public static final String changeFeeMessageBody = "Chủ xe đã thay đổi phí. Vui lòng kiểm tra";
     public static List<City> listGeneralAddress = new ArrayList<>();
 
     public static String DISCOUNT_APPROVE = "ENABLE";
     public static String DISCOUNT_DISABLE = "DISABLE";
-    public static List<String> vehicleFrameNumberListGeneral = new ArrayList<>();
     public static List<SearchVehicleItem> listSearchAdvanced = new ArrayList<>();
     public static List<String> mapsDetail = new ArrayList<>();
 }

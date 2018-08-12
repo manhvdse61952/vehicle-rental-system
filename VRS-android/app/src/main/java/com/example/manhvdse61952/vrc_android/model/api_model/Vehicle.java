@@ -19,8 +19,17 @@ public class Vehicle implements Serializable {
     private int isManual;
     private double longitude;
     private double latitude;
+    private Boolean haveDriver;
+    private int vehicleDeliveryType;
+    private Boolean busyMon;
+    private Boolean busyTue;
+    private Boolean busyWed;
+    private Boolean busyThu;
+    private Boolean busyFri;
+    private Boolean busySat;
+    private Boolean busySun;
 
-    public Vehicle(String frameNumber, int ownerID, int vehicleInformationID, String description, float rentFeePerSlot, float rentFeePerDay, float rentFeePerHours, float depositFee, String plateNumber, int requireHouseHold, int requireIdCard, int districtID, int isGasoline, int isManual, double longitude, double latitude) {
+    public Vehicle(String frameNumber, int ownerID, int vehicleInformationID, String description, float rentFeePerSlot, float rentFeePerDay, float rentFeePerHours, float depositFee, String plateNumber, int requireHouseHold, int requireIdCard, int districtID, int isGasoline, int isManual, double longitude, double latitude, Boolean haveDriver, int vehicleDeliveryType, Boolean busyMon, Boolean busyTue, Boolean busyWed, Boolean busyThu, Boolean busyFri, Boolean busySat, Boolean busySun) {
         this.frameNumber = frameNumber;
         this.ownerID = ownerID;
         this.vehicleInformationID = vehicleInformationID;
@@ -37,10 +46,91 @@ public class Vehicle implements Serializable {
         this.isManual = isManual;
         this.longitude = longitude;
         this.latitude = latitude;
+        this.haveDriver = haveDriver;
+        this.vehicleDeliveryType = vehicleDeliveryType;
+        this.busyMon = busyMon;
+        this.busyTue = busyTue;
+        this.busyWed = busyWed;
+        this.busyThu = busyThu;
+        this.busyFri = busyFri;
+        this.busySat = busySat;
+        this.busySun = busySun;
     }
 
     public Vehicle(){
 
+    }
+
+    public Boolean getBusyMon() {
+        return busyMon;
+    }
+
+    public void setBusyMon(Boolean busyMon) {
+        this.busyMon = busyMon;
+    }
+
+    public Boolean getBusyTue() {
+        return busyTue;
+    }
+
+    public void setBusyTue(Boolean busyTue) {
+        this.busyTue = busyTue;
+    }
+
+    public Boolean getBusyWed() {
+        return busyWed;
+    }
+
+    public void setBusyWed(Boolean busyWed) {
+        this.busyWed = busyWed;
+    }
+
+    public Boolean getBusyThu() {
+        return busyThu;
+    }
+
+    public void setBusyThu(Boolean busyThu) {
+        this.busyThu = busyThu;
+    }
+
+    public Boolean getBusyFri() {
+        return busyFri;
+    }
+
+    public void setBusyFri(Boolean busyFri) {
+        this.busyFri = busyFri;
+    }
+
+    public Boolean getBusySat() {
+        return busySat;
+    }
+
+    public void setBusySat(Boolean busySat) {
+        this.busySat = busySat;
+    }
+
+    public Boolean getBusySun() {
+        return busySun;
+    }
+
+    public void setBusySun(Boolean busySun) {
+        this.busySun = busySun;
+    }
+
+    public Boolean getHaveDriver() {
+        return haveDriver;
+    }
+
+    public void setHaveDriver(Boolean haveDriver) {
+        this.haveDriver = haveDriver;
+    }
+
+    public int getVehicleDeliveryType() {
+        return vehicleDeliveryType;
+    }
+
+    public void setVehicleDeliveryType(int vehicleDeliveryType) {
+        this.vehicleDeliveryType = vehicleDeliveryType;
     }
 
     public double getLongitude() {

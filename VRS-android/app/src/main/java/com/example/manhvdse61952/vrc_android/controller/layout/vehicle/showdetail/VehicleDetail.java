@@ -1,5 +1,6 @@
 package com.example.manhvdse61952.vrc_android.controller.layout.vehicle.showdetail;
 
+import android.Manifest;
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
@@ -7,14 +8,21 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -28,6 +36,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.ScrollView;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -43,11 +52,13 @@ import com.example.manhvdse61952.vrc_android.model.api_interface.VehicleAPI;
 import com.example.manhvdse61952.vrc_android.controller.layout.main.MainActivity;
 import com.example.manhvdse61952.vrc_android.controller.layout.order.PaypalExecute;
 import com.example.manhvdse61952.vrc_android.model.api_model.DiscountGeneral;
+import com.example.manhvdse61952.vrc_android.model.api_model.Feedback;
 import com.example.manhvdse61952.vrc_android.model.search_model.DetailVehicleItem;
 import com.example.manhvdse61952.vrc_android.remote.RetrofitConfig;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -62,24 +73,30 @@ public class VehicleDetail extends AppCompatActivity {
     FloatingActionButton btn_back;
     DetailVehicleItem mainObj = new DetailVehicleItem();
     LinearLayout ln_discount_hide;
-    int selectTab = 0, rentFeePerHourID = 0, rentFeePerDayID = 0, totalHour = 0, receiveType = 0, totalDay = 0;
+    RadioButton rd_1, rd_2;
+    int selectTab = 0, rentFeePerHourID = 0, rentFeePerDayID = 0, totalHour = 0, receiveType = 1, totalDay = 0;
     Double totalMoney = 0.0, rentFeeMoney = 0.0, usdConvert = 0.0;
+    double longitude = 0, latitude = 0;
     int viewDiscountMoney = 0;
     float discountVehicle = 0, discountGeneral = 0;
 
     TextView item_price_slot, item_price_day, item_seat, item_year,
             item_plateNumber, item_ownerName, item_engine, item_tranmission, txt_hours, txt_day_start,
-            txt_hours_2, txt_day_end, txt_order_type, txt_day_rent, txt_hour_rent,
+            txt_hours_2, txt_day_end, txt_day_rent, txt_hour_rent, txt_have_driver,
             txt_money_day_rent, txt_money_hour_rent, txt_money_total, item_price_deposit,
             txt_usd_convert, txt_money_deposit, txt_pickTime, txt_vehicle_owner, item_discount
-            , txt_money_discount, txt_discount_general, txt_show_location;
+            , txt_money_discount, txt_discount_general, txt_show_location, txt_vehicle_address;
 
     EditText edt_discount;
     CheckBox cbx1, cbx2;
     LinearLayout ln_pickTime;
-    Switch swt_order_type;
     ProgressDialog dialog;
     LinearLayout ln_hide_order_type, ln_hide_calculator;
+    RecyclerView rv_feedback;
+    FeedbackAdapter feedbackAdapter;
+    String frameNumber;
+    LocationManager locationManager;
+    LocationListener locationListener;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -110,8 +127,18 @@ public class VehicleDetail extends AppCompatActivity {
                         }
                     }, 100);
                 } else {
-                    txt_pickTime.setTextColor(Color.parseColor("#212121"));
                     SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
+                    if (rd_1.isChecked()){
+                        receiveType = 1;
+                        editor.putString(ImmutableValue.MAIN_customer_Lat, "0");
+                        editor.putString(ImmutableValue.MAIN_customer_Lng, "0");
+                    } else if (rd_2.isChecked()){
+                        receiveType = 0;
+                        editor.putString(ImmutableValue.MAIN_customer_Lat, String.valueOf(latitude));
+                        editor.putString(ImmutableValue.MAIN_customer_Lng, String.valueOf(longitude));
+                    }
+                    txt_pickTime.setTextColor(Color.parseColor("#212121"));
+
                     editor.putString(ImmutableValue.MAIN_totalMoney, Double.toString(usdConvert));
                     rentFeeMoney = rentFeeMoney - viewDiscountMoney;
                     editor.putString(ImmutableValue.MAIN_rentFeeMoney, Double.toString(rentFeeMoney));
@@ -233,8 +260,6 @@ public class VehicleDetail extends AppCompatActivity {
         txt_day_start = (TextView) findViewById(R.id.txt_day_start);
         txt_hours_2 = (TextView) findViewById(R.id.txt_hours_2);
         txt_day_end = (TextView) findViewById(R.id.txt_day_end);
-        swt_order_type = (Switch) findViewById(R.id.swt_order_type);
-        txt_order_type = (TextView) findViewById(R.id.txt_order_type);
         txt_usd_convert = (TextView)findViewById(R.id.txt_usd_convert);
         txt_money_deposit = (TextView)findViewById(R.id.txt_money_deposit);
         vpg = (ViewPager) findViewById(R.id.vpg);
@@ -252,11 +277,21 @@ public class VehicleDetail extends AppCompatActivity {
         ln_discount_hide = (LinearLayout)findViewById(R.id.ln_discount_hide);
         btn_show_map = (Button)findViewById(R.id.btn_show_map);
         txt_show_location = (TextView)findViewById(R.id.txt_show_location);
+        txt_vehicle_address = (TextView)findViewById(R.id.txt_vehicle_address);
+
+        rv_feedback = (RecyclerView)findViewById(R.id.rv_feedback);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        rv_feedback.setLayoutManager(mLayoutManager);
+
+        txt_have_driver = (TextView)findViewById(R.id.txt_have_driver);
+        rd_1 = (RadioButton)findViewById(R.id.rd_1);
+        rd_2 = (RadioButton)findViewById(R.id.rd_2);
+
     }
 
     private void initLayout(){
         SharedPreferences editor = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
-        String frameNumber = editor.getString(ImmutableValue.MAIN_vehicleID, "aaaaaa");
+        frameNumber = editor.getString(ImmutableValue.MAIN_vehicleID, "aaaaaa");
         String startHour = editor.getString(ImmutableValue.MAIN_startHour, "--");
         String endHour = editor.getString(ImmutableValue.MAIN_endHour, "--");
         String startMinute = editor.getString(ImmutableValue.MAIN_startMinute, "--");
@@ -305,6 +340,8 @@ public class VehicleDetail extends AppCompatActivity {
                             edt_discount.setVisibility(View.INVISIBLE);
                             btn_check_discount.setVisibility(View.INVISIBLE);
                         }
+
+
 
                         // use for init layout
                         final SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
@@ -361,6 +398,22 @@ public class VehicleDetail extends AppCompatActivity {
                             String discountConvert = nf.format(discountValue);
                             txt_discount_general.setText(discountConvert + " %");
                         }
+                        if (mainObj.getHasDriver() == true){
+                            txt_have_driver.setText("Có");
+                        } else {
+                            txt_have_driver.setText("Không");
+                        }
+                        if (mainObj.getDeliveryType().equals(ImmutableValue.DELIVERY_BOTH)){
+                            rd_1.setChecked(true);
+                        } else if (mainObj.getDeliveryType().equals(ImmutableValue.DELIVERY_CUSTOMER_PICK_UP)){
+                            rd_1.setChecked(true);
+                            rd_2.setEnabled(false);
+                        } else {
+                            rd_1.setEnabled(false);
+                            rd_2.setChecked(true);
+                            getCurrentLocation();
+                        }
+
 
 
                         String priceHour = GeneralController.convertPrice(nf.format(mainObj.getRentFeePerHour()));
@@ -395,6 +448,24 @@ public class VehicleDetail extends AppCompatActivity {
                             cbx2.setEnabled(false);
                         }
 
+                        rd_1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                            @Override
+                            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                if (isChecked){
+                                    txt_vehicle_address.setText("");
+                                }
+                            }
+                        });
+                        rd_2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                            @Override
+                            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                if (isChecked){
+                                    getCurrentLocation();
+                                    txt_vehicle_address.setText(PermissionDevice.getStringAddress(longitude, latitude, VehicleDetail.this));
+                                }
+                            }
+                        });
+
                         //Start pick date time intent
                         ln_pickTime.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -415,23 +486,6 @@ public class VehicleDetail extends AppCompatActivity {
                             }
                         });
 
-
-                        //Use for switch
-                        scaleView(txt_order_type, 0f, 0f);
-                        swt_order_type.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                            @Override
-                            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                                if (isChecked) {
-                                    receiveType = 0;
-                                    textColorAnimated(swt_order_type, Color.parseColor("#000000"));
-                                    scaleView(txt_order_type, 0f, 0f);
-                                } else {
-                                    receiveType = 1;
-                                    textColorAnimated(swt_order_type, Color.parseColor("#cccccc"));
-                                    scaleView(txt_order_type, 0f, 1f);
-                                }
-                            }
-                        });
 
                         //Calculate money (magic)
                         totalMoney = totalDay * mainObj.getRentFeePerDay() + totalHour * mainObj.getRentFeePerHour()
@@ -485,6 +539,8 @@ public class VehicleDetail extends AppCompatActivity {
                                 }
                             });
                         }
+
+                        getFeedback();
                     }
                 } else {
                     Toast.makeText(VehicleDetail.this, "Đã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
@@ -523,5 +579,87 @@ public class VehicleDetail extends AppCompatActivity {
             }
         }
         return super.dispatchTouchEvent( event );
+    }
+
+    private void getFeedback(){
+        final ProgressDialog dialog = ProgressDialog.show(VehicleDetail.this, "Hệ thống",
+                "Đang xử lý ...", true);
+        Retrofit retrofit = RetrofitConfig.getClient();
+        VehicleAPI vehicleAPI = retrofit.create(VehicleAPI.class);
+        Call<List<Feedback>> responseBodyCall = vehicleAPI.getFeedback(frameNumber);
+        responseBodyCall.enqueue(new Callback<List<Feedback>>() {
+            @Override
+            public void onResponse(Call<List<Feedback>> call, Response<List<Feedback>> response) {
+                if (response.isSuccessful()){
+                    if (response.body() != null){
+                        List<Feedback> feedbackList = response.body();
+                        if (feedbackList.size() > 0){
+                            feedbackAdapter = new FeedbackAdapter(feedbackList);
+                            rv_feedback.setAdapter(feedbackAdapter);
+                            feedbackAdapter.notifyDataSetChanged();
+                        }
+                    }
+
+                }
+                dialog.dismiss();
+            }
+
+            @Override
+            public void onFailure(Call<List<Feedback>> call, Throwable t) {
+                dialog.dismiss();
+                Toast.makeText(VehicleDetail.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    private void getCurrentLocation() {
+        final ProgressDialog dialog = ProgressDialog.show(VehicleDetail.this, "Hệ thống",
+                "Đang xử lý", true);
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+
+            }
+        };
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            dialog.dismiss();
+            Toast.makeText(this, "Vui lòng thoát ứng dụng và chạy lại", Toast.LENGTH_SHORT).show();
+            finish();
+        }
+        if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+            Location lastLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            longitude = lastLocation.getLongitude();
+            latitude = lastLocation.getLatitude();
+            dialog.dismiss();
+
+        } else if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+            Location lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            longitude = lastLocation.getLongitude();
+            latitude = lastLocation.getLatitude();
+
+            dialog.dismiss();
+        } else {
+            dialog.dismiss();
+            Toast.makeText(this, "Xảy ra lỗi với định vị! Vui lòng kiểm tra lại thiết bị", Toast.LENGTH_SHORT).show();
+            onBackPressed();
+        }
     }
 }

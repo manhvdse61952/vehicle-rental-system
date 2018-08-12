@@ -1,10 +1,14 @@
 package com.example.manhvdse61952.vrc_android.controller.layout.promotion;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -41,20 +45,9 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class PromotionActivity extends AppCompatActivity {
-    TextView txtStartTimePromo, txtEndTimePromo;
-    Spinner spnPromoQuantity;
-    RecyclerView check_list;
-    Button btnCreatePromo;
+    RecyclerView rv_list_discount;
     PromotionAdapter promotionAdapter;
-    ProgressDialog dialogTemp;
-    LinearLayout ln_hide_promotion;
-
-    Calendar calendar;
-    int currentDay = 0, currentMonth = 0, currentYear = 0, checkLoop = -1;
-    float discountValue = 0;
-    long startDateLong = 0, endDateLong = 0;
-    Boolean isOpen = false;
-
+    SwipeRefreshLayout swipeLayout;
     List<Discount> discountList = new ArrayList<>();
 
     @Override
@@ -73,15 +66,9 @@ public class PromotionActivity extends AppCompatActivity {
 
         initLayout();
 
-        getListPromotion();
+        getListVehicleOfOwner();
 
-        btnCreatePromo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                createPromotionAction();
-            }
-        });
-
+        reloadData();
     }
 
     @Override
@@ -97,137 +84,56 @@ public class PromotionActivity extends AppCompatActivity {
     }
 
     private void declareID() {
-        txtStartTimePromo = (TextView) findViewById(R.id.txtStartTimePromo);
-        txtEndTimePromo = (TextView) findViewById(R.id.txtEndTimePromo);
-        spnPromoQuantity = (Spinner) findViewById(R.id.spnPromoQuantity);
-        check_list = (RecyclerView) findViewById(R.id.check_list);
-        btnCreatePromo = (Button) findViewById(R.id.btnCreatePromo);
-        ln_hide_promotion = (LinearLayout) findViewById(R.id.ln_hide_promotion);
+        rv_list_discount = (RecyclerView) findViewById(R.id.rv_list_discount);
+        swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipeLayout);
     }
 
     private void initLayout() {
-        ImmutableValue.vehicleFrameNumberListGeneral = new ArrayList<>();
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        check_list.setLayoutManager(mLayoutManager);
+        rv_list_discount.setLayoutManager(mLayoutManager);
+    }
 
-        // set data for calendar
-        calendar = Calendar.getInstance();
-        currentYear = calendar.get(Calendar.YEAR);
-        currentMonth = calendar.get(Calendar.MONTH);
-        currentDay = calendar.get(Calendar.DAY_OF_MONTH);
 
-        GeneralController.scaleView(ln_hide_promotion, 0);
-
-        //Init spinner value
-        List<String> listValue = new ArrayList<>();
-        listValue.add(0, "Chọn mức giảm");
-        listValue.add("5%");
-        listValue.add("10%");
-        listValue.add("15%");
-        listValue.add("20%");
-        listValue.add("25%");
-        listValue.add("30%");
-        listValue.add("35%");
-        listValue.add("50%");
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(PromotionActivity.this, android.R.layout.simple_spinner_dropdown_item, listValue);
-        spnPromoQuantity.setAdapter(dataAdapter);
-        spnPromoQuantity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+    private void getListVehicleOfOwner() {
+        final ProgressDialog dialog;
+        dialog = ProgressDialog.show(PromotionActivity.this, "Hệ thống",
+                "Đang xử lý ...", true);
+        SharedPreferences editor = getSharedPreferences(ImmutableValue.HOME_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
+        int ownerID = editor.getInt(ImmutableValue.HOME_userID, 0);
+        Retrofit retrofit = RetrofitConfig.getClient();
+        VehicleAPI vehicleAPI = retrofit.create(VehicleAPI.class);
+        Call<List<SearchVehicleItem>> responseBodyCall = vehicleAPI.getVehicleByOwnerID(ownerID);
+        responseBodyCall.enqueue(new Callback<List<SearchVehicleItem>>() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long id) {
-                if (adapterView.getItemAtPosition(i).equals("Chọn mức giảm")) {
-                    discountValue = 0;
-                } else {
-                    switch (adapterView.getItemAtPosition(i).toString()) {
-                        case "5%":
-                            discountValue = (float) 0.05;
-                            break;
-                        case "10%":
-                            discountValue = (float) 0.1;
-                            break;
-                        case "15%":
-                            discountValue = (float) 0.15;
-                            break;
-                        case "20%":
-                            discountValue = (float) 0.2;
-                            break;
-                        case "25%":
-                            discountValue = (float) 0.25;
-                            break;
-                        case "30%":
-                            discountValue = (float) 0.3;
-                            break;
-                        case "35%":
-                            discountValue = (float) 0.35;
-                            break;
-                        case "50%":
-                            discountValue = (float) 0.5;
-                            break;
+            public void onResponse(Call<List<SearchVehicleItem>> call, Response<List<SearchVehicleItem>> response) {
+                if (response.code() == 200) {
+                    List<SearchVehicleItem> listVehicle = response.body();
+                    if (listVehicle.size() > 0) {
+                        for (int i = 0; i < listVehicle.size(); i++) {
+                            Discount obj = new Discount();
+                            obj.setVehicleFrameNumber(listVehicle.get(i).getFrameNumber());
+                            obj.setVehicleMaker(listVehicle.get(i).getVehicleMaker());
+                            obj.setVehicleModel(listVehicle.get(i).getVehicleModel());
+                            obj.setDiscountValue(0);
+                            obj.setDiscountID(0);
+                            obj.setDiscountStatus(ImmutableValue.DISCOUNT_DISABLE);
+                            obj.setStartDay(0);
+                            obj.setEndDay(0);
+                            obj.setImageLinkFront(listVehicle.get(i).getImageLinkFront());
+                            discountList.add(obj);
+                        }
                     }
+                    getListPromotion();
                 }
+                dialog.dismiss();
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
+            public void onFailure(Call<List<SearchVehicleItem>> call, Throwable t) {
+                dialog.dismiss();
+                Toast.makeText(PromotionActivity.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
             }
         });
-
-        //Show calendar
-        txtStartTimePromo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setCalendarStartDate(txtStartTimePromo);
-            }
-        });
-        txtEndTimePromo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setCalendarEndDate(txtEndTimePromo);
-            }
-        });
-
-    }
-
-    private void setCalendarStartDate(final TextView startTextView) {
-        DatePickerDialog dd = new DatePickerDialog(PromotionActivity.this,
-                new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
-                        try {
-                            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-                            String dateInString = dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
-                            Date date = formatter.parse(dateInString);
-                            startTextView.setText(formatter.format(date).toString());
-                            startDateLong = date.getTime();
-                        } catch (Exception ex) {
-
-                        }
-                    }
-                }, currentYear, currentMonth, currentDay);
-        Date date = Calendar.getInstance().getTime();
-        dd.getDatePicker().setMinDate(date.getTime());
-        dd.show();
-    }
-
-    private void setCalendarEndDate(final TextView endTextView) {
-        DatePickerDialog dd = new DatePickerDialog(PromotionActivity.this,
-                new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
-                        try {
-                            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-                            String dateInString = dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
-                            Date date = formatter.parse(dateInString);
-                            endTextView.setText(formatter.format(date).toString());
-                            endDateLong = date.getTime();
-                        } catch (Exception ex) {
-
-                        }
-                    }
-                }, currentYear, currentMonth, currentDay);
-        Date date = Calendar.getInstance().getTime();
-        dd.getDatePicker().setMinDate(date.getTime());
-        dd.show();
     }
 
     private void getListPromotion() {
@@ -243,9 +149,25 @@ public class PromotionActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Discount>> call, Response<List<Discount>> response) {
                 if (response.code() == 200) {
-                    discountList = new ArrayList<>();
-                    discountList = response.body();
-                    getListVehicleOfOwner();
+                    List<Discount> listDiscountTemp = response.body();
+                    if (listDiscountTemp.size() > 0) {
+                        for (int i = 0; i < listDiscountTemp.size(); i++) {
+                            for (int j = 0; j < discountList.size(); j++) {
+                                if (listDiscountTemp.get(i).getVehicleFrameNumber()
+                                        .equals(discountList.get(j).getVehicleFrameNumber())) {
+                                    discountList.get(j).setDiscountID(listDiscountTemp.get(i).getDiscountID());
+                                    discountList.get(j).setStartDay(listDiscountTemp.get(i).getStartDay());
+                                    discountList.get(j).setEndDay(listDiscountTemp.get(i).getEndDay());
+                                    discountList.get(j).setDiscountStatus(listDiscountTemp.get(i).getDiscountStatus());
+                                    discountList.get(j).setDiscountValue(listDiscountTemp.get(i).getDiscountValue());
+                                }
+                            }
+                        }
+                        promotionAdapter = new PromotionAdapter(discountList, PromotionActivity.this, PromotionActivity.this);
+                        rv_list_discount.setAdapter(promotionAdapter);
+                        promotionAdapter.notifyDataSetChanged();
+
+                    }
                 }
                 dialog.dismiss();
             }
@@ -259,129 +181,31 @@ public class PromotionActivity extends AppCompatActivity {
         });
     }
 
-    private void createPromotionAction() {
-        if (isOpen == false) {
-            GeneralController.scaleView(ln_hide_promotion, 250);
-            isOpen = true;
-        } else {
-            if (startDateLong == 0 || endDateLong == 0 || startDateLong > endDateLong) {
-                Toast.makeText(this, "Vui lòng chọn ngày hợp lệ", Toast.LENGTH_SHORT).show();
-            } else if (startDateLong != 0 && endDateLong != 0 && discountValue == 0) {
-                Toast.makeText(this, "Vui lòng chọn mức giảm giá", Toast.LENGTH_SHORT).show();
-            } else if (startDateLong != 0 && endDateLong != 0 && discountValue != 0 && ImmutableValue.vehicleFrameNumberListGeneral.size() == 0) {
-                Toast.makeText(this, "Vui lòng chọn xe cần thêm giảm giá", Toast.LENGTH_SHORT).show();
-            } else {
-
-                dialogTemp = ProgressDialog.show(PromotionActivity.this, "Hệ thống",
-                        "Đang xử lý ...", true);
-                forwardLoop();
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1){
+            if (resultCode == Activity.RESULT_OK){
+                finish();
+                startActivity(getIntent());
             }
         }
     }
 
-    private void forwardLoop() {
-        if (checkLoop >= ImmutableValue.vehicleFrameNumberListGeneral.size() - 1) {
-            dialogTemp.dismiss();
-            Toast.makeText(this, "Tạo thành công", Toast.LENGTH_SHORT).show();
-            PromotionActivity.this.finish();
-            startActivity(getIntent());
-            return;
-        }
-        checkLoop++;
-        Retrofit retrofit = RetrofitConfig.getClient();
-        DiscountAPI discountAPI = retrofit.create(DiscountAPI.class);
-        Call<ResponseBody> responseBodyCall = discountAPI.updatePromotion(ImmutableValue.vehicleFrameNumberListGeneral.get(checkLoop)
-                , discountValue, startDateLong, endDateLong);
-        responseBodyCall.enqueue(new Callback<ResponseBody>() {
+    private void reloadData(){
+        swipeLayout.setColorScheme(android.R.color.holo_blue_dark, android.R.color.holo_blue_light, android.R.color.holo_green_light, android.R.color.holo_green_dark);
+        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if (response.code() == 200) {
-                    forwardLoop();
-                } else {
-                    dialogTemp.dismiss();
-                    Toast.makeText(PromotionActivity.this, "Đã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                dialogTemp.dismiss();
-                Toast.makeText(PromotionActivity.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
-                return;
-            }
-        });
-    }
-
-    private void getListVehicleOfOwner() {
-        final ProgressDialog dialog;
-        dialog = ProgressDialog.show(PromotionActivity.this, "Hệ thống",
-                "Đang xử lý ...", true);
-        SharedPreferences editor = getSharedPreferences(ImmutableValue.HOME_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
-        int ownerID = editor.getInt(ImmutableValue.HOME_userID, 0);
-        Retrofit retrofit = RetrofitConfig.getClient();
-        VehicleAPI vehicleAPI = retrofit.create(VehicleAPI.class);
-        Call<List<SearchVehicleItem>> responseBodyCall = vehicleAPI.getVehicleByOwnerID(ownerID);
-        responseBodyCall.enqueue(new Callback<List<SearchVehicleItem>>() {
-            @Override
-            public void onResponse(Call<List<SearchVehicleItem>> call, Response<List<SearchVehicleItem>> response) {
-                if (response.code() == 200) {
-                    List<SearchVehicleItem> listVehicle = new ArrayList<>();
-                    List<Discount> listDiscountFinal = new ArrayList<>();
-                    listVehicle = response.body();
-                    if (discountList.size() > 0) {
-                        for (int i = 0; i < listVehicle.size(); i++) {
-                            for (int j = 0; j < discountList.size(); j++) {
-                                if (listVehicle.get(i).getFrameNumber().equals(discountList.get(j).getVehicleFrameNumber())) {
-                                    Discount obj = new Discount();
-                                    obj.setEndDay(discountList.get(j).getEndDay());
-                                    obj.setStartDay(discountList.get(j).getStartDay());
-                                    obj.setVehicleFrameNumber(discountList.get(j).getVehicleFrameNumber());
-                                    obj.setDiscountStatus(discountList.get(j).getDiscountStatus());
-                                    obj.setDiscountID(discountList.get(j).getDiscountID());
-                                    obj.setDiscountValue(discountList.get(j).getDiscountValue());
-                                    obj.setVehicleMaker(discountList.get(j).getVehicleMaker());
-                                    obj.setVehicleModel(discountList.get(j).getVehicleModel());
-                                    listDiscountFinal.add(obj);
-                                } else {
-                                    Discount obj = new Discount();
-                                    obj.setEndDay(0);
-                                    obj.setStartDay(0);
-                                    obj.setVehicleFrameNumber(listVehicle.get(i).getFrameNumber());
-                                    obj.setDiscountStatus("");
-                                    obj.setDiscountID(0);
-                                    obj.setDiscountValue(0);
-                                    obj.setVehicleMaker(listVehicle.get(i).getVehicleMaker());
-                                    obj.setVehicleModel(listVehicle.get(i).getVehicleModel());
-                                    listDiscountFinal.add(obj);
-                                }
-                            }
-                        }
-                    } else {
-                        for (int i = 0; i < listVehicle.size();i++){
-                            Discount obj = new Discount();
-                            obj.setEndDay(0);
-                            obj.setStartDay(0);
-                            obj.setVehicleFrameNumber(listVehicle.get(i).getFrameNumber());
-                            obj.setDiscountStatus("");
-                            obj.setDiscountID(0);
-                            obj.setDiscountValue(0);
-                            obj.setVehicleMaker(listVehicle.get(i).getVehicleMaker());
-                            obj.setVehicleModel(listVehicle.get(i).getVehicleModel());
-                            listDiscountFinal.add(obj);
-                        }
+            public void onRefresh() {
+                swipeLayout.setRefreshing(true);
+                (new Handler()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        swipeLayout.setRefreshing(false);
+                        getListVehicleOfOwner();
                     }
-                    promotionAdapter = new PromotionAdapter(listDiscountFinal, PromotionActivity.this, PromotionActivity.this);
-                    check_list.setAdapter(promotionAdapter);
-                    promotionAdapter.notifyDataSetChanged();
-                }
-                dialog.dismiss();
-            }
-
-            @Override
-            public void onFailure(Call<List<SearchVehicleItem>> call, Throwable t) {
-                dialog.dismiss();
-                Toast.makeText(PromotionActivity.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
+                }, 500);
             }
         });
     }
+
 }

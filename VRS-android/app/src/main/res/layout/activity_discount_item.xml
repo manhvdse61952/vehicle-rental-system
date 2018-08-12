@@ -2,114 +2,66 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_marginTop="2.5dp"
-    android:layout_marginBottom="2.5dp"
-    android:layout_height="50dp">
+    android:layout_margin="5dp"
+    android:id="@+id/ln_discount"
+    android:background="@drawable/border_shadow"
+    android:layout_height="wrap_content">
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="horizontal"
-        android:weightSum="10"
-        android:layout_height="match_parent">
-        <CheckBox
-            android:id="@+id/cbx_discount_item"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:layout_height="match_parent" />
-        <View
-            android:layout_width="0.5dp"
-            android:background="#FFDDDDDD"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_height="match_parent"/>
+        android:layout_margin="15dp"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/img_discount"
+            android:layout_width="100dp"
+            android:src="@drawable/img_default_image"
+            android:scaleType="centerCrop"
+            android:layout_height="100dp" />
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="5"
+            android:layout_width="match_parent"
             android:orientation="vertical"
             android:weightSum="10"
+            android:layout_marginLeft="10dp"
             android:layout_height="match_parent">
             <TextView
-                android:id="@+id/txt_discount_vehicle"
+                android:id="@+id/txt_discount_name"
                 android:layout_width="match_parent"
-                android:text="xxxxxxxxx"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:maxLength="50"
-                android:gravity="center_vertical"
+                android:layout_height="wrap_content"
+                android:text="Vehicle 1"
                 android:textColor="@color/secondary_text"
-                android:textSize="12sp"
-                android:layout_height="0dp"
-                android:layout_weight="5"/>
+                android:padding="5dp"
+                android:textSize="14sp"
+                android:textStyle="bold" />
             <TextView
                 android:id="@+id/txt_discount_value"
                 android:layout_width="match_parent"
-                android:layout_weight="5"
-                android:text="0%"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:textSize="12sp"
-                android:textStyle="italic"
-                android:textColor="#FF0000"
-                android:gravity="center_vertical"
+                android:layout_height="wrap_content"
+                android:text="Khuyến mãi 15%"
+                android:textColor="#1B5E20"
                 android:padding="5dp"
-                android:layout_height="0dp" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="0.5dp"
-            android:background="#FFDDDDDD"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_height="match_parent"/>
-
-        <View
-            android:layout_width="0.5dp"
-            android:background="#FFDDDDDD"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_height="match_parent"/>
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="2.5"
-            android:orientation="vertical"
-            android:weightSum="10"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:layout_height="match_parent">
-            <TextView
-                android:id="@+id/txt_discount_start"
+                android:textSize="14sp" />
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_weight="5"
-                android:text="01/01/2019"
-                android:textSize="12sp"
-                android:textColor="@color/secondary_text"
-                android:gravity="center_horizontal|bottom"
-                android:paddingBottom="2dp"
-                android:layout_height="0dp" />
-            <TextView
-                android:id="@+id/txt_discount_end"
-                android:layout_width="match_parent"
-                android:layout_weight="5"
-                android:text="01/01/2019"
-                android:textSize="12sp"
-                android:textColor="@color/secondary_text"
-                android:gravity="center_horizontal|top"
-                android:paddingTop="2dp"
-                android:layout_height="0dp" />
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginLeft="5dp">
+                <ImageView
+                    android:id="@+id/img_calendar"
+                    android:layout_width="20dp"
+                    android:scaleType="centerCrop"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_calendar_alt"
+                    android:layout_height="20dp" />
+                <TextView
+                    android:id="@+id/txt_discount_time"
+                    android:layout_width="wrap_content"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="5dp"
+                    android:text="01/08/2018 - 10/08/2018"
+                    android:textSize="14sp"
+                    android:textColor="@color/secondary_text"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
         </LinearLayout>
-        <View
-            android:layout_width="0.5dp"
-            android:background="#FFDDDDDD"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_height="match_parent"/>
-        <Switch
-            android:id="@+id/swt_discount"
-            android:layout_width="0dp"
-            android:paddingLeft="2dp"
-            android:textSize="10sp"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1.5"
-            android:layout_height="wrap_content" />
     </LinearLayout>
 </LinearLayout>
