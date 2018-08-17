@@ -20,65 +20,72 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Chi tiết hợp đồng"
-            android:textSize="18sp"
-            android:textColor="@color/primary_text" />
+            android:textColor="@color/primary_text"
+            android:textSize="18sp" />
     </android.support.v7.widget.Toolbar>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="none">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingTop="10dp"
             android:paddingLeft="20dp"
-            android:paddingRight="20dp">
+            android:paddingRight="20dp"
+            android:paddingTop="10dp">
 
             <LinearLayout
                 android:id="@+id/ln_clock"
                 android:layout_width="match_parent"
-                android:orientation="horizontal"
-                android:background="@drawable/border_shadow"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:weightSum="10"
+                android:background="@drawable/border_shadow"
+                android:orientation="horizontal"
                 android:padding="10dp"
-                android:layout_height="wrap_content">
+                android:weightSum="10">
+
                 <TextView
                     android:id="@+id/txt_clock_time"
                     android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_weight="6"
-                    android:text="00:00:00"
-                    android:paddingLeft="20dp"
                     android:gravity="center_vertical"
+                    android:paddingLeft="20dp"
+                    android:text="00:00:00"
                     android:textColor="@color/secondary_text"
-                    android:textSize="18dp"
-                    android:layout_height="wrap_content" />
+                    android:textSize="18dp" />
+
                 <TextView
                     android:id="@+id/txt_clock_day"
                     android:layout_width="0dp"
-                    android:layout_weight="4"
-                    android:text="17/07/2018"
-                    android:textSize="14dp"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:layout_weight="4"
                     android:gravity="center_horizontal"
+                    android:text="17/07/2018"
                     android:textColor="@color/secondary_text"
-                    android:layout_height="wrap_content" />
+                    android:textSize="14dp" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/border_shadow"
                 android:orientation="vertical"
-                android:padding="20dp"
-                android:layout_height="wrap_content">
+                android:padding="20dp">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Thời gian thuê trên hợp đồng"
-                    android:textSize="16sp"
                     android:textColor="@color/secondary_text"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -132,32 +139,35 @@
                         android:textStyle="bold" />
                 </LinearLayout>
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/border_shadow"
                 android:orientation="horizontal"
-                android:weightSum="10"
-                android:padding="20dp">
+                android:padding="20dp"
+                android:weightSum="10">
+
                 <TextView
                     android:layout_width="0dp"
-                    android:layout_weight="7"
                     android:layout_height="wrap_content"
+                    android:layout_weight="7"
                     android:text="Hợp đồng số"
-                    android:textSize="16sp"
                     android:textColor="@color/secondary_text"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
-                    <TextView
-                        android:id="@+id/txt_contract_id"
-                        android:layout_width="0dp"
-                        android:layout_weight="3"
-                        android:layout_height="wrap_content"
-                        android:gravity="end"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/secondary_text"
-                        android:text="0" />
+
+                <TextView
+                    android:id="@+id/txt_contract_id"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:gravity="end"
+                    android:text="0"
+                    android:textColor="@color/secondary_text"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <LinearLayout
@@ -245,6 +255,7 @@
                         android:gravity="right"
                         android:text="Empty" />
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -397,38 +408,44 @@
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                <TextView
+                    android:id="@+id/txt_contract_receive_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:orientation="horizontal"
                     android:paddingLeft="10dp"
-                    android:weightSum="1">
-
-                    <TextView
-                        android:id="@+id/txt_contract_receive_type"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Tự đến lấy xe" />
-
-                </LinearLayout>
+                    android:text="Tự đến lấy xe" />
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="5dp"
                     android:orientation="horizontal"
-                    android:paddingLeft="10dp"
-                    android:weightSum="1">
-
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:weightSum="10"
+                    android:layout_height="wrap_content">
                     <TextView
                         android:id="@+id/txt_customer_location"
                         android:layout_width="0dp"
+                        android:layout_weight="6.5"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:text="..." />
 
+                    <Button
+                        android:id="@+id/btn_contract_view_map"
+                        android:layout_width="0dp"
+                        android:layout_weight="3.5"
+                        android:text="Xem bản đồ"
+                        android:visibility="invisible"
+                        android:layout_gravity="center_vertical"
+                        android:textAllCaps="false"
+                        android:textColor="@color/primary_text"
+                        android:textSize="14sp"
+                        android:background="@color/colorPrimary"
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
+
+
+
 
             </LinearLayout>
 
@@ -471,6 +488,7 @@
                         android:gravity="right"
                         android:text="0 %" />
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -494,6 +512,7 @@
                         android:text="0 %" />
                 </LinearLayout>
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -510,6 +529,7 @@
                     android:textColor="@color/secondary_text"
                     android:textSize="16sp"
                     android:textStyle="bold" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -582,8 +602,9 @@
                 <LinearLayout
                     android:id="@+id/ln_show_fee"
                     android:layout_width="match_parent"
-                    android:orientation="vertical"
-                    android:layout_height="150dp">
+                    android:layout_height="150dp"
+                    android:orientation="vertical">
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -607,12 +628,13 @@
                             android:text="0 ngày 0 giờ" />
 
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
                         android:orientation="horizontal"
                         android:paddingLeft="10dp"
-                        android:layout_marginTop="5dp"
                         android:weightSum="1">
 
                         <TextView
@@ -630,6 +652,7 @@
                             android:text="0 ngày 0 giờ" />
 
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -650,9 +673,10 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="0.5"
                             android:gravity="right"
-                            android:textColor="@color/secondary_text"
-                            android:text="0" />
+                            android:text="0"
+                            android:textColor="@color/secondary_text" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -673,9 +697,10 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="0.5"
                             android:gravity="right"
-                            android:textColor="@color/secondary_text"
-                            android:text="0" />
+                            android:text="0"
+                            android:textColor="@color/secondary_text" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -696,10 +721,11 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="0.5"
                             android:gravity="right"
-                            android:textColor="@color/secondary_text"
-                            android:text="0" />
+                            android:text="0"
+                            android:textColor="@color/secondary_text" />
                     </LinearLayout>
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -712,9 +738,9 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.6"
-                        android:textStyle="bold"
+                        android:text="Tổng tiền"
                         android:textColor="@color/secondary_text"
-                        android:text="Tổng tiền" />
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/txt_contract_total_fee"
@@ -728,62 +754,68 @@
                         android:textStyle="bold" />
                 </LinearLayout>
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/ln_feedback"
                 android:layout_width="match_parent"
-                android:orientation="vertical"
-                android:padding="20dp"
+                android:layout_height="wrap_content"
                 android:background="@drawable/border_shadow"
-                android:layout_height="wrap_content">
+                android:orientation="vertical"
+                android:padding="20dp">
+
                 <TextView
                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:text="Đánh giá"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
                     android:textColor="@color/secondary_text"
-                    android:layout_height="wrap_content" />
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
                 <EditText
                     android:id="@+id/edt_feedback"
                     android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/button_dash_arround"
+                    android:gravity="top|left"
+                    android:hint="Nhập nội dung (có thể bỏ trống)"
                     android:inputType="textMultiLine"
                     android:maxLength="300"
                     android:maxLines="8"
-                    android:layout_marginTop="10dp"
                     android:minLines="5"
-                    android:hint="Nhập nội dung (có thể bỏ trống)"
-                    android:textColorHint="#7C7C7C"
-                    android:textSize="14sp"
-                    android:gravity="top|left"
                     android:padding="5dp"
-                    android:background="@drawable/button_dash_arround"
-                    android:layout_height="wrap_content" />
+                    android:textColorHint="#7C7C7C"
+                    android:textSize="14sp" />
+
                 <RatingBar
                     android:id="@+id/rt_feedback"
                     android:layout_width="wrap_content"
-                    android:numStars="5"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:stepSize="1"
                     android:layout_marginTop="10dp"
-                    android:layout_height="wrap_content" />
+                    android:numStars="5"
+                    android:stepSize="1" />
+
                 <Button
                     android:id="@+id/btn_send_feedback"
                     android:layout_width="wrap_content"
-                    android:text="Gửi đánh giá"
-                    android:paddingTop="10dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/border_green_primarygreen"
                     android:paddingBottom="10dp"
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp"
-                    android:layout_margin="5dp"
-                    android:textColor="@color/primary_text"
-                    android:layout_gravity="center_horizontal"
-                    android:background="@drawable/border_green_primarygreen"
-                    android:layout_height="wrap_content" />
+                    android:paddingTop="10dp"
+                    android:text="Gửi đánh giá"
+                    android:textColor="@color/primary_text" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:weightSum="10"
-                android:layout_height="wrap_content">
+                android:weightSum="10">
 
                 <Button
                     android:id="@+id/btn_remove_contract"
@@ -795,16 +827,27 @@
                     android:background="@drawable/border_red"
                     android:text="hủy hđ"
                     android:textColor="@color/primary_text" />
+
                 <Button
                     android:id="@+id/btn_contract_give_car"
                     android:layout_width="0dp"
-                    android:layout_weight="6"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_weight="6"
                     android:background="@drawable/border_green_hide"
-                    android:textColor="@color/primary_text"
                     android:text="trả xe"
-                    android:layout_marginBottom="10dp"/>
+                    android:textColor="@color/primary_text" />
             </LinearLayout>
+            <Button
+                android:id="@+id/btn_confirm"
+                android:layout_width="match_parent"
+                android:text="Đã nhận được xe"
+                android:visibility="invisible"
+                android:textAllCaps="false"
+                android:background="@drawable/border_blue"
+                android:layout_marginBottom="10dp"
+                android:textColor="@color/primary_text"
+                android:layout_height="wrap_content" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

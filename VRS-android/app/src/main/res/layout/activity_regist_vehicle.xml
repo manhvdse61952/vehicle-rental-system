@@ -739,7 +739,7 @@
                     <RadioButton
                         android:id="@+id/rd_free_specific"
                         android:layout_width="wrap_content"
-                        android:text="Xe rảnh vào các thứ"
+                        android:text="Xe rảnh vào các ngày"
                         android:layout_height="wrap_content" />
                 </RadioGroup>
                 <LinearLayout

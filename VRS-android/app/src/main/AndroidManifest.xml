@@ -18,7 +18,6 @@
          Google Maps Android API v2, but you must specify either coarse or fine
          location permissions for the 'MyLocation' functionality. 
     -->
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -26,7 +25,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".controller.layout.login.SplashScreen"
+        <activity
+            android:name=".controller.layout.login.SplashScreen"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
@@ -35,7 +35,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".controller.layout.login.LoginActivity" android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".controller.layout.login.LoginActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".controller.layout.signup.SignupUserInfoActivity"
             android:screenOrientation="portrait" />
@@ -69,35 +71,90 @@
         <activity
             android:name=".controller.layout.main.MainActivity"
             android:label="@string/title_activity_main_2"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:screenOrientation="portrait"/>
-        <meta-data android:name="com.google.android.geo.API_KEY" android:value="@string/google_maps_key" />
-        <activity android:name=".controller.layout.main.MapsActivity" android:label="@string/title_activity_maps" android:screenOrientation="portrait" />
-        <activity android:name=".controller.layout.vehicle.manage.CreateVehicle" android:screenOrientation="portrait" />
-        <activity android:name=".controller.layout.vehicle.showdetail.CalendarCustom" android:screenOrientation="portrait" />
-        <activity android:name=".controller.layout.contract.ContractDetail" android:screenOrientation="portrait"/>
-        <activity android:name=".controller.layout.vehicle.manage.ManageVehicleActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".controller.layout.contract.ManageContractActivity" android:screenOrientation="portrait"></activity>
-        <activity android:name=".controller.layout.order.PaypalExecute" android:screenOrientation="portrait"></activity>
-        <activity android:name=".controller.layout.contract.ContractPreFinishCustomer" android:screenOrientation="portrait"></activity>
-        <activity android:name=".controller.layout.contract.ContractPreFinishOwner" android:screenOrientation="portrait"></activity>
+            android:windowSoftInputMode="stateAlwaysHidden" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <activity
+            android:name=".controller.layout.main.MapsActivity"
+            android:label="@string/title_activity_maps"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".controller.layout.vehicle.manage.CreateVehicle"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".controller.layout.vehicle.showdetail.CalendarCustom"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".controller.layout.contract.ContractDetail"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".controller.layout.vehicle.manage.ManageVehicleActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".controller.layout.contract.ManageContractActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".controller.layout.order.PaypalExecute"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".controller.layout.contract.ContractPreFinishCustomer"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".controller.layout.contract.ContractPreFinishOwner"
+            android:screenOrientation="portrait" />
+
         <service android:name=".controller.notify.MyFCMClass">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <activity android:name=".controller.layout.vehicle.manage.SearchVehicleInfoActivity" android:screenOrientation="portrait"></activity>
-        <activity android:name=".controller.layout.contract.ContractComplainActivity" android:screenOrientation="portrait"></activity>
-        <activity android:name=".controller.layout.contract.ContractComplainChat" android:screenOrientation="portrait"></activity>
-        <activity android:name=".controller.layout.vehicle.manage.UpdateVehicle" android:screenOrientation="portrait"></activity>
-        <activity android:name=".controller.layout.vehicle.manage.SearchAddressVehicle" android:screenOrientation="portrait"></activity>
-        <activity android:name=".controller.layout.account.UpdateAccount" android:screenOrientation="portrait"></activity>
-        <activity android:name=".controller.layout.promotion.PromotionActivity" android:screenOrientation="portrait"></activity>
-        <activity android:name=".controller.layout.report.ViewReportActivity" android:screenOrientation="portrait"></activity>
-        <activity android:name=".controller.layout.main.SearchAdvancedActivity" android:screenOrientation="portrait"></activity>
-        <activity android:name=".controller.layout.vehicle.showdetail.VehicleMap" android:label="@string/title_activity_maps" android:screenOrientation="portrait"></activity>
-        <activity android:name=".controller.layout.promotion.PromotionDetail" android:screenOrientation="portrait"></activity>
+
+        <activity
+            android:name=".controller.layout.vehicle.manage.SearchVehicleInfoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".controller.layout.contract.ContractComplainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".controller.layout.contract.ContractComplainChat"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".controller.layout.vehicle.manage.UpdateVehicle"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".controller.layout.vehicle.manage.SearchAddressVehicle"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".controller.layout.account.UpdateAccount"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".controller.layout.promotion.PromotionActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".controller.layout.report.ViewReportActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".controller.layout.main.SearchAdvancedActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".controller.layout.vehicle.showdetail.VehicleMap"
+            android:label="@string/title_activity_maps"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".controller.layout.promotion.PromotionDetail"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".controller.layout.vehicle.manage.PolicyVehicle"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".controller.layout.tracking.TrackingVehicle"
+            android:label="@string/title_activity_tracking_vehicle"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

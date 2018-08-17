@@ -618,7 +618,7 @@ public class CalendarCustom extends AppCompatActivity {
                         }
                     }
 
-                    strMessageDay = "Xe bận từ: " + minHour + "h -> " + maxHour + "h";
+                    strMessageDay = "Lịch bận từ: " + minHour + "h đến " + maxHour + "h";
                     if (minHour == 0 && maxHour == 23){
                         strMessageDay = "Xe bận cả ngày";
                     }

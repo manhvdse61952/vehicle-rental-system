@@ -6,7 +6,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Rect;
+import android.location.Location;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.manhvdse61952.vrc_android.R;
+import com.example.manhvdse61952.vrc_android.controller.layout.tracking.TrackingVehicle;
 import com.example.manhvdse61952.vrc_android.controller.permission.PermissionDevice;
 import com.example.manhvdse61952.vrc_android.controller.resources.GeneralController;
 import com.example.manhvdse61952.vrc_android.controller.resources.ImmutableValue;
@@ -30,7 +33,13 @@ import com.example.manhvdse61952.vrc_android.controller.layout.main.MainActivity
 import com.example.manhvdse61952.vrc_android.model.api_interface.TimeAPI;
 import com.example.manhvdse61952.vrc_android.model.api_model.ContractFinish;
 import com.example.manhvdse61952.vrc_android.model.api_model.ContractItem;
+import com.example.manhvdse61952.vrc_android.model.api_model.Tracking;
 import com.example.manhvdse61952.vrc_android.remote.RetrofitConfig;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -45,15 +54,14 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class ContractDetail extends AppCompatActivity {
-    Button btn_contract_give_car, btn_remove_contract,btn_send_feedback;
+    Button btn_contract_give_car, btn_remove_contract, btn_send_feedback, btn_contract_view_map, btn_confirm;
     TextView txt_contract_start_time, txt_contract_end_time, txt_contract_id, txt_contract_owner_name, txt_contract_vehicle_name,
             txt_contract_vehicle_year, txt_contract_vehicle_seat, txt_contract_customer_name,
             txt_contract_receive_type, txt_contract_rent_time, txt_contract_rent_fee, txt_contract_deposit_fee,
             txt_contract_total_fee, txt_contract_customer_cmnd, txt_contract_customer_phone,
             txt_contract_owner_phone, txt_secret_key, txt_clock_time, txt_clock_day,
             txt_secret_return_vehicle, txt_contract_complete_endRealTime, txt_contract_complete_overTime,
-            txt_contract_complete_overPrice, txt_contract_insideFee, txt_contract_outsideFee
-            , txt_detail_discount_vehicle, txt_detail_discount_general, txt_customer_location;
+            txt_contract_complete_overPrice, txt_contract_insideFee, txt_contract_outsideFee, txt_detail_discount_vehicle, txt_detail_discount_general, txt_customer_location;
     LinearLayout ln_clock, ln_show_fee, ln_feedback;
     ProgressDialog dialog;
     RatingBar rt_feedback;
@@ -64,6 +72,8 @@ public class ContractDetail extends AppCompatActivity {
     Date currentTime = null, currentDay = null;
     Handler handler;
     Runnable r;
+    double vehicleLat = 0, vehicleLng = 0, deliveryLat = 0, deliveryLng = 0;
+    String vehicleFrameNumber  ="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,25 +95,34 @@ public class ContractDetail extends AppCompatActivity {
         btn_contract_give_car.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(ContractDetail.this);
-                builder.setMessage("Xác nhận trả xe ?").setCancelable(false)
-                        .setPositiveButton("Có", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                giveCarAction();
-                            }
-                        })
-                        .setNegativeButton("Không", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.cancel();
-                            }
-                        });
-                AlertDialog dialog = builder.create();
-                dialog.show();
-                dialog.setCanceledOnTouchOutside(false);
-
-
+                getLocationFromFireBase(vehicleFrameNumber);
+                Location vehicleLocation = new Location("");
+                Location deliveryLocation = new Location("");
+                vehicleLocation.setLatitude(vehicleLat);
+                vehicleLocation.setLongitude(vehicleLng);
+                deliveryLocation.setLatitude(deliveryLat);
+                deliveryLocation.setLongitude(deliveryLng);
+                if (vehicleLocation.distanceTo(deliveryLocation) > 50){
+                    Toast.makeText(ContractDetail.this, "Bạn cần lái xe đến vị trí nhận xe ban đầu trong bán kính 50m", Toast.LENGTH_SHORT).show();
+                } else{
+                    AlertDialog.Builder builder = new AlertDialog.Builder(ContractDetail.this);
+                    builder.setMessage("Xác nhận trả xe ?").setCancelable(false)
+                            .setPositiveButton("Có", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    giveCarAction();
+                                }
+                            })
+                            .setNegativeButton("Không", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                    dialog.setCanceledOnTouchOutside(false);
+                }
             }
         });
 
@@ -134,14 +153,16 @@ public class ContractDetail extends AppCompatActivity {
         txt_secret_key.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                currentTimeInServer = startLongTime - 1000*20;
+                currentTimeInServer = startLongTime - 1000 * 20;
             }
         });
 
         txt_secret_return_vehicle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                currentTimeInServer = endLongTime + 1000*60*60;
+                currentTimeInServer = endLongTime + 1000 * 60 * 60;
+                vehicleLat = deliveryLat;
+                vehicleLng = deliveryLng;
             }
         });
 
@@ -184,20 +205,22 @@ public class ContractDetail extends AppCompatActivity {
         txt_clock_time = (TextView) findViewById(R.id.txt_clock_time);
         txt_clock_day = (TextView) findViewById(R.id.txt_clock_day);
         txt_secret_return_vehicle = (TextView) findViewById(R.id.txt_secret_return_vehicle);
-        ln_clock = (LinearLayout)findViewById(R.id.ln_clock);
-        txt_contract_complete_endRealTime = (TextView)findViewById(R.id.txt_contract_complete_endRealTime);
-        txt_contract_complete_overTime = (TextView)findViewById(R.id.txt_contract_complete_overTime);
-        txt_contract_complete_overPrice = (TextView)findViewById(R.id.txt_contract_complete_overPrice);
-        txt_contract_insideFee = (TextView)findViewById(R.id.txt_contract_insideFee);
-        txt_contract_outsideFee = (TextView)findViewById(R.id.txt_contract_outsideFee);
-        ln_show_fee = (LinearLayout)findViewById(R.id.ln_show_fee);
-        txt_detail_discount_vehicle = (TextView)findViewById(R.id.txt_detail_discount_vehicle);
-        txt_detail_discount_general = (TextView)findViewById(R.id.txt_detail_discount_general);
-        ln_feedback = (LinearLayout)findViewById(R.id.ln_feedback);
-        edt_feedback = (EditText)findViewById(R.id.edt_feedback);
-        rt_feedback = (RatingBar)findViewById(R.id.rt_feedback);
-        btn_send_feedback = (Button)findViewById(R.id.btn_send_feedback);
-        txt_customer_location = (TextView)findViewById(R.id.txt_customer_location);
+        ln_clock = (LinearLayout) findViewById(R.id.ln_clock);
+        txt_contract_complete_endRealTime = (TextView) findViewById(R.id.txt_contract_complete_endRealTime);
+        txt_contract_complete_overTime = (TextView) findViewById(R.id.txt_contract_complete_overTime);
+        txt_contract_complete_overPrice = (TextView) findViewById(R.id.txt_contract_complete_overPrice);
+        txt_contract_insideFee = (TextView) findViewById(R.id.txt_contract_insideFee);
+        txt_contract_outsideFee = (TextView) findViewById(R.id.txt_contract_outsideFee);
+        ln_show_fee = (LinearLayout) findViewById(R.id.ln_show_fee);
+        txt_detail_discount_vehicle = (TextView) findViewById(R.id.txt_detail_discount_vehicle);
+        txt_detail_discount_general = (TextView) findViewById(R.id.txt_detail_discount_general);
+        ln_feedback = (LinearLayout) findViewById(R.id.ln_feedback);
+        edt_feedback = (EditText) findViewById(R.id.edt_feedback);
+        rt_feedback = (RatingBar) findViewById(R.id.rt_feedback);
+        btn_send_feedback = (Button) findViewById(R.id.btn_send_feedback);
+        txt_customer_location = (TextView) findViewById(R.id.txt_customer_location);
+        btn_contract_view_map = (Button) findViewById(R.id.btn_contract_view_map);
+        btn_confirm = (Button)findViewById(R.id.btn_confirm);
     }
 
     private void initLayout() {
@@ -236,31 +259,41 @@ public class ContractDetail extends AppCompatActivity {
                         txt_contract_customer_name.setText(obj.getCustomerName());
                         txt_contract_customer_cmnd.setText(obj.getCustomerCMND());
                         txt_contract_customer_phone.setText(obj.getCustomerPhone());
-                        if (obj.getFeedbackContent() == null){
+                        deliveryLat = obj.getDeliveryLat();
+                        deliveryLng = obj.getDeliveryLng();
+                        vehicleFrameNumber = obj.getVehicleFrameNumber();
+                        if (obj.getFeedbackContent() == null) {
                             edt_feedback.setText("");
                         } else {
                             edt_feedback.setText(obj.getFeedbackContent() + "");
                         }
-                        rt_feedback.setRating((float)obj.getFeedbackStar());
+                        rt_feedback.setRating((float) obj.getFeedbackStar());
 
                         NumberFormat nf = new DecimalFormat("#.####");
-                        if (obj.getDiscountVehicle() != 0){
+                        if (obj.getDiscountVehicle() != 0) {
                             float discountVehicleValue = obj.getDiscountVehicle() * 100;
                             txt_detail_discount_vehicle.setText(nf.format(discountVehicleValue) + " %");
                         }
-                        if (obj.getDiscountGeneral() != 0){
+                        if (obj.getDiscountGeneral() != 0) {
                             float discountGeneralValue = obj.getDiscountGeneral() * 100;
                             txt_detail_discount_general.setText(nf.format(discountGeneralValue) + " %");
                         }
 
+                        double deliveryLat = 0, deliveryLng = 0;
+                        if (obj.getDeliveryLat() == 0 && obj.getDeliveryLng() == 0) {
+                            deliveryLat = obj.getLatitude();
+                            deliveryLng = obj.getLongitude();
+                        } else {
+                            deliveryLat = obj.getDeliveryLat();
+                            deliveryLng = obj.getDeliveryLng();
+                        }
+                        String deliveryAddress = PermissionDevice.getStringAddress(deliveryLng, deliveryLat, ContractDetail.this);
+                        txt_customer_location.setText(deliveryAddress + "");
+
                         if (obj.getDeliveryType().equals(ImmutableValue.DELIVERY_CUSTOMER_PICK_UP)) {
                             txt_contract_receive_type.setText("Tự đến lấy xe");
-                            txt_customer_location.setVisibility(View.INVISIBLE);
                         } else {
                             txt_contract_receive_type.setText("Giao xe tại chỗ");
-                            String customerAddress = PermissionDevice.getStringAddress(obj.getLongitude(), obj.getLatitude(), ContractDetail.this);
-                            txt_customer_location.setVisibility(View.VISIBLE);
-                            txt_customer_location.setText(customerAddress + "");
                         }
                         txt_contract_rent_time.setText(obj.getRentDay() + " ngày " + obj.getRentHour() + " tiếng");
                         txt_contract_complete_endRealTime.setText(GeneralController.convertTime(obj.getEndRealTime()));
@@ -273,7 +306,7 @@ public class ContractDetail extends AppCompatActivity {
                             if (diffMinute > 30) {
                                 diffHour = diffHour + 1;
                             }
-                            long overTimeFee = (diffHour*obj.getRentFeePerHour()) + (diffDate*obj.getRentFeePerDay());
+                            long overTimeFee = (diffHour * obj.getRentFeePerHour()) + (diffDate * obj.getRentFeePerDay());
                             txt_contract_complete_overPrice.setText(overTimeFee + "");
                             txt_contract_complete_overTime.setText(diffDate + " ngày " + diffHour + " giờ");
                         } else {
@@ -300,9 +333,24 @@ public class ContractDetail extends AppCompatActivity {
                         customerID = obj.getOwnerID();
                         txt_contract_total_fee.setText(GeneralController.convertPrice(String.valueOf(totalFee)));
                         //Disable delete contract button and return car button
-                        if (obj.getOwnerID() == userID && (obj.getContractStatus().equals(ImmutableValue.CONTRACT_INACTIVE)
-                                || obj.getContractStatus().equals(ImmutableValue.CONTRACT_ACTIVE))) {
+                        if (obj.getContractStatus().equals(ImmutableValue.CONTRACT_INACTIVE) && userID == obj.getCustomerID()) {
+                            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) ln_show_fee.getLayoutParams();
+                            params.height = 0;
+                            ln_show_fee.setLayoutParams(params);
+                            LinearLayout.LayoutParams params2 = (LinearLayout.LayoutParams) ln_feedback.getLayoutParams();
+                            params2.height = 0;
+                            ln_feedback.setLayoutParams(params2);
+                            btn_confirm.setVisibility(View.VISIBLE);
+                        } else if (obj.getContractStatus().equals(ImmutableValue.CONTRACT_INACTIVE) && userID == obj.getOwnerID()) {
                             btn_contract_give_car.setVisibility(View.INVISIBLE);
+                            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) ln_show_fee.getLayoutParams();
+                            params.height = 0;
+                            ln_show_fee.setLayoutParams(params);
+                            LinearLayout.LayoutParams params2 = (LinearLayout.LayoutParams) ln_feedback.getLayoutParams();
+                            params2.height = 0;
+                            btn_contract_view_map.setVisibility(View.VISIBLE);
+                            ln_feedback.setLayoutParams(params2);
+                        } else if (obj.getContractStatus().equals(ImmutableValue.CONTRACT_ACTIVE) && userID == obj.getCustomerID()) {
                             btn_remove_contract.setVisibility(View.INVISIBLE);
                             LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) ln_show_fee.getLayoutParams();
                             params.height = 0;
@@ -310,22 +358,25 @@ public class ContractDetail extends AppCompatActivity {
                             LinearLayout.LayoutParams params2 = (LinearLayout.LayoutParams) ln_feedback.getLayoutParams();
                             params2.height = 0;
                             ln_feedback.setLayoutParams(params2);
-                        } else if (obj.getCustomerID() == userID && (obj.getContractStatus().equals(ImmutableValue.CONTRACT_INACTIVE)
-                                || obj.getContractStatus().equals(ImmutableValue.CONTRACT_ACTIVE))){
+                            btn_contract_view_map.setVisibility(View.VISIBLE);
+                            btn_confirm.setVisibility(View.VISIBLE);
+                        } else if (obj.getContractStatus().equals(ImmutableValue.CONTRACT_ACTIVE) && userID == obj.getOwnerID()) {
+                            btn_remove_contract.setVisibility(View.INVISIBLE);
+                            btn_contract_give_car.setVisibility(View.INVISIBLE);
                             LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) ln_show_fee.getLayoutParams();
                             params.height = 0;
                             ln_show_fee.setLayoutParams(params);
                             LinearLayout.LayoutParams params2 = (LinearLayout.LayoutParams) ln_feedback.getLayoutParams();
                             params2.height = 0;
                             ln_feedback.setLayoutParams(params2);
-                        }
-                        else if (obj.getContractStatus().equals(ImmutableValue.CONTRACT_FINISHED)) {
+                            btn_contract_view_map.setVisibility(View.VISIBLE);
+                        } else if (obj.getContractStatus().equals(ImmutableValue.CONTRACT_FINISHED)) {
                             LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) ln_clock.getLayoutParams();
                             params.height = 0;
                             ln_clock.setLayoutParams(params);
                             btn_contract_give_car.setVisibility(View.INVISIBLE);
                             btn_remove_contract.setVisibility(View.INVISIBLE);
-                            if (obj.getOwnerID() == userID){
+                            if (obj.getOwnerID() == userID) {
                                 LinearLayout.LayoutParams params2 = (LinearLayout.LayoutParams) ln_feedback.getLayoutParams();
                                 params2.height = 0;
                                 ln_feedback.setLayoutParams(params2);
@@ -350,6 +401,46 @@ public class ContractDetail extends AppCompatActivity {
                                 sendFeedback();
                             }
                         });
+                        final ContractItem finalObj = obj;
+                        btn_contract_view_map.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
+                                editor.putString(ImmutableValue.MAIN_isTracking, "view_contract_map");
+                                editor.putString(ImmutableValue.MAIN_vehicleID, finalObj.getVehicleFrameNumber());
+                                editor.putString(ImmutableValue.MAIN_customer_Lat, String.valueOf(finalObj.getDeliveryLat()));
+                                editor.putString(ImmutableValue.MAIN_customer_Lng, String.valueOf(finalObj.getDeliveryLng()));
+                                editor.apply();
+                                startActivity(new Intent(ContractDetail.this, TrackingVehicle.class));
+                            }
+                        });
+                        if (obj.getStartRealTime() != 0){
+                            btn_confirm.setVisibility(View.INVISIBLE);
+                        }
+                        btn_confirm.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(ContractDetail.this);
+                                builder.setMessage("Bạn đã nhận được xe chưa ?").setCancelable(false)
+                                        .setPositiveButton("Có", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                checkConfirm();
+                                            }
+                                        })
+                                        .setNegativeButton("Không", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.cancel();
+                                            }
+                                        });
+                                AlertDialog dialog = builder.create();
+                                dialog.show();
+                                dialog.setCanceledOnTouchOutside(false);
+                            }
+                        });
+
+
                         initClock();
                     }
                 } else {
@@ -382,15 +473,15 @@ public class ContractDetail extends AppCompatActivity {
                     r = new Runnable() {
                         @Override
                         public void run() {
-                            if (currentTimeInServer >= startLongTime){
+                            if (currentTimeInServer >= startLongTime) {
                                 btn_remove_contract.setVisibility(View.INVISIBLE);
                             }
-                            if (currentTimeInServer >= (endLongTime - 1000*60*15)) {
+                            if (currentTimeInServer >= (endLongTime - 1000 * 60 * 15)) {
                                 btn_remove_contract.setVisibility(View.INVISIBLE);
                                 btn_contract_give_car.setBackgroundResource(R.drawable.border_green_primarygreen);
                                 btn_contract_give_car.setEnabled(true);
                                 btn_contract_give_car.setClickable(true);
-                            } else if (currentTimeInServer < (endLongTime - 1000*60*15)){
+                            } else if (currentTimeInServer < (endLongTime - 1000 * 60 * 15)) {
                                 btn_contract_give_car.setBackgroundResource(R.drawable.border_green_hide);
                                 btn_contract_give_car.setEnabled(false);
                                 btn_contract_give_car.setClickable(false);
@@ -428,6 +519,8 @@ public class ContractDetail extends AppCompatActivity {
     }
 
     private void giveCarAction() {
+
+
         dialog = ProgressDialog.show(ContractDetail.this, "Đang xử lý",
                 "Vui lòng đợi ...", true);
         SharedPreferences editor2 = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
@@ -498,14 +591,14 @@ public class ContractDetail extends AppCompatActivity {
         });
     }
 
-    private void sendFeedback(){
+    private void sendFeedback() {
         final ProgressDialog dialog = ProgressDialog.show(ContractDetail.this, "Đang xử lý",
                 "Vui lòng đợi ...", true);
         String content = edt_feedback.getText().toString();
         Date currentTime = new Date();
         long currentTimeLong = currentTime.getTime();
         float getRating = rt_feedback.getRating();
-        int rating = (int)getRating;
+        int rating = (int) getRating;
 
         Retrofit retrofit = RetrofitConfig.getClient();
         ContractAPI contractAPI = retrofit.create(ContractAPI.class);
@@ -513,7 +606,7 @@ public class ContractDetail extends AppCompatActivity {
         responseBodyCall.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if (response.isSuccessful()){
+                if (response.isSuccessful()) {
                     Toast.makeText(ContractDetail.this, "Đánh giá gửi thành công", Toast.LENGTH_SHORT).show();
                     finish();
                     startActivity(getIntent());
@@ -528,6 +621,49 @@ public class ContractDetail extends AppCompatActivity {
             }
         });
     }
+
+    private void getLocationFromFireBase(String vehicleFrameNumber) {
+        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("Locations").child(vehicleFrameNumber);
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Tracking obj = dataSnapshot.getValue(Tracking.class);
+                vehicleLat = obj.getLatitude();
+                vehicleLng = obj.getLongitude();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void checkConfirm(){
+        dialog = ProgressDialog.show(ContractDetail.this, "Đang xử lý",
+                "Vui lòng đợi ...", true);
+        Retrofit retrofit = RetrofitConfig.getClient();
+        ContractAPI contractAPI = retrofit.create(ContractAPI.class);
+        Call<ResponseBody> responseBodyCall = contractAPI.checkConfirm(contractIdGeneral, startLongTime);
+        responseBodyCall.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.code() == 200){
+                    Toast.makeText(ContractDetail.this, "Xác nhận thành công", Toast.LENGTH_SHORT).show();
+                    ContractDetail.this.finish();
+                    startActivity(getIntent());
+                }
+                dialog.dismiss();
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                dialog.dismiss();
+                Toast.makeText(ContractDetail.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {

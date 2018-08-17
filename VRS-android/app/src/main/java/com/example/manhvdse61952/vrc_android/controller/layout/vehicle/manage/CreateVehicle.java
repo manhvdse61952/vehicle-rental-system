@@ -875,16 +875,43 @@ public class CreateVehicle extends AppCompatActivity {
                         edt.requestFocus();
                         progressDialog.dismiss();
                     } else {
-                        createNewVehicle(frameNumber, vehicleInformationID, rentFeePerDay, rentFeePerHours,
-                                depositFee, plateNumber, requireHouseHold, requireIdCard, districtID, isGasoline,
-                                isManual, picture_path, img_vehicle_1, img_vehicle_2, haveDriver, receiveType, monday,
-                                tuesday, wednesday, thursday, friday, saturday, sunday);
+                        SharedPreferences.Editor editor = getSharedPreferences("ValueTemp", MODE_PRIVATE).edit();
+                        editor.putString("frameNumber", frameNumber);
+                        editor.putInt("vehicleInformationID", vehicleInformationID);
+                        editor.putString("rentFeePerDay", rentFeePerDay);
+                        editor.putString("rentFeePerHours", rentFeePerHours);
+                        editor.putString("depositFee", depositFee);
+                        editor.putString("plateNumber", plateNumber);
+                        editor.putInt("requireHouseHold", requireHouseHold);
+                        editor.putInt("requireIdCard", requireIdCard);
+                        editor.putInt("districtID", districtID);
+                        editor.putInt("isGasoline", isGasoline);
+                        editor.putInt("isManual", isManual);
+                        editor.putString("picture_path", picture_path);
+                        editor.putString("img_vehicle_1", img_vehicle_1);
+                        editor.putString("img_vehicle_2", img_vehicle_2);
+                        editor.putBoolean("haveDriver", haveDriver);
+                        editor.putInt("receiveType", receiveType);
+                        editor.putBoolean("monday", monday);
+                        editor.putBoolean("tuesday", tuesday);
+                        editor.putBoolean("wednesday", wednesday);
+                        editor.putBoolean("thursday", thursday);
+                        editor.putBoolean("friday", friday);
+                        editor.putBoolean("saturday", saturday);
+                        editor.putBoolean("sunday", sunday);
+                        editor.putString("longitude", String.valueOf(longitude));
+                        editor.putString("latitude", String.valueOf(latitude));
+
+                        editor.apply();
+                        startActivity(new Intent(CreateVehicle.this, PolicyVehicle.class));
+
                     }
                 } else {
                     progressDialog.dismiss();
                     Toast.makeText(CreateVehicle.this, "Đã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
                     onBackPressed();
                 }
+                progressDialog.dismiss();
             }
 
             @Override
@@ -922,8 +949,6 @@ public class CreateVehicle extends AppCompatActivity {
             RequestBody fileBody = RequestBody.create(okhttp3.MediaType.parse(IMG_JPEG), imageVehicleFile1);
             RequestBody fileBody2 = RequestBody.create(okhttp3.MediaType.parse(IMG_JPEG), imageVehicleFile2);
             RequestBody fileBody3 = RequestBody.create(okhttp3.MediaType.parse(IMG_JPEG), imageFile);
-
-
 
             RequestBody data = RequestBody.create(MediaType.parse("text/plain"), json);
 

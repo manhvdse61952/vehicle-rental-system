@@ -229,14 +229,19 @@ public class MainActivity extends AppCompatActivity
             Intent it = new Intent(MainActivity.this, ManageContractActivity.class);
             startActivity(it);
         } else if (id == R.id.nav_manage_vehicle) {
-            Intent it = new Intent(MainActivity.this, ManageVehicleActivity.class);
-            startActivity(it);
+            SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
+            editor.putString(ImmutableValue.MAIN_isTracking, "false");
+            editor.apply();
+            startActivity(new Intent(MainActivity.this, ManageVehicleActivity.class));
         } else if (id == R.id.nav_discount) {
             startActivity(new Intent(MainActivity.this, PromotionActivity.class));
         } else if (id == R.id.nav_view_history) {
             startActivity(new Intent(MainActivity.this, ViewReportActivity.class));
-//        } else if (id == R.id.nav_share) {
-//
+        } else if (id == R.id.nav_tracking) {
+            SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
+            editor.putString(ImmutableValue.MAIN_isTracking, "true");
+            editor.apply();
+            startActivity(new Intent(MainActivity.this, ManageVehicleActivity.class));
         } else if (id == R.id.nav_manage_account) {
             Intent it = new Intent(MainActivity.this, UpdateAccount.class);
             startActivity(it);
@@ -311,6 +316,7 @@ public class MainActivity extends AppCompatActivity
             nav_Menu.findItem(R.id.nav_manage_vehicle).setVisible(false);
             nav_Menu.findItem(R.id.nav_discount).setVisible(false);
             nav_Menu.findItem(R.id.nav_view_history).setVisible(false);
+            nav_Menu.findItem(R.id.nav_tracking).setVisible(false);
         } else {
             txtNavRole.setText("Chủ xe");
         }
@@ -484,7 +490,7 @@ public class MainActivity extends AppCompatActivity
                     }
                 } else {
                     Toast.makeText(MainActivity.this, "Khu vực của bạn không có xe! Hệ thống sẽ hiển thị xe ở khu vực khác", Toast.LENGTH_SHORT).show();
-                    getAllVehicleByDistrictID(40);
+//                    getAllVehicleByDistrictID(40);
                     viewPager = (ViewPager) findViewById(R.id.container);
                     setupViewPager(viewPager);
                     tabLayout = (TabLayout) findViewById(R.id.tabs);
@@ -502,7 +508,7 @@ public class MainActivity extends AppCompatActivity
                 tabLayout = (TabLayout) findViewById(R.id.tabs);
                 tabLayout.setupWithViewPager(viewPager);
                 createTabIcons();
-//                Toast.makeText(MainActivity.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Kiểm tra kết nối mạng", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
             }
         });
@@ -747,7 +753,8 @@ public class MainActivity extends AppCompatActivity
         String vehicleFrameNumber = editor2.getString(ImmutableValue.MAIN_vehicleID, "Empty");
         String contractID = editor2.getString(ImmutableValue.MAIN_contractID, "Empty");
 
-        if (usernameID != 0 && vehicleFrameNumber.equals("Empty") && contractID.equals("Empty")) {
+        if ((usernameID != 0 && vehicleFrameNumber.equals("Empty") && contractID.equals("Empty"))
+                || (usernameID != 0 && !vehicleFrameNumber.equals("Empty") && !contractID.equals("Empty"))) {
             //Nothing to do
         } else if (usernameID != 0 && !vehicleFrameNumber.equals("Empty") && contractID.equals("Empty")) {
             Intent it = new Intent(MainActivity.this, VehicleDetail.class);

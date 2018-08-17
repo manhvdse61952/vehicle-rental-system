@@ -67,6 +67,7 @@ public class PromotionAdapter extends RecyclerView.Adapter<PromotionAdapter.Recy
             holder.txt_discount_value.setTextColor(Color.parseColor("#FF0000"));
         } else {
             holder.txt_discount_value.setText("Khuyến mãi " + discountValueConvert + " %");
+            holder.txt_discount_value.setTextColor(Color.parseColor("#1B5E20"));
         }
 
         if (obj.getStartDay()!= 0 && obj.getEndDay()!= 0){

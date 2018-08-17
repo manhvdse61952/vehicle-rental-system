@@ -40,7 +40,7 @@ public class GeneralController {
     }
     public static String convertTime(long time){
         Date date = new Date(time);
-        Format format = new SimpleDateFormat("HH : mm, dd/MM/yyyy");
+        Format format = new SimpleDateFormat("HH:mm, dd/MM/yyyy");
         return format.format(date);
     }
 

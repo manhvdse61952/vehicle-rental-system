@@ -82,5 +82,9 @@ public interface ContractAPI {
     @GET("/contract/callSupport/{contractID}")
     Call<ResponseBody> callSupport(@Path("contractID") int contractID);
 
+    @Headers({"Accept: application/json"})
+    @POST("/contract/confirmReceiveVehicle/{contractID}")
+    Call<ResponseBody> checkConfirm(@Path("contractID") int contractID,
+                                     @Body long startReal);
 
 }

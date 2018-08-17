@@ -34,35 +34,69 @@
             tools:ignore="VectorDrawableCompat">
         </ImageView>
     </android.support.v7.widget.Toolbar>
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        android:id="@+id/swipeLayout"
-        xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--<android.support.v4.widget.SwipeRefreshLayout-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:id="@+id/swipeLayout"-->
+        <!--xmlns:android="http://schemas.android.com/apk/res/android">-->
+    <!--<RelativeLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content">-->
+            <!--<TextView-->
+                <!--android:id="@+id/txt_manage_vehicle_empty"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_marginLeft="20dp"-->
+                <!--android:layout_marginRight="20dp"-->
+                <!--android:text="Bạn chưa có xe nào, hãy bấm vào dấu + ở góc trên bên phải để thêm xe"-->
+                <!--android:visibility="invisible"-->
+                <!--android:textColor="@color/secondary_text"-->
+                <!--android:textSize="14sp"-->
+                <!--android:textStyle="bold"-->
+                <!--android:layout_marginTop="20dp"-->
+                <!--android:layout_centerHorizontal="true"-->
+                <!--android:layout_height="wrap_content" />-->
+
+        <!--<android.support.v7.widget.RecyclerView-->
+            <!--android:id="@+id/recycler_vehicle_manage_view"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:scrollbars="vertical">-->
+
+        <!--</android.support.v7.widget.RecyclerView>-->
+    <!--</RelativeLayout>-->
+    <!--</android.support.v4.widget.SwipeRefreshLayout>-->
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-            <TextView
-                android:id="@+id/txt_manage_vehicle_empty"
-                android:layout_width="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:text="Bạn chưa có xe nào, hãy bấm vào dấu + ở góc trên bên phải để thêm xe"
-                android:visibility="invisible"
-                android:textColor="@color/secondary_text"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:layout_marginTop="20dp"
-                android:layout_centerHorizontal="true"
-                android:layout_height="wrap_content" />
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_vehicle_manage_view"
+        android:layout_height="match_parent">
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tabs"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scrollbars="vertical">
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@color/primary_text"
+            app:tabIndicatorColor="@color/colorPrimary"
+            app:tabIndicatorHeight="5dp" />
 
-        </android.support.v7.widget.RecyclerView>
+        <android.support.v4.view.ViewPager
+            android:id="@+id/container"
+            android:layout_below="@+id/tabs"
+            android:layout_width="match_parent"
+            android:padding="10dp"
+            android:layout_height="wrap_content"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:tint="@color/primary_text"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_margin="20dp"
+            android:src="@drawable/ic_autorenew_black_24dp"/>
     </RelativeLayout>
-    </android.support.v4.widget.SwipeRefreshLayout>
+
+
+
 </LinearLayout>

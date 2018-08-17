@@ -1,41 +1,32 @@
-package com.example.manhvdse61952.vrc_android.controller.layout.vehicle.showdetail;
+package com.example.manhvdse61952.vrc_android.controller.layout.tracking;
 
-import android.Manifest;
-import android.app.ProgressDialog;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.example.manhvdse61952.vrc_android.R;
 import com.example.manhvdse61952.vrc_android.controller.layout.main.DirectionsJSONParser;
-import com.example.manhvdse61952.vrc_android.controller.layout.main.MapsActivity;
 import com.example.manhvdse61952.vrc_android.controller.permission.PermissionDevice;
-import com.example.manhvdse61952.vrc_android.controller.resources.GeneralController;
 import com.example.manhvdse61952.vrc_android.controller.resources.ImmutableValue;
+import com.example.manhvdse61952.vrc_android.model.api_model.Tracking;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.squareup.picasso.Picasso;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONObject;
 
@@ -49,25 +40,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class VehicleMap extends AppCompatActivity implements OnMapReadyCallback {
+public class TrackingVehicle extends FragmentActivity implements OnMapReadyCallback {
     private GoogleMap mMap;
-    LocationManager locationManager;
-    LocationListener locationListener;
-    Location lastLocation = null;
-    LinearLayout ln_detail;
-
+    double deliveryLat = 0, deliveryLng = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
+        setContentView(R.layout.activity_tracking_vehicle);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this); //Init map system
-        ln_detail = (LinearLayout) findViewById(R.id.ln_detail);
-        GeneralController.scaleView(ln_detail, 0);
-
+        mapFragment.getMapAsync(this);
     }
 
 
@@ -88,57 +72,42 @@ public class VehicleMap extends AppCompatActivity implements OnMapReadyCallback 
         mMap.setIndoorEnabled(false);
         mMap.setBuildingsEnabled(false);
         mMap.getUiSettings().setZoomControlsEnabled(true);
-        if (lastLocation == null) {
-            getCurrentLocation();
-        }
-
+        SharedPreferences editor = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
+        String flag = editor.getString(ImmutableValue.MAIN_isTracking, "true");
+        deliveryLat = Double.parseDouble(editor.getString(ImmutableValue.MAIN_customer_Lat, "0"));
+        deliveryLng = Double.parseDouble(editor.getString(ImmutableValue.MAIN_customer_Lng, "0"));
+        getLocationFromFireBase(flag);
     }
 
-    private void getCurrentLocation() {
-        final ProgressDialog dialog = ProgressDialog.show(VehicleMap.this, "Hệ thống",
-                "Đang xử lý", true);
-        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        locationListener = new LocationListener() {
+    private void getLocationFromFireBase(final String flag) {
+        SharedPreferences editor = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
+        String vehicleFrameNumber = editor.getString(ImmutableValue.MAIN_vehicleID, "");
+        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("Locations").child(vehicleFrameNumber);
+        myRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onLocationChanged(Location location) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (flag.equals("true")) {
+                    Tracking obj = dataSnapshot.getValue(Tracking.class);
+                    addMaker(obj.getLongitude(), obj.getLatitude());
+                } else {
+                    Tracking obj = dataSnapshot.getValue(Tracking.class);
+                    addMaker(obj.getLongitude(), obj.getLatitude());
+                    addMakerAndCircle(deliveryLng, deliveryLat);
+                    LatLng deliveryLatLng = new LatLng(deliveryLat, deliveryLng);
+                    LatLng vehicleLatLng = new LatLng(obj.getLatitude(), obj.getLongitude());
+                    getRouteToMarker(vehicleLatLng, deliveryLatLng);
+                }
+//                mMap.clear();
             }
 
             @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-
-            @Override
-            public void onProviderEnabled(String provider) {
-
-            }
-
-            @Override
-            public void onProviderDisabled(String provider) {
-
-            }
-        };
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            dialog.dismiss();
-            Toast.makeText(this, "Vui lòng thoát ứng dụng và chạy lại", Toast.LENGTH_SHORT).show();
-            finish();
-        }
-        if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
-            lastLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-            addMaker();
-            executeData();
-            dialog.dismiss();
-        } else if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-            lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            addMaker();
-            executeData();
-            dialog.dismiss();
-        }
+        });
     }
 
-    private void addMaker() {
+    private void addMaker(double longitude, double latitude) {
         GoogleMap googleMap = null;
         if (mMap == null) {
             mMap = googleMap;
@@ -148,37 +117,51 @@ public class VehicleMap extends AppCompatActivity implements OnMapReadyCallback 
             mMap.setBuildingsEnabled(false);
             mMap.getUiSettings().setZoomControlsEnabled(true);
         }
-        double lat = lastLocation.getLatitude();
-        double lng = lastLocation.getLongitude();
-        LatLng lastLatLng = new LatLng(lat, lng);
-        String address = PermissionDevice.getStringAddress(lng, lat, VehicleMap.this);
+
+        String vehicleAddress = PermissionDevice.getStringAddress(longitude, latitude, TrackingVehicle.this);
+        LatLng lastLatLng = new LatLng(latitude, longitude);
         mMap.addMarker(new MarkerOptions().position(lastLatLng)
-                .title("Vị trí của bạn")
-                .snippet(address)
+                .title("Vị trí của xe")
+                .snippet(vehicleAddress)
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.car))
         );
 
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), 13.0f));
-
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 16.0f));
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+    private void addMakerAndCircle(double longitude, double latitude) {
+        GoogleMap googleMap = null;
+        if (mMap == null) {
+            mMap = googleMap;
+            mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+            mMap.setTrafficEnabled(false);
+            mMap.setIndoorEnabled(false);
+            mMap.setBuildingsEnabled(false);
+            mMap.getUiSettings().setZoomControlsEnabled(true);
+        }
+
+        String vehicleAddress = PermissionDevice.getStringAddress(longitude, latitude, TrackingVehicle.this);
+        LatLng lastLatLng = new LatLng(latitude, longitude);
+        mMap.addMarker(new MarkerOptions().position(lastLatLng)
+                .title("Địa điểm nhận xe")
+                .snippet(vehicleAddress)
+        );
+        mMap.addCircle(new CircleOptions().center(lastLatLng).radius(50).
+                strokeColor(Color.argb(10, 0, 0, 255)).
+                fillColor(Color.argb(10, 0, 0, 255)));
+
+//        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 18.0f));
     }
 
     @Override
     public void onBackPressed() {
-        VehicleMap.this.finish();
+        TrackingVehicle.this.finish();
         super.onBackPressed();
     }
 
-    //Execute input value
-    private void getRouteToMarker(LatLng currentPos, LatLng vehiclePos) {
+    private void getRouteToMarker(LatLng vehiclePos, LatLng deliveryPos) {
         // Getting URL to the Google Directions API
-        String url = getDirectionsUrl(currentPos, vehiclePos);
+        String url = getDirectionsUrl(vehiclePos, deliveryPos);
 
         DownloadTask downloadTask = new DownloadTask();
 
@@ -308,27 +291,10 @@ public class VehicleMap extends AppCompatActivity implements OnMapReadyCallback 
                 lineOptions.geodesic(true);
 
             }
-
-            if (points.size() != 0) {
-                // Drawing polyline in the Google Map for the i-th route
+            if (points.size() != 0){
                 mMap.addPolyline(lineOptions);
-
             }
-        }
-    }
 
-    private void executeData() {
-        SharedPreferences editor = getSharedPreferences(ImmutableValue.SIGNUP_SHARED_PREFERENCES_CODE, MODE_PRIVATE);
-        double longitude = editor.getFloat(ImmutableValue.VEHICLE_longitude, 0);
-        double latitude = editor.getFloat(ImmutableValue.VEHICLE_latitude, 0);
-        String address = PermissionDevice.getStringAddress(longitude, latitude, VehicleMap.this);
-        final LatLng vehicleLatLng = new LatLng(latitude, longitude);
-        mMap.addMarker(new MarkerOptions().position(vehicleLatLng)
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.car))
-                .title("Vị trí của xe")
-                .snippet(address)
-        );
-        final LatLng lastLatLng = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
-        getRouteToMarker(lastLatLng, vehicleLatLng);
+        }
     }
 }

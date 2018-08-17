@@ -130,8 +130,8 @@ public class VehicleDetail extends AppCompatActivity {
                     SharedPreferences.Editor editor = getSharedPreferences(ImmutableValue.MAIN_SHARED_PREFERENCES_CODE, MODE_PRIVATE).edit();
                     if (rd_1.isChecked()){
                         receiveType = 1;
-                        editor.putString(ImmutableValue.MAIN_customer_Lat, "0");
-                        editor.putString(ImmutableValue.MAIN_customer_Lng, "0");
+                        editor.putString(ImmutableValue.MAIN_customer_Lat, String.valueOf(latitude));
+                        editor.putString(ImmutableValue.MAIN_customer_Lng, String.valueOf(longitude));
                     } else if (rd_2.isChecked()){
                         receiveType = 0;
                         editor.putString(ImmutableValue.MAIN_customer_Lat, String.valueOf(latitude));
@@ -448,11 +448,18 @@ public class VehicleDetail extends AppCompatActivity {
                             cbx2.setEnabled(false);
                         }
 
+                        longitude = mainObj.getLongitude();
+                        latitude = mainObj.getLatitude();
+                        txt_vehicle_address.setText(PermissionDevice.getStringAddress(longitude, latitude, VehicleDetail.this));
+
                         rd_1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                             @Override
                             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                                 if (isChecked){
                                     txt_vehicle_address.setText("");
+                                    longitude = mainObj.getLongitude();
+                                    latitude = mainObj.getLatitude();
+                                    txt_vehicle_address.setText(PermissionDevice.getStringAddress(longitude, latitude, VehicleDetail.this));
                                 }
                             }
                         });

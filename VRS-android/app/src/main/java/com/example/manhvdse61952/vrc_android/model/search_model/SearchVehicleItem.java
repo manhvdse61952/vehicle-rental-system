@@ -39,22 +39,19 @@ public class SearchVehicleItem implements Serializable {
     @SerializedName("vehicleType")
     @Expose
     private String vehicleType;
-
-    public SearchVehicleItem(int seat, String frameNumber, int districtID, String rentFeePerHours, String vehicleMaker, String currentStatus, String vehicleModel, String imageLinkFront, int discountValue, String rentFeePerDay, String vehicleType) {
-        this.seat = seat;
-        this.frameNumber = frameNumber;
-        this.districtID = districtID;
-        this.rentFeePerHours = rentFeePerHours;
-        this.vehicleMaker = vehicleMaker;
-        this.currentStatus = currentStatus;
-        this.vehicleModel = vehicleModel;
-        this.imageLinkFront = imageLinkFront;
-        this.discountValue = discountValue;
-        this.rentFeePerDay = rentFeePerDay;
-        this.vehicleType = vehicleType;
-    }
+    @SerializedName("approveStatus")
+    @Expose
+    private String approveStatus;
 
     public SearchVehicleItem() {
+    }
+
+    public String getApproveStatus() {
+        return approveStatus;
+    }
+
+    public void setApproveStatus(String approveStatus) {
+        this.approveStatus = approveStatus;
     }
 
     public int getSeat() {

@@ -357,7 +357,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:checked="false"
-                    android:text="Sộ hộ khẩu"
+                    android:text="Sổ hộ khẩu"
                     android:textSize="16sp" />
 
                 <CheckBox
@@ -393,7 +393,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
-                        android:text="Thời gian rảnh của xe (theo tuần)"
+                        android:text="Thời gian rảnh của xe"
                         android:textColor="#000"
                         android:textSize="16sp" />
                 </LinearLayout>

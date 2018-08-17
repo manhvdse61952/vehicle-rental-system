@@ -42,9 +42,45 @@ public class ContractItem implements Serializable {
     private String feedbackContent;
     private int feedbackStar;
     private String deliveryType;
+    private double deliveryLat;
+    private double deliveryLng;
+    private String vehicleFrameNumber;
+    private long startRealTime;
 
 
     public ContractItem() {
+    }
+
+    public String getVehicleFrameNumber() {
+        return vehicleFrameNumber;
+    }
+
+    public void setVehicleFrameNumber(String vehicleFrameNumber) {
+        this.vehicleFrameNumber = vehicleFrameNumber;
+    }
+
+    public long getStartRealTime() {
+        return startRealTime;
+    }
+
+    public void setStartRealTime(long startRealTime) {
+        this.startRealTime = startRealTime;
+    }
+
+    public double getDeliveryLat() {
+        return deliveryLat;
+    }
+
+    public void setDeliveryLat(double deliveryLat) {
+        this.deliveryLat = deliveryLat;
+    }
+
+    public double getDeliveryLng() {
+        return deliveryLng;
+    }
+
+    public void setDeliveryLng(double deliveryLng) {
+        this.deliveryLng = deliveryLng;
     }
 
     public String getContractID() {

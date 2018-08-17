@@ -37,4 +37,5 @@ sự giao dịch.
 Bên A phải thay thế bất kỳ bộ phận nào của chiếc xe bị hỏng hoặc bị mất do nguyên nhân mà bên A chịu trách nhiệm và phải cung cấp khoản tiền theo các điều khoản của hợp đồng theo thỏa thuận.
 Bên B có trách nhiệm hoàn trả những thanh toán gây ra bởi phương tiện mà bên A đã chi trả ví dụ như thay lốp, thay nhớt, bảo trì máy móc, ...
 Mọi chi phí phát sinh bởi bên B khi yêu cầu bất kỳ khoản phí nào nêu trên từ bên A sẽ được hoàn trả theo quy định của pháp luật.</string>
+    <string name="title_activity_tracking_vehicle">Map</string>
 </resources>

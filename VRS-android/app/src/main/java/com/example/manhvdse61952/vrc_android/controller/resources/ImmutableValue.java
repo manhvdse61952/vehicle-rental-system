@@ -18,6 +18,10 @@ public class ImmutableValue {
     //Vehicle status
     public static final String VEHICLE_STATUS_AVAILABLE = "AVAILABLE";
 
+    //Approve status
+    public static final String VEHICLE_STATUS_WAITING = "WAITING_FOR_APPROVE";
+    public static final String VEHICLE_STATUS_REJECTED = "REJECTED";
+
     //Vehicle type
     public static final String XE_MAY = "XE_MAY";
     public static final String XE_CA_NHAN = "XE_CA_NHAN";
@@ -111,6 +115,8 @@ public class ImmutableValue {
     public static final String MAIN_discountGeneral = "main_discountGeneral";
     public static final String MAIN_customer_Lng = "main_customer_lng";
     public static final String MAIN_customer_Lat = "main_customer_lat";
+    public static final String MAIN_isTracking = "main_is_tracking";
+
 
     //discount
     public static final String DISCOUNT_SHARED_PREFERENCES_CODE = "discount_code";

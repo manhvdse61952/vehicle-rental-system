@@ -3,14 +3,19 @@ package com.example.manhvdse61952.vrc_android.controller.layout.vehicle.manage;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,6 +23,10 @@ import android.widget.Toast;
 
 import com.example.manhvdse61952.vrc_android.R;
 import com.example.manhvdse61952.vrc_android.controller.layout.main.MainActivity;
+import com.example.manhvdse61952.vrc_android.controller.layout.main.SectionPageAdapter;
+import com.example.manhvdse61952.vrc_android.controller.layout.vehicle.vehicleTab.ApprovedTab;
+import com.example.manhvdse61952.vrc_android.controller.layout.vehicle.vehicleTab.RejectTab;
+import com.example.manhvdse61952.vrc_android.controller.layout.vehicle.vehicleTab.WaitingTab;
 import com.example.manhvdse61952.vrc_android.controller.resources.ImmutableValue;
 import com.example.manhvdse61952.vrc_android.model.api_interface.VehicleAPI;
 import com.example.manhvdse61952.vrc_android.model.search_model.SearchVehicleItem;
@@ -34,11 +43,15 @@ import retrofit2.Retrofit;
 
 public class ManageVehicleActivity extends AppCompatActivity {
     List<SearchVehicleItem> vehicleList = new ArrayList<>();
-    RecyclerView recyclerView;
-    ManageVehicleAdapter manageVehicleAdapter;
-    TextView txt_manage_vehicle_empty;
+    public static List<SearchVehicleItem> listApproved = new ArrayList<>();
+    public static List<SearchVehicleItem> listWaiting = new ArrayList<>();
+    public static List<SearchVehicleItem> listRejected = new ArrayList<>();
+    public static SectionPageAdapter secAdapter;
+    public static ViewPager viewPager;
+    private TabLayout tabLayout;
+    FloatingActionButton fab;
+
     ProgressDialog dialog;
-    SwipeRefreshLayout swipeLayout;
     ImageView imgCreateVehicle;
 
     @Override
@@ -56,7 +69,14 @@ public class ManageVehicleActivity extends AppCompatActivity {
 
         loadData();
 
-        reloadData();
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadData();
+            }
+        });
+
+//        reloadData();
 
         imgCreateVehicle.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,13 +123,9 @@ public class ManageVehicleActivity extends AppCompatActivity {
     }
 
     private void declareID(){
-        txt_manage_vehicle_empty = (TextView)findViewById(R.id.txt_manage_vehicle_empty);
-        txt_manage_vehicle_empty.setEnabled(false);
-        recyclerView = (RecyclerView)findViewById(R.id.recycler_vehicle_manage_view);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerView.setLayoutManager(mLayoutManager);
-        swipeLayout = (SwipeRefreshLayout)findViewById(R.id.swipeLayout);
         imgCreateVehicle = (ImageView)findViewById(R.id.imgCreateVehicle);
+        fab = (FloatingActionButton)findViewById(R.  id.fab);
     }
 
     private void loadData(){
@@ -125,18 +141,26 @@ public class ManageVehicleActivity extends AppCompatActivity {
             public void onResponse(Call<List<SearchVehicleItem>> call, Response<List<SearchVehicleItem>> response) {
                 if (response.code() == 200){
                     vehicleList = response.body();
-                    if (vehicleList.size() == 0){
-                        txt_manage_vehicle_empty.setVisibility(View.VISIBLE);
-                    } else {
-                        txt_manage_vehicle_empty.setVisibility(View.INVISIBLE);
-                        manageVehicleAdapter = new ManageVehicleAdapter(vehicleList, ManageVehicleActivity.this);
-                        recyclerView.setAdapter(manageVehicleAdapter);
-                        manageVehicleAdapter.notifyDataSetChanged();
+                    if (vehicleList.size() > 0){
+                        listApproved = new ArrayList<>();
+                        listWaiting = new ArrayList<>();
+                        listRejected = new ArrayList<>();
+                        for (int i = 0; i < vehicleList.size();i++){
+                            if (vehicleList.get(i).getApproveStatus().equals(ImmutableValue.VEHICLE_STATUS_WAITING)){
+                                listWaiting.add(vehicleList.get(i));
+                            }
+                            else if (vehicleList.get(i).getApproveStatus().equals(ImmutableValue.VEHICLE_STATUS_REJECTED)){
+                                listRejected.add(vehicleList.get(i));
+                            } else {
+                                listApproved.add(vehicleList.get(i));
+                            }
+                        }
                     }
-
-                } else {
-                    txt_manage_vehicle_empty.setVisibility(View.VISIBLE);
-//                    Toast.makeText(ManageVehicleActivity.this, "Đã xảy ra lỗi! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
+                    viewPager = (ViewPager) findViewById(R.id.container);
+                    setupViewPager(viewPager);
+                    tabLayout = (TabLayout) findViewById(R.id.tabs);
+                    tabLayout.setupWithViewPager(viewPager);
+                    createTabIcons();
                 }
                 dialog.dismiss();
             }
@@ -149,20 +173,28 @@ public class ManageVehicleActivity extends AppCompatActivity {
         });
     }
 
-    private void reloadData(){
-        swipeLayout.setColorScheme(android.R.color.holo_blue_dark, android.R.color.holo_blue_light, android.R.color.holo_green_light, android.R.color.holo_green_dark);
-        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                swipeLayout.setRefreshing(true);
-                (new Handler()).postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        swipeLayout.setRefreshing(false);
-                        loadData();
-                    }
-                }, 500);
-            }
-        });
+    private void setupViewPager(ViewPager viewPager) {
+        secAdapter = new SectionPageAdapter(getSupportFragmentManager());
+        secAdapter.addFragment(new ApprovedTab(), "Đã kiểm duyệt");
+        secAdapter.addFragment(new WaitingTab(), "Chờ kiểm duyệt");
+        secAdapter.addFragment(new RejectTab(), "Bị loại bỏ");
+        viewPager.setAdapter(secAdapter);
+    }
+
+    private void createTabIcons() {
+        TextView tabOne = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
+        tabOne.setText("Đã kiểm duyệt");
+        tabOne.setTextSize(12);
+        tabLayout.getTabAt(0).setCustomView(tabOne);
+
+        TextView tabTwo = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
+        tabTwo.setText("Chờ kiểm duyệt");
+        tabTwo.setTextSize(12);
+        tabLayout.getTabAt(1).setCustomView(tabTwo);
+
+        TextView tabThree = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
+        tabThree.setText("Bị loại bỏ");
+        tabThree.setTextSize(12);
+        tabLayout.getTabAt(2).setCustomView(tabThree);
     }
 }

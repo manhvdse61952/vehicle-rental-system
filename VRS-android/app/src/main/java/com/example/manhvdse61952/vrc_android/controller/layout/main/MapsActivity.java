@@ -28,7 +28,6 @@ import com.example.manhvdse61952.vrc_android.controller.layout.vehicle.showdetai
 import com.example.manhvdse61952.vrc_android.controller.resources.GeneralController;
 import com.example.manhvdse61952.vrc_android.controller.resources.ImmutableValue;
 import com.example.manhvdse61952.vrc_android.model.api_interface.VehicleAPI;
-import com.example.manhvdse61952.vrc_android.model.api_model.Tracking;
 import com.example.manhvdse61952.vrc_android.model.api_model.VehicleLocation;
 import com.example.manhvdse61952.vrc_android.remote.RetrofitConfig;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -71,7 +70,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     LocationListener locationListener;
     Location lastLocation = null;
     Polyline polylineFinal;
-    int circleDistance = 10000; //~ 10 km
+    int circleDistance = 5000; //~ 10 km
 
     LinearLayout ln_detail;
     TextView txt_vehicle_name, txt_distance, txt_duration;
@@ -89,7 +88,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this); //Init map system
         declareID();
-
         GeneralController.scaleView(ln_detail, 0);
 
     }
@@ -192,9 +190,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         LatLng lastLatLng = new LatLng(lat, lng);
         mMap.addMarker(new MarkerOptions().position(lastLatLng)
                 .title("Vị trí của bạn")
+                .snippet("")
         );
 
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), 13.0f));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), 16.0f));
         mMap.addCircle(new CircleOptions().center(lastLatLng).radius(circleDistance).
                 strokeColor(Color.argb(10, 0, 0, 255)).
                 fillColor(Color.argb(10, 0, 0, 255)));

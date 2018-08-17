@@ -3,6 +3,7 @@ package com.example.manhvdse61952.vrc_android.controller.layout.contract.contrac
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,7 +75,7 @@ public class ContractItemTab extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        viewHolder.txt_manage_contract_id.setText("Hợp đồng #" + contractItem.getContractID());
+        viewHolder.txt_manage_contract_id.setText("#"+contractItem.getContractID());
         if(contractItem.getContractStatus().equals(ImmutableValue.CONTRACT_INACTIVE)){
             viewHolder.txt_manage_contract_status.setText("Chưa bắt đầu");
         } else if (contractItem.getContractStatus().equals(ImmutableValue.CONTRACT_ACTIVE)){
@@ -96,16 +97,16 @@ public class ContractItemTab extends BaseAdapter {
         }
 
         if (contractItem.getContractStatus().equals(ImmutableValue.CONTRACT_FINISHED)){
-            viewHolder.ln_manage_contract.setBackgroundResource(R.drawable.border_green);
+            viewHolder.txt_manage_contract_status.setTextColor(Color.parseColor("#1B5E20"));
         } else if (contractItem.getContractStatus().equals(ImmutableValue.CONTRACT_REFUNDED)) {
-            viewHolder.ln_manage_contract.setBackgroundResource(R.drawable.border_red);
+            viewHolder.txt_manage_contract_status.setTextColor(Color.parseColor("#FF0000"));
         } else if (contractItem.getContractStatus().equals(ImmutableValue.CONTRACT_INACTIVE)){
-            viewHolder.ln_manage_contract.setBackgroundResource(R.drawable.border_blue);
+            viewHolder.txt_manage_contract_status.setTextColor(Color.parseColor("#0288D1"));
         } else if (contractItem.getContractStatus().equals(ImmutableValue.CONTRACT_ISSUE)
                 || contractItem.getContractStatus().equals(ImmutableValue.CONTRACT_NEED_SUPPORT)){
-            viewHolder.ln_manage_contract.setBackgroundResource(R.drawable.border_high_blue);
+            viewHolder.txt_manage_contract_status.setTextColor(Color.parseColor("#01579B"));
         } else {
-            viewHolder.ln_manage_contract.setBackgroundResource(R.drawable.border_blue);
+            viewHolder.txt_manage_contract_status.setTextColor(Color.parseColor("#0288D1"));
         }
 
         viewHolder.txt_manage_contract_start_time.setText(GeneralController.convertTime(contractItem.getStartTime()));
